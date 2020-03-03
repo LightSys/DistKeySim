@@ -1,0 +1,57 @@
+syntax = "proto3";
+
+import "google/protobuf/timestamp.proto";
+
+message InformationalMessageContents {
+  message CollectionInformationRecord {
+    string collectionName = 1;
+
+    message CreationRateData {
+      float shortAllocationRatio = 1;
+      float longAllocationRatio = 2;
+      float createdPreviousDay = 3;
+      float createdPreviousWeek = 4;
+    }
+
+    CreationRateData creationRateData = 2;
+  }
+
+  repeated CollectionInformationRecord records = 1;
+}
+
+message KeyspaceMessageContents {
+  message Keyspace {
+    string name = 1;
+    uint32 startID = 2;
+    uint32 endID = 3; // Will be set if this is a sub0block, otherwise 0
+    uint32 suffixBits = 4;
+  }
+}
+
+message MessageInfo {
+  bytes sourceNodeID = 1;
+  bytes destNodeID = 2;
+  uint32 lastReceivedMsg = 3;
+
+  enum ChannelState {
+    INITIAL_STARTUP = 0;
+    NORMAL_COMMUNICATION = 1;
+    CHANNEL_SHUTDOWN = 2;
+  }
+
+  ChannelState channelState = 4;
+  google.protobuf.Timestamp timestamp = 5;
+  sint64 messageID = 6;
+
+  enum MessageType {
+    INFORMATION = 0;
+    KEYSPACE = 1;
+    DATA_REPLICATION_UNUSED = 2;
+  }
+
+  MessageType messageType = 7;
+  oneof message {
+    InformationalMessageContents info = 8;
+    KeyspaceMessageContents keyspace = 9;
+  }
+}
