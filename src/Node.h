@@ -59,6 +59,8 @@ public:
     bool getActive() const { return active; }
     void setActive(bool a) { active = a; }
 
+    Keyspace* minimumKeyspace();
+    unsigned long getNextKey();
     double computeAggregateGenRate();
     double computeShortTermAllocationRatio();
     double computeLongTermAllocationRatio();

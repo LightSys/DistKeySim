@@ -20,7 +20,7 @@ Node::~Node() {
 }
 
 ///creates the key space for the Node
-unsigned long Node::getNextKey(){
+unsigned long Node::getNextKey() {
     return minimumKeyspace()->getNextAvailableKey();
 }
 
