@@ -19,6 +19,18 @@ struct CollectionInfoRecord {
 };
 
 /**
+ * Represents Keyspace Exchange Message used in Message
+ */
+struct KeyspaceExchangeRecord {
+    std::string name;
+    uint32_t startID;
+    uint32_t endID;
+    uint32_t suffixBits;
+    
+};
+
+
+/**
  * Adds a collection information record to an informational message contents instance
  * @param collection Pointer to collection information instance
  * @param createdDay float Keys created per day over 24 hours: CS
@@ -78,7 +90,7 @@ Message newBaseMessage(HexDigest &sendingUUID, HexDigest &destUUID, uint32_t las
 
 /** Add data to message instance to change it to valid informational message
  *
- * @param msg Unpopulated message instance to add InformationalMessageContents
+ * @param msg Unpopulated message instance to add informational records to
  * @param records Collection Information Records to be added to message
  */
 void toInformationalMessage(Message &msg, std::initializer_list<CollectionInfoRecord> records) {
@@ -97,25 +109,26 @@ void toInformationalMessage(Message &msg, std::initializer_list<CollectionInfoRe
     msg.set_allocated_info(infoContents);
 }
 
-/** Add data to message instance to change it to valid keyspace message
+/** Add data to message instance to change it to valid keyspace exchange message
  *
- * @param msg Unpopulated message instance to add Keyspace
- * @param records Collection Information Records to be added to message
+ * @param msg Unpopulated message instance to add keyspace exchange message to
+ * @param records Keyspace exchange records to add to message
  */
-void toKeyspaceMessage(Message &msg, std::initializer_list<CollectionInfoRecord> records) {
+void toKeyspaceMessage(Message &msg, std::initializer_list<KeyspaceExchangeRecord> records) {
     // Indicate message type as information
-    msg.set_messagetype(Message::MessageType::Message_MessageType_INFORMATION);
+    msg.set_messagetype(Message::MessageType::Message_MessageType_KEYSPACE);
     
     // Add default empty message contents
-    auto *infoContents = new InformationalMessageContents();
-    for (CollectionInfoRecord record : records) {
-        auto *collection = infoContents->add_records();
-        collection->set_collectionname(record.name);
-        addCollectionInfoRecord(collection, record.createdDay, record.createdWeek, record.longTermAllocation,
-                                record.shortTermAllocation);
+    auto *contents = new KeyspaceMessageContents();
+    for (KeyspaceExchangeRecord record : records) {
+        auto *keyspace = contents->add_keyspaces();
+        keyspace->set_name(record.name);
+        keyspace->set_startid(record.startID);
+        keyspace->set_endid(record.endID);
+        keyspace->set_suffixbits(record.suffixBits);
     }
     
-    msg.set_allocated_info(infoContents);
+    msg.set_allocated_keyspace(contents);
 }
 
 #endif //ADAK_KEYING_MESSAGE_HPP
