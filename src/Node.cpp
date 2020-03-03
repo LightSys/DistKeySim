@@ -13,12 +13,15 @@ Node::Node(Keyspace* keySpace) {
     this->keySpace.push_back(keySpace);
 }
 
-
-///creates the key space for the Node
-Keyspace Node::createKeySpace() {
-
+Node::~Node() {
+    for(Keyspace* keyspace : keySpace) {
+        delete keyspace;
+    }
 }
 
+void Node::addPeer(Node *peer) {
+    this->peers.push_back(peer);
+}
 
 /**
  * computes the generation rate of a node and all its peers.

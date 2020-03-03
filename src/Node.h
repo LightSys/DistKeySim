@@ -25,6 +25,10 @@ private:
 public:
     Node();
     Node(Keyspace* keySpace);
+    ~Node();
+
+
+    void addPeer(Node* peer);
 
     ///getter and setter for nodeID
     ///Alter these based on the fact that the nodeID should be be a UUID
@@ -55,7 +59,6 @@ public:
     bool getActive() const { return active; }
     void setActive(bool a) { active = a; }
 
-    Keyspace createKeySpace();
     double computeAggregateGenRate();
     double computeShortTermAllocationRatio();
     double computeLongTermAllocationRatio();

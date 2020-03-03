@@ -24,8 +24,8 @@ public:
     Network();
     ~Network();
 
-    void connectNodes(UUID nodeA, UUID nodeB);
-    void disconnectNodes(UUID nodeA, UUID nodeB);
+    void connectNodes(UUID nodeOne, UUID nodeTwo);
+    void disconnectNodes(UUID nodeOne, UUID nodeTwo);
 
     void initiateMessage(UUID to, UUID from, std::string message);
     void allocateKeyspace(UUID to, UUID from);
@@ -47,7 +47,6 @@ public:
 
     // Printing
     void printUUIDList();
-    void printNodeList();
     void printChannels();
 };
 

@@ -33,12 +33,16 @@ void Network::addNode(Keyspace* keyspace) {
 }
 
 
-void Network::connectNodes(UUID nodeA, UUID nodeB) {
-//    Channel channel(nodeA, nodeB);
-    Channel* channel = new Channel(nodeA, nodeB);
-    // FIXME: What is channelId?
+void Network::connectNodes(UUID nodeOne, UUID nodeTwo) {
+    Channel* channel = new Channel(nodeOne, nodeTwo);
     // FIXME: What happens if a node is connected to itself?
+    // FIXME: Channel already exists?
     this->channels.push_back(channel);
+
+    Node* node1 = getNodeFromUUID(nodeOne);
+    Node* node2 = getNodeFromUUID(nodeTwo);
+    node1->addPeer(node2);
+    node2->addPeer(node1);
 }
 
 
@@ -64,11 +68,3 @@ void Network::printChannels() {
     }
 
 }
-
-void Network::printNodeList() {
-//    cout << "UUID - Node*" << endl;
-//    for(auto const& [key, val] : nodes ) {
-//        cout << key << " - " << val << endl;
-//    }
-}
-
