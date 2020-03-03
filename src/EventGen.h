@@ -12,7 +12,7 @@ public:
      * pure virtual function.
      * @param simulation
      */
-    virtual void doSomethingRandom(Network* network) = 0;
+    virtual void eventTick(Network* network) = 0;
 };
 
 #endif //LIGHTSYS_ADAK_EVENT_GEN_H

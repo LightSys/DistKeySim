@@ -9,7 +9,7 @@ private:
 
 public:
     Random();
-    void doSomethingRandom(Network* network);
+    void eventTick(Network* network);
 };
 
 #endif //LIGHTSYS_ADAK_RANDOM_H

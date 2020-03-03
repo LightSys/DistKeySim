@@ -13,7 +13,7 @@ typedef unsigned long Keyspace;
 ///TODO likely other things that I didn't consider.
 class Node {
 private:
-    UUID uuid; ///nodeID is a 128 bit UUID so this should presumably not be an int
+    UUID uuid;
     Keyspace keySpace;
     int keyShareRate;
     double keyGenRate;

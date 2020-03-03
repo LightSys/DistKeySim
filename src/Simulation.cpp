@@ -25,7 +25,7 @@ int main(int argc, char **argv){
     }
 
     for(int i = 0; i < 10; i++) {
-        eventGenerator->doSomethingRandom(network);
+        eventGenerator->eventTick(network);
     }
 
     network->printUUIDList();

@@ -10,7 +10,7 @@ Random::Random() : EventGen() {
     srand(time(NULL));
 }
 
-void Random::doSomethingRandom(Network* network) {
+void Random::eventTick(Network* network) {
     int action = rand() % 3 + 1; // random number between 1-3
     switch(action) {
         case 1:
