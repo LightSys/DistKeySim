@@ -13,8 +13,6 @@ Node::Node() {
 Node::Node(Keyspace* keySpace) {
     this->uuid = new_uuid();
     this->keySpace.push_back(keySpace);
-
-    this->active = true;
 }
 
 
@@ -80,4 +78,3 @@ double Node::computeAggregateAllocationRatio() {
 double Node::computeProvisioningRatio() {
 
 }
-

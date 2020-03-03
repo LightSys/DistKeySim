@@ -3,13 +3,22 @@
 #include "Keyspace.h"
 
 using namespace std;
-Keyspace::Keyspace(unsigned long start, unsigned long end, unsigned long offset) : start(start), end(end), offset(offset) {
-    cout << "Creating Keyspace " << start << " - " <<  end << " / " << offset << endl;
+Keyspace::Keyspace(unsigned long start, unsigned long end, unsigned long suffix) : start(start), end(end), suffix(suffix) {
+    cout << "Creating Keyspace " << start << " - " <<  end << " / " << suffix << endl;
 }
 
+adak_key Keyspace::checkNextAvailableKey() {
+    int skipBy = pow(this->suffix, 2);
+    unsigned long oldStart = this->start;
+    this->start = start + skipBy;
+    if(start != end) {
+        cout << "Keyspace is empty!" << endl;
+    }
+    return oldStart;
+}
 
-unsigned long Keyspace::getNextAvailableKey() {
-    int skipBy = pow(offset, 2);
+adak_key Keyspace::getNextAvailableKey() {
+    int skipBy = pow(this->suffix, 2);
     unsigned long oldStart = this->start;
     this->start = start + skipBy;
     if(start != end) {

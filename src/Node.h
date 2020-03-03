@@ -1,10 +1,8 @@
-#ifndef LIGHTSYSTEMP_NODE_H
-#define LIGHTSYSTEMP_NODE_H
+#ifndef ADAK_KEYING_NODE_H
+#define ADAK_KEYING_NODE_H
 
 #include <iostream>
 #include <vector>
-#include <limits.h>
-
 
 #include "UUID.h"
 #include "Keyspace.h"
@@ -27,6 +25,10 @@ private:
 public:
     Node();
     Node(Keyspace* keySpace);
+    ~Node();
+
+
+    void addPeer(Node* peer);
 
     ///getter and setter for nodeID
     ///Alter these based on the fact that the nodeID should be be a UUID
@@ -57,13 +59,13 @@ public:
     bool getActive() const { return active; }
     void setActive(bool a) { active = a; }
 
+    Keyspace* minimumKeyspace();
     unsigned long getNextKey();
     double computeAggregateGenRate();
     double computeShortTermAllocationRatio();
     double computeLongTermAllocationRatio();
     double computeAggregateAllocationRatio();
     double computeProvisioningRatio();
-    Keyspace* minimumKeyspace();
 };
 
-#endif //LIGHTSYSTEMP_NODE_H
+#endif //ADAK_KEYING_NODE_H

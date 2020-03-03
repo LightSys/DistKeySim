@@ -5,7 +5,8 @@
 
 using namespace std;
 
-Network::Network() {
+Network::Network(ConnectionType connectionType) {
+    this->connectionType = connectionType;
     cout << "Network Constructor called" << endl;
 }
 Network::~Network() {
@@ -30,15 +31,57 @@ void Network::addNode(Keyspace* keyspace) {
 
     // Add the new node to the map <UUID, Node*>
     this->nodes.emplace(node->getUUID(), node);
+
+    if(this->connectionType == ConnectionType::Full) {
+        fullyConnect(node);
+    } else if(this->connectionType == ConnectionType::Partial) {
+        cout << "STUB: addNode() Partial ConnectionType" << endl;
+    } else if(this->connectionType == ConnectionType::Circlular) {
+        cout << "STUB: addNode() Circlular ConnectionType" << endl;
+    } else if(this->connectionType == ConnectionType::Single) {
+        cout << "STUB: addNode() Single ConnectionType" << endl;
+    }
+
 }
 
+void Network::fullyConnect(Node* node) {
+    for(auto nodeWrapper : nodes) {
+        Node* nodeListNode = nodeWrapper.second;
 
-void Network::connectNodes(UUID nodeA, UUID nodeB) {
-//    Channel channel(nodeA, nodeB);
-    Channel* channel = new Channel(nodeA, nodeB);
-    // FIXME: What is channelId?
-    // FIXME: What happens if a node is connected to itself?
+        // Don't connect the node to itself
+        if(node->getUUID() != nodeListNode->getUUID()) {
+            // Make sure that the channel doesn't already exist
+            if(!channelExists(node->getUUID(), nodeListNode->getUUID())) {
+                connectNodes(node->getUUID(), nodeListNode->getUUID());
+            }
+        }
+    }
+}
+
+bool Network::channelExists(UUID nodeOne, UUID nodeTwo) {
+    for(Channel* channel : channels) {
+        if(channel->getToNode() == nodeOne || channel->getToNode() == nodeTwo) {
+            if(channel->getFromNode() == nodeOne || channel->getFromNode() == nodeTwo) {
+                return true;
+            }
+        }
+    }
+    return false;
+}
+
+void Network::connectNodes(UUID nodeOne, UUID nodeTwo) {
+    // If trying to connect the same node, then don't do anything.
+    if(nodeOne == nodeTwo) {
+        return;
+    }
+    Channel* channel = new Channel(nodeOne, nodeTwo);
+
     this->channels.push_back(channel);
+
+    Node* node1 = getNodeFromUUID(nodeOne);
+    Node* node2 = getNodeFromUUID(nodeTwo);
+    node1->addPeer(node2);
+    node2->addPeer(node1);
 }
 
 
@@ -64,11 +107,3 @@ void Network::printChannels() {
     }
 
 }
-
-void Network::printNodeList() {
-//    cout << "UUID - Node*" << endl;
-//    for(auto const& [key, val] : nodes ) {
-//        cout << key << " - " << val << endl;
-//    }
-}
-
