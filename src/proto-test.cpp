@@ -37,6 +37,7 @@ int main(int argc, char **argv) {
         cerr << "Failed to output to disk" << endl;
         return -1;
     }
+    output.close();
     
     // Verify that we are able to read the record back in
     Message readFromDisk;
@@ -45,9 +46,16 @@ int main(int argc, char **argv) {
         cerr << "Failed to read from disk" << endl;
         return -1;
     }
+    input.close();
     
     // Validate all values
-    assert(readFromDisk.);
+    assert(readFromDisk.sourcenodeid() == uuidFrom);
+    assert(readFromDisk.destnodeid() == uuidTo);
+    assert(readFromDisk.lastreceivedmsg() == 0);
+    assert(readFromDisk.channelstate() == Message::ChannelState::Message_ChannelState_INITIAL_STARTUP);
+    assert(readFromDisk.messageid() == 1);
+    
+    cout << "All assertions passed!" << endl;
 
     // Delete all global objects allocated by libprotobuf.
     google::protobuf::ShutdownProtobufLibrary();

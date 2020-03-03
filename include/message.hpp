@@ -47,7 +47,7 @@ void addCollectionInfoRecord(InformationalMessageContents::CollectionInformation
  * @throw std::invalid_argument if msgID is 0
  * @return Message instance created. Need to add message contents (either Keyspace or Informational) to have valid message
  */
-Message newBaseMessage(HexDigest &&sendingUUID, HexDigest &&destUUID, uint32_t lastReceived,
+Message newBaseMessage(HexDigest &sendingUUID, HexDigest &destUUID, uint32_t lastReceived,
                        Message::ChannelState channelState, uint64_t msgID, long unixTimestamp = -1) {
     if (msgID == 0) {
         throw std::invalid_argument("msgID is zero");
