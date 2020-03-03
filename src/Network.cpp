@@ -30,13 +30,42 @@ void Network::addNode(Keyspace* keyspace) {
 
     // Add the new node to the map <UUID, Node*>
     this->nodes.emplace(node->getUUID(), node);
+
+    fullyConnect(node);
 }
 
+void Network::fullyConnect(Node* node) {
+    for(auto nodeWrapper : nodes) {
+        Node* nodeListNode = nodeWrapper.second;
+
+        // Don't connect the node to itself
+        if(node->getUUID() != nodeListNode->getUUID()) {
+            // Make sure that the channel doesn't already exist
+            if(!channelAlreadyExists(node->getUUID(), nodeListNode->getUUID())) {
+                connectNodes(node->getUUID(), nodeListNode->getUUID());
+            }
+        }
+    }
+}
+
+bool Network::channelAlreadyExists(UUID nodeOne, UUID nodeTwo) {
+    for(Channel* channel : channels) {
+        if(channel->getToNode() == nodeOne || channel->getToNode() == nodeTwo) {
+            if(channel->getFromNode() == nodeOne || channel->getFromNode() == nodeTwo) {
+                return true;
+            }
+        }
+    }
+    return false;
+}
 
 void Network::connectNodes(UUID nodeOne, UUID nodeTwo) {
+    // If trying to connect the same node, then don't do anything.
+    if(nodeOne == nodeTwo) {
+        return;
+    }
     Channel* channel = new Channel(nodeOne, nodeTwo);
-    // FIXME: What happens if a node is connected to itself?
-    // FIXME: Channel already exists?
+
     this->channels.push_back(channel);
 
     Node* node1 = getNodeFromUUID(nodeOne);

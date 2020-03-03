@@ -40,6 +40,9 @@ public:
     void addNode();
     void addNode(Keyspace* keyspace);
 
+    void fullyConnect(Node* node);
+    bool channelAlreadyExists(UUID nodeOne, UUID nodeTwo);
+
     // Getters
     std::map<UUID, Node*> getNodes() { return this->nodes; }
     std::vector<Channel*> getChannels() { return this->channels; }
