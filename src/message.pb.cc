@@ -39,12 +39,12 @@ class KeyspaceMessageContentsDefaultTypeInternal {
  public:
   ::PROTOBUF_NAMESPACE_ID::internal::ExplicitlyConstructed<KeyspaceMessageContents> _instance;
 } _KeyspaceMessageContents_default_instance_;
-class MessageInfoDefaultTypeInternal {
+class MessageDefaultTypeInternal {
  public:
-  ::PROTOBUF_NAMESPACE_ID::internal::ExplicitlyConstructed<MessageInfo> _instance;
+  ::PROTOBUF_NAMESPACE_ID::internal::ExplicitlyConstructed<Message> _instance;
   const ::InformationalMessageContents* info_;
   const ::KeyspaceMessageContents* keyspace_;
-} _MessageInfo_default_instance_;
+} _Message_default_instance_;
 static void InitDefaultsscc_info_InformationalMessageContents_message_2eproto() {
   GOOGLE_PROTOBUF_VERIFY_VERSION;
 
@@ -117,19 +117,19 @@ static void InitDefaultsscc_info_KeyspaceMessageContents_Keyspace_message_2eprot
 ::PROTOBUF_NAMESPACE_ID::internal::SCCInfo<0> scc_info_KeyspaceMessageContents_Keyspace_message_2eproto =
     {{ATOMIC_VAR_INIT(::PROTOBUF_NAMESPACE_ID::internal::SCCInfoBase::kUninitialized), 0, 0, InitDefaultsscc_info_KeyspaceMessageContents_Keyspace_message_2eproto}, {}};
 
-static void InitDefaultsscc_info_MessageInfo_message_2eproto() {
+static void InitDefaultsscc_info_Message_message_2eproto() {
   GOOGLE_PROTOBUF_VERIFY_VERSION;
 
   {
-    void* ptr = &::_MessageInfo_default_instance_;
-    new (ptr) ::MessageInfo();
+    void* ptr = &::_Message_default_instance_;
+    new (ptr) ::Message();
     ::PROTOBUF_NAMESPACE_ID::internal::OnShutdownDestroyMessage(ptr);
   }
-  ::MessageInfo::InitAsDefaultInstance();
+  ::Message::InitAsDefaultInstance();
 }
 
-::PROTOBUF_NAMESPACE_ID::internal::SCCInfo<3> scc_info_MessageInfo_message_2eproto =
-    {{ATOMIC_VAR_INIT(::PROTOBUF_NAMESPACE_ID::internal::SCCInfoBase::kUninitialized), 3, 0, InitDefaultsscc_info_MessageInfo_message_2eproto}, {
+::PROTOBUF_NAMESPACE_ID::internal::SCCInfo<3> scc_info_Message_message_2eproto =
+    {{ATOMIC_VAR_INIT(::PROTOBUF_NAMESPACE_ID::internal::SCCInfoBase::kUninitialized), 3, 0, InitDefaultsscc_info_Message_message_2eproto}, {
       &scc_info_Timestamp_google_2fprotobuf_2ftimestamp_2eproto.base,
       &scc_info_InformationalMessageContents_message_2eproto.base,
       &scc_info_KeyspaceMessageContents_message_2eproto.base,}};
@@ -176,20 +176,20 @@ const ::PROTOBUF_NAMESPACE_ID::uint32 TableStruct_message_2eproto::offsets[] PRO
   ~0u,  // no _oneof_case_
   ~0u,  // no _weak_field_map_
   ~0u,  // no _has_bits_
-  PROTOBUF_FIELD_OFFSET(::MessageInfo, _internal_metadata_),
+  PROTOBUF_FIELD_OFFSET(::Message, _internal_metadata_),
   ~0u,  // no _extensions_
-  PROTOBUF_FIELD_OFFSET(::MessageInfo, _oneof_case_[0]),
+  PROTOBUF_FIELD_OFFSET(::Message, _oneof_case_[0]),
   ~0u,  // no _weak_field_map_
-  PROTOBUF_FIELD_OFFSET(::MessageInfo, sourcenodeid_),
-  PROTOBUF_FIELD_OFFSET(::MessageInfo, destnodeid_),
-  PROTOBUF_FIELD_OFFSET(::MessageInfo, lastreceivedmsg_),
-  PROTOBUF_FIELD_OFFSET(::MessageInfo, channelstate_),
-  PROTOBUF_FIELD_OFFSET(::MessageInfo, timestamp_),
-  PROTOBUF_FIELD_OFFSET(::MessageInfo, messageid_),
-  PROTOBUF_FIELD_OFFSET(::MessageInfo, messagetype_),
-  offsetof(::MessageInfoDefaultTypeInternal, info_),
-  offsetof(::MessageInfoDefaultTypeInternal, keyspace_),
-  PROTOBUF_FIELD_OFFSET(::MessageInfo, message_),
+  PROTOBUF_FIELD_OFFSET(::Message, sourcenodeid_),
+  PROTOBUF_FIELD_OFFSET(::Message, destnodeid_),
+  PROTOBUF_FIELD_OFFSET(::Message, lastreceivedmsg_),
+  PROTOBUF_FIELD_OFFSET(::Message, channelstate_),
+  PROTOBUF_FIELD_OFFSET(::Message, timestamp_),
+  PROTOBUF_FIELD_OFFSET(::Message, messageid_),
+  PROTOBUF_FIELD_OFFSET(::Message, messagetype_),
+  offsetof(::MessageDefaultTypeInternal, info_),
+  offsetof(::MessageDefaultTypeInternal, keyspace_),
+  PROTOBUF_FIELD_OFFSET(::Message, message_),
 };
 static const ::PROTOBUF_NAMESPACE_ID::internal::MigrationSchema schemas[] PROTOBUF_SECTION_VARIABLE(protodesc_cold) = {
   { 0, -1, sizeof(::InformationalMessageContents_CollectionInformationRecord_CreationRateData)},
@@ -197,7 +197,7 @@ static const ::PROTOBUF_NAMESPACE_ID::internal::MigrationSchema schemas[] PROTOB
   { 16, -1, sizeof(::InformationalMessageContents)},
   { 22, -1, sizeof(::KeyspaceMessageContents_Keyspace)},
   { 31, -1, sizeof(::KeyspaceMessageContents)},
-  { 36, -1, sizeof(::MessageInfo)},
+  { 36, -1, sizeof(::Message)},
 };
 
 static ::PROTOBUF_NAMESPACE_ID::Message const * const file_default_instances[] = {
@@ -206,7 +206,7 @@ static ::PROTOBUF_NAMESPACE_ID::Message const * const file_default_instances[] =
   reinterpret_cast<const ::PROTOBUF_NAMESPACE_ID::Message*>(&::_InformationalMessageContents_default_instance_),
   reinterpret_cast<const ::PROTOBUF_NAMESPACE_ID::Message*>(&::_KeyspaceMessageContents_Keyspace_default_instance_),
   reinterpret_cast<const ::PROTOBUF_NAMESPACE_ID::Message*>(&::_KeyspaceMessageContents_default_instance_),
-  reinterpret_cast<const ::PROTOBUF_NAMESPACE_ID::Message*>(&::_MessageInfo_default_instance_),
+  reinterpret_cast<const ::PROTOBUF_NAMESPACE_ID::Message*>(&::_Message_default_instance_),
 };
 
 const char descriptor_table_protodef_message_2eproto[] PROTOBUF_SECTION_VARIABLE(protodesc_cold) =
@@ -223,20 +223,20 @@ const char descriptor_table_protodef_message_2eproto[] PROTOBUF_SECTION_VARIABLE
   "reatedPreviousDay\030\003 \001(\002\022\033\n\023createdPrevio"
   "usWeek\030\004 \001(\002\"g\n\027KeyspaceMessageContents\032"
   "L\n\010Keyspace\022\014\n\004name\030\001 \001(\t\022\017\n\007startID\030\002 \001"
-  "(\r\022\r\n\005endID\030\003 \001(\r\022\022\n\nsuffixBits\030\004 \001(\r\"\372\003"
-  "\n\013MessageInfo\022\024\n\014sourceNodeID\030\001 \001(\014\022\022\n\nd"
-  "estNodeID\030\002 \001(\014\022\027\n\017lastReceivedMsg\030\003 \001(\r"
-  "\022/\n\014channelState\030\004 \001(\0162\031.MessageInfo.Cha"
-  "nnelState\022-\n\ttimestamp\030\005 \001(\0132\032.google.pr"
-  "otobuf.Timestamp\022\021\n\tmessageID\030\006 \001(\022\022-\n\013m"
-  "essageType\030\007 \001(\0162\030.MessageInfo.MessageTy"
-  "pe\022-\n\004info\030\010 \001(\0132\035.InformationalMessageC"
-  "ontentsH\000\022,\n\010keyspace\030\t \001(\0132\030.KeyspaceMe"
-  "ssageContentsH\000\"S\n\014ChannelState\022\023\n\017INITI"
-  "AL_STARTUP\020\000\022\030\n\024NORMAL_COMMUNICATION\020\001\022\024"
-  "\n\020CHANNEL_SHUTDOWN\020\002\"I\n\013MessageType\022\017\n\013I"
-  "NFORMATION\020\000\022\014\n\010KEYSPACE\020\001\022\033\n\027DATA_REPLI"
-  "CATION_UNUSED\020\002B\t\n\007messageb\006proto3"
+  "(\r\022\r\n\005endID\030\003 \001(\r\022\022\n\nsuffixBits\030\004 \001(\r\"\356\003"
+  "\n\007Message\022\024\n\014sourceNodeID\030\001 \001(\014\022\022\n\ndestN"
+  "odeID\030\002 \001(\014\022\027\n\017lastReceivedMsg\030\003 \001(\r\022+\n\014"
+  "channelState\030\004 \001(\0162\025.Message.ChannelStat"
+  "e\022-\n\ttimestamp\030\005 \001(\0132\032.google.protobuf.T"
+  "imestamp\022\021\n\tmessageID\030\006 \001(\022\022)\n\013messageTy"
+  "pe\030\007 \001(\0162\024.Message.MessageType\022-\n\004info\030\010"
+  " \001(\0132\035.InformationalMessageContentsH\000\022,\n"
+  "\010keyspace\030\t \001(\0132\030.KeyspaceMessageContent"
+  "sH\000\"S\n\014ChannelState\022\023\n\017INITIAL_STARTUP\020\000"
+  "\022\030\n\024NORMAL_COMMUNICATION\020\001\022\024\n\020CHANNEL_SH"
+  "UTDOWN\020\002\"I\n\013MessageType\022\017\n\013INFORMATION\020\000"
+  "\022\014\n\010KEYSPACE\020\001\022\033\n\027DATA_REPLICATION_UNUSE"
+  "D\020\002B\t\n\007messageb\006proto3"
   ;
 static const ::PROTOBUF_NAMESPACE_ID::internal::DescriptorTable*const descriptor_table_message_2eproto_deps[1] = {
   &::descriptor_table_google_2fprotobuf_2ftimestamp_2eproto,
@@ -247,12 +247,12 @@ static ::PROTOBUF_NAMESPACE_ID::internal::SCCInfoBase*const descriptor_table_mes
   &scc_info_InformationalMessageContents_CollectionInformationRecord_CreationRateData_message_2eproto.base,
   &scc_info_KeyspaceMessageContents_message_2eproto.base,
   &scc_info_KeyspaceMessageContents_Keyspace_message_2eproto.base,
-  &scc_info_MessageInfo_message_2eproto.base,
+  &scc_info_Message_message_2eproto.base,
 };
 static ::PROTOBUF_NAMESPACE_ID::internal::once_flag descriptor_table_message_2eproto_once;
 static bool descriptor_table_message_2eproto_initialized = false;
 const ::PROTOBUF_NAMESPACE_ID::internal::DescriptorTable descriptor_table_message_2eproto = {
-  &descriptor_table_message_2eproto_initialized, descriptor_table_protodef_message_2eproto, "message.proto", 1074,
+  &descriptor_table_message_2eproto_initialized, descriptor_table_protodef_message_2eproto, "message.proto", 1062,
   &descriptor_table_message_2eproto_once, descriptor_table_message_2eproto_sccs, descriptor_table_message_2eproto_deps, 6, 1,
   schemas, file_default_instances, TableStruct_message_2eproto::offsets,
   file_level_metadata_message_2eproto, 6, file_level_enum_descriptors_message_2eproto, file_level_service_descriptors_message_2eproto,
@@ -260,11 +260,11 @@ const ::PROTOBUF_NAMESPACE_ID::internal::DescriptorTable descriptor_table_messag
 
 // Force running AddDescriptors() at dynamic initialization time.
 static bool dynamic_init_dummy_message_2eproto = (  ::PROTOBUF_NAMESPACE_ID::internal::AddDescriptors(&descriptor_table_message_2eproto), true);
-const ::PROTOBUF_NAMESPACE_ID::EnumDescriptor* MessageInfo_ChannelState_descriptor() {
+const ::PROTOBUF_NAMESPACE_ID::EnumDescriptor* Message_ChannelState_descriptor() {
   ::PROTOBUF_NAMESPACE_ID::internal::AssignDescriptors(&descriptor_table_message_2eproto);
   return file_level_enum_descriptors_message_2eproto[0];
 }
-bool MessageInfo_ChannelState_IsValid(int value) {
+bool Message_ChannelState_IsValid(int value) {
   switch (value) {
     case 0:
     case 1:
@@ -276,18 +276,18 @@ bool MessageInfo_ChannelState_IsValid(int value) {
 }
 
 #if (__cplusplus < 201703) && (!defined(_MSC_VER) || _MSC_VER >= 1900)
-constexpr MessageInfo_ChannelState MessageInfo::INITIAL_STARTUP;
-constexpr MessageInfo_ChannelState MessageInfo::NORMAL_COMMUNICATION;
-constexpr MessageInfo_ChannelState MessageInfo::CHANNEL_SHUTDOWN;
-constexpr MessageInfo_ChannelState MessageInfo::ChannelState_MIN;
-constexpr MessageInfo_ChannelState MessageInfo::ChannelState_MAX;
-constexpr int MessageInfo::ChannelState_ARRAYSIZE;
+constexpr Message_ChannelState Message::INITIAL_STARTUP;
+constexpr Message_ChannelState Message::NORMAL_COMMUNICATION;
+constexpr Message_ChannelState Message::CHANNEL_SHUTDOWN;
+constexpr Message_ChannelState Message::ChannelState_MIN;
+constexpr Message_ChannelState Message::ChannelState_MAX;
+constexpr int Message::ChannelState_ARRAYSIZE;
 #endif  // (__cplusplus < 201703) && (!defined(_MSC_VER) || _MSC_VER >= 1900)
-const ::PROTOBUF_NAMESPACE_ID::EnumDescriptor* MessageInfo_MessageType_descriptor() {
+const ::PROTOBUF_NAMESPACE_ID::EnumDescriptor* Message_MessageType_descriptor() {
   ::PROTOBUF_NAMESPACE_ID::internal::AssignDescriptors(&descriptor_table_message_2eproto);
   return file_level_enum_descriptors_message_2eproto[1];
 }
-bool MessageInfo_MessageType_IsValid(int value) {
+bool Message_MessageType_IsValid(int value) {
   switch (value) {
     case 0:
     case 1:
@@ -299,12 +299,12 @@ bool MessageInfo_MessageType_IsValid(int value) {
 }
 
 #if (__cplusplus < 201703) && (!defined(_MSC_VER) || _MSC_VER >= 1900)
-constexpr MessageInfo_MessageType MessageInfo::INFORMATION;
-constexpr MessageInfo_MessageType MessageInfo::KEYSPACE;
-constexpr MessageInfo_MessageType MessageInfo::DATA_REPLICATION_UNUSED;
-constexpr MessageInfo_MessageType MessageInfo::MessageType_MIN;
-constexpr MessageInfo_MessageType MessageInfo::MessageType_MAX;
-constexpr int MessageInfo::MessageType_ARRAYSIZE;
+constexpr Message_MessageType Message::INFORMATION;
+constexpr Message_MessageType Message::KEYSPACE;
+constexpr Message_MessageType Message::DATA_REPLICATION_UNUSED;
+constexpr Message_MessageType Message::MessageType_MIN;
+constexpr Message_MessageType Message::MessageType_MAX;
+constexpr int Message::MessageType_ARRAYSIZE;
 #endif  // (__cplusplus < 201703) && (!defined(_MSC_VER) || _MSC_VER >= 1900)
 
 // ===================================================================
@@ -1433,40 +1433,40 @@ void KeyspaceMessageContents::InternalSwap(KeyspaceMessageContents* other) {
 
 // ===================================================================
 
-void MessageInfo::InitAsDefaultInstance() {
-  ::_MessageInfo_default_instance_._instance.get_mutable()->timestamp_ = const_cast< PROTOBUF_NAMESPACE_ID::Timestamp*>(
+void Message::InitAsDefaultInstance() {
+  ::_Message_default_instance_._instance.get_mutable()->timestamp_ = const_cast< PROTOBUF_NAMESPACE_ID::Timestamp*>(
       PROTOBUF_NAMESPACE_ID::Timestamp::internal_default_instance());
-  ::_MessageInfo_default_instance_.info_ = const_cast< ::InformationalMessageContents*>(
+  ::_Message_default_instance_.info_ = const_cast< ::InformationalMessageContents*>(
       ::InformationalMessageContents::internal_default_instance());
-  ::_MessageInfo_default_instance_.keyspace_ = const_cast< ::KeyspaceMessageContents*>(
+  ::_Message_default_instance_.keyspace_ = const_cast< ::KeyspaceMessageContents*>(
       ::KeyspaceMessageContents::internal_default_instance());
 }
-class MessageInfo::_Internal {
+class Message::_Internal {
  public:
-  static const PROTOBUF_NAMESPACE_ID::Timestamp& timestamp(const MessageInfo* msg);
-  static const ::InformationalMessageContents& info(const MessageInfo* msg);
-  static const ::KeyspaceMessageContents& keyspace(const MessageInfo* msg);
+  static const PROTOBUF_NAMESPACE_ID::Timestamp& timestamp(const Message* msg);
+  static const ::InformationalMessageContents& info(const Message* msg);
+  static const ::KeyspaceMessageContents& keyspace(const Message* msg);
 };
 
 const PROTOBUF_NAMESPACE_ID::Timestamp&
-MessageInfo::_Internal::timestamp(const MessageInfo* msg) {
+Message::_Internal::timestamp(const Message* msg) {
   return *msg->timestamp_;
 }
 const ::InformationalMessageContents&
-MessageInfo::_Internal::info(const MessageInfo* msg) {
+Message::_Internal::info(const Message* msg) {
   return *msg->message_.info_;
 }
 const ::KeyspaceMessageContents&
-MessageInfo::_Internal::keyspace(const MessageInfo* msg) {
+Message::_Internal::keyspace(const Message* msg) {
   return *msg->message_.keyspace_;
 }
-void MessageInfo::clear_timestamp() {
+void Message::clear_timestamp() {
   if (GetArenaNoVirtual() == nullptr && timestamp_ != nullptr) {
     delete timestamp_;
   }
   timestamp_ = nullptr;
 }
-void MessageInfo::set_allocated_info(::InformationalMessageContents* info) {
+void Message::set_allocated_info(::InformationalMessageContents* info) {
   ::PROTOBUF_NAMESPACE_ID::Arena* message_arena = GetArenaNoVirtual();
   clear_message();
   if (info) {
@@ -1478,9 +1478,9 @@ void MessageInfo::set_allocated_info(::InformationalMessageContents* info) {
     set_has_info();
     message_.info_ = info;
   }
-  // @@protoc_insertion_point(field_set_allocated:MessageInfo.info)
+  // @@protoc_insertion_point(field_set_allocated:Message.info)
 }
-void MessageInfo::set_allocated_keyspace(::KeyspaceMessageContents* keyspace) {
+void Message::set_allocated_keyspace(::KeyspaceMessageContents* keyspace) {
   ::PROTOBUF_NAMESPACE_ID::Arena* message_arena = GetArenaNoVirtual();
   clear_message();
   if (keyspace) {
@@ -1492,14 +1492,14 @@ void MessageInfo::set_allocated_keyspace(::KeyspaceMessageContents* keyspace) {
     set_has_keyspace();
     message_.keyspace_ = keyspace;
   }
-  // @@protoc_insertion_point(field_set_allocated:MessageInfo.keyspace)
+  // @@protoc_insertion_point(field_set_allocated:Message.keyspace)
 }
-MessageInfo::MessageInfo()
+Message::Message()
   : ::PROTOBUF_NAMESPACE_ID::Message(), _internal_metadata_(nullptr) {
   SharedCtor();
-  // @@protoc_insertion_point(constructor:MessageInfo)
+  // @@protoc_insertion_point(constructor:Message)
 }
-MessageInfo::MessageInfo(const MessageInfo& from)
+Message::Message(const Message& from)
   : ::PROTOBUF_NAMESPACE_ID::Message(),
       _internal_metadata_(nullptr) {
   _internal_metadata_.MergeFrom(from._internal_metadata_);
@@ -1533,11 +1533,11 @@ MessageInfo::MessageInfo(const MessageInfo& from)
       break;
     }
   }
-  // @@protoc_insertion_point(copy_constructor:MessageInfo)
+  // @@protoc_insertion_point(copy_constructor:Message)
 }
 
-void MessageInfo::SharedCtor() {
-  ::PROTOBUF_NAMESPACE_ID::internal::InitSCC(&scc_info_MessageInfo_message_2eproto.base);
+void Message::SharedCtor() {
+  ::PROTOBUF_NAMESPACE_ID::internal::InitSCC(&scc_info_Message_message_2eproto.base);
   sourcenodeid_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
   destnodeid_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
   ::memset(&timestamp_, 0, static_cast<size_t>(
@@ -1546,12 +1546,12 @@ void MessageInfo::SharedCtor() {
   clear_has_message();
 }
 
-MessageInfo::~MessageInfo() {
-  // @@protoc_insertion_point(destructor:MessageInfo)
+Message::~Message() {
+  // @@protoc_insertion_point(destructor:Message)
   SharedDtor();
 }
 
-void MessageInfo::SharedDtor() {
+void Message::SharedDtor() {
   sourcenodeid_.DestroyNoArena(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
   destnodeid_.DestroyNoArena(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
   if (this != internal_default_instance()) delete timestamp_;
@@ -1560,17 +1560,17 @@ void MessageInfo::SharedDtor() {
   }
 }
 
-void MessageInfo::SetCachedSize(int size) const {
+void Message::SetCachedSize(int size) const {
   _cached_size_.Set(size);
 }
-const MessageInfo& MessageInfo::default_instance() {
-  ::PROTOBUF_NAMESPACE_ID::internal::InitSCC(&::scc_info_MessageInfo_message_2eproto.base);
+const Message& Message::default_instance() {
+  ::PROTOBUF_NAMESPACE_ID::internal::InitSCC(&::scc_info_Message_message_2eproto.base);
   return *internal_default_instance();
 }
 
 
-void MessageInfo::clear_message() {
-// @@protoc_insertion_point(one_of_clear_start:MessageInfo)
+void Message::clear_message() {
+// @@protoc_insertion_point(one_of_clear_start:Message)
   switch (message_case()) {
     case kInfo: {
       delete message_.info_;
@@ -1588,8 +1588,8 @@ void MessageInfo::clear_message() {
 }
 
 
-void MessageInfo::Clear() {
-// @@protoc_insertion_point(message_clear_start:MessageInfo)
+void Message::Clear() {
+// @@protoc_insertion_point(message_clear_start:Message)
   ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
@@ -1607,7 +1607,7 @@ void MessageInfo::Clear() {
   _internal_metadata_.Clear();
 }
 
-const char* MessageInfo::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) {
+const char* Message::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) {
 #define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
   while (!ctx->Done(&ptr)) {
     ::PROTOBUF_NAMESPACE_ID::uint32 tag;
@@ -1637,12 +1637,12 @@ const char* MessageInfo::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID
           CHK_(ptr);
         } else goto handle_unusual;
         continue;
-      // .MessageInfo.ChannelState channelState = 4;
+      // .Message.ChannelState channelState = 4;
       case 4:
         if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 32)) {
           ::PROTOBUF_NAMESPACE_ID::uint64 val = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint(&ptr);
           CHK_(ptr);
-          _internal_set_channelstate(static_cast<::MessageInfo_ChannelState>(val));
+          _internal_set_channelstate(static_cast<::Message_ChannelState>(val));
         } else goto handle_unusual;
         continue;
       // .google.protobuf.Timestamp timestamp = 5;
@@ -1659,12 +1659,12 @@ const char* MessageInfo::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID
           CHK_(ptr);
         } else goto handle_unusual;
         continue;
-      // .MessageInfo.MessageType messageType = 7;
+      // .Message.MessageType messageType = 7;
       case 7:
         if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 56)) {
           ::PROTOBUF_NAMESPACE_ID::uint64 val = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint(&ptr);
           CHK_(ptr);
-          _internal_set_messagetype(static_cast<::MessageInfo_MessageType>(val));
+          _internal_set_messagetype(static_cast<::Message_MessageType>(val));
         } else goto handle_unusual;
         continue;
       // .InformationalMessageContents info = 8;
@@ -1701,9 +1701,9 @@ failure:
 #undef CHK_
 }
 
-::PROTOBUF_NAMESPACE_ID::uint8* MessageInfo::_InternalSerialize(
+::PROTOBUF_NAMESPACE_ID::uint8* Message::_InternalSerialize(
     ::PROTOBUF_NAMESPACE_ID::uint8* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
-  // @@protoc_insertion_point(serialize_to_array_start:MessageInfo)
+  // @@protoc_insertion_point(serialize_to_array_start:Message)
   ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
@@ -1725,7 +1725,7 @@ failure:
     target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteUInt32ToArray(3, this->_internal_lastreceivedmsg(), target);
   }
 
-  // .MessageInfo.ChannelState channelState = 4;
+  // .Message.ChannelState channelState = 4;
   if (this->channelstate() != 0) {
     target = stream->EnsureSpace(target);
     target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteEnumToArray(
@@ -1746,7 +1746,7 @@ failure:
     target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteSInt64ToArray(6, this->_internal_messageid(), target);
   }
 
-  // .MessageInfo.MessageType messageType = 7;
+  // .Message.MessageType messageType = 7;
   if (this->messagetype() != 0) {
     target = stream->EnsureSpace(target);
     target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteEnumToArray(
@@ -1773,12 +1773,12 @@ failure:
     target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormat::InternalSerializeUnknownFieldsToArray(
         _internal_metadata_.unknown_fields(), target, stream);
   }
-  // @@protoc_insertion_point(serialize_to_array_end:MessageInfo)
+  // @@protoc_insertion_point(serialize_to_array_end:Message)
   return target;
 }
 
-size_t MessageInfo::ByteSizeLong() const {
-// @@protoc_insertion_point(message_byte_size_start:MessageInfo)
+size_t Message::ByteSizeLong() const {
+// @@protoc_insertion_point(message_byte_size_start:Message)
   size_t total_size = 0;
 
   ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
@@ -1813,7 +1813,7 @@ size_t MessageInfo::ByteSizeLong() const {
         this->_internal_lastreceivedmsg());
   }
 
-  // .MessageInfo.ChannelState channelState = 4;
+  // .Message.ChannelState channelState = 4;
   if (this->channelstate() != 0) {
     total_size += 1 +
       ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::EnumSize(this->_internal_channelstate());
@@ -1826,7 +1826,7 @@ size_t MessageInfo::ByteSizeLong() const {
         this->_internal_messageid());
   }
 
-  // .MessageInfo.MessageType messageType = 7;
+  // .Message.MessageType messageType = 7;
   if (this->messagetype() != 0) {
     total_size += 1 +
       ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::EnumSize(this->_internal_messagetype());
@@ -1860,23 +1860,23 @@ size_t MessageInfo::ByteSizeLong() const {
   return total_size;
 }
 
-void MessageInfo::MergeFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) {
-// @@protoc_insertion_point(generalized_merge_from_start:MessageInfo)
+void Message::MergeFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) {
+// @@protoc_insertion_point(generalized_merge_from_start:Message)
   GOOGLE_DCHECK_NE(&from, this);
-  const MessageInfo* source =
-      ::PROTOBUF_NAMESPACE_ID::DynamicCastToGenerated<MessageInfo>(
+  const Message* source =
+      ::PROTOBUF_NAMESPACE_ID::DynamicCastToGenerated<Message>(
           &from);
   if (source == nullptr) {
-  // @@protoc_insertion_point(generalized_merge_from_cast_fail:MessageInfo)
+  // @@protoc_insertion_point(generalized_merge_from_cast_fail:Message)
     ::PROTOBUF_NAMESPACE_ID::internal::ReflectionOps::Merge(from, this);
   } else {
-  // @@protoc_insertion_point(generalized_merge_from_cast_success:MessageInfo)
+  // @@protoc_insertion_point(generalized_merge_from_cast_success:Message)
     MergeFrom(*source);
   }
 }
 
-void MessageInfo::MergeFrom(const MessageInfo& from) {
-// @@protoc_insertion_point(class_specific_merge_from_start:MessageInfo)
+void Message::MergeFrom(const Message& from) {
+// @@protoc_insertion_point(class_specific_merge_from_start:Message)
   GOOGLE_DCHECK_NE(&from, this);
   _internal_metadata_.MergeFrom(from._internal_metadata_);
   ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
@@ -1920,25 +1920,25 @@ void MessageInfo::MergeFrom(const MessageInfo& from) {
   }
 }
 
-void MessageInfo::CopyFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) {
-// @@protoc_insertion_point(generalized_copy_from_start:MessageInfo)
+void Message::CopyFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) {
+// @@protoc_insertion_point(generalized_copy_from_start:Message)
   if (&from == this) return;
   Clear();
   MergeFrom(from);
 }
 
-void MessageInfo::CopyFrom(const MessageInfo& from) {
-// @@protoc_insertion_point(class_specific_copy_from_start:MessageInfo)
+void Message::CopyFrom(const Message& from) {
+// @@protoc_insertion_point(class_specific_copy_from_start:Message)
   if (&from == this) return;
   Clear();
   MergeFrom(from);
 }
 
-bool MessageInfo::IsInitialized() const {
+bool Message::IsInitialized() const {
   return true;
 }
 
-void MessageInfo::InternalSwap(MessageInfo* other) {
+void Message::InternalSwap(Message* other) {
   using std::swap;
   _internal_metadata_.Swap(&other->_internal_metadata_);
   sourcenodeid_.Swap(&other->sourcenodeid_, &::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(),
@@ -1954,7 +1954,7 @@ void MessageInfo::InternalSwap(MessageInfo* other) {
   swap(_oneof_case_[0], other->_oneof_case_[0]);
 }
 
-::PROTOBUF_NAMESPACE_ID::Metadata MessageInfo::GetMetadata() const {
+::PROTOBUF_NAMESPACE_ID::Metadata Message::GetMetadata() const {
   return GetMetadataStatic();
 }
 
@@ -1976,8 +1976,8 @@ template<> PROTOBUF_NOINLINE ::KeyspaceMessageContents_Keyspace* Arena::CreateMa
 template<> PROTOBUF_NOINLINE ::KeyspaceMessageContents* Arena::CreateMaybeMessage< ::KeyspaceMessageContents >(Arena* arena) {
   return Arena::CreateInternal< ::KeyspaceMessageContents >(arena);
 }
-template<> PROTOBUF_NOINLINE ::MessageInfo* Arena::CreateMaybeMessage< ::MessageInfo >(Arena* arena) {
-  return Arena::CreateInternal< ::MessageInfo >(arena);
+template<> PROTOBUF_NOINLINE ::Message* Arena::CreateMaybeMessage< ::Message >(Arena* arena) {
+  return Arena::CreateInternal< ::Message >(arena);
 }
 PROTOBUF_NAMESPACE_CLOSE
 

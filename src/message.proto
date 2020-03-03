@@ -28,7 +28,7 @@ message KeyspaceMessageContents {
   }
 }
 
-message MessageInfo {
+message Message {
   bytes sourceNodeID = 1;
   bytes destNodeID = 2;
   uint32 lastReceivedMsg = 3;

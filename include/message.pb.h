@@ -71,69 +71,69 @@ extern KeyspaceMessageContentsDefaultTypeInternal _KeyspaceMessageContents_defau
 class KeyspaceMessageContents_Keyspace;
 class KeyspaceMessageContents_KeyspaceDefaultTypeInternal;
 extern KeyspaceMessageContents_KeyspaceDefaultTypeInternal _KeyspaceMessageContents_Keyspace_default_instance_;
-class MessageInfo;
-class MessageInfoDefaultTypeInternal;
-extern MessageInfoDefaultTypeInternal _MessageInfo_default_instance_;
+class Message;
+class MessageDefaultTypeInternal;
+extern MessageDefaultTypeInternal _Message_default_instance_;
 PROTOBUF_NAMESPACE_OPEN
 template<> ::InformationalMessageContents* Arena::CreateMaybeMessage<::InformationalMessageContents>(Arena*);
 template<> ::InformationalMessageContents_CollectionInformationRecord* Arena::CreateMaybeMessage<::InformationalMessageContents_CollectionInformationRecord>(Arena*);
 template<> ::InformationalMessageContents_CollectionInformationRecord_CreationRateData* Arena::CreateMaybeMessage<::InformationalMessageContents_CollectionInformationRecord_CreationRateData>(Arena*);
 template<> ::KeyspaceMessageContents* Arena::CreateMaybeMessage<::KeyspaceMessageContents>(Arena*);
 template<> ::KeyspaceMessageContents_Keyspace* Arena::CreateMaybeMessage<::KeyspaceMessageContents_Keyspace>(Arena*);
-template<> ::MessageInfo* Arena::CreateMaybeMessage<::MessageInfo>(Arena*);
+template<> ::Message* Arena::CreateMaybeMessage<::Message>(Arena*);
 PROTOBUF_NAMESPACE_CLOSE
 
-enum MessageInfo_ChannelState : int {
-  MessageInfo_ChannelState_INITIAL_STARTUP = 0,
-  MessageInfo_ChannelState_NORMAL_COMMUNICATION = 1,
-  MessageInfo_ChannelState_CHANNEL_SHUTDOWN = 2,
-  MessageInfo_ChannelState_MessageInfo_ChannelState_INT_MIN_SENTINEL_DO_NOT_USE_ = std::numeric_limits<::PROTOBUF_NAMESPACE_ID::int32>::min(),
-  MessageInfo_ChannelState_MessageInfo_ChannelState_INT_MAX_SENTINEL_DO_NOT_USE_ = std::numeric_limits<::PROTOBUF_NAMESPACE_ID::int32>::max()
+enum Message_ChannelState : int {
+  Message_ChannelState_INITIAL_STARTUP = 0,
+  Message_ChannelState_NORMAL_COMMUNICATION = 1,
+  Message_ChannelState_CHANNEL_SHUTDOWN = 2,
+  Message_ChannelState_Message_ChannelState_INT_MIN_SENTINEL_DO_NOT_USE_ = std::numeric_limits<::PROTOBUF_NAMESPACE_ID::int32>::min(),
+  Message_ChannelState_Message_ChannelState_INT_MAX_SENTINEL_DO_NOT_USE_ = std::numeric_limits<::PROTOBUF_NAMESPACE_ID::int32>::max()
 };
-bool MessageInfo_ChannelState_IsValid(int value);
-constexpr MessageInfo_ChannelState MessageInfo_ChannelState_ChannelState_MIN = MessageInfo_ChannelState_INITIAL_STARTUP;
-constexpr MessageInfo_ChannelState MessageInfo_ChannelState_ChannelState_MAX = MessageInfo_ChannelState_CHANNEL_SHUTDOWN;
-constexpr int MessageInfo_ChannelState_ChannelState_ARRAYSIZE = MessageInfo_ChannelState_ChannelState_MAX + 1;
+bool Message_ChannelState_IsValid(int value);
+constexpr Message_ChannelState Message_ChannelState_ChannelState_MIN = Message_ChannelState_INITIAL_STARTUP;
+constexpr Message_ChannelState Message_ChannelState_ChannelState_MAX = Message_ChannelState_CHANNEL_SHUTDOWN;
+constexpr int Message_ChannelState_ChannelState_ARRAYSIZE = Message_ChannelState_ChannelState_MAX + 1;
 
-const ::PROTOBUF_NAMESPACE_ID::EnumDescriptor* MessageInfo_ChannelState_descriptor();
+const ::PROTOBUF_NAMESPACE_ID::EnumDescriptor* Message_ChannelState_descriptor();
 template<typename T>
-inline const std::string& MessageInfo_ChannelState_Name(T enum_t_value) {
-  static_assert(::std::is_same<T, MessageInfo_ChannelState>::value ||
+inline const std::string& Message_ChannelState_Name(T enum_t_value) {
+  static_assert(::std::is_same<T, Message_ChannelState>::value ||
     ::std::is_integral<T>::value,
-    "Incorrect type passed to function MessageInfo_ChannelState_Name.");
+    "Incorrect type passed to function Message_ChannelState_Name.");
   return ::PROTOBUF_NAMESPACE_ID::internal::NameOfEnum(
-    MessageInfo_ChannelState_descriptor(), enum_t_value);
+    Message_ChannelState_descriptor(), enum_t_value);
 }
-inline bool MessageInfo_ChannelState_Parse(
-    const std::string& name, MessageInfo_ChannelState* value) {
-  return ::PROTOBUF_NAMESPACE_ID::internal::ParseNamedEnum<MessageInfo_ChannelState>(
-    MessageInfo_ChannelState_descriptor(), name, value);
+inline bool Message_ChannelState_Parse(
+    const std::string& name, Message_ChannelState* value) {
+  return ::PROTOBUF_NAMESPACE_ID::internal::ParseNamedEnum<Message_ChannelState>(
+    Message_ChannelState_descriptor(), name, value);
 }
-enum MessageInfo_MessageType : int {
-  MessageInfo_MessageType_INFORMATION = 0,
-  MessageInfo_MessageType_KEYSPACE = 1,
-  MessageInfo_MessageType_DATA_REPLICATION_UNUSED = 2,
-  MessageInfo_MessageType_MessageInfo_MessageType_INT_MIN_SENTINEL_DO_NOT_USE_ = std::numeric_limits<::PROTOBUF_NAMESPACE_ID::int32>::min(),
-  MessageInfo_MessageType_MessageInfo_MessageType_INT_MAX_SENTINEL_DO_NOT_USE_ = std::numeric_limits<::PROTOBUF_NAMESPACE_ID::int32>::max()
+enum Message_MessageType : int {
+  Message_MessageType_INFORMATION = 0,
+  Message_MessageType_KEYSPACE = 1,
+  Message_MessageType_DATA_REPLICATION_UNUSED = 2,
+  Message_MessageType_Message_MessageType_INT_MIN_SENTINEL_DO_NOT_USE_ = std::numeric_limits<::PROTOBUF_NAMESPACE_ID::int32>::min(),
+  Message_MessageType_Message_MessageType_INT_MAX_SENTINEL_DO_NOT_USE_ = std::numeric_limits<::PROTOBUF_NAMESPACE_ID::int32>::max()
 };
-bool MessageInfo_MessageType_IsValid(int value);
-constexpr MessageInfo_MessageType MessageInfo_MessageType_MessageType_MIN = MessageInfo_MessageType_INFORMATION;
-constexpr MessageInfo_MessageType MessageInfo_MessageType_MessageType_MAX = MessageInfo_MessageType_DATA_REPLICATION_UNUSED;
-constexpr int MessageInfo_MessageType_MessageType_ARRAYSIZE = MessageInfo_MessageType_MessageType_MAX + 1;
+bool Message_MessageType_IsValid(int value);
+constexpr Message_MessageType Message_MessageType_MessageType_MIN = Message_MessageType_INFORMATION;
+constexpr Message_MessageType Message_MessageType_MessageType_MAX = Message_MessageType_DATA_REPLICATION_UNUSED;
+constexpr int Message_MessageType_MessageType_ARRAYSIZE = Message_MessageType_MessageType_MAX + 1;
 
-const ::PROTOBUF_NAMESPACE_ID::EnumDescriptor* MessageInfo_MessageType_descriptor();
+const ::PROTOBUF_NAMESPACE_ID::EnumDescriptor* Message_MessageType_descriptor();
 template<typename T>
-inline const std::string& MessageInfo_MessageType_Name(T enum_t_value) {
-  static_assert(::std::is_same<T, MessageInfo_MessageType>::value ||
+inline const std::string& Message_MessageType_Name(T enum_t_value) {
+  static_assert(::std::is_same<T, Message_MessageType>::value ||
     ::std::is_integral<T>::value,
-    "Incorrect type passed to function MessageInfo_MessageType_Name.");
+    "Incorrect type passed to function Message_MessageType_Name.");
   return ::PROTOBUF_NAMESPACE_ID::internal::NameOfEnum(
-    MessageInfo_MessageType_descriptor(), enum_t_value);
+    Message_MessageType_descriptor(), enum_t_value);
 }
-inline bool MessageInfo_MessageType_Parse(
-    const std::string& name, MessageInfo_MessageType* value) {
-  return ::PROTOBUF_NAMESPACE_ID::internal::ParseNamedEnum<MessageInfo_MessageType>(
-    MessageInfo_MessageType_descriptor(), name, value);
+inline bool Message_MessageType_Parse(
+    const std::string& name, Message_MessageType* value) {
+  return ::PROTOBUF_NAMESPACE_ID::internal::ParseNamedEnum<Message_MessageType>(
+    Message_MessageType_descriptor(), name, value);
 }
 // ===================================================================
 
@@ -876,23 +876,23 @@ class KeyspaceMessageContents :
 };
 // -------------------------------------------------------------------
 
-class MessageInfo :
-    public ::PROTOBUF_NAMESPACE_ID::Message /* @@protoc_insertion_point(class_definition:MessageInfo) */ {
+class Message :
+    public ::PROTOBUF_NAMESPACE_ID::Message /* @@protoc_insertion_point(class_definition:Message) */ {
  public:
-  MessageInfo();
-  virtual ~MessageInfo();
+  Message();
+  virtual ~Message();
 
-  MessageInfo(const MessageInfo& from);
-  MessageInfo(MessageInfo&& from) noexcept
-    : MessageInfo() {
+  Message(const Message& from);
+  Message(Message&& from) noexcept
+    : Message() {
     *this = ::std::move(from);
   }
 
-  inline MessageInfo& operator=(const MessageInfo& from) {
+  inline Message& operator=(const Message& from) {
     CopyFrom(from);
     return *this;
   }
-  inline MessageInfo& operator=(MessageInfo&& from) noexcept {
+  inline Message& operator=(Message&& from) noexcept {
     if (GetArenaNoVirtual() == from.GetArenaNoVirtual()) {
       if (this != &from) InternalSwap(&from);
     } else {
@@ -910,7 +910,7 @@ class MessageInfo :
   static const ::PROTOBUF_NAMESPACE_ID::Reflection* GetReflection() {
     return GetMetadataStatic().reflection;
   }
-  static const MessageInfo& default_instance();
+  static const Message& default_instance();
 
   enum MessageCase {
     kInfo = 8,
@@ -919,34 +919,34 @@ class MessageInfo :
   };
 
   static void InitAsDefaultInstance();  // FOR INTERNAL USE ONLY
-  static inline const MessageInfo* internal_default_instance() {
-    return reinterpret_cast<const MessageInfo*>(
-               &_MessageInfo_default_instance_);
+  static inline const Message* internal_default_instance() {
+    return reinterpret_cast<const Message*>(
+               &_Message_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
     5;
 
-  friend void swap(MessageInfo& a, MessageInfo& b) {
+  friend void swap(Message& a, Message& b) {
     a.Swap(&b);
   }
-  inline void Swap(MessageInfo* other) {
+  inline void Swap(Message* other) {
     if (other == this) return;
     InternalSwap(other);
   }
 
   // implements Message ----------------------------------------------
 
-  inline MessageInfo* New() const final {
-    return CreateMaybeMessage<MessageInfo>(nullptr);
+  inline Message* New() const final {
+    return CreateMaybeMessage<Message>(nullptr);
   }
 
-  MessageInfo* New(::PROTOBUF_NAMESPACE_ID::Arena* arena) const final {
-    return CreateMaybeMessage<MessageInfo>(arena);
+  Message* New(::PROTOBUF_NAMESPACE_ID::Arena* arena) const final {
+    return CreateMaybeMessage<Message>(arena);
   }
   void CopyFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) final;
   void MergeFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) final;
-  void CopyFrom(const MessageInfo& from);
-  void MergeFrom(const MessageInfo& from);
+  void CopyFrom(const Message& from);
+  void MergeFrom(const Message& from);
   PROTOBUF_ATTRIBUTE_REINITIALIZES void Clear() final;
   bool IsInitialized() const final;
 
@@ -960,10 +960,10 @@ class MessageInfo :
   inline void SharedCtor();
   inline void SharedDtor();
   void SetCachedSize(int size) const final;
-  void InternalSwap(MessageInfo* other);
+  void InternalSwap(Message* other);
   friend class ::PROTOBUF_NAMESPACE_ID::internal::AnyMetadata;
   static ::PROTOBUF_NAMESPACE_ID::StringPiece FullMessageName() {
-    return "MessageInfo";
+    return "Message";
   }
   private:
   inline ::PROTOBUF_NAMESPACE_ID::Arena* GetArenaNoVirtual() const {
@@ -985,68 +985,68 @@ class MessageInfo :
 
   // nested types ----------------------------------------------------
 
-  typedef MessageInfo_ChannelState ChannelState;
+  typedef Message_ChannelState ChannelState;
   static constexpr ChannelState INITIAL_STARTUP =
-    MessageInfo_ChannelState_INITIAL_STARTUP;
+    Message_ChannelState_INITIAL_STARTUP;
   static constexpr ChannelState NORMAL_COMMUNICATION =
-    MessageInfo_ChannelState_NORMAL_COMMUNICATION;
+    Message_ChannelState_NORMAL_COMMUNICATION;
   static constexpr ChannelState CHANNEL_SHUTDOWN =
-    MessageInfo_ChannelState_CHANNEL_SHUTDOWN;
+    Message_ChannelState_CHANNEL_SHUTDOWN;
   static inline bool ChannelState_IsValid(int value) {
-    return MessageInfo_ChannelState_IsValid(value);
+    return Message_ChannelState_IsValid(value);
   }
   static constexpr ChannelState ChannelState_MIN =
-    MessageInfo_ChannelState_ChannelState_MIN;
+    Message_ChannelState_ChannelState_MIN;
   static constexpr ChannelState ChannelState_MAX =
-    MessageInfo_ChannelState_ChannelState_MAX;
+    Message_ChannelState_ChannelState_MAX;
   static constexpr int ChannelState_ARRAYSIZE =
-    MessageInfo_ChannelState_ChannelState_ARRAYSIZE;
+    Message_ChannelState_ChannelState_ARRAYSIZE;
   static inline const ::PROTOBUF_NAMESPACE_ID::EnumDescriptor*
   ChannelState_descriptor() {
-    return MessageInfo_ChannelState_descriptor();
+    return Message_ChannelState_descriptor();
   }
   template<typename T>
   static inline const std::string& ChannelState_Name(T enum_t_value) {
     static_assert(::std::is_same<T, ChannelState>::value ||
       ::std::is_integral<T>::value,
       "Incorrect type passed to function ChannelState_Name.");
-    return MessageInfo_ChannelState_Name(enum_t_value);
+    return Message_ChannelState_Name(enum_t_value);
   }
   static inline bool ChannelState_Parse(const std::string& name,
       ChannelState* value) {
-    return MessageInfo_ChannelState_Parse(name, value);
+    return Message_ChannelState_Parse(name, value);
   }
 
-  typedef MessageInfo_MessageType MessageType;
+  typedef Message_MessageType MessageType;
   static constexpr MessageType INFORMATION =
-    MessageInfo_MessageType_INFORMATION;
+    Message_MessageType_INFORMATION;
   static constexpr MessageType KEYSPACE =
-    MessageInfo_MessageType_KEYSPACE;
+    Message_MessageType_KEYSPACE;
   static constexpr MessageType DATA_REPLICATION_UNUSED =
-    MessageInfo_MessageType_DATA_REPLICATION_UNUSED;
+    Message_MessageType_DATA_REPLICATION_UNUSED;
   static inline bool MessageType_IsValid(int value) {
-    return MessageInfo_MessageType_IsValid(value);
+    return Message_MessageType_IsValid(value);
   }
   static constexpr MessageType MessageType_MIN =
-    MessageInfo_MessageType_MessageType_MIN;
+    Message_MessageType_MessageType_MIN;
   static constexpr MessageType MessageType_MAX =
-    MessageInfo_MessageType_MessageType_MAX;
+    Message_MessageType_MessageType_MAX;
   static constexpr int MessageType_ARRAYSIZE =
-    MessageInfo_MessageType_MessageType_ARRAYSIZE;
+    Message_MessageType_MessageType_ARRAYSIZE;
   static inline const ::PROTOBUF_NAMESPACE_ID::EnumDescriptor*
   MessageType_descriptor() {
-    return MessageInfo_MessageType_descriptor();
+    return Message_MessageType_descriptor();
   }
   template<typename T>
   static inline const std::string& MessageType_Name(T enum_t_value) {
     static_assert(::std::is_same<T, MessageType>::value ||
       ::std::is_integral<T>::value,
       "Incorrect type passed to function MessageType_Name.");
-    return MessageInfo_MessageType_Name(enum_t_value);
+    return Message_MessageType_Name(enum_t_value);
   }
   static inline bool MessageType_Parse(const std::string& name,
       MessageType* value) {
-    return MessageInfo_MessageType_Parse(name, value);
+    return Message_MessageType_Parse(name, value);
   }
 
   // accessors -------------------------------------------------------
@@ -1118,13 +1118,13 @@ class MessageInfo :
   void _internal_set_lastreceivedmsg(::PROTOBUF_NAMESPACE_ID::uint32 value);
   public:
 
-  // .MessageInfo.ChannelState channelState = 4;
+  // .Message.ChannelState channelState = 4;
   void clear_channelstate();
-  ::MessageInfo_ChannelState channelstate() const;
-  void set_channelstate(::MessageInfo_ChannelState value);
+  ::Message_ChannelState channelstate() const;
+  void set_channelstate(::Message_ChannelState value);
   private:
-  ::MessageInfo_ChannelState _internal_channelstate() const;
-  void _internal_set_channelstate(::MessageInfo_ChannelState value);
+  ::Message_ChannelState _internal_channelstate() const;
+  void _internal_set_channelstate(::Message_ChannelState value);
   public:
 
   // sint64 messageID = 6;
@@ -1136,13 +1136,13 @@ class MessageInfo :
   void _internal_set_messageid(::PROTOBUF_NAMESPACE_ID::int64 value);
   public:
 
-  // .MessageInfo.MessageType messageType = 7;
+  // .Message.MessageType messageType = 7;
   void clear_messagetype();
-  ::MessageInfo_MessageType messagetype() const;
-  void set_messagetype(::MessageInfo_MessageType value);
+  ::Message_MessageType messagetype() const;
+  void set_messagetype(::Message_MessageType value);
   private:
-  ::MessageInfo_MessageType _internal_messagetype() const;
-  void _internal_set_messagetype(::MessageInfo_MessageType value);
+  ::Message_MessageType _internal_messagetype() const;
+  void _internal_set_messagetype(::Message_MessageType value);
   public:
 
   // .InformationalMessageContents info = 8;
@@ -1177,7 +1177,7 @@ class MessageInfo :
 
   void clear_message();
   MessageCase message_case() const;
-  // @@protoc_insertion_point(class_scope:MessageInfo)
+  // @@protoc_insertion_point(class_scope:Message)
  private:
   class _Internal;
   void set_has_info();
@@ -1592,192 +1592,192 @@ inline void KeyspaceMessageContents_Keyspace::set_suffixbits(::PROTOBUF_NAMESPAC
 
 // -------------------------------------------------------------------
 
-// MessageInfo
+// Message
 
 // bytes sourceNodeID = 1;
-inline void MessageInfo::clear_sourcenodeid() {
+inline void Message::clear_sourcenodeid() {
   sourcenodeid_.ClearToEmptyNoArena(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
 }
-inline const std::string& MessageInfo::sourcenodeid() const {
-  // @@protoc_insertion_point(field_get:MessageInfo.sourceNodeID)
+inline const std::string& Message::sourcenodeid() const {
+  // @@protoc_insertion_point(field_get:Message.sourceNodeID)
   return _internal_sourcenodeid();
 }
-inline void MessageInfo::set_sourcenodeid(const std::string& value) {
+inline void Message::set_sourcenodeid(const std::string& value) {
   _internal_set_sourcenodeid(value);
-  // @@protoc_insertion_point(field_set:MessageInfo.sourceNodeID)
+  // @@protoc_insertion_point(field_set:Message.sourceNodeID)
 }
-inline std::string* MessageInfo::mutable_sourcenodeid() {
-  // @@protoc_insertion_point(field_mutable:MessageInfo.sourceNodeID)
+inline std::string* Message::mutable_sourcenodeid() {
+  // @@protoc_insertion_point(field_mutable:Message.sourceNodeID)
   return _internal_mutable_sourcenodeid();
 }
-inline const std::string& MessageInfo::_internal_sourcenodeid() const {
+inline const std::string& Message::_internal_sourcenodeid() const {
   return sourcenodeid_.GetNoArena();
 }
-inline void MessageInfo::_internal_set_sourcenodeid(const std::string& value) {
+inline void Message::_internal_set_sourcenodeid(const std::string& value) {
   
   sourcenodeid_.SetNoArena(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), value);
 }
-inline void MessageInfo::set_sourcenodeid(std::string&& value) {
+inline void Message::set_sourcenodeid(std::string&& value) {
   
   sourcenodeid_.SetNoArena(
     &::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), ::std::move(value));
-  // @@protoc_insertion_point(field_set_rvalue:MessageInfo.sourceNodeID)
+  // @@protoc_insertion_point(field_set_rvalue:Message.sourceNodeID)
 }
-inline void MessageInfo::set_sourcenodeid(const char* value) {
+inline void Message::set_sourcenodeid(const char* value) {
   GOOGLE_DCHECK(value != nullptr);
   
   sourcenodeid_.SetNoArena(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
-  // @@protoc_insertion_point(field_set_char:MessageInfo.sourceNodeID)
+  // @@protoc_insertion_point(field_set_char:Message.sourceNodeID)
 }
-inline void MessageInfo::set_sourcenodeid(const void* value, size_t size) {
+inline void Message::set_sourcenodeid(const void* value, size_t size) {
   
   sourcenodeid_.SetNoArena(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(),
       ::std::string(reinterpret_cast<const char*>(value), size));
-  // @@protoc_insertion_point(field_set_pointer:MessageInfo.sourceNodeID)
+  // @@protoc_insertion_point(field_set_pointer:Message.sourceNodeID)
 }
-inline std::string* MessageInfo::_internal_mutable_sourcenodeid() {
+inline std::string* Message::_internal_mutable_sourcenodeid() {
   
   return sourcenodeid_.MutableNoArena(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
 }
-inline std::string* MessageInfo::release_sourcenodeid() {
-  // @@protoc_insertion_point(field_release:MessageInfo.sourceNodeID)
+inline std::string* Message::release_sourcenodeid() {
+  // @@protoc_insertion_point(field_release:Message.sourceNodeID)
   
   return sourcenodeid_.ReleaseNoArena(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
 }
-inline void MessageInfo::set_allocated_sourcenodeid(std::string* sourcenodeid) {
+inline void Message::set_allocated_sourcenodeid(std::string* sourcenodeid) {
   if (sourcenodeid != nullptr) {
     
   } else {
     
   }
   sourcenodeid_.SetAllocatedNoArena(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), sourcenodeid);
-  // @@protoc_insertion_point(field_set_allocated:MessageInfo.sourceNodeID)
+  // @@protoc_insertion_point(field_set_allocated:Message.sourceNodeID)
 }
 
 // bytes destNodeID = 2;
-inline void MessageInfo::clear_destnodeid() {
+inline void Message::clear_destnodeid() {
   destnodeid_.ClearToEmptyNoArena(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
 }
-inline const std::string& MessageInfo::destnodeid() const {
-  // @@protoc_insertion_point(field_get:MessageInfo.destNodeID)
+inline const std::string& Message::destnodeid() const {
+  // @@protoc_insertion_point(field_get:Message.destNodeID)
   return _internal_destnodeid();
 }
-inline void MessageInfo::set_destnodeid(const std::string& value) {
+inline void Message::set_destnodeid(const std::string& value) {
   _internal_set_destnodeid(value);
-  // @@protoc_insertion_point(field_set:MessageInfo.destNodeID)
+  // @@protoc_insertion_point(field_set:Message.destNodeID)
 }
-inline std::string* MessageInfo::mutable_destnodeid() {
-  // @@protoc_insertion_point(field_mutable:MessageInfo.destNodeID)
+inline std::string* Message::mutable_destnodeid() {
+  // @@protoc_insertion_point(field_mutable:Message.destNodeID)
   return _internal_mutable_destnodeid();
 }
-inline const std::string& MessageInfo::_internal_destnodeid() const {
+inline const std::string& Message::_internal_destnodeid() const {
   return destnodeid_.GetNoArena();
 }
-inline void MessageInfo::_internal_set_destnodeid(const std::string& value) {
+inline void Message::_internal_set_destnodeid(const std::string& value) {
   
   destnodeid_.SetNoArena(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), value);
 }
-inline void MessageInfo::set_destnodeid(std::string&& value) {
+inline void Message::set_destnodeid(std::string&& value) {
   
   destnodeid_.SetNoArena(
     &::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), ::std::move(value));
-  // @@protoc_insertion_point(field_set_rvalue:MessageInfo.destNodeID)
+  // @@protoc_insertion_point(field_set_rvalue:Message.destNodeID)
 }
-inline void MessageInfo::set_destnodeid(const char* value) {
+inline void Message::set_destnodeid(const char* value) {
   GOOGLE_DCHECK(value != nullptr);
   
   destnodeid_.SetNoArena(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
-  // @@protoc_insertion_point(field_set_char:MessageInfo.destNodeID)
+  // @@protoc_insertion_point(field_set_char:Message.destNodeID)
 }
-inline void MessageInfo::set_destnodeid(const void* value, size_t size) {
+inline void Message::set_destnodeid(const void* value, size_t size) {
   
   destnodeid_.SetNoArena(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(),
       ::std::string(reinterpret_cast<const char*>(value), size));
-  // @@protoc_insertion_point(field_set_pointer:MessageInfo.destNodeID)
+  // @@protoc_insertion_point(field_set_pointer:Message.destNodeID)
 }
-inline std::string* MessageInfo::_internal_mutable_destnodeid() {
+inline std::string* Message::_internal_mutable_destnodeid() {
   
   return destnodeid_.MutableNoArena(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
 }
-inline std::string* MessageInfo::release_destnodeid() {
-  // @@protoc_insertion_point(field_release:MessageInfo.destNodeID)
+inline std::string* Message::release_destnodeid() {
+  // @@protoc_insertion_point(field_release:Message.destNodeID)
   
   return destnodeid_.ReleaseNoArena(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
 }
-inline void MessageInfo::set_allocated_destnodeid(std::string* destnodeid) {
+inline void Message::set_allocated_destnodeid(std::string* destnodeid) {
   if (destnodeid != nullptr) {
     
   } else {
     
   }
   destnodeid_.SetAllocatedNoArena(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), destnodeid);
-  // @@protoc_insertion_point(field_set_allocated:MessageInfo.destNodeID)
+  // @@protoc_insertion_point(field_set_allocated:Message.destNodeID)
 }
 
 // uint32 lastReceivedMsg = 3;
-inline void MessageInfo::clear_lastreceivedmsg() {
+inline void Message::clear_lastreceivedmsg() {
   lastreceivedmsg_ = 0u;
 }
-inline ::PROTOBUF_NAMESPACE_ID::uint32 MessageInfo::_internal_lastreceivedmsg() const {
+inline ::PROTOBUF_NAMESPACE_ID::uint32 Message::_internal_lastreceivedmsg() const {
   return lastreceivedmsg_;
 }
-inline ::PROTOBUF_NAMESPACE_ID::uint32 MessageInfo::lastreceivedmsg() const {
-  // @@protoc_insertion_point(field_get:MessageInfo.lastReceivedMsg)
+inline ::PROTOBUF_NAMESPACE_ID::uint32 Message::lastreceivedmsg() const {
+  // @@protoc_insertion_point(field_get:Message.lastReceivedMsg)
   return _internal_lastreceivedmsg();
 }
-inline void MessageInfo::_internal_set_lastreceivedmsg(::PROTOBUF_NAMESPACE_ID::uint32 value) {
+inline void Message::_internal_set_lastreceivedmsg(::PROTOBUF_NAMESPACE_ID::uint32 value) {
   
   lastreceivedmsg_ = value;
 }
-inline void MessageInfo::set_lastreceivedmsg(::PROTOBUF_NAMESPACE_ID::uint32 value) {
+inline void Message::set_lastreceivedmsg(::PROTOBUF_NAMESPACE_ID::uint32 value) {
   _internal_set_lastreceivedmsg(value);
-  // @@protoc_insertion_point(field_set:MessageInfo.lastReceivedMsg)
+  // @@protoc_insertion_point(field_set:Message.lastReceivedMsg)
 }
 
-// .MessageInfo.ChannelState channelState = 4;
-inline void MessageInfo::clear_channelstate() {
+// .Message.ChannelState channelState = 4;
+inline void Message::clear_channelstate() {
   channelstate_ = 0;
 }
-inline ::MessageInfo_ChannelState MessageInfo::_internal_channelstate() const {
-  return static_cast< ::MessageInfo_ChannelState >(channelstate_);
+inline ::Message_ChannelState Message::_internal_channelstate() const {
+  return static_cast< ::Message_ChannelState >(channelstate_);
 }
-inline ::MessageInfo_ChannelState MessageInfo::channelstate() const {
-  // @@protoc_insertion_point(field_get:MessageInfo.channelState)
+inline ::Message_ChannelState Message::channelstate() const {
+  // @@protoc_insertion_point(field_get:Message.channelState)
   return _internal_channelstate();
 }
-inline void MessageInfo::_internal_set_channelstate(::MessageInfo_ChannelState value) {
+inline void Message::_internal_set_channelstate(::Message_ChannelState value) {
   
   channelstate_ = value;
 }
-inline void MessageInfo::set_channelstate(::MessageInfo_ChannelState value) {
+inline void Message::set_channelstate(::Message_ChannelState value) {
   _internal_set_channelstate(value);
-  // @@protoc_insertion_point(field_set:MessageInfo.channelState)
+  // @@protoc_insertion_point(field_set:Message.channelState)
 }
 
 // .google.protobuf.Timestamp timestamp = 5;
-inline bool MessageInfo::_internal_has_timestamp() const {
+inline bool Message::_internal_has_timestamp() const {
   return this != internal_default_instance() && timestamp_ != nullptr;
 }
-inline bool MessageInfo::has_timestamp() const {
+inline bool Message::has_timestamp() const {
   return _internal_has_timestamp();
 }
-inline const PROTOBUF_NAMESPACE_ID::Timestamp& MessageInfo::_internal_timestamp() const {
+inline const PROTOBUF_NAMESPACE_ID::Timestamp& Message::_internal_timestamp() const {
   const PROTOBUF_NAMESPACE_ID::Timestamp* p = timestamp_;
   return p != nullptr ? *p : *reinterpret_cast<const PROTOBUF_NAMESPACE_ID::Timestamp*>(
       &PROTOBUF_NAMESPACE_ID::_Timestamp_default_instance_);
 }
-inline const PROTOBUF_NAMESPACE_ID::Timestamp& MessageInfo::timestamp() const {
-  // @@protoc_insertion_point(field_get:MessageInfo.timestamp)
+inline const PROTOBUF_NAMESPACE_ID::Timestamp& Message::timestamp() const {
+  // @@protoc_insertion_point(field_get:Message.timestamp)
   return _internal_timestamp();
 }
-inline PROTOBUF_NAMESPACE_ID::Timestamp* MessageInfo::release_timestamp() {
-  // @@protoc_insertion_point(field_release:MessageInfo.timestamp)
+inline PROTOBUF_NAMESPACE_ID::Timestamp* Message::release_timestamp() {
+  // @@protoc_insertion_point(field_release:Message.timestamp)
   
   PROTOBUF_NAMESPACE_ID::Timestamp* temp = timestamp_;
   timestamp_ = nullptr;
   return temp;
 }
-inline PROTOBUF_NAMESPACE_ID::Timestamp* MessageInfo::_internal_mutable_timestamp() {
+inline PROTOBUF_NAMESPACE_ID::Timestamp* Message::_internal_mutable_timestamp() {
   
   if (timestamp_ == nullptr) {
     auto* p = CreateMaybeMessage<PROTOBUF_NAMESPACE_ID::Timestamp>(GetArenaNoVirtual());
@@ -1785,11 +1785,11 @@ inline PROTOBUF_NAMESPACE_ID::Timestamp* MessageInfo::_internal_mutable_timestam
   }
   return timestamp_;
 }
-inline PROTOBUF_NAMESPACE_ID::Timestamp* MessageInfo::mutable_timestamp() {
-  // @@protoc_insertion_point(field_mutable:MessageInfo.timestamp)
+inline PROTOBUF_NAMESPACE_ID::Timestamp* Message::mutable_timestamp() {
+  // @@protoc_insertion_point(field_mutable:Message.timestamp)
   return _internal_mutable_timestamp();
 }
-inline void MessageInfo::set_allocated_timestamp(PROTOBUF_NAMESPACE_ID::Timestamp* timestamp) {
+inline void Message::set_allocated_timestamp(PROTOBUF_NAMESPACE_ID::Timestamp* timestamp) {
   ::PROTOBUF_NAMESPACE_ID::Arena* message_arena = GetArenaNoVirtual();
   if (message_arena == nullptr) {
     delete reinterpret_cast< ::PROTOBUF_NAMESPACE_ID::MessageLite*>(timestamp_);
@@ -1806,67 +1806,67 @@ inline void MessageInfo::set_allocated_timestamp(PROTOBUF_NAMESPACE_ID::Timestam
     
   }
   timestamp_ = timestamp;
-  // @@protoc_insertion_point(field_set_allocated:MessageInfo.timestamp)
+  // @@protoc_insertion_point(field_set_allocated:Message.timestamp)
 }
 
 // sint64 messageID = 6;
-inline void MessageInfo::clear_messageid() {
+inline void Message::clear_messageid() {
   messageid_ = PROTOBUF_LONGLONG(0);
 }
-inline ::PROTOBUF_NAMESPACE_ID::int64 MessageInfo::_internal_messageid() const {
+inline ::PROTOBUF_NAMESPACE_ID::int64 Message::_internal_messageid() const {
   return messageid_;
 }
-inline ::PROTOBUF_NAMESPACE_ID::int64 MessageInfo::messageid() const {
-  // @@protoc_insertion_point(field_get:MessageInfo.messageID)
+inline ::PROTOBUF_NAMESPACE_ID::int64 Message::messageid() const {
+  // @@protoc_insertion_point(field_get:Message.messageID)
   return _internal_messageid();
 }
-inline void MessageInfo::_internal_set_messageid(::PROTOBUF_NAMESPACE_ID::int64 value) {
+inline void Message::_internal_set_messageid(::PROTOBUF_NAMESPACE_ID::int64 value) {
   
   messageid_ = value;
 }
-inline void MessageInfo::set_messageid(::PROTOBUF_NAMESPACE_ID::int64 value) {
+inline void Message::set_messageid(::PROTOBUF_NAMESPACE_ID::int64 value) {
   _internal_set_messageid(value);
-  // @@protoc_insertion_point(field_set:MessageInfo.messageID)
+  // @@protoc_insertion_point(field_set:Message.messageID)
 }
 
-// .MessageInfo.MessageType messageType = 7;
-inline void MessageInfo::clear_messagetype() {
+// .Message.MessageType messageType = 7;
+inline void Message::clear_messagetype() {
   messagetype_ = 0;
 }
-inline ::MessageInfo_MessageType MessageInfo::_internal_messagetype() const {
-  return static_cast< ::MessageInfo_MessageType >(messagetype_);
+inline ::Message_MessageType Message::_internal_messagetype() const {
+  return static_cast< ::Message_MessageType >(messagetype_);
 }
-inline ::MessageInfo_MessageType MessageInfo::messagetype() const {
-  // @@protoc_insertion_point(field_get:MessageInfo.messageType)
+inline ::Message_MessageType Message::messagetype() const {
+  // @@protoc_insertion_point(field_get:Message.messageType)
   return _internal_messagetype();
 }
-inline void MessageInfo::_internal_set_messagetype(::MessageInfo_MessageType value) {
+inline void Message::_internal_set_messagetype(::Message_MessageType value) {
   
   messagetype_ = value;
 }
-inline void MessageInfo::set_messagetype(::MessageInfo_MessageType value) {
+inline void Message::set_messagetype(::Message_MessageType value) {
   _internal_set_messagetype(value);
-  // @@protoc_insertion_point(field_set:MessageInfo.messageType)
+  // @@protoc_insertion_point(field_set:Message.messageType)
 }
 
 // .InformationalMessageContents info = 8;
-inline bool MessageInfo::_internal_has_info() const {
+inline bool Message::_internal_has_info() const {
   return message_case() == kInfo;
 }
-inline bool MessageInfo::has_info() const {
+inline bool Message::has_info() const {
   return _internal_has_info();
 }
-inline void MessageInfo::set_has_info() {
+inline void Message::set_has_info() {
   _oneof_case_[0] = kInfo;
 }
-inline void MessageInfo::clear_info() {
+inline void Message::clear_info() {
   if (_internal_has_info()) {
     delete message_.info_;
     clear_has_message();
   }
 }
-inline ::InformationalMessageContents* MessageInfo::release_info() {
-  // @@protoc_insertion_point(field_release:MessageInfo.info)
+inline ::InformationalMessageContents* Message::release_info() {
+  // @@protoc_insertion_point(field_release:Message.info)
   if (_internal_has_info()) {
     clear_has_message();
       ::InformationalMessageContents* temp = message_.info_;
@@ -1876,16 +1876,16 @@ inline ::InformationalMessageContents* MessageInfo::release_info() {
     return nullptr;
   }
 }
-inline const ::InformationalMessageContents& MessageInfo::_internal_info() const {
+inline const ::InformationalMessageContents& Message::_internal_info() const {
   return _internal_has_info()
       ? *message_.info_
       : *reinterpret_cast< ::InformationalMessageContents*>(&::_InformationalMessageContents_default_instance_);
 }
-inline const ::InformationalMessageContents& MessageInfo::info() const {
-  // @@protoc_insertion_point(field_get:MessageInfo.info)
+inline const ::InformationalMessageContents& Message::info() const {
+  // @@protoc_insertion_point(field_get:Message.info)
   return _internal_info();
 }
-inline ::InformationalMessageContents* MessageInfo::_internal_mutable_info() {
+inline ::InformationalMessageContents* Message::_internal_mutable_info() {
   if (!_internal_has_info()) {
     clear_message();
     set_has_info();
@@ -1894,29 +1894,29 @@ inline ::InformationalMessageContents* MessageInfo::_internal_mutable_info() {
   }
   return message_.info_;
 }
-inline ::InformationalMessageContents* MessageInfo::mutable_info() {
-  // @@protoc_insertion_point(field_mutable:MessageInfo.info)
+inline ::InformationalMessageContents* Message::mutable_info() {
+  // @@protoc_insertion_point(field_mutable:Message.info)
   return _internal_mutable_info();
 }
 
 // .KeyspaceMessageContents keyspace = 9;
-inline bool MessageInfo::_internal_has_keyspace() const {
+inline bool Message::_internal_has_keyspace() const {
   return message_case() == kKeyspace;
 }
-inline bool MessageInfo::has_keyspace() const {
+inline bool Message::has_keyspace() const {
   return _internal_has_keyspace();
 }
-inline void MessageInfo::set_has_keyspace() {
+inline void Message::set_has_keyspace() {
   _oneof_case_[0] = kKeyspace;
 }
-inline void MessageInfo::clear_keyspace() {
+inline void Message::clear_keyspace() {
   if (_internal_has_keyspace()) {
     delete message_.keyspace_;
     clear_has_message();
   }
 }
-inline ::KeyspaceMessageContents* MessageInfo::release_keyspace() {
-  // @@protoc_insertion_point(field_release:MessageInfo.keyspace)
+inline ::KeyspaceMessageContents* Message::release_keyspace() {
+  // @@protoc_insertion_point(field_release:Message.keyspace)
   if (_internal_has_keyspace()) {
     clear_has_message();
       ::KeyspaceMessageContents* temp = message_.keyspace_;
@@ -1926,16 +1926,16 @@ inline ::KeyspaceMessageContents* MessageInfo::release_keyspace() {
     return nullptr;
   }
 }
-inline const ::KeyspaceMessageContents& MessageInfo::_internal_keyspace() const {
+inline const ::KeyspaceMessageContents& Message::_internal_keyspace() const {
   return _internal_has_keyspace()
       ? *message_.keyspace_
       : *reinterpret_cast< ::KeyspaceMessageContents*>(&::_KeyspaceMessageContents_default_instance_);
 }
-inline const ::KeyspaceMessageContents& MessageInfo::keyspace() const {
-  // @@protoc_insertion_point(field_get:MessageInfo.keyspace)
+inline const ::KeyspaceMessageContents& Message::keyspace() const {
+  // @@protoc_insertion_point(field_get:Message.keyspace)
   return _internal_keyspace();
 }
-inline ::KeyspaceMessageContents* MessageInfo::_internal_mutable_keyspace() {
+inline ::KeyspaceMessageContents* Message::_internal_mutable_keyspace() {
   if (!_internal_has_keyspace()) {
     clear_message();
     set_has_keyspace();
@@ -1944,19 +1944,19 @@ inline ::KeyspaceMessageContents* MessageInfo::_internal_mutable_keyspace() {
   }
   return message_.keyspace_;
 }
-inline ::KeyspaceMessageContents* MessageInfo::mutable_keyspace() {
-  // @@protoc_insertion_point(field_mutable:MessageInfo.keyspace)
+inline ::KeyspaceMessageContents* Message::mutable_keyspace() {
+  // @@protoc_insertion_point(field_mutable:Message.keyspace)
   return _internal_mutable_keyspace();
 }
 
-inline bool MessageInfo::has_message() const {
+inline bool Message::has_message() const {
   return message_case() != MESSAGE_NOT_SET;
 }
-inline void MessageInfo::clear_has_message() {
+inline void Message::clear_has_message() {
   _oneof_case_[0] = MESSAGE_NOT_SET;
 }
-inline MessageInfo::MessageCase MessageInfo::message_case() const {
-  return MessageInfo::MessageCase(_oneof_case_[0]);
+inline Message::MessageCase Message::message_case() const {
+  return Message::MessageCase(_oneof_case_[0]);
 }
 #ifdef __GNUC__
   #pragma GCC diagnostic pop
@@ -1977,15 +1977,15 @@ inline MessageInfo::MessageCase MessageInfo::message_case() const {
 
 PROTOBUF_NAMESPACE_OPEN
 
-template <> struct is_proto_enum< ::MessageInfo_ChannelState> : ::std::true_type {};
+template <> struct is_proto_enum< ::Message_ChannelState> : ::std::true_type {};
 template <>
-inline const EnumDescriptor* GetEnumDescriptor< ::MessageInfo_ChannelState>() {
-  return ::MessageInfo_ChannelState_descriptor();
+inline const EnumDescriptor* GetEnumDescriptor< ::Message_ChannelState>() {
+  return ::Message_ChannelState_descriptor();
 }
-template <> struct is_proto_enum< ::MessageInfo_MessageType> : ::std::true_type {};
+template <> struct is_proto_enum< ::Message_MessageType> : ::std::true_type {};
 template <>
-inline const EnumDescriptor* GetEnumDescriptor< ::MessageInfo_MessageType>() {
-  return ::MessageInfo_MessageType_descriptor();
+inline const EnumDescriptor* GetEnumDescriptor< ::Message_MessageType>() {
+  return ::Message_MessageType_descriptor();
 }
 
 PROTOBUF_NAMESPACE_CLOSE
