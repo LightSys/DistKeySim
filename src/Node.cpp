@@ -1,8 +1,11 @@
 #include "Node.h"
 #include "UUID.h"
 
-Node::Node(){
+Node::Node() {
     this->uuid = new_uuid();
+
+    // FIXME: set to actual keyspace
+    this->keySpace = new Keyspace(0, 0, 0);
 }
 ///creates the key space for the Node
 Keyspace Node::createKeySpace() {

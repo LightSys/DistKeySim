@@ -20,6 +20,7 @@ add_executable(adak
         src/Network.cpp
         src/UUID.cpp
         src/Channel.cpp
+        src/Keyspace.cpp
 #        src/message.pb.cc
 )
 #target_link_libraries(adak

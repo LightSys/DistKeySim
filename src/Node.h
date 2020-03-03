@@ -5,16 +5,14 @@
 #include <vector>
 
 #include "UUID.h"
-
-
-typedef unsigned long Keyspace;
+#include "Keyspace.h"
 
 ///TODO integrate RPC into the class
 ///TODO likely other things that I didn't consider.
 class Node {
 private:
     UUID uuid;
-    Keyspace keySpace;
+    Keyspace* keySpace;
     int keyShareRate;
     double keyGenRate;
     double aggregateGenRate;
@@ -33,8 +31,8 @@ public:
     void setUUID(UUID nid) { uuid = nid; }
 
     ///getter and setter for keySpace
-    Keyspace getKeySpace() const { return keySpace; }
-    void setKeySpace(Keyspace ks) { keySpace = ks; }
+    Keyspace* getKeySpace() const { return keySpace; }
+    void setKeySpace(Keyspace* ks) { keySpace = ks; }
 
     ///getter and setter for keyGenRate
     double getKeyGenRate() const { return keyGenRate; }
