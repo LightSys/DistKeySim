@@ -2,6 +2,7 @@
 #define LIGHTSYS_ADAK_EVENT_GEN_H
 
 #include "Simulation.h"
+
 class EventGen {
 public:
     EventGen() {};

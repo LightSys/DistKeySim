@@ -1,5 +1,6 @@
 #ifndef LIGHTSYS_ADAK_SIMULATION_H
 #define LIGHTSYS_ADAK_SIMULATION_H
+
 #include "Network.h"
 
 class Simulation {

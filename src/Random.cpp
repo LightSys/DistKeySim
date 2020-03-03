@@ -1,4 +1,5 @@
 #include <ctime>
+
 #include "Random.h"
 
 using namespace std;

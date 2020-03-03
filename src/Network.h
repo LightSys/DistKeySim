@@ -11,8 +11,8 @@
 
 struct Channel{
     unsigned long long channelId;
-    std::string toNodeUUID;
-    std::string fromNodeUUID;
+    UUID toNode;
+    UUID fromNode;
 };
 
 class Network{

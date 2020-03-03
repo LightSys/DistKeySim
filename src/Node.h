@@ -3,6 +3,7 @@
 
 #include <iostream>
 #include <vector>
+
 #include "UUID.h"
 
 
@@ -11,6 +12,18 @@ typedef unsigned long Keyspace;
 ///TODO integrate RPC into the class
 ///TODO likely other things that I didn't consider.
 class Node {
+private:
+    UUID uuid; ///nodeID is a 128 bit UUID so this should presumably not be an int
+    Keyspace keySpace;
+    int keyShareRate;
+    double keyGenRate;
+    double aggregateGenRate;
+    double shortTermAllocationRatio;
+    double longTermAllocationRatio;
+    double aggregateAllocationRatio;
+    double provisioningRatio;
+    bool active;
+    std::vector<Node*> peers; ///called directConnection on the board.
 public:
     Node();
 
@@ -47,21 +60,6 @@ public:
     double computeLongTermAllocationRatio();
     double computeAggregateAllocationRatio();
     double computeProvisioningRatio();
-
-
-private:
-    UUID uuid; ///nodeID is a 128 bit UUID so this should presumably not be an int
-    Keyspace keySpace;
-    int keyShareRate;
-    double keyGenRate;
-    double aggregateGenRate;
-    double shortTermAllocationRatio;
-    double longTermAllocationRatio;
-    double aggregateAllocationRatio;
-    double provisioningRatio;
-    bool active;
-    std::vector<Node> peers; ///called directConnection on the board.
 };
-
 
 #endif //LIGHTSYSTEMP_NODE_H

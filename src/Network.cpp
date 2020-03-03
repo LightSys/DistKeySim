@@ -1,5 +1,7 @@
 #include <iostream>
+
 #include "Network.h"
+#include "UUID.h"
 
 using namespace std;
 Network::Network(std::map<UUID, Node*> nodes, std::vector<Channel*> channels) : nodes(nodes), channels(channels) {

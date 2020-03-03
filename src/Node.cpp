@@ -17,7 +17,7 @@ double Node::computeAggregateGenRate() {
     double totalPeerRate;
 
     for (int i = 0; i < peers.size(); i++) {
-        totalPeerRate += peers.at(i).keyGenRate;
+        totalPeerRate += peers.at(i)->keyGenRate;
     }
 
     totalPeerRate = totalPeerRate * 0.30;
@@ -28,11 +28,11 @@ double Node::computeAggregateGenRate() {
  * TODO write next two functions
  * I'm not certain of how to write these.
  */
-double computeShortTermAllocationRatio(){
+double Node::computeShortTermAllocationRatio(){
 
 }
 
-double computeLongTermAllocationRatio(){
+double Node::computeLongTermAllocationRatio(){
 
 }
 
@@ -40,7 +40,7 @@ double computeLongTermAllocationRatio(){
  * TODO write function
  * Requires understanding of the two above for computation
  */
-double computeAggregateAllocationRatio() {
+double Node::computeAggregateAllocationRatio() {
 
 }
 
@@ -49,6 +49,6 @@ double computeAggregateAllocationRatio() {
  * found by dividing the relevant creation (gen) rate by the relevant allocation rate.
  * How do I determine which rates are the relevant ones?
  */
-double computeProvisioningRatio() {
+double Node::computeProvisioningRatio() {
 
 }

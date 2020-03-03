@@ -1,8 +1,7 @@
-//
-// Created by tomlo on 3/2/2020.
-//
-#include "Simulation.h"
 #include <iostream>
+
+#include "Simulation.h"
+#include "UUID.h"
 
 using namespace std;
 
@@ -14,7 +13,6 @@ int main(int argc, char **argv){
     for(int i = 0; i < 10; i++) {
         Node* newNode = new Node();
         nodes.emplace(newNode->getUUID(), newNode);
-//        nodes.insert(newNode->getNodeID(), newNode);
     }
 
     std::vector<Channel*> channels;
