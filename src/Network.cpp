@@ -25,12 +25,11 @@ void Network::addNode(Node* node) {
 }
 
 void Network::connectNodes(UUID nodeA, UUID nodeB) {
-    Channel* channel = new Channel();
-    channel->toNode = nodeA;
-    channel->fromNode = nodeB;
+    Channel channel(nodeA, nodeB);
+
     // FIXME: What is channelId?
     // FIXME: What happens if a node is connected to itself?
-    this->channels.push_back(channel);
+    this->channels.push_back(&channel);
 }
 
 
@@ -50,16 +49,16 @@ void Network::printUUIDList() {
 
 void Network::printChannels() {
     for(Channel* channel : this->channels) {
-        cout << "To: " << UUIDToHex(channel->toNode) << flush;
-        cout << " From: " << UUIDToHex(channel->fromNode) << flush;
-        cout << " ID: " << channel->channelId << endl;
+        cout << "To: " << UUIDToHex(channel->getToNode()) << flush;
+        cout << " From: " << UUIDToHex(channel->getFromNode()) << flush;
+        cout << " ID: " << channel->getChannelId() << endl;
     }
 }
 
 void Network::printNodeList() {
-    cout << "UUID - Node*" << endl;
-    for(auto const& [key, val] : nodes ) {
-        cout << key << " - " << val << endl;
-    }
+//    cout << "UUID - Node*" << endl;
+//    for(auto const& [key, val] : nodes ) {
+//        cout << key << " - " << val << endl;
+//    }
 }
 

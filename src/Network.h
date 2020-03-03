@@ -8,12 +8,8 @@
 
 #include "Node.h"
 #include "UUID.h"
+#include "Channel.h"
 
-struct Channel {
-    unsigned long long channelId;
-    UUID toNode;
-    UUID fromNode;
-};
 
 class Network{
 private:
