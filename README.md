@@ -6,3 +6,8 @@
 3) `cmake ..`
 4) `make -j4`
 5) The build will be completed at this point, executable is `bin/`
+
+
+# MEMES
+![](/memes/Compiler_Errors.jpg)
+![](/memes/Prayer.jpg)
