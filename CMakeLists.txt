@@ -13,11 +13,12 @@ find_package(Protobuf REQUIRED)
 
 # Executable
 add_executable(adak
-        src/hello_world.cpp
+#        src/proto-test.cpp
         src/Simulation.cpp
         src/Node.cpp
         src/Random.cpp
-        src/message.pb.cc
+        src/Network.cpp
+#        src/message.pb.cc
 )
 target_link_libraries(adak
         protobuf
@@ -25,5 +26,6 @@ target_link_libraries(adak
 target_include_directories(adak
     PUBLIC
         include/
+        src/
 )
 install(TARGETS adak DESTINATION bin)
