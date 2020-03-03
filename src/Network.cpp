@@ -25,9 +25,8 @@ void Network::addNode() {
     addNode(new Keyspace(0, INT32_MAX, 0));
 }
 void Network::addNode(Keyspace* keyspace) {
+    // Create a new new node with the given keyspace
     Node* node = new Node(keyspace);
-    // Add the UUID to the UUIDList
-    this->uuidList.push_back(node->getUUID());
 
     // Add the new node to the map <UUID, Node*>
     this->nodes.emplace(node->getUUID(), node);
@@ -36,7 +35,7 @@ void Network::addNode(Keyspace* keyspace) {
         fullyConnect(node);
     } else if(this->connectionType == ConnectionType::Partial) {
         cout << "STUB: addNode() Partial ConnectionType" << endl;
-    } else if(this->connectionType == ConnectionType::Circlular) {
+    } else if(this->connectionType == ConnectionType::Circular) {
         cout << "STUB: addNode() Circlular ConnectionType" << endl;
     } else if(this->connectionType == ConnectionType::Single) {
         cout << "STUB: addNode() Single ConnectionType" << endl;
@@ -84,16 +83,28 @@ void Network::connectNodes(UUID nodeOne, UUID nodeTwo) {
     node2->addPeer(node1);
 }
 
+vector<UUID> Network::generateUUIDList() {
+    vector<UUID> uuidList;
+
+    // Loop through array and get all the UUIDs
+    for(auto const& x : nodes) {
+        uuidList.push_back((UUID) x.first);
+    }
+    return uuidList;
+}
 
 UUID Network::getRandomNode() {
-    int randomNum = rand() % this->uuidList.size();
-    return this->uuidList.at(randomNum);
+    vector<UUID> uuidList = generateUUIDList();
+
+    // Select a random value from the new UUID list
+    int randomNum = rand() % uuidList.size();
+    return uuidList.at(randomNum);
 }
 
 void Network::printUUIDList() {
     int counter = 0;
     cout << "COUNT - UUID (in hex) - # bits" << endl;
-    for(UUID uuid : this->getUUIDList()) {
+    for(UUID uuid : generateUUIDList()) {
         cout << counter << " - " << UUIDToHex(uuid) << " - " << (uuid.size() * 8) << " bits" << endl;
         counter++;
     }

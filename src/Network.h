@@ -13,14 +13,10 @@
 /**
  * Types of connections that are possible when creating the initial network connection
  */
-enum class ConnectionType { Full, Partial, Circlular, Single};
+enum class ConnectionType { Full, Partial, Circular, Single};
 
 class Network{
 private:
-    /**
-     * List of UUIDs for each of the Nodes
-     */
-    std::vector<UUID> uuidList;
     /**
      * Map of connecting a UUID to a given Node*
      */
@@ -98,10 +94,15 @@ public:
      */
     bool channelExists(UUID nodeOne, UUID nodeTwo);
 
+    /**
+     * Generates a UUID list based on the known UUIDs from the map<UUID, Node*>
+     * @return
+     */
+    std::vector<UUID> generateUUIDList();
+
     // Getters
     std::map<UUID, Node*> getNodes() { return this->nodes; }
     std::vector<Channel*> getChannels() { return this->channels; }
-    std::vector<UUID> getUUIDList() { return this->uuidList; }
 
     // Printing
     void printUUIDList();
