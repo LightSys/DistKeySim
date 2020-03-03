@@ -1,3 +1,5 @@
+#include <climits>
+
 #include "Node.h"
 #include "UUID.h"
 
