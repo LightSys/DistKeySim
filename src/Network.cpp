@@ -1,6 +1,7 @@
 #include <iostream>
 
 #include "Network.h"
+#include "Node.h"
 #include "UUID.h"
 
 using namespace std;
@@ -11,7 +12,7 @@ Network::Network(ConnectionType connectionType) {
 }
 Network::~Network() {
     // Delete all the channels
-    for(Channel* channel : this->channels) {
+    for (Channel* channel : this->channels) {
         delete channel;
     }
 

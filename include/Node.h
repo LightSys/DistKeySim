@@ -25,10 +25,10 @@ private:
 public:
     Node();
     Node(Keyspace* keySpace);
-    ~Node();
+    ~Node() {}
 
 
-    void addPeer(Node* peer);
+    void addPeer(Node* peer) {};
 
     ///getter and setter for nodeID
     ///Alter these based on the fact that the nodeID should be be a UUID
