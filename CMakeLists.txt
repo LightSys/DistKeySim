@@ -18,6 +18,7 @@ add_executable(adak
         src/Node.cpp
         src/Random.cpp
         src/Network.cpp
+        src/UUID.cpp
 #        src/message.pb.cc
 )
 #target_link_libraries(adak
