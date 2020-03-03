@@ -3,6 +3,8 @@
 
 #include <iostream>
 #include <vector>
+#include <limits.h>
+
 
 #include "UUID.h"
 #include "Keyspace.h"
@@ -55,12 +57,13 @@ public:
     bool getActive() const { return active; }
     void setActive(bool a) { active = a; }
 
-    Keyspace createKeySpace();
+    unsigned long getNextKey();
     double computeAggregateGenRate();
     double computeShortTermAllocationRatio();
     double computeLongTermAllocationRatio();
     double computeAggregateAllocationRatio();
     double computeProvisioningRatio();
+    Keyspace* minimumKeyspace();
 };
 
 #endif //LIGHTSYSTEMP_NODE_H

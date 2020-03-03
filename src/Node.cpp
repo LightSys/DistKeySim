@@ -5,7 +5,7 @@ Node::Node() {
     this->uuid = new_uuid();
 
     // FIXME: set to actual keyspace
-    this->keySpace.push_back(new Keyspace(0, INT32_MAX, 0));
+    this->keySpace.push_back(new Keyspace(0, ULONG_MAX, 0));
 }
 
 Node::Node(Keyspace* keySpace) {
@@ -15,10 +15,23 @@ Node::Node(Keyspace* keySpace) {
 
 
 ///creates the key space for the Node
-Keyspace Node::createKeySpace() {
-
+unsigned long Node::getNextKey(){
+    return minimumKeyspace()->getNextAvailableKey();
 }
 
+Keyspace* Node::minimumKeyspace() {
+    long min = ULONG_MAX;
+    Keyspace* keySpaceMin = NULL;
+
+    for(int i =0; i < keySpace.size(); i++){
+        if(keySpace[i]->getStart() < min){
+            min = keySpace[i]->getStart();
+            keySpaceMin = keySpace[i];
+        }
+    }
+
+    return keySpaceMin;
+}
 
 /**
  * computes the generation rate of a node and all its peers.
