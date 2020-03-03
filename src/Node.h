@@ -12,7 +12,7 @@
 class Node {
 private:
     UUID uuid;
-    Keyspace* keySpace;
+    std::vector<Keyspace*> keySpace;
     int keyShareRate;
     double keyGenRate;
     double aggregateGenRate;
@@ -32,8 +32,10 @@ public:
     void setUUID(UUID nid) { uuid = nid; }
 
     ///getter and setter for keySpace
-    Keyspace* getKeySpace() const { return keySpace; }
-    void setKeySpace(Keyspace* ks) { keySpace = ks; }
+    std::vector<Keyspace*> getKeySpace() const { return keySpace; }
+
+    ///Be carefull this just add a keyspace does not make a whole new one.
+    void addKeySpace(Keyspace* ks) { keySpace.push_back(ks); }
 
     ///getter and setter for keyGenRate
     double getKeyGenRate() const { return keyGenRate; }

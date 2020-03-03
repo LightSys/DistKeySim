@@ -15,8 +15,8 @@ Network::~Network() {
     }
 
     // Delete all the nodes
-    for(auto const& [key, val] : nodes ) {
-        delete val;
+    for(auto const& x : nodes ) {
+        delete x.second;
     }
 }
 
@@ -62,12 +62,13 @@ void Network::printChannels() {
         cout << " From: " << UUIDToHex(channel->getFromNode()) << flush;
         cout << " ID: " << channel->getChannelId() << endl;
     }
+
 }
 
 void Network::printNodeList() {
-    cout << "UUID - Node*" << endl;
-    for(auto const& [key, val] : nodes ) {
-        cout << key << " - " << val << endl;
-    }
+//    cout << "UUID - Node*" << endl;
+//    for(auto const& [key, val] : nodes ) {
+//        cout << key << " - " << val << endl;
+//    }
 }
 
