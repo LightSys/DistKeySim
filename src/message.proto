@@ -26,6 +26,8 @@ message KeyspaceMessageContents {
     uint32 endID = 3; // Will be set if this is a sub0block, otherwise 0
     uint32 suffixBits = 4;
   }
+
+  repeated Keyspace keyspaces = 1;
 }
 
 message Message {

@@ -17,7 +17,8 @@
 extern PROTOBUF_INTERNAL_EXPORT_message_2eproto ::PROTOBUF_NAMESPACE_ID::internal::SCCInfo<1> scc_info_InformationalMessageContents_message_2eproto;
 extern PROTOBUF_INTERNAL_EXPORT_message_2eproto ::PROTOBUF_NAMESPACE_ID::internal::SCCInfo<1> scc_info_InformationalMessageContents_CollectionInformationRecord_message_2eproto;
 extern PROTOBUF_INTERNAL_EXPORT_message_2eproto ::PROTOBUF_NAMESPACE_ID::internal::SCCInfo<0> scc_info_InformationalMessageContents_CollectionInformationRecord_CreationRateData_message_2eproto;
-extern PROTOBUF_INTERNAL_EXPORT_message_2eproto ::PROTOBUF_NAMESPACE_ID::internal::SCCInfo<0> scc_info_KeyspaceMessageContents_message_2eproto;
+extern PROTOBUF_INTERNAL_EXPORT_message_2eproto ::PROTOBUF_NAMESPACE_ID::internal::SCCInfo<1> scc_info_KeyspaceMessageContents_message_2eproto;
+extern PROTOBUF_INTERNAL_EXPORT_message_2eproto ::PROTOBUF_NAMESPACE_ID::internal::SCCInfo<0> scc_info_KeyspaceMessageContents_Keyspace_message_2eproto;
 extern PROTOBUF_INTERNAL_EXPORT_google_2fprotobuf_2ftimestamp_2eproto ::PROTOBUF_NAMESPACE_ID::internal::SCCInfo<0> scc_info_Timestamp_google_2fprotobuf_2ftimestamp_2eproto;
 class InformationalMessageContents_CollectionInformationRecord_CreationRateDataDefaultTypeInternal {
  public:
@@ -100,8 +101,9 @@ static void InitDefaultsscc_info_KeyspaceMessageContents_message_2eproto() {
   ::KeyspaceMessageContents::InitAsDefaultInstance();
 }
 
-::PROTOBUF_NAMESPACE_ID::internal::SCCInfo<0> scc_info_KeyspaceMessageContents_message_2eproto =
-    {{ATOMIC_VAR_INIT(::PROTOBUF_NAMESPACE_ID::internal::SCCInfoBase::kUninitialized), 0, 0, InitDefaultsscc_info_KeyspaceMessageContents_message_2eproto}, {}};
+::PROTOBUF_NAMESPACE_ID::internal::SCCInfo<1> scc_info_KeyspaceMessageContents_message_2eproto =
+    {{ATOMIC_VAR_INIT(::PROTOBUF_NAMESPACE_ID::internal::SCCInfoBase::kUninitialized), 1, 0, InitDefaultsscc_info_KeyspaceMessageContents_message_2eproto}, {
+      &scc_info_KeyspaceMessageContents_Keyspace_message_2eproto.base,}};
 
 static void InitDefaultsscc_info_KeyspaceMessageContents_Keyspace_message_2eproto() {
   GOOGLE_PROTOBUF_VERIFY_VERSION;
@@ -175,6 +177,7 @@ const ::PROTOBUF_NAMESPACE_ID::uint32 TableStruct_message_2eproto::offsets[] PRO
   ~0u,  // no _extensions_
   ~0u,  // no _oneof_case_
   ~0u,  // no _weak_field_map_
+  PROTOBUF_FIELD_OFFSET(::KeyspaceMessageContents, keyspaces_),
   ~0u,  // no _has_bits_
   PROTOBUF_FIELD_OFFSET(::Message, _internal_metadata_),
   ~0u,  // no _extensions_
@@ -197,7 +200,7 @@ static const ::PROTOBUF_NAMESPACE_ID::internal::MigrationSchema schemas[] PROTOB
   { 16, -1, sizeof(::InformationalMessageContents)},
   { 22, -1, sizeof(::KeyspaceMessageContents_Keyspace)},
   { 31, -1, sizeof(::KeyspaceMessageContents)},
-  { 36, -1, sizeof(::Message)},
+  { 37, -1, sizeof(::Message)},
 };
 
 static ::PROTOBUF_NAMESPACE_ID::Message const * const file_default_instances[] = {
@@ -221,22 +224,23 @@ const char descriptor_table_protodef_message_2eproto[] PROTOBUF_SECTION_VARIABLE
   "CreationRateData\022\034\n\024shortAllocationRatio"
   "\030\001 \001(\002\022\033\n\023longAllocationRatio\030\002 \001(\002\022\032\n\022c"
   "reatedPreviousDay\030\003 \001(\002\022\033\n\023createdPrevio"
-  "usWeek\030\004 \001(\002\"g\n\027KeyspaceMessageContents\032"
-  "L\n\010Keyspace\022\014\n\004name\030\001 \001(\t\022\017\n\007startID\030\002 \001"
-  "(\r\022\r\n\005endID\030\003 \001(\r\022\022\n\nsuffixBits\030\004 \001(\r\"\356\003"
-  "\n\007Message\022\024\n\014sourceNodeID\030\001 \001(\014\022\022\n\ndestN"
-  "odeID\030\002 \001(\014\022\027\n\017lastReceivedMsg\030\003 \001(\r\022+\n\014"
-  "channelState\030\004 \001(\0162\025.Message.ChannelStat"
-  "e\022-\n\ttimestamp\030\005 \001(\0132\032.google.protobuf.T"
-  "imestamp\022\021\n\tmessageID\030\006 \001(\022\022)\n\013messageTy"
-  "pe\030\007 \001(\0162\024.Message.MessageType\022-\n\004info\030\010"
-  " \001(\0132\035.InformationalMessageContentsH\000\022,\n"
-  "\010keyspace\030\t \001(\0132\030.KeyspaceMessageContent"
-  "sH\000\"S\n\014ChannelState\022\023\n\017INITIAL_STARTUP\020\000"
-  "\022\030\n\024NORMAL_COMMUNICATION\020\001\022\024\n\020CHANNEL_SH"
-  "UTDOWN\020\002\"I\n\013MessageType\022\017\n\013INFORMATION\020\000"
-  "\022\014\n\010KEYSPACE\020\001\022\033\n\027DATA_REPLICATION_UNUSE"
-  "D\020\002B\t\n\007messageb\006proto3"
+  "usWeek\030\004 \001(\002\"\235\001\n\027KeyspaceMessageContents"
+  "\0224\n\tkeyspaces\030\001 \003(\0132!.KeyspaceMessageCon"
+  "tents.Keyspace\032L\n\010Keyspace\022\014\n\004name\030\001 \001(\t"
+  "\022\017\n\007startID\030\002 \001(\r\022\r\n\005endID\030\003 \001(\r\022\022\n\nsuff"
+  "ixBits\030\004 \001(\r\"\356\003\n\007Message\022\024\n\014sourceNodeID"
+  "\030\001 \001(\014\022\022\n\ndestNodeID\030\002 \001(\014\022\027\n\017lastReceiv"
+  "edMsg\030\003 \001(\r\022+\n\014channelState\030\004 \001(\0162\025.Mess"
+  "age.ChannelState\022-\n\ttimestamp\030\005 \001(\0132\032.go"
+  "ogle.protobuf.Timestamp\022\021\n\tmessageID\030\006 \001"
+  "(\022\022)\n\013messageType\030\007 \001(\0162\024.Message.Messag"
+  "eType\022-\n\004info\030\010 \001(\0132\035.InformationalMessa"
+  "geContentsH\000\022,\n\010keyspace\030\t \001(\0132\030.Keyspac"
+  "eMessageContentsH\000\"S\n\014ChannelState\022\023\n\017IN"
+  "ITIAL_STARTUP\020\000\022\030\n\024NORMAL_COMMUNICATION\020"
+  "\001\022\024\n\020CHANNEL_SHUTDOWN\020\002\"I\n\013MessageType\022\017"
+  "\n\013INFORMATION\020\000\022\014\n\010KEYSPACE\020\001\022\033\n\027DATA_RE"
+  "PLICATION_UNUSED\020\002B\t\n\007messageb\006proto3"
   ;
 static const ::PROTOBUF_NAMESPACE_ID::internal::DescriptorTable*const descriptor_table_message_2eproto_deps[1] = {
   &::descriptor_table_google_2fprotobuf_2ftimestamp_2eproto,
@@ -252,7 +256,7 @@ static ::PROTOBUF_NAMESPACE_ID::internal::SCCInfoBase*const descriptor_table_mes
 static ::PROTOBUF_NAMESPACE_ID::internal::once_flag descriptor_table_message_2eproto_once;
 static bool descriptor_table_message_2eproto_initialized = false;
 const ::PROTOBUF_NAMESPACE_ID::internal::DescriptorTable descriptor_table_message_2eproto = {
-  &descriptor_table_message_2eproto_initialized, descriptor_table_protodef_message_2eproto, "message.proto", 1062,
+  &descriptor_table_message_2eproto_initialized, descriptor_table_protodef_message_2eproto, "message.proto", 1117,
   &descriptor_table_message_2eproto_once, descriptor_table_message_2eproto_sccs, descriptor_table_message_2eproto_deps, 6, 1,
   schemas, file_default_instances, TableStruct_message_2eproto::offsets,
   file_level_metadata_message_2eproto, 6, file_level_enum_descriptors_message_2eproto, file_level_service_descriptors_message_2eproto,
@@ -1292,12 +1296,14 @@ KeyspaceMessageContents::KeyspaceMessageContents()
 }
 KeyspaceMessageContents::KeyspaceMessageContents(const KeyspaceMessageContents& from)
   : ::PROTOBUF_NAMESPACE_ID::Message(),
-      _internal_metadata_(nullptr) {
+      _internal_metadata_(nullptr),
+      keyspaces_(from.keyspaces_) {
   _internal_metadata_.MergeFrom(from._internal_metadata_);
   // @@protoc_insertion_point(copy_constructor:KeyspaceMessageContents)
 }
 
 void KeyspaceMessageContents::SharedCtor() {
+  ::PROTOBUF_NAMESPACE_ID::internal::InitSCC(&scc_info_KeyspaceMessageContents_message_2eproto.base);
 }
 
 KeyspaceMessageContents::~KeyspaceMessageContents() {
@@ -1323,6 +1329,7 @@ void KeyspaceMessageContents::Clear() {
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
+  keyspaces_.Clear();
   _internal_metadata_.Clear();
 }
 
@@ -1332,6 +1339,21 @@ const char* KeyspaceMessageContents::_InternalParse(const char* ptr, ::PROTOBUF_
     ::PROTOBUF_NAMESPACE_ID::uint32 tag;
     ptr = ::PROTOBUF_NAMESPACE_ID::internal::ReadTag(ptr, &tag);
     CHK_(ptr);
+    switch (tag >> 3) {
+      // repeated .KeyspaceMessageContents.Keyspace keyspaces = 1;
+      case 1:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 10)) {
+          ptr -= 1;
+          do {
+            ptr += 1;
+            ptr = ctx->ParseMessage(_internal_add_keyspaces(), ptr);
+            CHK_(ptr);
+            if (!ctx->DataAvailable(ptr)) break;
+          } while (::PROTOBUF_NAMESPACE_ID::internal::ExpectTag<10>(ptr));
+        } else goto handle_unusual;
+        continue;
+      default: {
+      handle_unusual:
         if ((tag & 7) == 4 || tag == 0) {
           ctx->SetLastTag(tag);
           goto success;
@@ -1339,6 +1361,8 @@ const char* KeyspaceMessageContents::_InternalParse(const char* ptr, ::PROTOBUF_
         ptr = UnknownFieldParse(tag, &_internal_metadata_, ptr, ctx);
         CHK_(ptr != nullptr);
         continue;
+      }
+    }  // switch
   }  // while
 success:
   return ptr;
@@ -1353,6 +1377,14 @@ failure:
   // @@protoc_insertion_point(serialize_to_array_start:KeyspaceMessageContents)
   ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
+
+  // repeated .KeyspaceMessageContents.Keyspace keyspaces = 1;
+  for (unsigned int i = 0,
+      n = static_cast<unsigned int>(this->_internal_keyspaces_size()); i < n; i++) {
+    target = stream->EnsureSpace(target);
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::
+      InternalWriteMessage(1, this->_internal_keyspaces(i), target, stream);
+  }
 
   if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
     target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormat::InternalSerializeUnknownFieldsToArray(
@@ -1369,6 +1401,13 @@ size_t KeyspaceMessageContents::ByteSizeLong() const {
   ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
+
+  // repeated .KeyspaceMessageContents.Keyspace keyspaces = 1;
+  total_size += 1UL * this->_internal_keyspaces_size();
+  for (const auto& msg : this->keyspaces_) {
+    total_size +=
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::MessageSize(msg);
+  }
 
   if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
     return ::PROTOBUF_NAMESPACE_ID::internal::ComputeUnknownFieldsSize(
@@ -1401,6 +1440,7 @@ void KeyspaceMessageContents::MergeFrom(const KeyspaceMessageContents& from) {
   ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
+  keyspaces_.MergeFrom(from.keyspaces_);
 }
 
 void KeyspaceMessageContents::CopyFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) {
@@ -1424,6 +1464,7 @@ bool KeyspaceMessageContents::IsInitialized() const {
 void KeyspaceMessageContents::InternalSwap(KeyspaceMessageContents* other) {
   using std::swap;
   _internal_metadata_.Swap(&other->_internal_metadata_);
+  keyspaces_.InternalSwap(&other->keyspaces_);
 }
 
 ::PROTOBUF_NAMESPACE_ID::Metadata KeyspaceMessageContents::GetMetadata() const {

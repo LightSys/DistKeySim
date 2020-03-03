@@ -97,4 +97,25 @@ void toInformationalMessage(Message &msg, std::initializer_list<CollectionInfoRe
     msg.set_allocated_info(infoContents);
 }
 
+/** Add data to message instance to change it to valid keyspace message
+ *
+ * @param msg Unpopulated message instance to add Keyspace
+ * @param records Collection Information Records to be added to message
+ */
+void toKeyspaceMessage(Message &msg, std::initializer_list<CollectionInfoRecord> records) {
+    // Indicate message type as information
+    msg.set_messagetype(Message::MessageType::Message_MessageType_INFORMATION);
+    
+    // Add default empty message contents
+    auto *infoContents = new InformationalMessageContents();
+    for (CollectionInfoRecord record : records) {
+        auto *collection = infoContents->add_records();
+        collection->set_collectionname(record.name);
+        addCollectionInfoRecord(collection, record.createdDay, record.createdWeek, record.longTermAllocation,
+                                record.shortTermAllocation);
+    }
+    
+    msg.set_allocated_info(infoContents);
+}
+
 #endif //ADAK_KEYING_MESSAGE_HPP
