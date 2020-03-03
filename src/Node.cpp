@@ -6,11 +6,15 @@ Node::Node() {
 
     // FIXME: set to actual keyspace
     this->keySpace.push_back(new Keyspace(0, ULONG_MAX, 0));
+
+    this->active = true;
 }
 
 Node::Node(Keyspace* keySpace) {
     this->uuid = new_uuid();
     this->keySpace.push_back(keySpace);
+
+    this->active = true;
 }
 
 
@@ -76,3 +80,4 @@ double Node::computeAggregateAllocationRatio() {
 double Node::computeProvisioningRatio() {
 
 }
+

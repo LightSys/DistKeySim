@@ -26,9 +26,14 @@ add_executable(adak
 #target_link_libraries(adak
 #        protobuf
 #)
+
+
 target_include_directories(adak
     PUBLIC
         include/
         src/
 )
+
 install(TARGETS adak DESTINATION bin)
+
+add_subdirectory(Tests)
