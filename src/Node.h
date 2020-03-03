@@ -1,20 +1,18 @@
-#ifndef LIGHTSYSTEMP_NODE_H
-#define LIGHTSYSTEMP_NODE_H
+#ifndef ADAK_KEYING_NODE_H
+#define ADAK_KEYING_NODE_H
 
 #include <iostream>
 #include <vector>
 
 #include "UUID.h"
-
-
-typedef unsigned long Keyspace;
+#include "Keyspace.h"
 
 ///TODO integrate RPC into the class
 ///TODO likely other things that I didn't consider.
 class Node {
 private:
     UUID uuid;
-    Keyspace keySpace;
+    std::vector<Keyspace*> keySpace;
     int keyShareRate;
     double keyGenRate;
     double aggregateGenRate;
@@ -26,6 +24,11 @@ private:
     std::vector<Node*> peers; ///called directConnection on the board.
 public:
     Node();
+    Node(Keyspace* keySpace);
+    ~Node();
+
+
+    void addPeer(Node* peer);
 
     ///getter and setter for nodeID
     ///Alter these based on the fact that the nodeID should be be a UUID
@@ -33,8 +36,10 @@ public:
     void setUUID(UUID nid) { uuid = nid; }
 
     ///getter and setter for keySpace
-    Keyspace getKeySpace() const { return keySpace; }
-    void setKeySpace(Keyspace ks) { keySpace = ks; }
+    std::vector<Keyspace*> getKeySpace() const { return keySpace; }
+
+    ///Be carefull this just add a keyspace does not make a whole new one.
+    void addKeySpace(Keyspace* ks) { keySpace.push_back(ks); }
 
     ///getter and setter for keyGenRate
     double getKeyGenRate() const { return keyGenRate; }
@@ -54,7 +59,8 @@ public:
     bool getActive() const { return active; }
     void setActive(bool a) { active = a; }
 
-    Keyspace createKeySpace();
+    Keyspace* minimumKeyspace();
+    unsigned long getNextKey();
     double computeAggregateGenRate();
     double computeShortTermAllocationRatio();
     double computeLongTermAllocationRatio();
@@ -62,4 +68,4 @@ public:
     double computeProvisioningRatio();
 };
 
-#endif //LIGHTSYSTEMP_NODE_H
+#endif //ADAK_KEYING_NODE_H

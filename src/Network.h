@@ -1,5 +1,5 @@
-#ifndef NETWORK
-#define NETWORK
+#ifndef ADAK_KEYING_NETWORK_H
+#define ADAK_KEYING_NETWORK_H
 
 #include <iostream>
 #include <map>
@@ -8,49 +8,105 @@
 
 #include "Node.h"
 #include "UUID.h"
+#include "Channel.h"
 
-struct Channel {
-    unsigned long long channelId;
-    UUID toNode;
-    UUID fromNode;
-};
+/**
+ * Types of connections that are possible when creating the initial network connection
+ */
+enum class ConnectionType { Full, Partial, Circular, Single};
 
 class Network{
 private:
-    std::vector<UUID> uuidList;
-    std::map<UUID, Node*> nodes; //UUID, Node by reference
+    /**
+     * Map of connecting a UUID to a given Node*
+     */
+    std::map<UUID, Node*> nodes;
+    /**
+     * List of every known channel between nodes, this is basically representing the edges of the graph
+     */
     std::vector<Channel*> channels;
 
-    //This may not be needed
-//    std::map<UUID, UUID> nodeConnections;
+    /**
+     * The type of connection for this network
+     */
+    ConnectionType connectionType;
 public:
-//    Network(std::map<UUID, Node*> nodes, std::vector<Channel*> channels);
-    Network();
+    Network(ConnectionType connectionType);
+    ~Network();
 
-    void connectNodes(UUID nodeA, UUID nodeB);
-    void disconnectNodes(UUID nodeA, UUID nodeB);
+    /**
+     * Connects two nodes by creating a channel between them and connecting the nodes based on the type of connection
+     * @param nodeOne
+     * @param nodeTwo
+     */
+    void connectNodes(UUID nodeOne, UUID nodeTwo);
+
+    /**
+     * Disconnects the two nodes and removes the existing channel between them
+     * @param nodeOne
+     * @param nodeTwo
+     */
+    void disconnectNodes(UUID nodeOne, UUID nodeTwo);
 
     void initiateMessage(UUID to, UUID from, std::string message);
     void allocateKeyspace(UUID to, UUID from);
 
     // FIXME: change message to a Message type
-    void sendMsg (std::string message, UUID toNode, UUID fromNode);
+    void sendMsg(std::string message, UUID toNode, UUID fromNode);
     void broadcastMsg(std::string message, UUID fromNode);
 
+    /**
+     * Returns a random node from the Node list, useful for creating random events
+     * @return
+     */
     UUID getRandomNode();
+
+    /**
+     * Converts the UUID to the associated Node*
+     * @param uuid
+     * @return Node* (associated Node)
+     */
     Node* getNodeFromUUID(UUID uuid) const { return nodes.find(uuid)->second; }
 
-    void addNode(Node* node);
+    /**
+     * Adds the initial node to the Network, this defaults to the max Keyspace, so it should only be used once.
+     */
+    void addNode();
+
+    /**
+     * The typical way to add a node to the network
+     * @param keyspace
+     */
+    void addNode(Keyspace* keyspace);
+
+    /**
+     * Fully connects all the nodes to each other according to the ConnectionType
+     * @param node
+     */
+    void fullyConnect(Node* node);
+
+    /**
+     * Checks to see if the channel already exists between two nodes,
+     * if the channel exists return true, false otherwise.
+     * @param nodeOne
+     * @param nodeTwo
+     * @return bool (channelExists)
+     */
+    bool channelExists(UUID nodeOne, UUID nodeTwo);
+
+    /**
+     * Generates a UUID list based on the known UUIDs from the map<UUID, Node*>
+     * @return
+     */
+    std::vector<UUID> generateUUIDList();
 
     // Getters
     std::map<UUID, Node*> getNodes() { return this->nodes; }
     std::vector<Channel*> getChannels() { return this->channels; }
-    std::vector<UUID> getUUIDList() { return this->uuidList; }
 
     // Printing
     void printUUIDList();
-    void printNodeList();
     void printChannels();
 };
 
-#endif /* network */
+#endif // ADAK_KEYING_NETWORK_H

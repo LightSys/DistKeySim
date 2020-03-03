@@ -1,13 +1,45 @@
 #include "Node.h"
 #include "UUID.h"
 
-Node::Node(){
+Node::Node() {
     this->uuid = new_uuid();
-}
-///creates the key space for the Node
-Keyspace Node::createKeySpace() {
 
+    // FIXME: set to actual keyspace
+    this->keySpace.push_back(new Keyspace(0, INT32_MAX, 0));
 }
+
+Node::Node(Keyspace* keySpace) {
+    this->uuid = new_uuid();
+    this->keySpace.push_back(keySpace);
+}
+
+Node::~Node() {
+    for(Keyspace* keyspace : keySpace) {
+        delete keyspace;
+    }
+}
+
+///creates the key space for the Node
+adak_key Node::getNextKey() {
+    return minimumKeyspace()->getNextAvailableKey();
+}
+
+Keyspace* Node::minimumKeyspace() {
+    long min = ULONG_MAX;
+    Keyspace* keySpaceMin = NULL;
+
+    for(int i =0; i < keySpace.size(); i++){
+        if(keySpace[i]->getStart() < min){
+            min = keySpace[i]->getStart();
+            keySpaceMin = keySpace[i];
+        }
+    }
+    return keySpaceMin;
+}
+void Node::addPeer(Node *peer) {
+    this->peers.push_back(peer);
+}
+
 
 /**
  * computes the generation rate of a node and all its peers.
