@@ -22,6 +22,7 @@ private:
 public:
 //    Network(std::map<UUID, Node*> nodes, std::vector<Channel*> channels);
     Network();
+    ~Network();
 
     void connectNodes(UUID nodeA, UUID nodeB);
     void disconnectNodes(UUID nodeA, UUID nodeB);

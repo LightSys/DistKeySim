@@ -4,16 +4,20 @@
 #include "UUID.h"
 
 using namespace std;
-//Network::Network(std::map<UUID, Node*> nodes, std::vector<Channel*> channels) : nodes(nodes), channels(channels) {
-//    cout << "Network Constructor called" << endl;
-//
-//    for(auto nodeMap : nodes) {
-//        Node* node = (Node*) nodeMap.second;
-//    }
-//}
 
 Network::Network() {
     cout << "Network Constructor called" << endl;
+}
+Network::~Network() {
+    // Delete all the channels
+    for(Channel* channel : this->channels) {
+        delete channel;
+    }
+
+    // Delete all the nodes
+    for(auto const& [key, val] : nodes ) {
+        delete val;
+    }
 }
 
 void Network::addNode(Node* node) {
@@ -25,11 +29,11 @@ void Network::addNode(Node* node) {
 }
 
 void Network::connectNodes(UUID nodeA, UUID nodeB) {
-    Channel channel(nodeA, nodeB);
-
+//    Channel channel(nodeA, nodeB);
+    Channel* channel = new Channel(nodeA, nodeB);
     // FIXME: What is channelId?
     // FIXME: What happens if a node is connected to itself?
-    this->channels.push_back(&channel);
+    this->channels.push_back(channel);
 }
 
 
@@ -56,9 +60,9 @@ void Network::printChannels() {
 }
 
 void Network::printNodeList() {
-//    cout << "UUID - Node*" << endl;
-//    for(auto const& [key, val] : nodes ) {
-//        cout << key << " - " << val << endl;
-//    }
+    cout << "UUID - Node*" << endl;
+    for(auto const& [key, val] : nodes ) {
+        cout << key << " - " << val << endl;
+    }
 }
 

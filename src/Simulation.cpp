@@ -13,7 +13,7 @@ Simulation::Simulation() {
     this->network = new Network();
 }
 
-int main(int argc, char **argv){
+int main(int argc, char **argv) {
 
     EventGen* eventGenerator = new Random();
     Simulation* simulation = new Simulation();
