@@ -1,7 +1,11 @@
-#include "node.h"
+#include "Node.h"
+#include "UUID.h"
 
+Node::Node(){
+    this->uuid = new_uuid();
+}
 ///creates the key space for the Node
-int Node::createKeySpace() {
+Keyspace Node::createKeySpace() {
 
 }
 

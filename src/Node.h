@@ -3,6 +3,10 @@
 
 #include <iostream>
 #include <vector>
+#include "UUID.h"
+
+
+typedef unsigned long Keyspace;
 
 ///TODO integrate RPC into the class
 ///TODO likely other things that I didn't consider.
@@ -12,12 +16,12 @@ public:
 
     ///getter and setter for nodeID
     ///Alter these based on the fact that the nodeID should be be a UUID
-    int getNodeID() const { return nodeID; }
-    void setNodeID(int nid) { nodeID = nid; }
+    UUID getUUID() const { return uuid; }
+    void setUUID(UUID nid) { uuid = nid; }
 
     ///getter and setter for keySpace
-    int getKeySpace() const { return keySpace; }
-    void setKeySpace(int ks) { keySpace = ks; }
+    Keyspace getKeySpace() const { return keySpace; }
+    void setKeySpace(Keyspace ks) { keySpace = ks; }
 
     ///getter and setter for keyGenRate
     double getKeyGenRate() const { return keyGenRate; }
@@ -37,7 +41,7 @@ public:
     bool getActive() const { return active; }
     void setActive(bool a) { active = a; }
 
-    int createKeySpace();
+    Keyspace createKeySpace();
     double computeAggregateGenRate();
     double computeShortTermAllocationRatio();
     double computeLongTermAllocationRatio();
@@ -46,8 +50,8 @@ public:
 
 
 private:
-    int nodeID; ///nodeID is a 128 bit UUID so this should presumably not be an int
-    int keySpace;
+    UUID uuid; ///nodeID is a 128 bit UUID so this should presumably not be an int
+    Keyspace keySpace;
     int keyShareRate;
     double keyGenRate;
     double aggregateGenRate;

@@ -8,7 +8,7 @@ using namespace std;
 
 int main(int argc, char **argv){
 
-    std::map<std::string, Node*> nodes;
+    std::map<UUID, Node*> nodes;
 
     // Create new nodes and add them to the map
     for(int i = 0; i < 10; i++) {

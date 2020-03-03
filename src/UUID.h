@@ -6,6 +6,7 @@
 #include <string>
 #include"picoSHA2.h"
 
+typedef std::string UUID;
 
 // random 256 bit uuid type:
 typedef std::array<unsigned char, picosha2::k_digest_size> uuid_t;
@@ -14,7 +15,7 @@ static std::random_device uuid_random_bits;
 const unsigned int NUM_SEED_BYTES = 16;
 const unsigned int TRUNCATED_UUID = 16;
 
-std::string new_uuid(){
+UUID new_uuid(){
     //generate seed bits:
     std::array<unsigned char, NUM_SEED_BYTES> seed;
     for(auto ch = seed.begin(); ch != seed.end(); ++ch){
