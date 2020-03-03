@@ -9,26 +9,47 @@
 #include "Node.h"
 #include "UUID.h"
 
-struct Channel{
+struct Channel {
     unsigned long long channelId;
     UUID toNode;
     UUID fromNode;
 };
 
 class Network{
-public:
-    Network(std::map<UUID, Node*> nodes, std::vector<Channel*> channels);
-
-    // FIXME: change message to a Message type
-    void sendMg (std::string message, UUID toNode, UUID fromNode);
-
-
 private:
+    std::vector<UUID> uuidList;
     std::map<UUID, Node*> nodes; //UUID, Node by reference
     std::vector<Channel*> channels;
 
     //This may not be needed
 //    std::map<UUID, UUID> nodeConnections;
+public:
+//    Network(std::map<UUID, Node*> nodes, std::vector<Channel*> channels);
+    Network();
+
+    void connectNodes(UUID nodeA, UUID nodeB);
+    void disconnectNodes(UUID nodeA, UUID nodeB);
+
+    void initiateMessage(UUID to, UUID from, std::string message);
+    void allocateKeyspace(UUID to, UUID from);
+
+    // FIXME: change message to a Message type
+    void sendMg (std::string message, UUID toNode, UUID fromNode);
+
+    UUID getRandomNode();
+    Node* getNodeFromUUID(UUID uuid) const { return nodes.find(uuid)->second; }
+
+    void addNode(Node* node);
+
+    // Getters
+    std::map<UUID, Node*> getNodes() { return this->nodes; }
+    std::vector<Channel*> getChannels() { return this->channels; }
+    std::vector<UUID> getUUIDList() { return this->uuidList; }
+
+    // Printing
+    void printUUIDList();
+    void printNodeList();
+    void printChannels();
 };
 
 #endif /* network */

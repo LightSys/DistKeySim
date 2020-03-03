@@ -1,5 +1,7 @@
 #include "UUID.h"
 
+using namespace std;
+
 UUID new_uuid() {
     // generate seed bits:
     std::array<unsigned char, NUM_SEED_BYTES> seed;
@@ -19,4 +21,15 @@ UUID new_uuid() {
         strUUID += sha_uuid[i];
     }
     return strUUID;
+}
+
+string UUIDToHex(UUID uuid, bool upper) {
+    ostringstream ret;
+    unsigned int c;
+    for (string::size_type i = 0; i < uuid.length(); ++i) {
+        c = (unsigned int)(unsigned char)uuid.at(i);
+        ret << hex << setfill('0') <<
+            setw(2) << (upper ? uppercase : nouppercase) << c;
+    }
+    return ret.str();
 }

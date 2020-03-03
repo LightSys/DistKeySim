@@ -4,6 +4,7 @@
 #include <random>
 #include <array>
 #include <string>
+#include <iomanip>
 
 #include "picoSHA2.h"
 
@@ -17,5 +18,6 @@ const unsigned int NUM_SEED_BYTES = 16;
 const unsigned int TRUNCATED_UUID = 16;
 
 UUID new_uuid();
+std::string UUIDToHex(UUID uuid, bool upper = false);
 
 #endif // LIGHTSYS_ADAK_UUID_H

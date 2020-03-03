@@ -10,14 +10,17 @@ Random::Random() : EventGen() {
     srand(time(NULL));
 }
 
-void Random::doSomethingRandom(Simulation* simulation) {
+void Random::doSomethingRandom(Network* network) {
     int action = rand() % 3 + 1; // random number between 1-3
     switch(action) {
         case 1:
+            network->connectNodes(network->getRandomNode(), network->getRandomNode());
             break;
         case 2:
+            network->connectNodes(network->getRandomNode(), network->getRandomNode());
             break;
         case 3:
+            network->connectNodes(network->getRandomNode(), network->getRandomNode());
             break;
         default:
             cout << "Something wrong with random!" << endl;
