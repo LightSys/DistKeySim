@@ -12,12 +12,12 @@
 typedef std::array<unsigned char, picosha2::k_digest_size> uuid_t;
 static std::random_device uuid_random_bits;
 
-typedef std::string UUID;
+typedef std::string HexDigest;
 
 const unsigned int NUM_SEED_BYTES = 16;
 const unsigned int TRUNCATED_UUID = 16;
 
-UUID new_uuid();
-std::string UUIDToHex(UUID uuid, bool upper = false);
+HexDigest new_uuid();
+std::string UUIDToHex(HexDigest uuid, bool upper = false);
 
 #endif // LIGHTSYS_ADAK_UUID_H

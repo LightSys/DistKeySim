@@ -2,7 +2,7 @@
 
 using namespace std;
 
-UUID new_uuid() {
+HexDigest new_uuid() {
     // generate seed bits:
     std::array<unsigned char, NUM_SEED_BYTES> seed;
     for(auto ch = seed.begin(); ch != seed.end(); ++ch){
@@ -14,7 +14,7 @@ UUID new_uuid() {
     picosha2::hash256(seed, sha_uuid);
 
     // added to original function to return a usable truncated ID and returns a string
-    UUID strUUID;
+    HexDigest strUUID;
 
     //TODO::NEEDS TO BE TESTED once working
     for(int i = 0; i < TRUNCATED_UUID; i++){
@@ -23,7 +23,7 @@ UUID new_uuid() {
     return strUUID;
 }
 
-string UUIDToHex(UUID uuid, bool upper) {
+string UUIDToHex(HexDigest uuid, bool upper) {
     ostringstream ret;
     unsigned int c;
     for (string::size_type i = 0; i < uuid.length(); ++i) {
