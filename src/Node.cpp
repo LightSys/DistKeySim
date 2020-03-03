@@ -5,8 +5,15 @@ Node::Node() {
     this->uuid = new_uuid();
 
     // FIXME: set to actual keyspace
-    this->keySpace = new Keyspace(0, 0, 0);
+    this->keySpace = new Keyspace(0, INT32_MAX, 0);
 }
+
+Node::Node(Keyspace* keySpace) {
+    this->uuid = new_uuid();
+    this->keySpace = keySpace;
+}
+
+
 ///creates the key space for the Node
 Keyspace Node::createKeySpace() {
 

@@ -31,13 +31,14 @@ public:
     void allocateKeyspace(UUID to, UUID from);
 
     // FIXME: change message to a Message type
-    void sendMsg (std::string message, UUID toNode, UUID fromNode);
+    void sendMsg(std::string message, UUID toNode, UUID fromNode);
     void broadcastMsg(std::string message, UUID fromNode);
 
     UUID getRandomNode();
     Node* getNodeFromUUID(UUID uuid) const { return nodes.find(uuid)->second; }
 
-    void addNode(Node* node);
+    void addNode();
+    void addNode(Keyspace* keyspace);
 
     // Getters
     std::map<UUID, Node*> getNodes() { return this->nodes; }

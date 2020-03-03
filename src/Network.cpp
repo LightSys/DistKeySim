@@ -20,13 +20,18 @@ Network::~Network() {
     }
 }
 
-void Network::addNode(Node* node) {
+void Network::addNode() {
+    addNode(new Keyspace(0, INT32_MAX, 0));
+}
+void Network::addNode(Keyspace* keyspace) {
+    Node* node = new Node(keyspace);
     // Add the UUID to the UUIDList
     this->uuidList.push_back(node->getUUID());
 
     // Add the new node to the map <UUID, Node*>
     this->nodes.emplace(node->getUUID(), node);
 }
+
 
 void Network::connectNodes(UUID nodeA, UUID nodeB) {
 //    Channel channel(nodeA, nodeB);

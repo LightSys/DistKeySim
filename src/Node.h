@@ -24,6 +24,7 @@ private:
     std::vector<Node*> peers; ///called directConnection on the board.
 public:
     Node();
+    Node(Keyspace* keySpace);
 
     ///getter and setter for nodeID
     ///Alter these based on the fact that the nodeID should be be a UUID
