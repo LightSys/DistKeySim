@@ -1,7 +1,3 @@
-//
-// Created by tomlo on 3/3/2020.
-//
-
 #ifndef ADAK_KEYING_CHANNELS_H
 #define ADAK_KEYING_CHANNELS_H
 
@@ -10,7 +6,14 @@
 class Channel {
 
 private:
+    /**
+     * Each channel has a channelId that is auto incremented each creation of a new channel
+     */
     unsigned long long channelId;
+
+    /**
+     * The UUIDs of the connected Nodes
+     */
     UUID toNode;
     UUID fromNode;
 
@@ -21,9 +24,5 @@ public:
     unsigned long long getChannelId();
     UUID getToNode();
     UUID getFromNode();
-
-
 };
-
-
 #endif //ADAK_KEYING_CHANNELS_H

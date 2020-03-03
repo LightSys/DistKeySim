@@ -1,5 +1,5 @@
-#ifndef LIGHTSYSTEMP_NODE_H
-#define LIGHTSYSTEMP_NODE_H
+#ifndef ADAK_KEYING_NODE_H
+#define ADAK_KEYING_NODE_H
 
 #include <iostream>
 #include <vector>
@@ -68,4 +68,4 @@ public:
     double computeProvisioningRatio();
 };
 
-#endif //LIGHTSYSTEMP_NODE_H
+#endif //ADAK_KEYING_NODE_H

@@ -10,7 +10,7 @@ using namespace std;
 Simulation::Simulation() {
     // Seed random number
     srand(time(NULL));
-    this->network = new Network();
+    this->network = new Network(ConnectionType::Full);
 }
 
 int main(int argc, char **argv) {

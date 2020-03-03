@@ -5,7 +5,8 @@
 
 using namespace std;
 
-Network::Network() {
+Network::Network(ConnectionType connectionType) {
+    this->connectionType = connectionType;
     cout << "Network Constructor called" << endl;
 }
 Network::~Network() {
@@ -31,7 +32,16 @@ void Network::addNode(Keyspace* keyspace) {
     // Add the new node to the map <UUID, Node*>
     this->nodes.emplace(node->getUUID(), node);
 
-    fullyConnect(node);
+    if(this->connectionType == ConnectionType::Full) {
+        fullyConnect(node);
+    } else if(this->connectionType == ConnectionType::Partial) {
+        cout << "STUB: addNode() Partial ConnectionType" << endl;
+    } else if(this->connectionType == ConnectionType::Circlular) {
+        cout << "STUB: addNode() Circlular ConnectionType" << endl;
+    } else if(this->connectionType == ConnectionType::Single) {
+        cout << "STUB: addNode() Single ConnectionType" << endl;
+    }
+
 }
 
 void Network::fullyConnect(Node* node) {
@@ -41,14 +51,14 @@ void Network::fullyConnect(Node* node) {
         // Don't connect the node to itself
         if(node->getUUID() != nodeListNode->getUUID()) {
             // Make sure that the channel doesn't already exist
-            if(!channelAlreadyExists(node->getUUID(), nodeListNode->getUUID())) {
+            if(!channelExists(node->getUUID(), nodeListNode->getUUID())) {
                 connectNodes(node->getUUID(), nodeListNode->getUUID());
             }
         }
     }
 }
 
-bool Network::channelAlreadyExists(UUID nodeOne, UUID nodeTwo) {
+bool Network::channelExists(UUID nodeOne, UUID nodeTwo) {
     for(Channel* channel : channels) {
         if(channel->getToNode() == nodeOne || channel->getToNode() == nodeTwo) {
             if(channel->getFromNode() == nodeOne || channel->getFromNode() == nodeTwo) {
