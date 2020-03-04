@@ -6,6 +6,7 @@
 
 #include "UUID.h"
 #include "Keyspace.h"
+#include "message.hpp"
 
 ///TODO integrate RPC into the class
 ///TODO likely other things that I didn't consider.
@@ -20,15 +21,17 @@ private:
     double longTermAllocationRatio;
     double aggregateAllocationRatio;
     double provisioningRatio;
-    bool active;
+    bool active = true;
+    bool messageWaiting = false;
     std::vector<Node*> peers; ///called directConnection on the board.
+
+    Message messageToSend;
 public:
     Node();
     Node(Keyspace* keySpace);
     ~Node() {}
 
-
-    void addPeer(Node* peer) {};
+    void addPeer(Node* peer) { this->peers.push_back(peer); }
 
     ///getter and setter for nodeID
     ///Alter these based on the fact that the nodeID should be be a UUID
@@ -54,8 +57,10 @@ public:
     int getKeyShareRate() const { return keyShareRate; }
     void setKeyShareRate(int ksr) { keyShareRate = ksr; }
 
+    void sendMessage();
+
     // FIXME: change to Message
-    void receiveMessage(std::string message);
+    void receiveMessage(Message message);
 
     /**
      * Gives keyspace to a node
@@ -78,6 +83,10 @@ public:
     double computeLongTermAllocationRatio();
     double computeAggregateAllocationRatio();
     double computeProvisioningRatio();
+
+
+    bool isMessageWaiting() const { return this->messageWaiting; }
+    Message getWaitingMessage() const { return this->messageToSend; }
 };
 
 #endif //ADAK_KEYING_NODE_H

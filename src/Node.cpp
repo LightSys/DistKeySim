@@ -1,7 +1,13 @@
 #include <climits>
+#include <iostream>
 
 #include "Node.h"
 #include "UUID.h"
+#include "message.hpp"
+
+using namespace std;
+
+static const HexDigest& BROADCAST_UUID = "00000000-0000-0000-0000000000";
 
 Node::Node() {
     Node(new Keyspace(0, ULONG_MAX, 0));
@@ -9,8 +15,25 @@ Node::Node() {
 
 Node::Node(Keyspace* keySpace) {
     this->uuid = new_uuid();
-    this->keySpace.push_back(keySpace);
-    this->active = true;
+
+    if(keySpace == nullptr) {
+        this->messageWaiting = true;
+        this->messageToSend = newBaseMessage(
+                this->uuid,
+                (HexDigest &) BROADCAST_UUID,
+                0,
+                Message::ChannelState::Message_ChannelState_INITIAL_STARTUP,
+                1
+        );
+        toKeyspaceMessage(
+                this->messageToSend,
+                {
+                        KeyspaceExchangeRecord{"test", 0, 0, 0},
+                }
+        );
+    } else {
+        this->keySpace.push_back(keySpace);
+    }
 }
 
 ///creates the key space for the Node
@@ -33,7 +56,34 @@ int Node::minimumKeyspace() {
     return index;
 }
 
-void Node::receiveMessage(std::string message) {
+/**
+ * This is where the Baylor team will add more statistics to handle the messages that each node receives
+ * @param message
+ */
+void Node::receiveMessage(Message message) {
+
+    if(message.messagetype() == Message::MessageType::Message_MessageType_KEYSPACE) {
+
+        // If the node is addressed to me
+        if(message.destnodeid() == this->uuid || message.destnodeid() == BROADCAST_UUID) {
+            for(Node* node : peers) {
+
+                // If I know who the message is from
+                if(node->getUUID() == message.sourcenodeid()) {
+
+                    // Need to decide when I give keyspace, for right now, we will automatically give the keyspace
+                    giveKeyspaceToNode(node, 1);
+
+                    // Also need to send the ACK
+                    break;
+                }
+            }
+        }
+    } else if(message.messagetype() == Message::MessageType::Message_MessageType_INFORMATION) {
+
+    } else if(message.messagetype() == Message::MessageType::Message_MessageType_DATA_REPLICATION_UNUSED) {
+
+    }
 }
 
 void Node::giveKeyspaceToNode(Node* node, float percentageToGive) {
@@ -49,7 +99,7 @@ void Node::giveKeyspaceToNode(Node* node, float percentageToGive) {
     unsigned long newStart = minKeyspace->getStart();
     unsigned long newEnd = minKeyspace->getEnd();
     unsigned long newSuffix = minKeyspace->getSuffix();
-    newStart += pow(newSuffix, 2);
+    newStart += pow(2, 0);
     newSuffix += 1;
 
     Keyspace* myKeyspace = new Keyspace(myStart, myEnd, mySuffix);

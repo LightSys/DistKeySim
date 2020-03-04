@@ -6,17 +6,22 @@ int main(int argc, char** argv) {
     Simulation* simulation = new Simulation();
     Network* network = simulation->getNetwork();
 
-    network->addNode();
+    UUID node1 = network->addNode();
+    UUID node2 = network->addNode(nullptr);
 
-    // Create new nodes and add them to the map
-    for(int i = 0; i < AMOUNT_OF_NODES; i++) {
-        // FIXME: add appropriate keyspace
-        network->addNode();
-    }
+    // FIXME: make sure the keyspace is given
+    network->connectNodes(node1, node2);
+    network->checkAllNodesForMessages();
 
-    for(int i = 0; i < 10; i++) {
-        eventGenerator->eventTick(network);
-    }
+//    // Create new nodes and add them to the map
+//    for(int i = 0; i < AMOUNT_OF_NODES; i++) {
+//        // FIXME: add appropriate keyspace
+//        network->addNode();
+//    }
+//
+//    for(int i = 0; i < 10; i++) {
+//        eventGenerator->eventTick(network);
+//    }
 
     network->printUUIDList();
     network->printChannels();

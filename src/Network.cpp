@@ -22,10 +22,24 @@ Network::~Network() {
     }
 }
 
-void Network::addNode() {
-    addNode(new Keyspace(0, INT32_MAX, 0));
+void Network::sendMsg(Message message) {
+    for(auto const& x : nodes) {
+        x.second->receiveMessage(message);
+    }
 }
-void Network::addNode(Keyspace* keyspace) {
+
+void Network::checkAllNodesForMessages() {
+    for(auto const& x : nodes) {
+        if(x.second->isMessageWaiting()) {
+            sendMsg(x.second->getWaitingMessage());
+        }
+    }
+}
+
+UUID Network::addNode() {
+    return addNode(new Keyspace(0, INT32_MAX, 0));
+}
+UUID Network::addNode(Keyspace* keyspace) {
     // Create a new new node with the given keyspace
     Node* node = new Node(keyspace);
 
@@ -41,7 +55,7 @@ void Network::addNode(Keyspace* keyspace) {
     } else if(this->connectionType == ConnectionType::Single) {
         cout << "STUB: addNode() Single ConnectionType" << endl;
     }
-
+    return node->getUUID();
 }
 
 void Network::fullyConnect(Node* node) {
@@ -58,6 +72,7 @@ void Network::fullyConnect(Node* node) {
     }
 }
 
+// FIXME: this doesn't seem to be working, with two nodes there are two channels between them
 bool Network::channelExists(UUID nodeOne, UUID nodeTwo) {
     for(Channel* channel : channels) {
         if(channel->getToNode() == nodeOne || channel->getToNode() == nodeTwo) {
@@ -100,10 +115,6 @@ UUID Network::getRandomNode() {
     // Select a random value from the new UUID list
     int randomNum = rand() % uuidList.size();
     return uuidList.at(randomNum);
-}
-
-void Network::sendMsg(Message message) {
-
 }
 
 void Network::printUUIDList() {

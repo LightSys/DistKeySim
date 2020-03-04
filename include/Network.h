@@ -53,7 +53,7 @@ public:
     void allocateKeyspace(UUID to, UUID from);
 
     // FIXME: change message to a Message type
-    void sendMsg(Message msg);
+    void sendMsg(Message message);
 //    void broadcastMsg(std::string message, UUID fromNode);
 
     /**
@@ -72,13 +72,13 @@ public:
     /**
      * Adds the initial node to the Network, this defaults to the max Keyspace, so it should only be used once.
      */
-    void addNode();
+    UUID addNode();
 
     /**
      * The typical way to add a node to the network
      * @param keyspace
      */
-    void addNode(Keyspace* keyspace);
+    UUID addNode(Keyspace* keyspace);
 
     /**
      * Fully connects all the nodes to each other according to the ConnectionType
@@ -94,6 +94,8 @@ public:
      * @return bool (channelExists)
      */
     bool channelExists(UUID nodeOne, UUID nodeTwo);
+
+    void checkAllNodesForMessages();
 
     /**
      * Generates a UUID list based on the known UUIDs from the map<UUID, Node*>
