@@ -14,6 +14,7 @@ static std::random_device uuid_random_bits;
 
 typedef std::array<u_char, 16> uuid_t;
 typedef std::string HexDigest;
+typedef std::string UUID;
 
 const unsigned int NUM_SEED_BYTES = 16;
 const unsigned int TRUNCATED_UUID = 16;

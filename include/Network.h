@@ -9,6 +9,7 @@
 #include "Node.h"
 #include "UUID.h"
 #include "Channel.h"
+#include "message.hpp"
 
 /**
  * Types of connections that are possible when creating the initial network connection
@@ -16,20 +17,6 @@
 enum class ConnectionType { Full, Partial, Circular, Single};
 
 class Network{
-private:
-    /**
-     * Map of connecting a UUID to a given Node*
-     */
-    std::map<UUID, Node*> nodes;
-    /**
-     * List of every known channel between nodes, this is basically representing the edges of the graph
-     */
-    std::vector<Channel*> channels;
-
-    /**
-     * The type of connection for this network
-     */
-    ConnectionType connectionType;
 public:
     Network(ConnectionType connectionType);
     ~Network();
@@ -52,8 +39,8 @@ public:
     void allocateKeyspace(UUID to, UUID from);
 
     // FIXME: change message to a Message type
-    void sendMsg(std::string message, UUID toNode, UUID fromNode);
-    void broadcastMsg(std::string message, UUID fromNode);
+    void sendMsg(Message msg);
+//    void broadcastMsg(std::string message, UUID fromNode);
 
     /**
      * Returns a random node from the Node list, useful for creating random events
@@ -107,6 +94,20 @@ public:
     // Printing
     void printUUIDList();
     void printChannels();
+private:
+    /**
+     * Map of connecting a UUID to a given Node*
+     */
+    std::map<UUID, Node*> nodes;
+    /**
+     * List of every known channel between nodes, this is basically representing the edges of the graph
+     */
+    std::vector<Channel*> channels;
+    
+    /**
+     * The type of connection for this network
+     */
+    ConnectionType connectionType;
 };
 
 #endif // ADAK_KEYING_NETWORK_H
