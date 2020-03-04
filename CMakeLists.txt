@@ -6,7 +6,7 @@ set(PROJECT_VERSION_MAJOR 0)
 set(PROJECT_VERSION_MINOR 2)
 set(PROJECT_VERSION_PATCH 0)
 
-message(STATUS "${CMAKE_SYSTEM_NAME}")
+message(STATUS "System: ${CMAKE_SYSTEM_NAME}")
 
 # Build configuration
 set(CMAKE_CXX_STANDARD 17)
@@ -31,7 +31,6 @@ include(CTest)
 
 # Executable
 add_subdirectory(src)
-install(TARGETS adak DESTINATION ${PROJECT_BINARY_DIR})
 
 # Unit tests
 if (BUILD_TESTING)
