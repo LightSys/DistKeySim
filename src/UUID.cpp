@@ -23,11 +23,13 @@ HexDigest new_uuid() {
     return strUUID;
 }
 
-string UUIDToHex(HexDigest uuid, bool upper) {
+string UUIDToHex(UUID uuid, bool upper) {
     ostringstream ret;
-    for (u_int ch : uuid) {
+    unsigned int c;
+    for (string::size_type i = 0; i < uuid.length(); ++i) {
+        c = (unsigned int)(unsigned char)uuid.at(i);
         ret << hex << setfill('0') <<
-            setw(2) << (upper ? uppercase : nouppercase) << ch;
+            setw(2) << (upper ? uppercase : nouppercase) << c;
     }
     return ret.str();
 }

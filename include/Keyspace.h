@@ -26,7 +26,7 @@ public:
      * number S in the list of blocks/subblocks assigned to the node for the given database table.
      * @return
      */
-    adak_key checkNextAvailableKey();
+//    adak_key checkNextAvailableKey();
 
     // Getters
     unsigned long getStart() const { return this->start; }

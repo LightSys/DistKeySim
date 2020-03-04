@@ -17,6 +17,20 @@
 enum class ConnectionType { Full, Partial, Circular, Single};
 
 class Network{
+private:
+    /**
+     * Map of connecting a UUID to a given Node*
+     */
+    std::map<UUID, Node*> nodes;
+    /**
+     * List of every known channel between nodes, this is basically representing the edges of the graph
+     */
+    std::vector<Channel*> channels;
+
+    /**
+     * The type of connection for this network
+     */
+    ConnectionType connectionType;
 public:
     Network(ConnectionType connectionType);
     ~Network();
@@ -94,20 +108,6 @@ public:
     // Printing
     void printUUIDList();
     void printChannels();
-private:
-    /**
-     * Map of connecting a UUID to a given Node*
-     */
-    std::map<UUID, Node*> nodes;
-    /**
-     * List of every known channel between nodes, this is basically representing the edges of the graph
-     */
-    std::vector<Channel*> channels;
-    
-    /**
-     * The type of connection for this network
-     */
-    ConnectionType connectionType;
 };
 
 #endif // ADAK_KEYING_NETWORK_H

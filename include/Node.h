@@ -45,12 +45,24 @@ public:
     double getKeyGenRate() const { return keyGenRate; }
     void setKeyGenRate(double kgr) { keyGenRate = kgr; }
 
+    std::vector<Node*> getPeers() const { return this->peers; }
+
     /**
      *
      * @return
      */
     int getKeyShareRate() const { return keyShareRate; }
     void setKeyShareRate(int ksr) { keyShareRate = ksr; }
+
+    // FIXME: change to Message
+    void receiveMessage(std::string message);
+
+    /**
+     * Gives keyspace to a node
+     * @param node
+     * @param percentageToGive (Will be implemented later, allows for different percentages to be given for testing)
+     */
+    void giveKeyspaceToNode(Node* node, float percentageToGive);
 
     /**
      *
@@ -59,7 +71,7 @@ public:
     bool getActive() const { return active; }
     void setActive(bool a) { active = a; }
 
-    Keyspace* minimumKeyspace();
+    int minimumKeyspace();
     unsigned long getNextKey();
     double computeAggregateGenRate();
     double computeShortTermAllocationRatio();

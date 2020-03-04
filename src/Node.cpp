@@ -4,37 +4,59 @@
 #include "UUID.h"
 
 Node::Node() {
-    this->uuid = new_uuid();
-
-    // FIXME: set to actual keyspace
-    this->keySpace.push_back(new Keyspace(0, ULONG_MAX, 0));
-
-    this->active = true;
+    Node(new Keyspace(0, ULONG_MAX, 0));
 }
 
 Node::Node(Keyspace* keySpace) {
     this->uuid = new_uuid();
     this->keySpace.push_back(keySpace);
+    this->active = true;
 }
-
 
 ///creates the key space for the Node
-unsigned long Node::getNextKey(){
-    return minimumKeyspace()->getNextAvailableKey();
+unsigned long Node::getNextKey() {
+//    return minimumKeyspace()->getNextAvailableKey();
 }
 
-Keyspace* Node::minimumKeyspace() {
+int Node::minimumKeyspace() {
     long min = ULONG_MAX;
-    Keyspace* keySpaceMin = NULL;
+    int index = -1;
+//    Keyspace* keySpaceMin = NULL;
 
     for(int i =0; i < keySpace.size(); i++){
         if(keySpace[i]->getStart() < min){
             min = keySpace[i]->getStart();
-            keySpaceMin = keySpace[i];
+//            keySpaceMin = keySpace[i];
+            index = i;
         }
     }
+    return index;
+}
 
-    return keySpaceMin;
+void Node::receiveMessage(std::string message) {
+}
+
+void Node::giveKeyspaceToNode(Node* node, float percentageToGive) {
+    int minKeyspaceIndex = minimumKeyspace();
+
+    Keyspace* minKeyspace = this->keySpace.at(minKeyspaceIndex);
+
+    unsigned long myStart = minKeyspace->getStart();
+    unsigned long myEnd = minKeyspace->getEnd();
+    unsigned long mySuffix = minKeyspace->getSuffix();
+    mySuffix += 1;
+
+    unsigned long newStart = minKeyspace->getStart();
+    unsigned long newEnd = minKeyspace->getEnd();
+    unsigned long newSuffix = minKeyspace->getSuffix();
+    newStart += pow(newSuffix, 2);
+    newSuffix += 1;
+
+    Keyspace* myKeyspace = new Keyspace(myStart, myEnd, mySuffix);
+    Keyspace* newKeyspace = new Keyspace(newStart, newEnd, newSuffix);
+
+    this->keySpace.at(minKeyspaceIndex) = myKeyspace;
+    node->keySpace.push_back(newKeyspace);
 }
 
 /**

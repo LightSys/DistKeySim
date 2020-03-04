@@ -2,7 +2,6 @@
 #define LIGHTSYS_ADAK_RANDOM_H
 
 #include "EventGen.h"
-#include "Simulation.h"
 
 class Random: public EventGen {
 private:

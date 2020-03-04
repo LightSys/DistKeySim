@@ -102,6 +102,10 @@ UUID Network::getRandomNode() {
     return uuidList.at(randomNum);
 }
 
+void Network::sendMsg(Message message) {
+
+}
+
 void Network::printUUIDList() {
     int counter = 0;
     cout << "COUNT - UUID (in hex) - # bits" << endl;
@@ -119,3 +123,5 @@ void Network::printChannels() {
     }
 
 }
+
+
