@@ -27,6 +27,27 @@ int main(int argc, char **argv){
     for(int i = 0; i < 10; i++) {
         eventGenerator->eventTick(network);
     }
+    
+    std::ofstream csvFile;
+    csvFile.open("csvFile.csv", std::ofstream::out | std::ofstream::trunc);
+    csvFile << "UUID, keySpace, keyGenRate, active, provisioningRatio \n";
+    for (int i = 0; i < (network->getUUIDList().size()); i++){
+        UUID uuid = network->getUUIDList().at(i); ///will get the UUID
+        Keyspace kS = network->getNodeFromUUID(uuid)->getKeySpace();
+        double kGR = network->getNodeFromUUID(uuid)->getKeyGenRate();
+        bool active = network->getNodeFromUUID(uuid)->getActive();
+        std::string act = "";
+        if(active == true) {
+            act = "true";
+        }
+        else{
+            act = "false";
+        }
+        double pR = network->getNodeFromUUID(uuid)->getProvisioningRatio();
+        uuid = UUIDToHex(network->getUUIDList().at(i));
+        csvFile << uuid << ", " << kS << ", " << kGR << ", " << act << ", " << pR << "\n";
+    }
+    csvFile.close();
 
     network->printUUIDList();
     network->printChannels();
