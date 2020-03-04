@@ -866,11 +866,33 @@ class KeyspaceMessageContents :
 
   // accessors -------------------------------------------------------
 
+  enum : int {
+    kKeyspacesFieldNumber = 1,
+  };
+  // repeated .KeyspaceMessageContents.Keyspace keyspaces = 1;
+  int keyspaces_size() const;
+  private:
+  int _internal_keyspaces_size() const;
+  public:
+  void clear_keyspaces();
+  ::KeyspaceMessageContents_Keyspace* mutable_keyspaces(int index);
+  ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::KeyspaceMessageContents_Keyspace >*
+      mutable_keyspaces();
+  private:
+  const ::KeyspaceMessageContents_Keyspace& _internal_keyspaces(int index) const;
+  ::KeyspaceMessageContents_Keyspace* _internal_add_keyspaces();
+  public:
+  const ::KeyspaceMessageContents_Keyspace& keyspaces(int index) const;
+  ::KeyspaceMessageContents_Keyspace* add_keyspaces();
+  const ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::KeyspaceMessageContents_Keyspace >&
+      keyspaces() const;
+
   // @@protoc_insertion_point(class_scope:KeyspaceMessageContents)
  private:
   class _Internal;
 
   ::PROTOBUF_NAMESPACE_ID::internal::InternalMetadataWithArena _internal_metadata_;
+  ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::KeyspaceMessageContents_Keyspace > keyspaces_;
   mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
   friend struct ::TableStruct_message_2eproto;
 };
@@ -1589,6 +1611,45 @@ inline void KeyspaceMessageContents_Keyspace::set_suffixbits(::PROTOBUF_NAMESPAC
 // -------------------------------------------------------------------
 
 // KeyspaceMessageContents
+
+// repeated .KeyspaceMessageContents.Keyspace keyspaces = 1;
+inline int KeyspaceMessageContents::_internal_keyspaces_size() const {
+  return keyspaces_.size();
+}
+inline int KeyspaceMessageContents::keyspaces_size() const {
+  return _internal_keyspaces_size();
+}
+inline void KeyspaceMessageContents::clear_keyspaces() {
+  keyspaces_.Clear();
+}
+inline ::KeyspaceMessageContents_Keyspace* KeyspaceMessageContents::mutable_keyspaces(int index) {
+  // @@protoc_insertion_point(field_mutable:KeyspaceMessageContents.keyspaces)
+  return keyspaces_.Mutable(index);
+}
+inline ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::KeyspaceMessageContents_Keyspace >*
+KeyspaceMessageContents::mutable_keyspaces() {
+  // @@protoc_insertion_point(field_mutable_list:KeyspaceMessageContents.keyspaces)
+  return &keyspaces_;
+}
+inline const ::KeyspaceMessageContents_Keyspace& KeyspaceMessageContents::_internal_keyspaces(int index) const {
+  return keyspaces_.Get(index);
+}
+inline const ::KeyspaceMessageContents_Keyspace& KeyspaceMessageContents::keyspaces(int index) const {
+  // @@protoc_insertion_point(field_get:KeyspaceMessageContents.keyspaces)
+  return _internal_keyspaces(index);
+}
+inline ::KeyspaceMessageContents_Keyspace* KeyspaceMessageContents::_internal_add_keyspaces() {
+  return keyspaces_.Add();
+}
+inline ::KeyspaceMessageContents_Keyspace* KeyspaceMessageContents::add_keyspaces() {
+  // @@protoc_insertion_point(field_add:KeyspaceMessageContents.keyspaces)
+  return _internal_add_keyspaces();
+}
+inline const ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::KeyspaceMessageContents_Keyspace >&
+KeyspaceMessageContents::keyspaces() const {
+  // @@protoc_insertion_point(field_list:KeyspaceMessageContents.keyspaces)
+  return keyspaces_;
+}
 
 // -------------------------------------------------------------------
 

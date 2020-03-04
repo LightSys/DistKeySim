@@ -9,15 +9,16 @@
 #include "picoSHA2.h"
 
 // random 256 bit uuid type:
-typedef std::array<unsigned char, picosha2::k_digest_size> uuid_t;
+typedef std::array<u_char, picosha2::k_digest_size> uuid_256;
 static std::random_device uuid_random_bits;
 
-typedef std::string UUID;
+typedef std::array<u_char, 16> uuid_t;
+typedef std::string HexDigest;
 
 const unsigned int NUM_SEED_BYTES = 16;
 const unsigned int TRUNCATED_UUID = 16;
 
-UUID new_uuid();
-std::string UUIDToHex(UUID uuid, bool upper = false);
+HexDigest new_uuid();
+std::string UUIDToHex(HexDigest uuid, bool upper = false);
 
 #endif // LIGHTSYS_ADAK_UUID_H
