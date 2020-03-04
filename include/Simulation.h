@@ -8,16 +8,17 @@
 static const int AMOUNT_OF_NODES = 10;
 
 class Simulation {
+public:
+    Simulation();
+    ~Simulation() {};
+
+    // Getters
+    Network *getNetwork() { return &this->network; }
 private:
 //    std::vector<UUID> uuidList;
 //    std::map<UUID, Node*> nodes;
 //    std::vector<Channel*> channels;
-    Network* network;
-public:
-    Simulation();
-
-    // Getters
-    Network* getNetwork() { return this->network; }
+    Network network;
 };
 
 #endif //LIGHTSYS_ADAK_SIMULATION_H
