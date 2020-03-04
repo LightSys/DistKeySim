@@ -51,17 +51,18 @@ double Node::computeAggregateGenRate() {
     totalPeerRate = totalPeerRate * 0.30;
 
     aggregateGenRate = totalPeerRate + keyGenRate;
+    return aggregateGenRate;
 }
 /**
  * TODO write next two functions
  * I'm not certain of how to write these.
  */
 double Node::computeShortTermAllocationRatio(){
-
+    return -1.0;
 }
 
 double Node::computeLongTermAllocationRatio(){
-
+    return -1.0;
 }
 
 /**
@@ -69,7 +70,7 @@ double Node::computeLongTermAllocationRatio(){
  * Requires understanding of the two above for computation
  */
 double Node::computeAggregateAllocationRatio() {
-
+    return -1.0;
 }
 
 /**
@@ -78,5 +79,5 @@ double Node::computeAggregateAllocationRatio() {
  * How do I determine which rates are the relevant ones?
  */
 double Node::computeProvisioningRatio() {
-
+    return -1.0;
 }
