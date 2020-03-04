@@ -10,6 +10,7 @@ using namespace std;
 static const HexDigest& BROADCAST_UUID = "00000000-0000-0000-0000000000";
 
 Node::Node() {
+    // TODO: figure out how to call Node(Keyspace* keySpace) constructor
     Node(new Keyspace(0, ULONG_MAX, 0));
 }
 
@@ -42,7 +43,7 @@ unsigned long Node::getNextKey() {
 }
 
 int Node::minimumKeyspace() {
-    long min = ULONG_MAX;
+    unsigned long min = ULONG_MAX;
     int index = -1;
 //    Keyspace* keySpaceMin = NULL;
 
@@ -60,7 +61,7 @@ int Node::minimumKeyspace() {
  * This is where the Baylor team will add more statistics to handle the messages that each node receives
  * @param message
  */
-void Node::receiveMessage(Message message) {
+void Node::receiveMessage(const Message message) {
 
     if(message.messagetype() == Message::MessageType::Message_MessageType_KEYSPACE) {
 
@@ -72,10 +73,12 @@ void Node::receiveMessage(Message message) {
                 if(node->getUUID() == message.sourcenodeid()) {
 
                     // Need to decide when I give keyspace, for right now, we will automatically give the keyspace
-                    giveKeyspaceToNode(node, 1);
+                    if(!this->keySpace.empty()) {
+                        giveKeyspaceToNode(node, 1);
 
-                    // Also need to send the ACK
-                    break;
+                        // Also need to send the ACK
+                        break;
+                    }
                 }
             }
         }
@@ -99,14 +102,18 @@ void Node::giveKeyspaceToNode(Node* node, float percentageToGive) {
     unsigned long newStart = minKeyspace->getStart();
     unsigned long newEnd = minKeyspace->getEnd();
     unsigned long newSuffix = minKeyspace->getSuffix();
-    newStart += pow(2, 0);
+    newStart += pow(2, newSuffix);
     newSuffix += 1;
 
-    Keyspace* myKeyspace = new Keyspace(myStart, myEnd, mySuffix);
-    Keyspace* newKeyspace = new Keyspace(newStart, newEnd, newSuffix);
+    if(newSuffix <= 32) {
+        auto *myKeyspace = new Keyspace(myStart, myEnd, mySuffix);
+        auto *newKeyspace = new Keyspace(newStart, newEnd, newSuffix);
 
-    this->keySpace.at(minKeyspaceIndex) = myKeyspace;
-    node->keySpace.push_back(newKeyspace);
+        this->keySpace.at(minKeyspaceIndex) = myKeyspace;
+        node->keySpace.push_back(newKeyspace);
+    } else {
+        cout << "ERROR we have run out of keyspace blocks, need to further sub-divide the keys using start/end" << endl;
+    }
 }
 
 /**
@@ -116,7 +123,7 @@ void Node::giveKeyspaceToNode(Node* node, float percentageToGive) {
 double Node::computeAggregateGenRate() {
     double totalPeerRate;
 
-    for (int i = 0; i < peers.size(); i++) {
+    for(int i = 0; i < peers.size(); i++) {
         totalPeerRate += peers.at(i)->keyGenRate;
     }
 

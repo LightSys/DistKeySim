@@ -5,20 +5,19 @@
 #include "Network.h"
 
 // TODO: change to JSON parameter
-static const int AMOUNT_OF_NODES = 10;
+static const int AMOUNT_OF_NODES = 2;
 
 class Simulation {
+private:
+    Network network;
+    std::ofstream* csvOutput;
 public:
     Simulation();
-    ~Simulation() {};
+    ~Simulation();
 
     // Getters
     Network *getNetwork() { return &this->network; }
-private:
-//    std::vector<UUID> uuidList;
-//    std::map<UUID, Node*> nodes;
-//    std::vector<Channel*> channels;
-    Network network;
+    std::ofstream* getCSVOutput() const { return this->csvOutput; }
 };
 
 #endif //LIGHTSYS_ADAK_SIMULATION_H

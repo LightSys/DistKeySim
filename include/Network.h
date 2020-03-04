@@ -40,7 +40,7 @@ public:
      * @param nodeOne
      * @param nodeTwo
      */
-    void connectNodes(UUID nodeOne, UUID nodeTwo);
+    void connectNodes(const UUID nodeOne, const UUID nodeTwo);
 
     /**
      * Disconnects the two nodes and removes the existing channel between them
@@ -53,7 +53,7 @@ public:
     void allocateKeyspace(UUID to, UUID from);
 
     // FIXME: change message to a Message type
-    void sendMsg(Message message);
+    void sendMsg(const Message message);
 //    void broadcastMsg(std::string message, UUID fromNode);
 
     /**
@@ -67,7 +67,7 @@ public:
      * @param uuid
      * @return Node* (associated Node)
      */
-    Node* getNodeFromUUID(UUID uuid) const { return nodes.find(uuid)->second; }
+    Node* getNodeFromUUID(const UUID uuid) const { return nodes.find(uuid)->second; }
 
     /**
      * Adds the initial node to the Network, this defaults to the max Keyspace, so it should only be used once.
@@ -93,7 +93,7 @@ public:
      * @param nodeTwo
      * @return bool (channelExists)
      */
-    bool channelExists(UUID nodeOne, UUID nodeTwo);
+    bool channelExists(const UUID nodeOne, const UUID nodeTwo);
 
     void checkAllNodesForMessages();
 
@@ -110,6 +110,10 @@ public:
     // Printing
     void printUUIDList();
     void printChannels();
+    void printKeyspaces();
+    void printUUIDList(std::ostream* out, char spacer = ',');
+    void printChannels(std::ostream* out, char spacer = ',');
+    void printKeyspaces(std::ostream* out, char spacer = ',');
 };
 
 #endif // ADAK_KEYING_NETWORK_H

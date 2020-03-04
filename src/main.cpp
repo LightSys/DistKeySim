@@ -3,26 +3,31 @@
 
 int main(int argc, char** argv) {
     EventGen* eventGenerator = new Random();
-    Simulation* simulation = new Simulation();
+    auto* simulation = new Simulation();
     Network* network = simulation->getNetwork();
 
-    UUID node1 = network->addNode();
-    UUID node2 = network->addNode(nullptr);
+    // Create root node that will have the max keyspace 0/0
+    network->addNode();
 
-    // FIXME: make sure the keyspace is given
-    network->connectNodes(node1, node2);
-    network->checkAllNodesForMessages();
+    // Create new nodes and add them to the map
+    for(int i = 0; i < AMOUNT_OF_NODES; i++) {
 
-//    // Create new nodes and add them to the map
-//    for(int i = 0; i < AMOUNT_OF_NODES; i++) {
-//        // FIXME: add appropriate keyspace
-//        network->addNode();
-//    }
-//
-//    for(int i = 0; i < 10; i++) {
-//        eventGenerator->eventTick(network);
-//    }
+        network->printKeyspaces();
+        network->printKeyspaces(simulation->getCSVOutput());
 
-    network->printUUIDList();
-    network->printChannels();
+        network->addNode(nullptr);
+        network->checkAllNodesForMessages();
+    }
+
+    for(int i = 0; i < 2; i++) {
+        eventGenerator->eventTick(network);
+        network->checkAllNodesForMessages();
+    }
+
+//    network->printUUIDList();
+//    network->printChannels();
+    network->printKeyspaces();
+//    network->printUUIDList(simulation->getCSVOutput());
+//    network->printChannels(simulation->getCSVOutput());
+    network->printKeyspaces(simulation->getCSVOutput());
 }
