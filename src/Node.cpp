@@ -2,8 +2,7 @@
 #include <iostream>
 
 #include "Node.h"
-#include "UUID.h"
-#include "message.hpp"
+#include "NodeData.h"
 
 using namespace std;
 
@@ -12,6 +11,7 @@ static const HexDigest& BROADCAST_UUID = "00000000-0000-0000-0000000000";
 Node::Node() {
     // TODO: figure out how to call Node(Keyspace* keySpace) constructor
     Node(new Keyspace(0, ULONG_MAX, 0));
+    lastDay = new NodeData(this);
 }
 
 Node::Node(Keyspace* keySpace) {
@@ -38,6 +38,7 @@ Node::Node(Keyspace* keySpace) {
 }
 
 adak_key Node::getNextKey() {
+    lastDay->useKey();
     return this->keySpace.at(minimumKeyspaceIndex())->getNextAvailableKey();
 }
 
@@ -58,6 +59,18 @@ int Node::minimumKeyspaceIndex() {
  * @param message
  */
 void Node::receiveMessage(const Message message) {
+
+    // Check time and update lastDay and rotate the history
+    if(NodeData::isNewDay(lastDay->getDay())) {
+        history.push_back(lastDay);
+        if(history.size() > 7) {
+            // Remove the first value from the vector
+            // this shifts the time, so we only store 1 week
+            delete history.at(0);
+            history.erase(history.begin());
+        }
+        lastDay = new NodeData(this);
+    }
 
     if(message.messagetype() == Message::MessageType::Message_MessageType_KEYSPACE) {
 
@@ -131,47 +144,47 @@ Message Node::getHeartbeatMessage() {
     return msg;
 }
 
-/**
- * computes the generation rate of a node and all its peers.
- *TODO alter funct so that it excludes the destination node in the computation
- */
-double Node::computeAggregateGenRate() {
-    double totalPeerRate;
-
-    for(int i = 0; i < peers.size(); i++) {
-        totalPeerRate += peers.at(i)->keyGenRate;
-    }
-
-    totalPeerRate = totalPeerRate * 0.30;
-
-    aggregateGenRate = totalPeerRate + keyGenRate;
-    return aggregateGenRate;
-}
-/**
- * TODO write next two functions
- * I'm not certain of how to write these.
- */
-double Node::computeShortTermAllocationRatio(){
-    return -1.0;
-}
-
-double Node::computeLongTermAllocationRatio(){
-    return -1.0;
-}
-
-/**
- * TODO write function
- * Requires understanding of the two above for computation
- */
-double Node::computeAggregateAllocationRatio() {
-    return -1.0;
-}
-
-/**
- * TODO write function
- * found by dividing the relevant creation (gen) rate by the relevant allocation rate.
- * How do I determine which rates are the relevant ones?
- */
-double Node::computeProvisioningRatio() {
-    return -1.0;
-}
+///**
+// * computes the generation rate of a node and all its peers.
+// *TODO alter funct so that it excludes the destination node in the computation
+// */
+//double Node::computeAggregateGenRate() {
+//    double totalPeerRate;
+//
+//    for(int i = 0; i < peers.size(); i++) {
+//        totalPeerRate += peers.at(i)->keyGenRate;
+//    }
+//
+//    totalPeerRate = totalPeerRate * 0.30;
+//
+//    aggregateGenRate = totalPeerRate + keyGenRate;
+//    return aggregateGenRate;
+//}
+///**
+// * TODO write next two functions
+// * I'm not certain of how to write these.
+// */
+//double Node::computeShortTermAllocationRatio(){
+//    return -1.0;
+//}
+//
+//double Node::computeLongTermAllocationRatio(){
+//    return -1.0;
+//}
+//
+///**
+// * TODO write function
+// * Requires understanding of the two above for computation
+// */
+//double Node::computeAggregateAllocationRatio() {
+//    return -1.0;
+//}
+//
+///**
+// * TODO write function
+// * found by dividing the relevant creation (gen) rate by the relevant allocation rate.
+// * How do I determine which rates are the relevant ones?
+// */
+//double Node::computeProvisioningRatio() {
+//    return -1.0;
+//}

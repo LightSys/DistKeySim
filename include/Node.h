@@ -7,6 +7,10 @@
 #include "UUID.h"
 #include "Keyspace.h"
 #include "message.hpp"
+#include "NodeData.h"
+
+
+class NodeData;
 
 ///TODO integrate RPC into the class
 ///TODO likely other things that I didn't consider.
@@ -14,16 +18,19 @@ class Node {
 private:
     UUID uuid;
     std::vector<Keyspace*> keySpace;
-    int keyShareRate;
-    double keyGenRate;
-    double aggregateGenRate;
-    double shortTermAllocationRatio;
-    double longTermAllocationRatio;
-    double aggregateAllocationRatio;
-    double provisioningRatio;
+//    int keyShareRate;
+//    double keyGenRate;
+//    double aggregateGenRate;
+//    double shortTermAllocationRatio;
+//    double longTermAllocationRatio;
+//    double aggregateAllocationRatio;
+//    double provisioningRatio;
     bool active = true;
     bool messageWaiting = false;
     std::vector<Node*> peers; ///called directConnection on the board.
+
+    std::vector<NodeData*> history;
+    NodeData* lastDay;
 
     Message messageToSend;
 public:
@@ -32,7 +39,7 @@ public:
     ~Node() = default;
 
     void addPeer(Node* peer) { this->peers.push_back(peer); }
-    void removePeer(Node* peer); /*{ this->peers.erase(peers.begin())}*/
+//    void removePeer(Node* peer); /*{ this->peers.erase(peers.begin())}*/
 
     void sendMessage();
 
@@ -55,31 +62,34 @@ public:
 
     int minimumKeyspaceIndex();
     adak_key getNextKey();
-    double computeAggregateGenRate();
-    double computeShortTermAllocationRatio();
-    double computeLongTermAllocationRatio();
-    double computeAggregateAllocationRatio();
-    double computeProvisioningRatio();
+//    double computeAggregateGenRate();
+//    double computeShortTermAllocationRatio();
+//    double computeLongTermAllocationRatio();
+//    double computeAggregateAllocationRatio();
+//    double computeProvisioningRatio();
 
     UUID getUUID() const { return uuid; }
-    void setUUID(UUID nid) { uuid = nid; }
+//    void setUUID(UUID nid) { uuid = nid; }
 
     std::vector<Keyspace*> getKeySpace() const { return keySpace; }
 
-    double getKeyGenRate() const { return keyGenRate; }
-    void setKeyGenRate(double kgr) { keyGenRate = kgr; }
-
-    int getKeyShareRate() const { return keyShareRate; }
-    void setKeyShareRate(int ksr) { keyShareRate = ksr; }
-
-    bool getActive() const { return active; }
-    void setActive(bool a) { active = a; }
+//    double getKeyGenRate() const { return keyGenRate; }
+//    void setKeyGenRate(double kgr) { keyGenRate = kgr; }
+//
+//    int getKeyShareRate() const { return keyShareRate; }
+//    void setKeyShareRate(int ksr) { keyShareRate = ksr; }
+//
+//    bool getActive() const { return active; }
+//    void setActive(bool a) { active = a; }
 
     std::vector<Node*> getPeers() const { return this->peers; }
 
     bool isMessageWaiting() const { return this->messageWaiting; }
     void setMessageWaiting(bool messageWaiting) { this->messageWaiting = messageWaiting; }
     Message getWaitingMessage() const { return this->messageToSend; }
+
+
+    NodeData* getNodeData() const { return this->lastDay; }
 };
 
 #endif //ADAK_KEYING_NODE_H
