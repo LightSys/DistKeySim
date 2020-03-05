@@ -12,15 +12,17 @@ Random::Random() : EventGen() {
 
 void Random::eventTick(Network* network) {
     int action = rand() % 3 + 1; // random number between 1-3
+    UUID randomUUID = network->getRandomNode();
     switch(action) {
         case 1:
-            network->connectNodes(network->getRandomNode(), network->getRandomNode());
+            // Uses key from a random node
+            network->getNodeFromUUID(randomUUID)->getNextKey();
             break;
         case 2:
             network->connectNodes(network->getRandomNode(), network->getRandomNode());
             break;
         case 3:
-            network->connectNodes(network->getRandomNode(), network->getRandomNode());
+//            network->disconnectNodes(network->getRandomNode(), network->getRandomNode());
             break;
         default:
             cout << "Something wrong with random!" << endl;

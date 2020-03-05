@@ -24,12 +24,12 @@ Node::Node(Keyspace* keySpace) {
                 (HexDigest &) BROADCAST_UUID,
                 0,
                 Message::ChannelState::Message_ChannelState_INITIAL_STARTUP,
-                1
+                1 // FIXME: Nate needs to change this so the msgID exists, but doesn't need to be declared, similar to channelID
         );
         toKeyspaceMessage(
                 this->messageToSend,
                 {
-                        KeyspaceExchangeRecord{"test", 0, 0, 0},
+                        KeyspaceExchangeRecord{"test", 0, 0, 0}, // FIXME: ask nate about this
                 }
         );
     } else {
@@ -37,20 +37,16 @@ Node::Node(Keyspace* keySpace) {
     }
 }
 
-///creates the key space for the Node
-unsigned long Node::getNextKey() {
-//    return minimumKeyspace()->getNextAvailableKey();
+adak_key Node::getNextKey() {
+    return this->keySpace.at(minimumKeyspaceIndex())->getNextAvailableKey();
 }
 
-int Node::minimumKeyspace() {
+int Node::minimumKeyspaceIndex() {
     unsigned long min = ULONG_MAX;
     int index = -1;
-//    Keyspace* keySpaceMin = NULL;
-
     for(int i =0; i < keySpace.size(); i++){
         if(keySpace[i]->getStart() < min){
             min = keySpace[i]->getStart();
-//            keySpaceMin = keySpace[i];
             index = i;
         }
     }
@@ -90,7 +86,7 @@ void Node::receiveMessage(const Message message) {
 }
 
 void Node::giveKeyspaceToNode(Node* node, float percentageToGive) {
-    int minKeyspaceIndex = minimumKeyspace();
+    int minKeyspaceIndex = minimumKeyspaceIndex();
 
     Keyspace* minKeyspace = this->keySpace.at(minKeyspaceIndex);
 
@@ -105,15 +101,34 @@ void Node::giveKeyspaceToNode(Node* node, float percentageToGive) {
     newStart += pow(2, newSuffix);
     newSuffix += 1;
 
-    if(newSuffix <= 32) {
+//    if(newSuffix <= 32) {
         auto *myKeyspace = new Keyspace(myStart, myEnd, mySuffix);
         auto *newKeyspace = new Keyspace(newStart, newEnd, newSuffix);
 
         this->keySpace.at(minKeyspaceIndex) = myKeyspace;
         node->keySpace.push_back(newKeyspace);
-    } else {
-        cout << "ERROR we have run out of keyspace blocks, need to further sub-divide the keys using start/end" << endl;
-    }
+//    } else {
+//        cout << "ERROR we have run out of keyspace blocks, need to further sub-divide the keys using start/end" << endl;
+//    }
+}
+
+Message Node::getHeartbeatMessage() {
+    Message msg = newBaseMessage(
+            this->uuid,
+            (HexDigest &) BROADCAST_UUID,
+            0,
+            Message::ChannelState::Message_ChannelState_NORMAL_COMMUNICATION,
+            1
+    );
+    toInformationalMessage(
+            msg,
+            {
+                // FIXME: ask Nate about CollectionInfoRecord, collectionInfoRecord should also match the Node functions
+                CollectionInfoRecord{"test", 0.0, 0.0, 1.0, 1.0},
+                CollectionInfoRecord{"test2", 0.0, 0.0, 1.0, 1.0},
+            }
+    );
+    return msg;
 }
 
 /**

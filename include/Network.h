@@ -47,10 +47,10 @@ public:
      * @param nodeOne
      * @param nodeTwo
      */
-    void disconnectNodes(UUID nodeOne, UUID nodeTwo);
+    void disconnectNodes(const UUID nodeOne, const UUID nodeTwo);
 
-    void initiateMessage(UUID to, UUID from, std::string message);
-    void allocateKeyspace(UUID to, UUID from);
+//    void initiateMessage(UUID to, UUID from, std::string message);
+//    void allocateKeyspace(UUID to, UUID from);
 
     // FIXME: change message to a Message type
     void sendMsg(const Message message);
@@ -94,6 +94,7 @@ public:
      * @return bool (channelExists)
      */
     bool channelExists(const UUID nodeOne, const UUID nodeTwo);
+    int getChannelIndex(const UUID nodeOne, const UUID nodeTwo);
 
     void checkAllNodesForMessages();
 

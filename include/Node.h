@@ -32,9 +32,19 @@ public:
     ~Node() = default;
 
     void addPeer(Node* peer) { this->peers.push_back(peer); }
+    void removePeer(Node* peer); /*{ this->peers.erase(peers.begin())}*/
+
     void sendMessage();
 
     void receiveMessage(const Message message);
+
+    /**
+     * Per the specification, each node will send out a signal letting other nodes know how much
+     * keyspace it is using etc. These informational messages will be generated in this class.
+     * @return
+     */
+    Message getHeartbeatMessage();
+
 
     /**
      * Gives keyspace to a node
@@ -43,7 +53,7 @@ public:
      */
     void giveKeyspaceToNode(Node* node, float percentageToGive);
 
-    int minimumKeyspace();
+    int minimumKeyspaceIndex();
     adak_key getNextKey();
     double computeAggregateGenRate();
     double computeShortTermAllocationRatio();

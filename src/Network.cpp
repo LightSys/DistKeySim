@@ -26,8 +26,15 @@ void Network::sendMsg(const Message message) {
     const UUID sourceUUID = message.sourcenodeid();
     Node* sourceNode = getNodeFromUUID(sourceUUID);
     sourceNode->setMessageWaiting(false);
-    for(auto const& x : nodes) {
-        x.second->receiveMessage(message);
+
+    // Send that message to ALL nodes, even ones the sourceNode doesnt' know about
+//    for(auto const& x : nodes) {
+//        x.second->receiveMessage(message);
+//    }
+
+    // Send the messsage to that Node's peers
+    for(Node* node : sourceNode->getPeers()) {
+        node->receiveMessage(message);
     }
 }
 
@@ -36,6 +43,10 @@ void Network::checkAllNodesForMessages() {
         if(x.second->isMessageWaiting()) {
             sendMsg(x.second->getWaitingMessage());
         }
+
+        // TODO: Baylor will need to change this, right now we are sending heartbeat messages practically all the time
+        // they will probably want to add time to Node to send it periodically
+        sendMsg(x.second->getHeartbeatMessage());
     }
 }
 
@@ -75,16 +86,19 @@ void Network::fullyConnect(Node* node) {
     }
 }
 
-// FIXME: this doesn't seem to be working, with two nodes there are two channels between them
 bool Network::channelExists(const UUID nodeOne, const UUID nodeTwo) {
-    for(Channel* channel : channels) {
+    return getChannelIndex(nodeOne, nodeTwo) != -1;
+}
+int Network::getChannelIndex(const UUID nodeOne, const UUID nodeTwo) {
+    for(int i = 0; i < channels.size(); i++) {
+        Channel* channel = channels.at(i);
         if(channel->getToNode() == nodeOne || channel->getToNode() == nodeTwo) {
             if(channel->getFromNode() == nodeOne || channel->getFromNode() == nodeTwo) {
-                return true;
+                return i;
             }
         }
     }
-    return false;
+    return -1;
 }
 
 void Network::connectNodes(const UUID nodeOne, const UUID nodeTwo) {
@@ -100,6 +114,23 @@ void Network::connectNodes(const UUID nodeOne, const UUID nodeTwo) {
         Node *node2 = getNodeFromUUID(nodeTwo);
         node1->addPeer(node2);
         node2->addPeer(node1);
+    }
+}
+
+void Network::disconnectNodes(const UUID nodeOne, const UUID nodeTwo) {
+    int channelIndex = getChannelIndex(nodeOne, nodeTwo);
+    if(channelIndex > -1) {
+        Channel* channel = channels.at(channelIndex);
+        Node* node1 = this->getNodeFromUUID(channel->getFromNode());
+        Node* node2 = this->getNodeFromUUID(channel->getToNode());
+
+
+        // TODO: need to remove each peer from the Node's peer list
+//        node1->remove
+
+
+        // TODO: haven't checked this
+        channels.erase(channels.begin() + channelIndex);
     }
 }
 

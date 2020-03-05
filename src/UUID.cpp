@@ -1,7 +1,6 @@
 #include "UUID.h"
 
-using namespace std;
-
+// FIXME: new_uuid doesn't return a HexDigest, the uuid is not hex, the conversion is
 HexDigest new_uuid() {
     // generate seed bits:
     std::array<unsigned char, NUM_SEED_BYTES> seed{};
@@ -16,20 +15,19 @@ HexDigest new_uuid() {
     // added to original function to return a usable truncated ID and returns a string
     HexDigest strUUID;
 
-    //TODO::NEEDS TO BE TESTED once working
     for(int i = 0; i < TRUNCATED_UUID; i++){
         strUUID += sha_uuid[i];
     }
     return strUUID;
 }
 
-string UUIDToHex(UUID uuid, bool upper) {
-    ostringstream ret;
+std::string UUIDToHex(UUID uuid, bool upper) {
+    std::ostringstream ret;
     unsigned int c;
-    for (string::size_type i = 0; i < uuid.length(); ++i) {
+    for (std::string::size_type i = 0; i < uuid.length(); ++i) {
         c = (unsigned int)(unsigned char)uuid.at(i);
-        ret << hex << setfill('0') <<
-            setw(2) << (upper ? uppercase : nouppercase) << c;
+        ret << std::hex << std::setfill('0') <<
+            std::setw(2) << (upper ? std::uppercase : std::nouppercase) << c;
     }
     return ret.str();
 }

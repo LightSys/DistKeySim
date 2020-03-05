@@ -7,13 +7,21 @@
 // TODO: change to JSON parameter
 static const int AMOUNT_OF_NODES = 2;
 
+/**
+ * The type of Event Generation type the Simluation should use
+ */
+enum class EventGenerationType { Random, Unused1, Unused2 };
+
 class Simulation {
 private:
+    EventGenerationType eventGenerationType;
     Network network;
     std::ofstream* csvOutput;
 public:
-    Simulation();
+    Simulation(EventGenerationType eventGenerationType);
     ~Simulation();
+
+    void runSimulation();
 
     // Getters
     Network *getNetwork() { return &this->network; }
