@@ -10,7 +10,7 @@ TEST_CASE("Testing getActive", "[classic]") {
 
 TEST_CASE("Testing test", "[classic]") {
     Random eventGenerator;
-    Simulation simulation;
+    Simulation simulation(EventGenerationType::Random);
 //    Network* network = simulation.getNetwork();
 //
 //    network->addNode();
