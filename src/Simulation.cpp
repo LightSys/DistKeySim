@@ -20,7 +20,6 @@ Simulation::~Simulation() {
 }
 
 void Simulation::runSimulation() {
-
     EventGen *eventGenerator;
 
     if(eventGenerationType == EventGenerationType::Random) {
