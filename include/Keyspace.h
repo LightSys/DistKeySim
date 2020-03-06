@@ -7,9 +7,9 @@ private:
     /**
      * Each keyspace block is designated by S-E/B, start is the S, end is the E, and suffix is B
      */
-    unsigned long start;
-    unsigned long end;
-    unsigned long suffix;
+    uint32_t start;
+    uint32_t end;
+    uint32_t suffix;
 public:
     Keyspace(unsigned long start, unsigned long end, unsigned long suffix);
 
@@ -30,9 +30,9 @@ public:
 //    adak_key checkNextAvailableKey();
 
     // Getters
-    unsigned long getStart() const { return this->start; }
-    unsigned long getEnd() const { return this->end; }
-    unsigned long getSuffix() const { return this->suffix; }
+    uint32_t getStart() const { return this->start; }
+    uint32_t getEnd() const { return this->end; }
+    uint32_t getSuffix() const { return this->suffix; }
 
     bool isKeyAvailable();
 };

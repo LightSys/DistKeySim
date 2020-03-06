@@ -3,6 +3,7 @@
 
 #include <iostream>
 #include <vector>
+#include <queue>
 
 #include "UUID.h"
 #include "Keyspace.h"
@@ -11,82 +12,91 @@
 
 class NodeData;
 
+static const HexDigest BROADCAST_UUID = "00000000-0000-0000-0000-000000000000";
+
 class Node {
 private:
     UUID uuid;
-    std::vector<Keyspace*> keySpace;
-//    int keyShareRate;
-//    double keyGenRate;
-//    double aggregateGenRate;
-//    double shortTermAllocationRatio;
-//    double longTermAllocationRatio;
-//    double aggregateAllocationRatio;
-//    double provisioningRatio;
-//    bool messageWaiting = false;
-
     u_int messageID = 1;
-    bool active = true;
-    std::vector<Node*> peers; ///called directConnection on the board.
-    std::vector<NodeData*> history;
-    NodeData* lastDay;
+    std::queue<Message> sendQueue;
+    std::vector<Keyspace> keyspaces;
+    std::map<UUID, u_int> peers;
+    std::vector<NodeData> history;
+    
+    // Node statistics
+    NodeData lastDay;
+    float createdDay;
+    float createdWeek;
 
-//    Message messageToSend;
 public:
     Node();
-    Node(Keyspace* keySpace);
-    ~Node();
-
-    void addPeer(Node* peer) { this->peers.push_back(peer); }
-//    void removePeer(Node* peer); /*{ this->peers.erase(peers.begin())}*/
-
-    void sendMessage();
-
-    bool receiveMessage(const Message message);
+    Node(const Keyspace &keyspace);
+    ~Node() = default;
 
     /**
-     * Per the specification, each node will send out a signal letting other nodes know how much
-     * keyspace it is using etc. These informational messages will be generated in this class.
-     * @return
+     * Adds a peer to local list of peers
+     * @param peer Const reference to Node instance to add as peer
      */
-    Message getHeartbeatMessage();
+    void addPeer(const Node &peer);
+    
+    /**
+     * Adds a peer to local list of peers
+     * @param peer Reference to UUID of peer to add
+     */
+    void addPeer(const UUID &peerUUID);
+    
+    /**
+     * Attempts to remove peer based on pointer
+     * @param peer Reference to Node instance
+     */
+    void removePeer(const Node &peer);
+    
+    /**
+     * Attempts to remove peer based on UUID
+     * @param peerUUID UUID of peer to attempt to remove
+     */
+    void removePeer(const UUID &peerUUID);
+    
+    // Network interaction
+    
+    // Generate heartbeat messages for all peers
+    void heartbeat();
+    bool receiveMessage(const Message &message);
 
     /**
-     * Gives keyspace to a node
-     * @param node
-     * @param percentageToGive (Will be implemented later, allows for different percentages to be given for testing)
+     * Generates the heartbeat informational message instance as per the specification
+     * @param peerID UUID of peer to send to
+     * @return Message with hearbeat information for this node
      */
-    void giveKeyspaceToNode(Node* node, float percentageToGive);
-
+    Message getHeartbeatMessage(const UUID &peerID) const;
+    
     int minimumKeyspaceIndex();
     adak_key getNextKey();
-//    double computeAggregateGenRate();
-//    double computeShortTermAllocationRatio();
-//    double computeLongTermAllocationRatio();
-//    double computeAggregateAllocationRatio();
-//    double computeProvisioningRatio();
+    
+    const UUID getUUID() const { return uuid; }
+    void setUUID(UUID nid) { uuid = nid; }
 
-    UUID getUUID() const { return uuid; }
-//    void setUUID(UUID nid) { uuid = nid; }
-
-    std::vector<Keyspace*> getKeySpace() const { return keySpace; }
+    std::vector<Keyspace> getKeySpace() const { return keyspaces; }
 
 //    double getKeyGenRate() const { return keyGenRate; }
 //    void setKeyGenRate(double kgr) { keyGenRate = kgr; }
 //
 //    int getKeyShareRate() const { return keyShareRate; }
 //    void setKeyShareRate(int ksr) { keyShareRate = ksr; }
-//
-//    bool getActive() const { return active; }
-//    void setActive(bool a) { active = a; }
 
-    std::vector<Node*> getPeers() const { return this->peers; }
+    const std::map<UUID, u_int> getPeers() const { return this->peers; }
 
-//    bool isMessageWaiting() const { return this->messageWaiting; }
-//    void setMessageWaiting(bool messageWaiting) { this->messageWaiting = messageWaiting; }
-//    Message getWaitingMessage() const { return this->messageToSend; }
-
-
-    NodeData* getNodeData() const { return this->lastDay; }
+    /**
+     * Retrieves latest statistics for this node
+     * @return Constant pointer to most recent NodeData instance
+     */
+    const NodeData* getNodeData() const;
+    
+    /**
+     * Add Keyspace Exchange message details from keyspace shared from Node's spaces
+     * @param msg Base message instance to add records to
+     */
+    void shareKeyspace(Message &msg);
 };
 
 #endif //ADAK_KEYING_NODE_H

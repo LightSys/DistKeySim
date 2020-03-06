@@ -8,7 +8,7 @@ using namespace std;
 
 Network::Network(ConnectionType connectionType) {
     this->connectionType = connectionType;
-    cout << "Network Constructor called" << endl;
+    cout << "Network online" << endl;
 }
 Network::~Network() {
     // Delete all the channels
@@ -26,21 +26,6 @@ bool Network::sendMsg(const Message message) {
     const UUID sourceUUID = message.sourcenodeid();
     Node* sourceNode = getNodeFromUUID(sourceUUID);
 
-    // Send that message to ALL nodes, even ones the sourceNode doesnt' know about
-//    for(auto const& x : nodes) {
-//        x.second->receiveMessage(message);
-//    }
-
-    // Send the messsage to that Node's peers
-    for(Node* node : sourceNode->getPeers()) {
-        /// FIXME: this is a temporary fix, without this break when a node asks for keyspace, every single node will give it
-        /// this is obviously not the desired functionality. Ideally, we would have each node on it's own thread and it
-        /// would loop through (starting with the peers it thinks it will give keyspace. And one at a time send the heartbeat
-        /// to them and wait to see if they respond
-        if(node->receiveMessage(message)) {
-            return true;
-        }
-    }
     return false;
 }
 

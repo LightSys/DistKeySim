@@ -4,28 +4,19 @@
 #include "UUID.h"
 #include "Network.h"
 
-// TODO: change to JSON parameter
-static const int AMOUNT_OF_NODES = 2;
-
-/**
- * The type of Event Generation type the Simluation should use
- */
-enum class EventGenerationType { Random, Unused1, Unused2 };
-
 class Simulation {
 private:
-    EventGenerationType eventGenerationType;
     Network network;
-    std::ofstream* csvOutput;
+    u_int numNodes;
 public:
-    Simulation(EventGenerationType eventGenerationType);
-    ~Simulation();
+    Simulation(const u_int &numNodes, const ConnectionType connType = ConnectionType::Full);
+    ~Simulation() = default;
 
-    void runSimulation();
+    // Executes simulation
+    void run();
 
     // Getters
     Network *getNetwork() { return &this->network; }
-    std::ofstream* getCSVOutput() const { return this->csvOutput; }
 };
 
 #endif //LIGHTSYS_ADAK_SIMULATION_H

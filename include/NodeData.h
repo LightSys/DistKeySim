@@ -14,13 +14,10 @@ private:
     double longTermAllocationRatio;
 
     double creationRate;
-
     int keysUsed = 0;
     int day;
 
     Node* parentNode;
-
-
 
     // Functions
     adak_key findEndKey(int creationRate);
@@ -29,7 +26,8 @@ private:
 
     int getMinKey(std::vector<Keyspace*> keyspaces);
 public:
-    NodeData(Node* parentNode);
+    explicit NodeData(Node* parentNode);
+    ~NodeData() = default;
 
     static bool isNewDay(int currentDay);
     static int getCurrentDay();
@@ -41,12 +39,9 @@ public:
 
     // Getters and Setters
     double getCreationRate() const {return this->creationRate; }
-
     double updateLongTermAllocationRatio();
-
     double updateShortTermAllocationRatio();
-
-
+    
 //    int getKeyShareRate() const { return keyShareRate; }
 //    void setKeyShareRate(int keyShareRate) { NodeData::keyShareRate = keyShareRate; }
 //
@@ -67,8 +62,6 @@ public:
 //
 //    double getProvisioningRatio() const { return provisioningRatio; }
 //    void setProvisioningRatio(double provisioningRatio) { NodeData::provisioningRatio = provisioningRatio; }
-
-
 
     int getDay() const { return day; }
 };
