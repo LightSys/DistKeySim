@@ -69,9 +69,6 @@ int main(int argc, char** argv) {
     string csvPath = DEFAULT_CSV_PATH;
     parseArgs(argc, argv, numNodes, csvPath);
 
-    std::ifstream ifs;
-    ifs.open("test.json");
-
     auto* simulation = new Simulation(EventGenerationType::Random);
     simulation->runSimulation();
 }
