@@ -35,5 +35,6 @@ public:
     unsigned long getSuffix() const { return this->suffix; }
 
     bool isKeyAvailable();
+    bool isAnotherKeyAvailable();
 };
 #endif //ADAK_KEYING_KEYSPACE_H

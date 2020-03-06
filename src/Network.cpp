@@ -217,7 +217,7 @@ void Network::printKeyspaces(std::ostream *out, char spacer) {
     int counter = 0;
     for(auto const& x : nodes) {
         for(Keyspace* keyspace : x.second->getKeySpace()) {
-            *out << "Node" << spacer << "UUID" << spacer << "Keyspace" << "Start" << spacer << "End" << spacer;
+            *out << "Node" << spacer << "UUID" << spacer << "Keyspace" << spacer << "Start" << spacer << "End" << spacer;
             *out << "Suffix Bits" << NewLine;
             *out << counter << spacer << x.second->getUUID() << spacer;
             *out << keyspace->getStart() << spacer << keyspace->getEnd() << spacer;

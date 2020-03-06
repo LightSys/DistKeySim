@@ -69,6 +69,6 @@ int main(int argc, char** argv) {
     string csvPath = DEFAULT_CSV_PATH;
     parseArgs(argc, argv, numNodes, csvPath);
 
-    auto* simulation = new Simulation(EventGenerationType::Random);
+    auto *simulation = new Simulation(EventGenerationType::Random);
     simulation->runSimulation();
 }

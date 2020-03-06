@@ -31,3 +31,7 @@ adak_key Keyspace::getNextAvailableKey() {
 bool Keyspace::isKeyAvailable() {
     return start <= end;
 }
+bool Keyspace::isAnotherKeyAvailable() {
+    int newStart = this->start + pow(2, this->suffix);
+    return newStart <= this->end;
+}
