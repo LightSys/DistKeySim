@@ -4,7 +4,7 @@
 #protobuf_generate_cpp(PROTO_SRCS PROTO_HDRS message.proto)
 #set_source_files_properties(${PROTO_SRCS} ${PROTO_HDRS} PROPERTIES GENERATED TRUE)
 
-add_library(messages message.cpp) # ${PROTO_SRCS} ${PROTO_HDRS})
+add_library(messages message.cpp message.pb.cc) # ${PROTO_SRCS} ${PROTO_HDRS})
 target_link_libraries(messages ${Protobuf_LIBRARIES})
 target_include_directories(messages PUBLIC ${PROJECT_SOURCE_DIR}/include)
 

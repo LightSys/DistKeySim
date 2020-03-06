@@ -32,39 +32,6 @@ shared_ptr<Node> Network::getNodeFromUUID(const UUID &uuid) const {
     return nodes.find(uuid)->second;
 }
 
-UUID Network::addNode() {
-    return addNode(new Keyspace(0, INT32_MAX, 0));
-}
-UUID Network::addNode(Keyspace* keyspace) {
-    // Create a new new node with the given keyspace
-    Node* node = new Node(keyspace);
-
-    // Add the new node to the map <UUID, Node*>
-    this->nodes.emplace(node->getUUID(), node);
-
-    if(this->connectionType == ConnectionType::Full) {
-        fullyConnect(node);
-    } else if(this->connectionType == ConnectionType::Partial) {
-        // rand() % 4 is an arbitrary number to make the connection only happen sometimes.
-        int coinFlip = rand() % 8;
-        for (auto &[uuid, node] : nodes) {
-            // Don't connect the node to itself
-            if (newNode->getUUID() == node->getUUID()) {
-                continue;
-            }
-            
-            // Make sure that the channel doesn't already exist
-            if (!channelExists(node->getUUID(), node->getUUID()) && coinFlip == 0) {
-                connectNodes(node->getUUID(), node->getUUID());
-            }
-        }
-        
-        singleConnect(newNode);
-    } else if (this->connectionType == ConnectionType::Single) {
-        singleConnect(newNode);
-    }
-}
-
 UUID Network::addRootNode() {
     return addNode(Keyspace(0, UINT_MAX, 0));
 }
@@ -95,6 +62,30 @@ UUID Network::addNode(const Keyspace &keyspace) {
     nodes.insert({newNode->getUUID(), move(newNode)});
     
     return newUUID;
+}
+
+void Network::connectNodeToNetwork(shared_ptr<Node> newNode) {
+    if (this->connectionType == ConnectionType::Full) {
+        fullyConnect(newNode);
+    } else if (this->connectionType == ConnectionType::Partial) {
+        // rand() % 4 is an arbitrary number to make the connection only happen sometimes.
+        int coinFlip = rand() % 8;
+        for (auto &[uuid, node] : nodes) {
+            // Don't connect the node to itself
+            if (newNode->getUUID() == node->getUUID()) {
+                continue;
+            }
+            
+            // Make sure that the channel doesn't already exist
+            if (!channelExists(node->getUUID(), node->getUUID()) && coinFlip == 0) {
+                connectNodes(node->getUUID(), node->getUUID());
+            }
+        }
+        
+        singleConnect(newNode);
+    } else if (this->connectionType == ConnectionType::Single) {
+        singleConnect(newNode);
+    }
 }
 
 void Network::fullyConnect(shared_ptr<Node> node) {

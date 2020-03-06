@@ -222,9 +222,9 @@ const char descriptor_table_protodef_message_2eproto[] PROTOBUF_SECTION_VARIABLE
   "J.InformationalMessageContents.Collectio"
   "nInformationRecord.CreationRateData\032\206\001\n\020"
   "CreationRateData\022\034\n\024shortAllocationRatio"
-  "\030\001 \001(\002\022\033\n\023longAllocationRatio\030\002 \001(\002\022\032\n\022c"
-  "reatedPreviousDay\030\003 \001(\002\022\033\n\023createdPrevio"
-  "usWeek\030\004 \001(\002\"\235\001\n\027KeyspaceMessageContents"
+  "\030\001 \001(\001\022\033\n\023longAllocationRatio\030\002 \001(\001\022\032\n\022c"
+  "reatedPreviousDay\030\003 \001(\001\022\033\n\023createdPrevio"
+  "usWeek\030\004 \001(\001\"\235\001\n\027KeyspaceMessageContents"
   "\0224\n\tkeyspaces\030\001 \003(\0132!.KeyspaceMessageCon"
   "tents.Keyspace\032L\n\010Keyspace\022\014\n\004name\030\001 \001(\t"
   "\022\017\n\007startID\030\002 \001(\r\022\r\n\005endID\030\003 \001(\r\022\022\n\nsuff"
@@ -376,32 +376,32 @@ const char* InformationalMessageContents_CollectionInformationRecord_CreationRat
     ptr = ::PROTOBUF_NAMESPACE_ID::internal::ReadTag(ptr, &tag);
     CHK_(ptr);
     switch (tag >> 3) {
-      // float shortAllocationRatio = 1;
+      // double shortAllocationRatio = 1;
       case 1:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 13)) {
-          shortallocationratio_ = ::PROTOBUF_NAMESPACE_ID::internal::UnalignedLoad<float>(ptr);
-          ptr += sizeof(float);
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 9)) {
+          shortallocationratio_ = ::PROTOBUF_NAMESPACE_ID::internal::UnalignedLoad<double>(ptr);
+          ptr += sizeof(double);
         } else goto handle_unusual;
         continue;
-      // float longAllocationRatio = 2;
+      // double longAllocationRatio = 2;
       case 2:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 21)) {
-          longallocationratio_ = ::PROTOBUF_NAMESPACE_ID::internal::UnalignedLoad<float>(ptr);
-          ptr += sizeof(float);
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 17)) {
+          longallocationratio_ = ::PROTOBUF_NAMESPACE_ID::internal::UnalignedLoad<double>(ptr);
+          ptr += sizeof(double);
         } else goto handle_unusual;
         continue;
-      // float createdPreviousDay = 3;
+      // double createdPreviousDay = 3;
       case 3:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 29)) {
-          createdpreviousday_ = ::PROTOBUF_NAMESPACE_ID::internal::UnalignedLoad<float>(ptr);
-          ptr += sizeof(float);
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 25)) {
+          createdpreviousday_ = ::PROTOBUF_NAMESPACE_ID::internal::UnalignedLoad<double>(ptr);
+          ptr += sizeof(double);
         } else goto handle_unusual;
         continue;
-      // float createdPreviousWeek = 4;
+      // double createdPreviousWeek = 4;
       case 4:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 37)) {
-          createdpreviousweek_ = ::PROTOBUF_NAMESPACE_ID::internal::UnalignedLoad<float>(ptr);
-          ptr += sizeof(float);
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 33)) {
+          createdpreviousweek_ = ::PROTOBUF_NAMESPACE_ID::internal::UnalignedLoad<double>(ptr);
+          ptr += sizeof(double);
         } else goto handle_unusual;
         continue;
       default: {
@@ -430,28 +430,28 @@ failure:
   ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
-  // float shortAllocationRatio = 1;
+  // double shortAllocationRatio = 1;
   if (!(this->shortallocationratio() <= 0 && this->shortallocationratio() >= 0)) {
     target = stream->EnsureSpace(target);
-    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteFloatToArray(1, this->_internal_shortallocationratio(), target);
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteDoubleToArray(1, this->_internal_shortallocationratio(), target);
   }
 
-  // float longAllocationRatio = 2;
+  // double longAllocationRatio = 2;
   if (!(this->longallocationratio() <= 0 && this->longallocationratio() >= 0)) {
     target = stream->EnsureSpace(target);
-    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteFloatToArray(2, this->_internal_longallocationratio(), target);
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteDoubleToArray(2, this->_internal_longallocationratio(), target);
   }
 
-  // float createdPreviousDay = 3;
+  // double createdPreviousDay = 3;
   if (!(this->createdpreviousday() <= 0 && this->createdpreviousday() >= 0)) {
     target = stream->EnsureSpace(target);
-    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteFloatToArray(3, this->_internal_createdpreviousday(), target);
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteDoubleToArray(3, this->_internal_createdpreviousday(), target);
   }
 
-  // float createdPreviousWeek = 4;
+  // double createdPreviousWeek = 4;
   if (!(this->createdpreviousweek() <= 0 && this->createdpreviousweek() >= 0)) {
     target = stream->EnsureSpace(target);
-    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteFloatToArray(4, this->_internal_createdpreviousweek(), target);
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteDoubleToArray(4, this->_internal_createdpreviousweek(), target);
   }
 
   if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
@@ -470,24 +470,24 @@ size_t InformationalMessageContents_CollectionInformationRecord_CreationRateData
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
-  // float shortAllocationRatio = 1;
+  // double shortAllocationRatio = 1;
   if (!(this->shortallocationratio() <= 0 && this->shortallocationratio() >= 0)) {
-    total_size += 1 + 4;
+    total_size += 1 + 8;
   }
 
-  // float longAllocationRatio = 2;
+  // double longAllocationRatio = 2;
   if (!(this->longallocationratio() <= 0 && this->longallocationratio() >= 0)) {
-    total_size += 1 + 4;
+    total_size += 1 + 8;
   }
 
-  // float createdPreviousDay = 3;
+  // double createdPreviousDay = 3;
   if (!(this->createdpreviousday() <= 0 && this->createdpreviousday() >= 0)) {
-    total_size += 1 + 4;
+    total_size += 1 + 8;
   }
 
-  // float createdPreviousWeek = 4;
+  // double createdPreviousWeek = 4;
   if (!(this->createdpreviousweek() <= 0 && this->createdpreviousweek() >= 0)) {
-    total_size += 1 + 4;
+    total_size += 1 + 8;
   }
 
   if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {

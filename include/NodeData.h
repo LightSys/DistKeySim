@@ -66,60 +66,6 @@ public:
     void setCreationRate(double creationRate);
     void setKeysUsed(int keysUsed);
     void setDay(int day);
-
-    Node *getParentNode() const;
-
-    void setParentNode(Node *parentNode);
-
-public:
-    NodeData(Node* parentNode);
-    ~NodeData();
-
-    static bool isNewDay(int currentDay);
-    static int getCurrentDay();
-
-    void useKey() { keysUsed++; }
-    int getKeysUsed() const { return this->keysUsed; }
-
-    double updateCreationRate();
-
-    adak_key findEndKey(int creationRate);
-
-    std::vector<Keyspace*> copyKeyspace(std::vector<Keyspace*> keyspaces);
-
-    int getMinKeyIndex(std::vector<Keyspace*> keyspaces);
-    // Getters and Setters
-    double getCreationRate() const {return this->creationRate; }
-
-    double updateLongTermAllocationRatio();
-
-    double updateShortTermAllocationRatio();
-
-
-//    int getKeyShareRate() const { return keyShareRate; }
-//    void setKeyShareRate(int keyShareRate) { NodeData::keyShareRate = keyShareRate; }
-//
-//    double getKeyGenRate() const { return keyGenRate; }
-//    void setKeyGenRate(double keyGenRate) { NodeData::keyGenRate = keyGenRate; }
-//
-//    double getAggregateGenRate();
-//    void setAggregateGenRate(double aggregateGenRate) { NodeData::aggregateGenRate = aggregateGenRate; }
-//
-//    double getShortTermAllocationRatio() const { return shortTermAllocationRatio; }
-//    void setShortTermAllocationRatio(double shortTermAllocationRatio) { NodeData::shortTermAllocationRatio = shortTermAllocationRatio; }
-//
-//    double getLongTermAllocationRatio() const { return longTermAllocationRatio; }
-//    void setLongTermAllocationRatio(double longTermAllocationRatio) { NodeData::longTermAllocationRatio = longTermAllocationRatio; }
-//
-//    double getAggregateAllocationRatio() const { return aggregateAllocationRatio; }
-//    void setAggregateAllocationRatio(double aggregateAllocationRatio) { NodeData::aggregateAllocationRatio = aggregateAllocationRatio; }
-//
-//    double getProvisioningRatio() const { return provisioningRatio; }
-//    void setProvisioningRatio(double provisioningRatio) { NodeData::provisioningRatio = provisioningRatio; }
-
-
-
-    int getDay() const { return day; }
 };
 
 
