@@ -184,6 +184,8 @@ void Node::giveKeyspaceToNode(Node* node, float percentageToGive) {
 
 Message Node::getHeartbeatMessage() {
     float allocation = 0.0;
+    double longTermRatio =  this->getNodeData()->getLongTermAllocationRatio();
+    double shortTermRatio = this->getNodeData()->getShortTermAllocationRatio();
     if(this->keySpace.empty()) {
         allocation = 1.0;
     }
@@ -197,7 +199,7 @@ Message Node::getHeartbeatMessage() {
     toInformationalMessage(
             msg,
             {
-                CollectionInfoRecord{"test", 0.0, 0.0, allocation, allocation},
+                CollectionInfoRecord{"test", 0.0, 0.0, shortTermRatio, longTermRatio},
             }
     );
     return msg;

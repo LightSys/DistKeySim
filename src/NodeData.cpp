@@ -57,7 +57,7 @@ double NodeData::updateLongTermAllocationRatio(){
         longTermRatio +=  (double)(1.0 / (pow(2, keyspace->getSuffix())));
     }
     longTermAllocationRatio = longTermRatio;
-    return longTermRatio;
+    return longTermAllocationRatio;
 }
 
 double NodeData::updateShortTermAllocationRatio(){
@@ -75,8 +75,13 @@ double NodeData::updateShortTermAllocationRatio(){
 
     //In theory you could get a ratio larger than one but you would need trillions of keys created by
     //one node in a day to make this happen therefore we did not deal with it
-    shortTermRatio =  (double) tempKeys /  (endKey - startKey);
-    return shortTermRatio;
+    shortTermAllocationRatio =  (double) tempKeys /  (endKey - startKey);
+    return shortTermAllocationRatio;
+}
+
+double NodeData::updateProvisioningRation(double creationRate, double shortTermRatio) {
+    provisioningRatio = creationRate / shortTermRatio;
+    return provisioningRatio;
 }
 
 

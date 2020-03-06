@@ -88,6 +88,7 @@ public:
 
     double updateShortTermAllocationRatio();
 
+    double updateProvisioningRation(double creationRate, double shortTermRatio);
 
 //    int getKeyShareRate() const { return keyShareRate; }
 //    void setKeyShareRate(int keyShareRate) { NodeData::keyShareRate = keyShareRate; }

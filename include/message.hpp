@@ -12,10 +12,10 @@
  */
 struct CollectionInfoRecord {
     std::string name;
-    float createdDay;
-    float createdWeek;
-    float longTermAllocation;
-    float shortTermAllocation;
+    double createdDay;
+    double createdWeek;
+    double longTermAllocation;
+    double shortTermAllocation;
 };
 
 /**
@@ -26,13 +26,13 @@ struct KeyspaceExchangeRecord {
     uint32_t startID;
     uint32_t endID;
     uint32_t suffixBits;
-    
+
 };
 
 Message newBaseMessage(HexDigest &sendingUUID, HexDigest &destUUID, uint32_t lastReceived,
                        Message::ChannelState channelState, uint64_t msgID, long unixTimestamp = -1);
 void addCollectionInfoRecord(InformationalMessageContents::CollectionInformationRecord *collection,
-                             float createdDay, float createdWeek, float longAlloc, float shortAlloc);
+                             double createdDay, double createdWeek, double longAlloc, double shortAlloc);
 void toInformationalMessage(Message &msg, std::initializer_list<CollectionInfoRecord> records);
 void toKeyspaceMessage(Message &msg, std::initializer_list<KeyspaceExchangeRecord> records);
 
