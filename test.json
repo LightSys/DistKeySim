@@ -1,3 +1,9 @@
 {
- "AMOUNT_OF_NODES": 20
+ "Values wanted": {
+   "AMOUNT_OF_NODES": 20,
+   "fullyConnected": "",
+   "csvOutPutValue": "",
+   "creationRate": 23,
+   "networkScale": 10
+ }
 }
