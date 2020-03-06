@@ -22,4 +22,3 @@ https://drive.google.com/file/d/1Czub9HZ2K6M838bzI8IzAxKO0jYjQAwj/view?usp=shari
 <img src="/memes/"meme4.png" height="400" />                                        
 <img src="/memes/"meme5.png" height="400" />
 <img src="/memes/"meme6.jpg" height="400" />
-
