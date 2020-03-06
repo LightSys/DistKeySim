@@ -9,8 +9,8 @@
 
 
 # MEMES
-<a href="/memes/Compiler_Errors.jpg" height="200" />
-<a href="/memes/Prayer.jpg" height="200" />
-<a href="/memes/google_programmer.jpg" height="200" />
-<a href="/memes/geek_vs_programmers.jpg" height="200" />
-<a href="/memes/memeForLightSys.png" height="200" />
+<img src="/memes/Compiler_Errors.jpg" height="200" />
+<img src="/memes/Prayer.jpg" height="200" />
+<img src="/memes/google_programmer.jpg" height="200" />
+<img src="/memes/geek_vs_programmers.jpg" height="200" />
+<img src="/memes/memeForLightSys.png" height="200" />
