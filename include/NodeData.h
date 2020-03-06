@@ -10,8 +10,13 @@ class Node;
 
 class NodeData {
 private:
+    int keyShareRate;
+    double keyGenRate;
+    double aggregateGenRate;
     double shortTermAllocationRatio;
     double longTermAllocationRatio;
+    double aggregateAllocationRatio;
+    double provisioningRatio;
 
     double creationRate;
 
@@ -19,13 +24,45 @@ private:
     int day;
 
     Node* parentNode;
+public:
+    int getKeyShareRate() const;
 
-    // Functions
-    adak_key findEndKey(int creationRate);
+    void setKeyShareRate(int keyShareRate);
 
-    std::vector<Keyspace*> copyKeyspace(std::vector<Keyspace*> keyspaces);
+    double getKeyGenRate() const;
 
-    int getMinKey(std::vector<Keyspace*> keyspaces);
+    void setKeyGenRate(double keyGenRate);
+
+    double getAggregateGenRate() const;
+
+    void setAggregateGenRate(double aggregateGenRate);
+
+    double getShortTermAllocationRatio() const;
+
+    void setShortTermAllocationRatio(double shortTermAllocationRatio);
+
+    double getLongTermAllocationRatio() const;
+
+    void setLongTermAllocationRatio(double longTermAllocationRatio);
+
+    double getAggregateAllocationRatio() const;
+
+    void setAggregateAllocationRatio(double aggregateAllocationRatio);
+
+    double getProvisioningRatio() const;
+
+    void setProvisioningRatio(double provisioningRatio);
+
+    void setCreationRate(double creationRate);
+
+    void setKeysUsed(int keysUsed);
+
+    void setDay(int day);
+
+    Node *getParentNode() const;
+
+    void setParentNode(Node *parentNode);
+
 public:
     NodeData(Node* parentNode);
     ~NodeData();
@@ -38,6 +75,11 @@ public:
 
     double updateCreationRate();
 
+    adak_key findEndKey(int creationRate);
+
+    std::vector<Keyspace*> copyKeyspace(std::vector<Keyspace*> keyspaces);
+
+    int getMinKey(std::vector<Keyspace*> keyspaces);
     // Getters and Setters
     double getCreationRate() const {return this->creationRate; }
 

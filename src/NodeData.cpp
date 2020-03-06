@@ -46,7 +46,9 @@ double NodeData::updateCreationRate() {
         totalRate += node->getNodeData()->getKeysUsed();
     }
     totalRate *= NETWORK_SCALE;
+    //FIXME: This is just for testing
     creationRate = this->getKeysUsed() + totalRate;
+    return this->getKeysUsed() + totalRate;
 }
 
 double NodeData::updateLongTermAllocationRatio(){
@@ -60,14 +62,18 @@ double NodeData::updateLongTermAllocationRatio(){
 
 double NodeData::updateShortTermAllocationRatio(){
     double shortTermRatio = 0.0;
-    int tempKeys =keysUsed;
-    if(keysUsed = 0){
+    double tempKeys;
+    updateCreationRate();
+    if(creationRate < 1){
         tempKeys = 1;
+    }else{
+        tempKeys = creationRate;
     }
 
     adak_key startKey = parentNode->getKeySpace().at(parentNode->minimumKeyspaceIndex())->getStart();
-    adak_key endKey = findEndKey(updateCreationRate());
-    //In theory you could get a ratio larger than one but you would need millions of keys created by
+    adak_key endKey = findEndKey(creationRate);
+
+    //In theory you could get a ratio larger than one but you would need trillions of keys created by
     //one node in a day to make this happen therefore we did not deal with it
     shortTermRatio =  (double) tempKeys /  (endKey - startKey);
     return shortTermRatio;
@@ -81,7 +87,7 @@ adak_key NodeData::findEndKey(int creationRate){
 
     int minKeyIndex;
     adak_key endKey = -1;
-    for(int i = 0; i < creationRate; i++){
+    for(int i = 0; i <= creationRate; i++){
         //TODO:May need to actually fix this another way if out keyspace
         minKeyIndex = getMinKey(copyKeyspaces);
         if(minKeyIndex != -1) {
@@ -119,4 +125,80 @@ std::vector<Keyspace*> NodeData::copyKeyspace(std::vector<Keyspace*> keyspaces){
     }
 
     return copyKeyspaces;
+}
+
+int NodeData::getKeyShareRate() const {
+    return keyShareRate;
+}
+
+void NodeData::setKeyShareRate(int keyShareRate) {
+    NodeData::keyShareRate = keyShareRate;
+}
+
+double NodeData::getKeyGenRate() const {
+    return keyGenRate;
+}
+
+void NodeData::setKeyGenRate(double keyGenRate) {
+    NodeData::keyGenRate = keyGenRate;
+}
+
+double NodeData::getAggregateGenRate() const {
+    return aggregateGenRate;
+}
+
+void NodeData::setAggregateGenRate(double aggregateGenRate) {
+    NodeData::aggregateGenRate = aggregateGenRate;
+}
+
+double NodeData::getShortTermAllocationRatio() const {
+    return shortTermAllocationRatio;
+}
+
+void NodeData::setShortTermAllocationRatio(double shortTermAllocationRatio) {
+    NodeData::shortTermAllocationRatio = shortTermAllocationRatio;
+}
+
+double NodeData::getLongTermAllocationRatio() const {
+    return longTermAllocationRatio;
+}
+
+void NodeData::setLongTermAllocationRatio(double longTermAllocationRatio) {
+    NodeData::longTermAllocationRatio = longTermAllocationRatio;
+}
+
+double NodeData::getAggregateAllocationRatio() const {
+    return aggregateAllocationRatio;
+}
+
+void NodeData::setAggregateAllocationRatio(double aggregateAllocationRatio) {
+    NodeData::aggregateAllocationRatio = aggregateAllocationRatio;
+}
+
+double NodeData::getProvisioningRatio() const {
+    return provisioningRatio;
+}
+
+void NodeData::setProvisioningRatio(double provisioningRatio) {
+    NodeData::provisioningRatio = provisioningRatio;
+}
+
+void NodeData::setCreationRate(double creationRate) {
+    NodeData::creationRate = creationRate;
+}
+
+void NodeData::setKeysUsed(int keysUsed) {
+    NodeData::keysUsed = keysUsed;
+}
+
+void NodeData::setDay(int day) {
+    NodeData::day = day;
+}
+
+Node *NodeData::getParentNode() const {
+    return parentNode;
+}
+
+void NodeData::setParentNode(Node *parentNode) {
+    NodeData::parentNode = parentNode;
 }

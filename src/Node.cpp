@@ -169,6 +169,14 @@ Message Node::getHeartbeatMessage() {
     return msg;
 }
 
+NodeData *Node::getLastDay() const {
+    return lastDay;
+}
+
+void Node::setLastDay(NodeData *lastDay) {
+    Node::lastDay = lastDay;
+}
+
 ///**
 // * computes the generation rate of a node and all its peers.
 // *TODO alter funct so that it excludes the destination node in the computation
