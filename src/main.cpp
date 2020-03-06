@@ -3,6 +3,8 @@
 #include "getopt.h"
 
 #include "Simulation.h"
+#include "json.hpp"
+using json = nlohmann::json;
 
 using namespace std;
 
@@ -68,6 +70,10 @@ int main(int argc, char** argv) {
     u_int numNodes = DEFAULT_NUM_NODES;
     string csvPath = DEFAULT_CSV_PATH;
     parseArgs(argc, argv, numNodes, csvPath);
+
+    std::ifstream ifs;
+    ifs.open("test.json");
+    json jf = json::parse(ifs);
 
     auto* simulation = new Simulation(EventGenerationType::Random);
     simulation->runSimulation();
