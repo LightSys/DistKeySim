@@ -20,33 +20,50 @@ double NodeData::updateCreationRate(const map<UUID, shared_ptr<Message>> peers) 
     for (const auto &[_, peer] : peers) {
         totalRate += peer->info().records(0).creationratedata().shortallocationratio();
     }
-    
+
     totalRate *= NETWORK_SCALE;
     creationRate = this->getKeysUsed() + totalRate;
-    
+
     return creationRate;
 }
 
-double NodeData::updateLongTermAllocationRatio(const vector<Keyspace> &keyspace) {
+double NodeData::updateLongTermAllocationRatio(vector<Keyspace> &keyspace) {
     double longTermRatio = 0.0;
     for (const auto &keyspace : keyspace) {
         longTermRatio +=  static_cast<double>(1.0 / pow(2, keyspace.getSuffix()));
     }
-    
+
     longTermAllocationRatio = longTermRatio;
     return longTermRatio;
 }
 
-double NodeData::updateShortTermAllocationRatio(const vector<Keyspace> &keyspace, u_int minKeyspaceIdx,
-                                                const map<UUID, shared_ptr<Message>> &peers) {
-    int tempKeys = creationRate > 0 ? creationRate : 1;
+double NodeData::updateShortTermAllocationRatio(const vector<Keyspace> &keyspace){
+    double tempKeys = keysUsed > 0 ? keysUsed : 1;
 
-    ADAK_Key_t startKey = keyspace.at(minKeyspaceIdx).getStart();
-    ADAK_Key_t endKey = findEndKey(updateCreationRate(peers), keyspace);
-    
-    // In theory you could get a ratio larger than one but you would need millions of keys created by
-    // one node in a day to make this happen therefore we did not deal with it
-    return static_cast<double>(tempKeys) /  (endKey - startKey);
+
+
+    int minIndex = getMinKeyIndex(keyspace);
+    ADAK_Key_t startKey = keyspace.at(minIndex).getStart();
+    ADAK_Key_t endKey = findEndKey(tempKeys, keyspace);
+
+    ///-2 means you ran out of keyspace thus set the ratio to one saying we need more keyspace right away.
+    ///Baylor you may want to change this if you want a different value saying I need help right away.
+    if(endKey == -2) {
+        shortTermAllocationRatio = 1;
+    }
+
+    ///This is the normal case that works for long term allocation.
+    else {
+        //In theory you could get a ratio larger than one but you would need trillions of keys created by
+        //one node in a day to make this happen therefore we did not deal with it
+        shortTermAllocationRatio =  (double) tempKeys /  (endKey - startKey);
+    }
+    return shortTermAllocationRatio;
+}
+
+double NodeData::updateProvisioningRatio(double creationRate, double shortTermRatio) {
+    provisioningRatio = creationRate / shortTermRatio;
+    return provisioningRatio;
 }
 
 
@@ -57,20 +74,25 @@ ADAK_Key_t NodeData::findEndKey(double creationRate, vector<Keyspace> keyspaces)
 
     int minKeyIndex;
     ADAK_Key_t endKey = -1;
-    for (int i = 0; i < creationRate; i++){
+    for (int i = 0; i <= creationRate; i++){
         //TODO:May need to actually fix this another way if out keyspace
-        minKeyIndex = getMinKey(copyKeyspaces);
-        if (minKeyIndex != -1) {
+        minKeyIndex = getMinKeyIndex(copyKeyspaces);
+        if(minKeyIndex != -1) {
             endKey = copyKeyspaces.at(minKeyIndex).getNextAvailableKey();
-        } else {
-            cout << "ERROR from findEndKey: no more keys to distribute\n";
+        }else{
+            ///Baylor If this error occurs that is probably not a real issue in the code. It probably has to do that there
+            ///is more keys being made in a day than allocated in the keyspace. You should fix your algorithm to
+            ///distrute keys faster
+            cout << "ERROR from findEndKey: no more keys to distribute"<<endl;
+            ///Error that you are really out of keys
+            endKey = -2;
         }
     }
 
     return endKey;
 }
 
-int NodeData::getMinKey(const std::vector<Keyspace> keyspaces) const {
+int NodeData::getMinKeyIndex(const std::vector<Keyspace> keyspaces) const {
     unsigned long min = ULONG_MAX;
     int index = -1;
     for (int i = 0; i < keyspaces.size(); i++){

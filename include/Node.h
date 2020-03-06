@@ -22,12 +22,12 @@ private:
     std::vector<Keyspace> keyspaces;
     std::map<UUID, std::shared_ptr<Message>> peers;
     std::vector<NodeData> history;
-    
+
     // Node statistics
     NodeData lastDay;
     float createdDay;
     float createdWeek;
-    
+
     /**
      * Generates the heartbeat informational message instance as per the specification
      * @param peerID UUID of peer to send to
@@ -45,39 +45,40 @@ public:
      * @param peer Const reference to Node instance to add as peer
      */
     void addPeer(std::shared_ptr<Node> peer);
-    
+
     /**
      * Adds a peer to local list of peers
      * @param peer Reference to UUID of peer to add
      */
     void addPeer(const UUID &peerUUID);
-    
+
     /**
      * Attempts to remove peer based on pointer
      * @param peer Reference to Node instance
      */
     void removePeer(std::shared_ptr<Node> peer);
-    
+
     /**
      * Attempts to remove peer based on UUID
      * @param peerUUID UUID of peer to attempt to remove
      */
     void removePeer(const UUID &peerUUID);
-    
+
     // Network interaction
     /**
      * Moves all messages out of queue
      * @return Vector of all messages queued for sending
      */
     std::deque<Message> getMessages();
-    
+
     // Generate heartbeat messages for all peers
     void heartbeat();
     bool receiveMessage(const Message &message);
-    
+
     int minimumKeyspaceIndex();
     ADAK_Key_t getNextKey();
-    
+    bool isKeyAvailable();
+
     const UUID getUUID() const { return uuid; }
     void setUUID(UUID nid) { uuid = nid; }
 
@@ -98,8 +99,8 @@ public:
      * Retrieves latest statistics for this node
      * @return Safe shared pointer to most recent NodeData instance
      */
-    std::shared_ptr<const NodeData> getNodeData() const;
-    
+    std::shared_ptr<NodeData> getNodeData() const;
+
     /**
      * Add Keyspace Exchange message details from keyspace shared from Node's spaces
      * @param msg Base message instance to add records to

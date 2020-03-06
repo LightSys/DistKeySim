@@ -25,10 +25,10 @@ private:
     int day;
     
     // Functions
-    ADAK_Key_t findEndKey(double creationRate, std::vector<Keyspace> keyspaces);
-    int getMinKey(const std::vector<Keyspace> keyspaces) const;
 
 public:
+    int getMinKeyIndex(const std::vector<Keyspace> keyspaces) const;
+    ADAK_Key_t findEndKey(double creationRate, std::vector<Keyspace> keyspaces);
     explicit NodeData() : day(getCurrentDay()), keysUsed(0) {}
     ~NodeData() = default;
 
@@ -42,10 +42,9 @@ public:
     
     // Getters and Setters
     constexpr inline double getCreationRate() const {return this->creationRate; }
-    double updateLongTermAllocationRatio(const std::vector<Keyspace> &keyspace);
-    double updateShortTermAllocationRatio(const std::vector<Keyspace> &keyspace, u_int minSpaceIdx,
-                                          const std::map<UUID, std::shared_ptr<Message>> &peers);
-
+    double updateLongTermAllocationRatio(std::vector<Keyspace> &keyspace);
+    double updateShortTermAllocationRatio(const std::vector<Keyspace> &keyspace);
+    double updateProvisioningRatio(double creationRate, double shortTermRatio);
     constexpr inline int getDay() const { return day; }
     
     
