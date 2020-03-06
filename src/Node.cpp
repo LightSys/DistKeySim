@@ -6,10 +6,14 @@
 
 using namespace std;
 
-Node::Node() : Node(Keyspace(0, UINT_MAX, 0)) {}
+Node::Node() : uuid(new_uuid()), lastDay(NodeData())  {}
 
 Node::Node(const Keyspace &keySpace) : uuid(new_uuid()), lastDay(NodeData()) {
     keyspaces.push_back(keySpace);
+}
+
+static Node rootNode() {
+    return Node(Keyspace(0, UINT_MAX, 0));
 }
 
 void Node::addPeer(const UUID &peerUUID) {
@@ -52,7 +56,6 @@ void Node::removePeer(const UUID &peerUUID) {
     // Found match, remove it
     peers.erase(foundPeer);
 }
-
 
 shared_ptr<const NodeData> Node::getNodeData() const {
     return make_shared<NodeData>(lastDay);

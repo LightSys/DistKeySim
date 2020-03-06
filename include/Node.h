@@ -37,6 +37,7 @@ private:
 public:
     Node();
     Node(const Keyspace &keyspace);
+    static Node rootNode();
     ~Node() = default;
 
     /**

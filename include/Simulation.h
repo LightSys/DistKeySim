@@ -1,18 +1,13 @@
 #ifndef LIGHTSYS_ADAK_SIMULATION_H
 #define LIGHTSYS_ADAK_SIMULATION_H
 
+#include "EventGen.h"
 #include "UUID.h"
 #include "Network.h"
 #include "config.hpp"
 
-/**
- * The type of Event Generation type the Simluation should use
- */
-enum class EventGenerationType { Random, Unused1, Unused2 };
-
 class Simulation {
 private:
-    EventGenerationType eventGenerationType;
     Network network;
     u_int numNodes;
 public:

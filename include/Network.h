@@ -62,25 +62,39 @@ public:
      * @return Safe pointer to Node
      */
     std::shared_ptr<Node> getNodeFromUUID(const UUID &uuid) const;
-
+    
     /**
-     * Adds the initial node to the Network, this defaults to the max Keyspace, so it should only be used once.
+     * Adds the initial node to the Network with max keyspace
+     * @return UUID of created node
      */
-    UUID addNode();
+    UUID addRootNode();
+    
+    /**
+     * Adds node to network without any keyspace
+     * @return UUID of created node
+     */
+    UUID addEmptyNode();
 
     /**
      * The typical way to add a node to the network
-     * @param keyspace
+     * @param keyspace Keyspace to give to node
+     * @return UUID of created node
      */
     UUID addNode(const Keyspace &keyspace);
+    
+    /**
+     * Make connections within network for new node
+     * @param newNode Node to connect
+     */
+    void connectNodeToNetwork(std::shared_ptr<Node> newNode);
 
     /**
      * Fully connects all the nodes to each other according to the ConnectionType
-     * @param node
+     * @param node Node to connect
      */
-    void fullyConnect(std::shared_ptr<Node> &node);
+    void fullyConnect(std::shared_ptr<Node> node);
 
-    void singleConnect(std::shared_ptr<Node> &node);
+    void singleConnect(std::shared_ptr<Node> node);
 
     /**
      * Checks to see if the channel already exists between two nodes,
@@ -114,6 +128,9 @@ public:
     void printUUIDList(std::ostream &out, char spacer = ',');
     void printChannels(std::ostream &out, char spacer = ',');
     void printKeyspaces(std::ostream &out, char spacer = ',');
+    
+    // Number of nodes
+    inline size_t numNodes() const { return nodes.size(); }
 };
 
 #endif // ADAK_KEYING_NETWORK_H

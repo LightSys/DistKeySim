@@ -63,7 +63,7 @@ ADAK_Key_t NodeData::findEndKey(double creationRate, vector<Keyspace> keyspaces)
         if (minKeyIndex != -1) {
             endKey = copyKeyspaces.at(minKeyIndex).getNextAvailableKey();
         } else {
-            cout << "ERROR from findEndKey: no more keys to distribute";
+            cout << "ERROR from findEndKey: no more keys to distribute\n";
         }
     }
 
@@ -148,12 +148,4 @@ void NodeData::setKeysUsed(int keysUsed) {
 
 void NodeData::setDay(int day) {
     NodeData::day = day;
-}
-
-Node *NodeData::getParentNode() const {
-    return parentNode;
-}
-
-void NodeData::setParentNode(Node *parentNode) {
-    NodeData::parentNode = parentNode;
 }

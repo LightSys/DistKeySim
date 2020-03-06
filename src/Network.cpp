@@ -32,15 +32,7 @@ shared_ptr<Node> Network::getNodeFromUUID(const UUID &uuid) const {
     return nodes.find(uuid)->second;
 }
 
-UUID Network::addNode() {
-    return addNode(Keyspace(0, UINT_MAX, 0));
-}
-
-UUID Network::addNode(const Keyspace &keyspace) {
-    // Create a new new node with the given keyspace
-    auto newNode = make_shared<Node>(keyspace);
-    UUID newUUID = newNode->getUUID();
-
+void Network::connectNodeToNetwork(shared_ptr<Node> newNode) {
     if (this->connectionType == ConnectionType::Full) {
         fullyConnect(newNode);
     } else if (this->connectionType == ConnectionType::Partial) {
@@ -62,6 +54,19 @@ UUID Network::addNode(const Keyspace &keyspace) {
     } else if (this->connectionType == ConnectionType::Single) {
         singleConnect(newNode);
     }
+}
+
+UUID Network::addRootNode() {
+    return addNode(Keyspace(0, UINT_MAX, 0));
+}
+
+UUID Network::addEmptyNode() {
+    // Create a new new node with the no keyspace
+    auto newNode = make_shared<Node>();
+    UUID newUUID = newNode->getUUID();
+    
+    // Make connection to peers
+    connectNodeToNetwork(newNode);
     
     // Add the new node to the nodes map
     nodes.insert({newNode->getUUID(), move(newNode)});
@@ -69,7 +74,21 @@ UUID Network::addNode(const Keyspace &keyspace) {
     return newUUID;
 }
 
-void Network::fullyConnect(shared_ptr<Node> &node) {
+UUID Network::addNode(const Keyspace &keyspace) {
+    // Create a new new node with the given keyspace
+    auto newNode = make_shared<Node>(keyspace);
+    UUID newUUID = newNode->getUUID();
+    
+    // Make connection to peers
+    connectNodeToNetwork(newNode);
+    
+    // Add the new node to the nodes map
+    nodes.insert({newNode->getUUID(), move(newNode)});
+    
+    return newUUID;
+}
+
+void Network::fullyConnect(shared_ptr<Node> node) {
     for (auto const &[uuid, peer] : nodes) {
         // Don't connect the node to itself
         if (node->getUUID() != uuid) {

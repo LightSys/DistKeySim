@@ -1,10 +1,10 @@
 # Compile protobuf files
-message(STATUS "Building protobuf from ${CMAKE_CURRENT_SOURCE_DIR}... using ${Protobuf_INCLUDE_DIRS}")
-include_directories(${Protobuf_INCLUDE_DIRS})
-protobuf_generate_cpp(PROTO_SRCS PROTO_HDRS message.proto)
-set_source_files_properties(${PROTO_SRCS} ${PROTO_HDRS} PROPERTIES GENERATED TRUE)
+#message(STATUS "Building protobuf from ${CMAKE_CURRENT_SOURCE_DIR}... using ${Protobuf_INCLUDE_DIRS}")
+#include_directories(${Protobuf_INCLUDE_DIRS} "/usr/local/include")
+#protobuf_generate_cpp(PROTO_SRCS PROTO_HDRS message.proto)
+#set_source_files_properties(${PROTO_SRCS} ${PROTO_HDRS} PROPERTIES GENERATED TRUE)
 
-add_library(messages message.cpp ${PROTO_SRCS} ${PROTO_HDRS})
+add_library(messages message.cpp) # ${PROTO_SRCS} ${PROTO_HDRS})
 target_link_libraries(messages ${Protobuf_LIBRARIES})
 target_include_directories(messages PUBLIC ${PROJECT_SOURCE_DIR}/include)
 
