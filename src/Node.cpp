@@ -39,14 +39,20 @@ Node::Node(Keyspace* keySpace) {
 
 adak_key Node::getNextKey() {
     lastDay->useKey();
-    return this->keySpace.at(minimumKeyspaceIndex())->getNextAvailableKey();
+    int index = minimumKeyspaceIndex();
+    if(index == -1){
+        cout << "ERROR from getNextKey in Node: Not more keys to give";
+        return -1;
+    }else {
+        return this->keySpace.at(index)->getNextAvailableKey();
+    }
 }
 
 int Node::minimumKeyspaceIndex() {
     unsigned long min = ULONG_MAX;
     int index = -1;
     for(int i =0; i < keySpace.size(); i++){
-        if(keySpace[i]->getStart() < min){
+        if(keySpace[i]->getStart() < min && keySpace[i]->isKeyAvailable()){
             min = keySpace[i]->getStart();
             index = i;
         }

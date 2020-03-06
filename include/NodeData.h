@@ -6,6 +6,7 @@
 static const double NETWORK_SCALE = 0.3;
 
 //#include "Node.h"
+
 class Node;
 
 class NodeData {
@@ -25,6 +26,11 @@ private:
 
     Node* parentNode;
 
+    adak_key findEndKey(int creationRate);
+
+    std::vector<Keyspace*> copyKeyspace(std::vector<Keyspace*> keyspaces);
+
+    int getMinKey(std::vector<Keyspace*> keyspaces);
 public:
     NodeData(Node* parentNode);
 
@@ -42,6 +48,7 @@ public:
     double updateLongTermAllocationRatio();
 
     double updateShortTermAllocationRatio();
+
 
 //    int getKeyShareRate() const { return keyShareRate; }
 //    void setKeyShareRate(int keyShareRate) { NodeData::keyShareRate = keyShareRate; }

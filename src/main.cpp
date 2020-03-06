@@ -3,8 +3,6 @@
 #include "getopt.h"
 
 #include "Simulation.h"
-#include "json.hpp"
-using json = nlohmann::json;
 
 using namespace std;
 
@@ -73,7 +71,6 @@ int main(int argc, char** argv) {
 
     std::ifstream ifs;
     ifs.open("test.json");
-    json jf = json::parse(ifs);
 
     auto* simulation = new Simulation(EventGenerationType::Random);
     simulation->runSimulation();
