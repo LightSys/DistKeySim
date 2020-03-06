@@ -6,18 +6,17 @@
 
 using namespace std;
 
-static const HexDigest& BROADCAST_UUID = "00000000-0000-0000-0000000000";
+static const HexDigest& BROADCAST_UUID = "00000000-0000-0000-0000-000000000000";
 
-Node::Node() {
+Node::Node() : uuid(new_uuid()) {
     // TODO: figure out how to call Node(Keyspace* keySpace) constructor
     Node(new Keyspace(0, ULONG_MAX, 0));
     lastDay = new NodeData(this);
+    this->uuid = new_uuid();
 }
 
-Node::Node(Keyspace* keySpace) {
-    this->uuid = new_uuid();
-
-    if(keySpace == nullptr) {
+Node::Node(Keyspace* keySpace) : uuid(new_uuid()) {
+    if (keySpace == nullptr) {
         this->messageWaiting = true;
         this->messageToSend = newBaseMessage(
                 this->uuid,
@@ -44,9 +43,9 @@ adak_key Node::getNextKey() {
 
 int Node::minimumKeyspaceIndex() {
     unsigned long min = ULONG_MAX;
-    int index = -1;
-    for(int i =0; i < keySpace.size(); i++){
-        if(keySpace[i]->getStart() < min){
+    int index = 0;
+    for (int i = 0; i < keySpace.size(); i++){
+        if (keySpace[i]->getStart() < min){
             min = keySpace[i]->getStart();
             index = i;
         }
@@ -59,9 +58,8 @@ int Node::minimumKeyspaceIndex() {
  * @param message
  */
 void Node::receiveMessage(const Message message) {
-
     // Check time and update lastDay and rotate the history
-    if(NodeData::isNewDay(lastDay->getDay())) {
+    if (NodeData::isNewDay(lastDay->getDay())) {
         history.push_back(lastDay);
         if(history.size() > 7) {
             // Remove the first value from the vector
@@ -136,7 +134,6 @@ Message Node::getHeartbeatMessage() {
     toInformationalMessage(
             msg,
             {
-                // FIXME: ask Nate about CollectionInfoRecord, collectionInfoRecord should also match the Node functions
                 CollectionInfoRecord{"test", 0.0, 0.0, 1.0, 1.0},
                 CollectionInfoRecord{"test2", 0.0, 0.0, 1.0, 1.0},
             }

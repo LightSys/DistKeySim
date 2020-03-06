@@ -9,11 +9,8 @@
 #include "message.hpp"
 #include "NodeData.h"
 
-
 class NodeData;
 
-///TODO integrate RPC into the class
-///TODO likely other things that I didn't consider.
 class Node {
 private:
     UUID uuid;
@@ -51,7 +48,6 @@ public:
      * @return
      */
     Message getHeartbeatMessage();
-
 
     /**
      * Gives keyspace to a node

@@ -1,30 +1,27 @@
+#include <vector>
+
 #include "catch.hpp"
 #include "Node.h"
-#include "Random.h"
 
-TEST_CASE("Testing getActive", "[classic]") {
-    Node* a = new Node();
-    REQUIRE(a->getActive() == true);
-    delete a;
-};
+using namespace std;
 
-TEST_CASE("Testing test", "[classic]") {
-    Random eventGenerator;
-    Simulation simulation(EventGenerationType::Random);
-//    Network* network = simulation.getNetwork();
-//
-//    network->addNode();
-//
-//    // Create new nodes and add them to the map
-//    for(int i = 0; i < 10; i++) {
-//        // FIXME: add appropriate keyspace
-//        network->addNode();
-//    }
-//
-//    for(int i = 0; i < 10; i++) {
-//        eventGenerator.eventTick(network);
-//    }
-//
-//    network->printUUIDList();
-//    network->printChannels();
-};
+TEST_CASE("Multiple nodes have unique UUIDs", "[main]") {
+    // Test that 10 unique Nodes will not have matching UUIDs
+    int numNodes = 10;
+    vector<Node> testNodes;
+    
+    for (int &&i = 0; i < numNodes; i++) {
+        testNodes.emplace_back(Node());
+    }
+    
+    for (int &&i = 0; i < numNodes; i++) {
+        for (int &&j = i + 1; j < numNodes; j++) {
+            REQUIRE(testNodes.at(i).getUUID() != testNodes.at(j).getUUID());
+        }
+    }
+}
+
+TEST_CASE("Single Node has minimum index of 0", "[main]") {
+    Node testNode;
+    REQUIRE(testNode.minimumKeyspaceIndex() == 0);
+}
