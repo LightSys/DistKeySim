@@ -9,7 +9,7 @@
 
 
 # MEMES
-![](/memes/Compiler_Errors.jpg)
+![](/memes/Compiler_Errors.jpg =100x)
 ![](/memes/Prayer.jpg)
 ![](/memes/google_programmer.jpg)
 ![](/memes/geek_vs_programmers.jpg)
