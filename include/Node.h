@@ -26,13 +26,13 @@ private:
 //    double aggregateAllocationRatio;
 //    double provisioningRatio;
     bool active = true;
-    bool messageWaiting = false;
+//    bool messageWaiting = false;
     std::vector<Node*> peers; ///called directConnection on the board.
 
     std::vector<NodeData*> history;
     NodeData* lastDay;
 
-    Message messageToSend;
+//    Message messageToSend;
 public:
     Node();
     Node(Keyspace* keySpace);
@@ -43,7 +43,7 @@ public:
 
     void sendMessage();
 
-    void receiveMessage(const Message message);
+    bool receiveMessage(const Message message);
 
     /**
      * Per the specification, each node will send out a signal letting other nodes know how much
@@ -84,9 +84,9 @@ public:
 
     std::vector<Node*> getPeers() const { return this->peers; }
 
-    bool isMessageWaiting() const { return this->messageWaiting; }
-    void setMessageWaiting(bool messageWaiting) { this->messageWaiting = messageWaiting; }
-    Message getWaitingMessage() const { return this->messageToSend; }
+//    bool isMessageWaiting() const { return this->messageWaiting; }
+//    void setMessageWaiting(bool messageWaiting) { this->messageWaiting = messageWaiting; }
+//    Message getWaitingMessage() const { return this->messageToSend; }
 
 
     NodeData* getNodeData() const { return this->lastDay; }

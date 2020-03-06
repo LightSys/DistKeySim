@@ -11,28 +11,20 @@ static const HexDigest& BROADCAST_UUID = "00000000-0000-0000-0000000000";
 Node::Node() {
     // TODO: figure out how to call Node(Keyspace* keySpace) constructor
     Node(new Keyspace(0, ULONG_MAX, 0));
-    lastDay = new NodeData(this);
 }
 
 Node::Node(Keyspace* keySpace) {
     this->uuid = new_uuid();
+    lastDay = new NodeData(this);
 
-    if(keySpace == nullptr) {
-        this->messageWaiting = true;
-        this->messageToSend = newBaseMessage(
-                this->uuid,
-                (HexDigest &) BROADCAST_UUID,
-                0,
-                Message::ChannelState::Message_ChannelState_INITIAL_STARTUP,
-                1 // FIXME: Nate needs to change this so the msgID exists, but doesn't need to be declared, similar to channelID
-        );
-        toKeyspaceMessage(
-                this->messageToSend,
-                {
-                        KeyspaceExchangeRecord{"test", 0, 0, 0}, // FIXME: ask nate about this
-                }
-        );
-    } else {
+    //        Message msg = newBaseMessage(
+    //                this->uuid,
+    //                (HexDigest &) BROADCAST_UUID,
+    //                0,
+    //                Message::ChannelState::Message_ChannelState_INITIAL_STARTUP,
+    //                1 // FIXME: Nate needs to change this so the msgID exists, but doesn't need to be declared, similar to channelID
+    //        );
+    if(keySpace != nullptr) {
         this->keySpace.push_back(keySpace);
     }
 }
@@ -64,8 +56,7 @@ int Node::minimumKeyspaceIndex() {
  * This is where the Baylor team will add more statistics to handle the messages that each node receives
  * @param message
  */
-void Node::receiveMessage(const Message message) {
-
+bool Node::receiveMessage(const Message message) {
     // Check time and update lastDay and rotate the history
     if(NodeData::isNewDay(lastDay->getDay())) {
         history.push_back(lastDay);
@@ -80,28 +71,48 @@ void Node::receiveMessage(const Message message) {
 
     if(message.messagetype() == Message::MessageType::Message_MessageType_KEYSPACE) {
 
-        // If the node is addressed to me
-        if(message.destnodeid() == this->uuid || message.destnodeid() == BROADCAST_UUID) {
+//        // If the node is addressed to me
+//        if(message.destnodeid() == this->uuid || message.destnodeid() == BROADCAST_UUID) {
+//            for(Node* node : peers) {
+//
+//                // If I know who the message is from
+//                if(node->getUUID() == message.sourcenodeid()) {
+//
+//                    // Need to decide when I give keyspace, for right now, we will automatically give the keyspace
+//                    if(!this->keySpace.empty()) {
+//                        giveKeyspaceToNode(node, 1);
+//
+//                        // Also need to send the ACK
+//                        break;
+//                    }
+//                }
+//            }
+//        }
+    } else if(message.messagetype() == Message::MessageType::Message_MessageType_INFORMATION) {
+        double allocationRatio = -1;
+        for(int &&i = 0; i < message.info().records_size(); i++) {
+            allocationRatio = message.info().records(i).creationratedata().shortallocationratio();
+        }
+        if(allocationRatio > ALLOCATION_BEFORE_GIVING_KEYSPACE) {
             for(Node* node : peers) {
 
                 // If I know who the message is from
                 if(node->getUUID() == message.sourcenodeid()) {
 
-                    // Need to decide when I give keyspace, for right now, we will automatically give the keyspace
+                    // Now we have the Node* for the peer with the message
                     if(!this->keySpace.empty()) {
                         giveKeyspaceToNode(node, 1);
-
-                        // Also need to send the ACK
-                        break;
+                        return true;
                     }
+                    break;
                 }
             }
         }
-    } else if(message.messagetype() == Message::MessageType::Message_MessageType_INFORMATION) {
-
+        // TODO: update peer history
     } else if(message.messagetype() == Message::MessageType::Message_MessageType_DATA_REPLICATION_UNUSED) {
 
     }
+    return false;
 }
 
 void Node::giveKeyspaceToNode(Node* node, float percentageToGive) {
@@ -144,7 +155,6 @@ Message Node::getHeartbeatMessage() {
             {
                 // FIXME: ask Nate about CollectionInfoRecord, collectionInfoRecord should also match the Node functions
                 CollectionInfoRecord{"test", 0.0, 0.0, 1.0, 1.0},
-                CollectionInfoRecord{"test2", 0.0, 0.0, 1.0, 1.0},
             }
     );
     return msg;

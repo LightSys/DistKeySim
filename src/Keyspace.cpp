@@ -4,6 +4,7 @@
 #include "Keyspace.h"
 
 using namespace std;
+
 Keyspace::Keyspace(unsigned long start, unsigned long end, unsigned long suffix) : start(start), end(end), suffix(suffix) {
 //    cout << "Creating Keyspace " << start << " - " <<  end << " / " << suffix << endl;
 }

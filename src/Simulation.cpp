@@ -32,18 +32,19 @@ void Simulation::runSimulation() {
 
     // Create new nodes and add them to the map
     for(int i = 0; i < AMOUNT_OF_NODES; i++) {
+        this->network.printKeyspaces();
         this->network.addNode(nullptr);
         this->network.checkAllNodesForMessages();
     }
 
     // Loop for EventTicks
-    for(int i = 0; i < 10; i++) {
-        eventGenerator->eventTick(&this->network);
-        this->network.checkAllNodesForMessages();
-    }
+//    for(int i = 0; i < 10; i++) {
+//        eventGenerator->eventTick(&this->network);
+//        this->network.checkAllNodesForMessages();
+//    }
 
-    this->network.printUUIDList();
-    this->network.printChannels();
+//    this->network.printUUIDList();
+//    this->network.printChannels();
     this->network.printKeyspaces();
     this->network.printUUIDList(this->getCSVOutput());
     this->network.printChannels(this->getCSVOutput());

@@ -4,6 +4,7 @@
 
 // FIXME: make this a tunable parameter
 static const double NETWORK_SCALE = 0.3;
+static const double ALLOCATION_BEFORE_GIVING_KEYSPACE = 0.7;
 
 //#include "Node.h"
 
@@ -74,7 +75,7 @@ public:
 
 
     int getDay() const { return day; }
-    void setDay(int day) { NodeData::day = day; }
+//    void setDay(int day) { NodeData::day = day; }
 
 };
 

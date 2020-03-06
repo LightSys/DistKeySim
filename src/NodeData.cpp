@@ -10,6 +10,7 @@ using namespace std;
 
 NodeData::NodeData(Node* parentNode) : parentNode(parentNode) {
     day = getCurrentDay();
+    keysUsed = 0;
 }
 
 
@@ -55,10 +56,8 @@ double NodeData::updateLongTermAllocationRatio(){
 
 double NodeData::updateShortTermAllocationRatio(){
     double shortTermRatio = 0.0;
-    int tempKeys = keysUsed;
-
-
-    if(keysUsed == 0){
+    int tempKeys =keysUsed;
+    if(keysUsed = 0){
         tempKeys = 1;
     }
 
