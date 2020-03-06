@@ -156,6 +156,10 @@ void Node::giveKeyspaceToNode(Node* node, float percentageToGive) {
 }
 
 Message Node::getHeartbeatMessage() {
+    float allocation = 0.0;
+    if(this->keySpace.empty()) {
+        allocation = 1.0;
+    }
     Message msg = newBaseMessage(
             this->uuid,
             (HexDigest &) BROADCAST_UUID,
@@ -167,7 +171,7 @@ Message Node::getHeartbeatMessage() {
             msg,
             {
                 // FIXME: ask Nate about CollectionInfoRecord, collectionInfoRecord should also match the Node functions
-                CollectionInfoRecord{"test", 0.0, 0.0, 1.0, 1.0},
+                CollectionInfoRecord{"test", 0.0, 0.0, allocation, allocation},
             }
     );
     return msg;

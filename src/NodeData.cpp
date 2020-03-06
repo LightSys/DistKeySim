@@ -13,6 +13,10 @@ NodeData::NodeData(Node* parentNode) : parentNode(parentNode) {
     keysUsed = 0;
 }
 
+NodeData::~NodeData() {
+    delete parentNode;
+}
+
 
 bool NodeData::isNewDay(int currentDay) {
     return currentDay != getCurrentDay();

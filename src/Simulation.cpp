@@ -6,7 +6,7 @@
 #include "Random.h"
 using namespace std;
 
-Simulation::Simulation(EventGenerationType eventGenerationType) : network(Network(ConnectionType::Full)), eventGenerationType(eventGenerationType) {
+Simulation::Simulation(EventGenerationType eventGenerationType) : network(Network(ConnectionType::Partial)), eventGenerationType(eventGenerationType) {
     // Seed random number
     srand(time(nullptr));
     csvOutput = new ofstream();
@@ -32,7 +32,6 @@ void Simulation::runSimulation() {
 
     // Create new nodes and add them to the map
     for(int i = 0; i < AMOUNT_OF_NODES; i++) {
-        this->network.printKeyspaces();
         this->network.addNode(nullptr);
         this->network.checkAllNodesForMessages();
     }

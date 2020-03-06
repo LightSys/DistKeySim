@@ -20,8 +20,6 @@ private:
 
     Node* parentNode;
 
-
-
     // Functions
     adak_key findEndKey(int creationRate);
 
@@ -30,6 +28,7 @@ private:
     int getMinKey(std::vector<Keyspace*> keyspaces);
 public:
     NodeData(Node* parentNode);
+    ~NodeData();
 
     static bool isNewDay(int currentDay);
     static int getCurrentDay();
