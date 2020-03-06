@@ -2,6 +2,21 @@
 #define ADAK_KEYING_KEYSPACE_H
 
 typedef unsigned long ADAK_Key_t;
+
+class KeyspaceException : public std::runtime_error {
+public:
+    KeyspaceException(char const* const message) throw()
+        : std::runtime_error(message), msg(message)
+    {}
+    
+    const char* what() const throw() {
+        return msg.c_str();
+    }
+    
+private:
+    std::string msg;
+};
+
 class Keyspace {
 private:
     /**

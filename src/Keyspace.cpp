@@ -16,13 +16,14 @@ Keyspace::Keyspace(const Keyspace &obj){
 }
 
 ADAK_Key_t Keyspace::getNextAvailableKey() {
+    // Increment Keyspace unused start by 2^suffix, returning previous start point as an available key
     unsigned long skipBy = pow(2, this->suffix);
     unsigned long oldStart = this->start;
     this->start = start + skipBy;
 
     if (start > end) {
         // This means it is out of keyspace
-        cout << "ERROR start > end on Keyspace::getNextAvailableKey()" << endl;
+        throw KeyspaceException("start > end when creating new key");
     }
     return oldStart;
 }
