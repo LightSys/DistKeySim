@@ -8,7 +8,7 @@ using namespace std;
 
 static const HexDigest& BROADCAST_UUID = "00000000-0000-0000-0000000000";
 
-Node::Node() {
+Node::Node() : uuid(new_uuid()) {
     // TODO: figure out how to call Node(Keyspace* keySpace) constructor
     Node(new Keyspace(0, ULONG_MAX, 0));
 }
@@ -30,14 +30,7 @@ Node::Node(Keyspace* keySpace) {
     this->uuid = new_uuid();
     lastDay = new NodeData(this);
 
-    //        Message msg = newBaseMessage(
-    //                this->uuid,
-    //                (HexDigest &) BROADCAST_UUID,
-    //                0,
-    //                Message::ChannelState::Message_ChannelState_INITIAL_STARTUP,
-    //                1 // FIXME: Nate needs to change this so the msgID exists, but doesn't need to be declared, similar to channelID
-    //        );
-    if(keySpace != nullptr) {
+    if (keySpace != nullptr) {
         this->keySpace.push_back(keySpace);
     }
 }
@@ -45,10 +38,10 @@ Node::Node(Keyspace* keySpace) {
 adak_key Node::getNextKey() {
     lastDay->useKey();
     int index = minimumKeyspaceIndex();
-    if(index == -1){
+    if (index == -1){
         cout << "ERROR from getNextKey in Node: Not more keys to give";
         return -1;
-    }else {
+    } else {
         return this->keySpace.at(index)->getNextAvailableKey();
     }
 }
@@ -56,7 +49,7 @@ adak_key Node::getNextKey() {
 int Node::minimumKeyspaceIndex() {
     unsigned long min = ULONG_MAX;
     int index = -1;
-    for(int i =0; i < keySpace.size(); i++){
+    for(int i = 0; i < keySpace.size(); i++){
         if(keySpace[i]->getStart() < min && keySpace[i]->isKeyAvailable()){
             min = keySpace[i]->getStart();
             index = i;
@@ -71,7 +64,7 @@ int Node::minimumKeyspaceIndex() {
  */
 bool Node::receiveMessage(const Message message) {
     // Check time and update lastDay and rotate the history
-    if(NodeData::isNewDay(lastDay->getDay())) {
+    if (NodeData::isNewDay(lastDay->getDay())) {
         history.push_back(lastDay);
         if(history.size() > 7) {
             // Remove the first value from the vector
@@ -170,8 +163,7 @@ Message Node::getHeartbeatMessage() {
     toInformationalMessage(
             msg,
             {
-                // FIXME: ask Nate about CollectionInfoRecord, collectionInfoRecord should also match the Node functions
-                CollectionInfoRecord{"test", 0.0, 0.0, allocation, allocation},
+                CollectionInfoRecord{"test", 0.0, 0.0, 1.0, 1.0},
             }
     );
     return msg;
