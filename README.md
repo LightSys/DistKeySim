@@ -9,8 +9,8 @@
 
 
 # MEMES
-![](/memes/Compiler_Errors.jpg)
-![](/memes/Prayer.jpg)
-![](/memes/google_programmer.jpg)
-![](/memes/geek_vs_programmers.jpg)
-![](/memes/memeForLightSys.png)
+<a href="/memes/Compiler_Errors.jpg" height="200" />
+<a href="/memes/Prayer.jpg" height="200" />
+<a href="/memes/google_programmer.jpg" height="200" />
+<a href="/memes/geek_vs_programmers.jpg" height="200" />
+<a href="/memes/memeForLightSys.png" height="200" />
