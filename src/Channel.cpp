@@ -8,13 +8,13 @@ Channel::Channel(UUID to, UUID from) {
     lastChannelId++;
 }
 
-unsigned long long Channel::getChannelId() {
+unsigned long long Channel::getChannelId() const {
     return this->channelId;
 }
 
-UUID Channel::getToNode() {
+UUID Channel::getToNode() const {
     return this->toNode;
 }
-UUID Channel::getFromNode() {
+UUID Channel::getFromNode() const {
     return this->fromNode;
 }

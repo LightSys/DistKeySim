@@ -23,96 +23,49 @@ private:
 
     int keysUsed = 0;
     int day;
-
-    Node* parentNode;
-public:
-    int getKeyShareRate() const;
-
-    void setKeyShareRate(int keyShareRate);
-
-    double getKeyGenRate() const;
-
-    void setKeyGenRate(double keyGenRate);
-
-    double getAggregateGenRate() const;
-
-    void setAggregateGenRate(double aggregateGenRate);
-
-    double getShortTermAllocationRatio() const;
-
-    void setShortTermAllocationRatio(double shortTermAllocationRatio);
-
-    double getLongTermAllocationRatio() const;
-
-    void setLongTermAllocationRatio(double longTermAllocationRatio);
-
-    double getAggregateAllocationRatio() const;
-
-    void setAggregateAllocationRatio(double aggregateAllocationRatio);
-
-    double getProvisioningRatio() const;
-
-    void setProvisioningRatio(double provisioningRatio);
-
-    void setCreationRate(double creationRate);
-
-    void setKeysUsed(int keysUsed);
-
-    void setDay(int day);
-
-    Node *getParentNode() const;
-
-    void setParentNode(Node *parentNode);
+    
+    // Functions
+    ADAK_Key_t findEndKey(double creationRate, std::vector<Keyspace> keyspaces);
+    int getMinKey(const std::vector<Keyspace> keyspaces) const;
 
 public:
-    NodeData(Node* parentNode);
-    ~NodeData();
+    explicit NodeData() : day(getCurrentDay()), keysUsed(0) {}
+    ~NodeData() = default;
 
-    static bool isNewDay(int currentDay);
+    static inline bool isNewDay(int currentDay) { return currentDay != getCurrentDay(); }
     static int getCurrentDay();
 
-    void useKey() { keysUsed++; }
-    int getKeysUsed() const { return this->keysUsed; }
+    inline void useKey() { keysUsed++; }
+    constexpr inline int getKeysUsed() const { return this->keysUsed; }
 
-    double updateCreationRate();
-
-    adak_key findEndKey(int creationRate);
-
-    std::vector<Keyspace*> copyKeyspace(std::vector<Keyspace*> keyspaces);
-
-    int getMinKeyIndex(std::vector<Keyspace*> keyspaces);
+    double updateCreationRate(const std::map<UUID, std::shared_ptr<Message>> peers);
+    
     // Getters and Setters
-    double getCreationRate() const {return this->creationRate; }
+    constexpr inline double getCreationRate() const {return this->creationRate; }
+    double updateLongTermAllocationRatio(const std::vector<Keyspace> &keyspace);
+    double updateShortTermAllocationRatio(const std::vector<Keyspace> &keyspace, u_int minSpaceIdx,
+                                          const std::map<UUID, std::shared_ptr<Message>> &peers);
 
-    double updateLongTermAllocationRatio();
-
-    double updateShortTermAllocationRatio();
-
-
-//    int getKeyShareRate() const { return keyShareRate; }
-//    void setKeyShareRate(int keyShareRate) { NodeData::keyShareRate = keyShareRate; }
-//
-//    double getKeyGenRate() const { return keyGenRate; }
-//    void setKeyGenRate(double keyGenRate) { NodeData::keyGenRate = keyGenRate; }
-//
-//    double getAggregateGenRate();
-//    void setAggregateGenRate(double aggregateGenRate) { NodeData::aggregateGenRate = aggregateGenRate; }
-//
-//    double getShortTermAllocationRatio() const { return shortTermAllocationRatio; }
-//    void setShortTermAllocationRatio(double shortTermAllocationRatio) { NodeData::shortTermAllocationRatio = shortTermAllocationRatio; }
-//
-//    double getLongTermAllocationRatio() const { return longTermAllocationRatio; }
-//    void setLongTermAllocationRatio(double longTermAllocationRatio) { NodeData::longTermAllocationRatio = longTermAllocationRatio; }
-//
-//    double getAggregateAllocationRatio() const { return aggregateAllocationRatio; }
-//    void setAggregateAllocationRatio(double aggregateAllocationRatio) { NodeData::aggregateAllocationRatio = aggregateAllocationRatio; }
-//
-//    double getProvisioningRatio() const { return provisioningRatio; }
-//    void setProvisioningRatio(double provisioningRatio) { NodeData::provisioningRatio = provisioningRatio; }
-
-
-
-    int getDay() const { return day; }
+    constexpr inline int getDay() const { return day; }
+    
+    
+    int getKeyShareRate() const;
+    void setKeyShareRate(int keyShareRate);
+    double getKeyGenRate() const;
+    void setKeyGenRate(double keyGenRate);
+    double getAggregateGenRate() const;
+    void setAggregateGenRate(double aggregateGenRate);
+    double getShortTermAllocationRatio() const;
+    void setShortTermAllocationRatio(double shortTermAllocationRatio);
+    double getLongTermAllocationRatio() const;
+    void setLongTermAllocationRatio(double longTermAllocationRatio);
+    double getAggregateAllocationRatio() const;
+    void setAggregateAllocationRatio(double aggregateAllocationRatio);
+    double getProvisioningRatio() const;
+    void setProvisioningRatio(double provisioningRatio);
+    void setCreationRate(double creationRate);
+    void setKeysUsed(int keysUsed);
+    void setDay(int day);
 };
 
 

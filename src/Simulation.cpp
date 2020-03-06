@@ -2,52 +2,44 @@
 #include <ctime>
 
 #include "Simulation.h"
-#include "EventGen.h"
-#include "Random.h"
+
 using namespace std;
 
-Simulation::Simulation(EventGenerationType eventGenerationType) : network(Network(ConnectionType::Full)), eventGenerationType(eventGenerationType) {
+Simulation::Simulation(const struct Config &config) : numNodes(config.numNodes), network(Network(config.connectionMode)) {
     // Seed random number
     srand(time(nullptr));
-    csvOutput = new ofstream();
-    csvOutput->open("csvFile.csv", ofstream::out | ofstream::trunc);
 }
 
-Simulation::~Simulation() {
-    csvOutput->close();
-    delete csvOutput;
-}
-
-void Simulation::runSimulation() {
-    EventGen *eventGenerator;
-
-    if(eventGenerationType == EventGenerationType::Random) {
-        eventGenerator = new Random();
-    } else if(eventGenerationType == EventGenerationType::Unused1) {
-        cout << "This is unimplemented, Baylor team will presumably add their own implementations" << endl;
-    }
-
+void Simulation::run() {
     // Create root node that will have the max keyspace 0/0
     this->network.addNode();
 
     //Testing statisics
-    Node* tomTest = this->network.getNodeFromUUID(this->network.getRandomNode());
+    Node* tomTest = network.getNodeFromUUID(network.getRandomNode());
 
     // Create new nodes and add them to the map
-    for(int i = 0; i < AMOUNT_OF_NODES; i++) {
-//        this->network.printKeyspaces();
+    for (int i = 0; i < numNodes; i++) {
+        this->network.printKeyspaces();
+        this->network.addNode();
+        this->network.checkAndSendAllNodes();
+    }
+    
+    network.printKeyspaces();
+    network.printUUIDList();
+    network.printChannels();
+    network.printKeyspaces();
+    for (int i = 0; i < AMOUNT_OF_NODES; i++) {
         this->network.addNode(nullptr);
         this->network.checkAllNodesForMessages();
     }
 
     // Loop for EventTicks
-    for(int i = 0; i < 10; i++) {
+    for (int i = 0; i < 10; i++) {
         eventGenerator->eventTick(&this->network);
         this->network.checkAllNodesForMessages();
     }
 
     NodeData* Nodedata = tomTest->getLastDay();
-    //Nodedata->setCreationRate(10.0);
     cout << "Creation Rate: " << Nodedata->updateCreationRate() <<
             "\nLong Term Allocation: " << Nodedata->updateLongTermAllocationRatio() <<
             "\nShort Term Allocation: " << Nodedata->updateShortTermAllocationRatio() <<
@@ -56,10 +48,7 @@ void Simulation::runSimulation() {
             "\nSuffix: " << tomTest->getKeySpace().at(0)->getSuffix()<<
             "\nFinal Key in actual test: " << tomTest->getKeySpace().at(0)->getEnd() <<endl;
 
-//    this->network.printUUIDList();
-//    this->network.printChannels();
-//    this->network.printKeyspaces();
-    this->network.printUUIDList(this->getCSVOutput());
-    this->network.printChannels(this->getCSVOutput());
-    this->network.printKeyspaces(this->getCSVOutput());
+    network.printUUIDList();
+    network.printChannels();
+    network.printKeyspaces();
 }
