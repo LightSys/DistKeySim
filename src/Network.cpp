@@ -32,10 +32,19 @@ shared_ptr<Node> Network::getNodeFromUUID(const UUID &uuid) const {
     return nodes.find(uuid)->second;
 }
 
-void Network::connectNodeToNetwork(shared_ptr<Node> newNode) {
-    if (this->connectionType == ConnectionType::Full) {
-        fullyConnect(newNode);
-    } else if (this->connectionType == ConnectionType::Partial) {
+UUID Network::addNode() {
+    return addNode(new Keyspace(0, INT32_MAX, 0));
+}
+UUID Network::addNode(Keyspace* keyspace) {
+    // Create a new new node with the given keyspace
+    Node* node = new Node(keyspace);
+
+    // Add the new node to the map <UUID, Node*>
+    this->nodes.emplace(node->getUUID(), node);
+
+    if(this->connectionType == ConnectionType::Full) {
+        fullyConnect(node);
+    } else if(this->connectionType == ConnectionType::Partial) {
         // rand() % 4 is an arbitrary number to make the connection only happen sometimes.
         int coinFlip = rand() % 8;
         for (auto &[uuid, node] : nodes) {

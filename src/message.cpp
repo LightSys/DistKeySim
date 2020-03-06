@@ -9,7 +9,7 @@
  * @param shortAlloc float indicating Short-term keyspace allocation ratio: AS
  */
 void addCollectionInfoRecord(InformationalMessageContents::CollectionInformationRecord *collection,
-                             float createdDay, float createdWeek, float longAlloc, float shortAlloc) {
+                             double createdDay, double createdWeek, double longAlloc, double shortAlloc) {
     auto *creationRateData = new InformationalMessageContents::CollectionInformationRecord::CreationRateData();
     creationRateData->set_createdpreviousday(createdDay);
     creationRateData->set_createdpreviousweek(createdWeek);

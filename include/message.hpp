@@ -26,6 +26,7 @@ struct KeyspaceExchangeRecord {
     uint32_t startID;
     uint32_t endID;
     uint32_t suffixBits;
+    
 };
 
 Message newBaseMessage(const HexDigest &sendingUUID, const HexDigest &destUUID, uint32_t lastReceived,

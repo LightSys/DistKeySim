@@ -7,10 +7,10 @@ message InformationalMessageContents {
     string collectionName = 1;
 
     message CreationRateData {
-      float shortAllocationRatio = 1;
-      float longAllocationRatio = 2;
-      float createdPreviousDay = 3;
-      float createdPreviousWeek = 4;
+      double shortAllocationRatio = 1;
+      double longAllocationRatio = 2;
+      double createdPreviousDay = 3;
+      double createdPreviousWeek = 4;
     }
 
     CreationRateData creationRateData = 2;
