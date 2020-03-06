@@ -1,9 +1,7 @@
 {
- "Values wanted": {
-   "AMOUNT_OF_NODES": 20,
-   "fullyConnected": "",
-   "csvOutPutValue": "",
-   "creationRate": 23,
-   "networkScale": 10
- }
+      "numNodes": 20,
+      "connectionMode": "single, partial, fully connected",
+      "csvOutputPath": "csvOutputPath",
+      "creationRate": 23,
+      "networkScale": 10
 }

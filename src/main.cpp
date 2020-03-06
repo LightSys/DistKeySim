@@ -2,11 +2,10 @@
 #include <string>
 #include "getopt.h"
 #include "Simulation.h"
+#include "config.cpp"
 
 using namespace std;
 
-// Default number of nodes to spin up if no --num argument passed
-static const u_int DEFAULT_NUM_NODES = 100;
 static const char* DEFAULT_CSV_PATH = "out.csv";
 
 /**
@@ -67,6 +66,8 @@ int main(int argc, char** argv) {
     u_int numNodes = DEFAULT_NUM_NODES;
     string csvPath = DEFAULT_CSV_PATH;
     parseArgs(argc, argv, numNodes, csvPath);
+
+    auto config = new Config(ifstream("test.json"));
 
     auto* simulation = new Simulation(EventGenerationType::Random);
     simulation->runSimulation();
