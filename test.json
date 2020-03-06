@@ -1,7 +1,7 @@
 {
-      "numNodes": 20,
-      "connectionMode": "single, partial, fully connected",
-      "csvOutputPath": "csvOutputPath",
-      "creationRate": 23,
-      "networkScale": 10
+      "numNodes": 42,
+      "connectionMode": "Fully connected.",
+      "csvOutputPath": "Path of Righteousness",
+      "creationRate": 42,
+      "networkScale": 0.42
 }

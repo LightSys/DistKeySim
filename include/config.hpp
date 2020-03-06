@@ -23,11 +23,6 @@ public:
 
     Config(std::ifstream jsonFile);
 
-    u_int getNumNodes() const { return numNodes; }
-    std::string getConnectionModes() const { return connectionMode; }
-    std::string getCSVP() const { return csvOutputPath; }
-    int getCreateRate() const { return creationRate; }
-    float getNet() const { return networkScale; }
 private:
     u_int numNodes;
     std::string connectionMode;

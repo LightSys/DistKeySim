@@ -19,7 +19,7 @@ Config::Config(std::ifstream jsonFile) {
             jf.at("connectionMode").get_to(this->connectionMode);
         }
         else {
-            connectionMode = DEFAULT_CSV_OUTPUT_PATH;
+            connectionMode = DEFAULT_CONNECTION_MODE;
         }
         if(jf.contains("csvOutputPath")) {
             jf.at("csvOutputPath").get_to(this->csvOutputPath);
@@ -41,6 +41,7 @@ Config::Config(std::ifstream jsonFile) {
         }
     }
     else {
+        std::cout << "not open" << std::endl;
         numNodes = DEFAULT_NUM_NODES;
         connectionMode = DEFAULT_CSV_OUTPUT_PATH;
         csvOutputPath = DEFAULT_CSV_OUTPUT_PATH;
