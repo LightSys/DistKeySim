@@ -22,7 +22,7 @@ Network::~Network() {
     }
 }
 
-bool Network::sendMsg(const Message message) {
+void Network::sendMsg(const Message message) {
     const UUID sourceUUID = message.sourcenodeid();
     Node* sourceNode = getNodeFromUUID(sourceUUID);
 
@@ -38,19 +38,16 @@ bool Network::sendMsg(const Message message) {
         /// would loop through (starting with the peers it thinks it will give keyspace. And one at a time send the heartbeat
         /// to them and wait to see if they respond
         if(node->receiveMessage(message)) {
-            return true;
+            break;
         }
     }
-    return false;
 }
 
 void Network::checkAllNodesForMessages() {
     for(auto const& x : nodes) {
         // TODO: Baylor will need to change this, right now we are sending heartbeat messages practically all the time
         // they will probably want to add time to Node to send it periodically
-        if(sendMsg(x.second->getHeartbeatMessage())) {
-            break;
-        }
+        sendMsg(x.second->getHeartbeatMessage());
     }
 }
 

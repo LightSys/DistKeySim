@@ -5,7 +5,7 @@
 #include "Network.h"
 
 // TODO: change to JSON parameter
-static const int AMOUNT_OF_NODES = 2;
+static const int AMOUNT_OF_NODES = 50;
 
 /**
  * The type of Event Generation type the Simluation should use

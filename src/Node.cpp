@@ -77,23 +77,6 @@ bool Node::receiveMessage(const Message message) {
 
     if(message.messagetype() == Message::MessageType::Message_MessageType_KEYSPACE) {
 
-//        // If the node is addressed to me
-//        if(message.destnodeid() == this->uuid || message.destnodeid() == BROADCAST_UUID) {
-//            for(Node* node : peers) {
-//
-//                // If I know who the message is from
-//                if(node->getUUID() == message.sourcenodeid()) {
-//
-//                    // Need to decide when I give keyspace, for right now, we will automatically give the keyspace
-//                    if(!this->keySpace.empty()) {
-//                        giveKeyspaceToNode(node, 1);
-//
-//                        // Also need to send the ACK
-//                        break;
-//                    }
-//                }
-//            }
-//        }
     } else if(message.messagetype() == Message::MessageType::Message_MessageType_INFORMATION) {
         double allocationRatio = -1;
         for(int &&i = 0; i < message.info().records_size(); i++) {
@@ -105,10 +88,23 @@ bool Node::receiveMessage(const Message message) {
                 // If I know who the message is from
                 if(node->getUUID() == message.sourcenodeid()) {
 
+                    /// FIXME: Baylor, this something to consider. Right now if the keyspace is running low, then
+                    /// there will be a case when we have the following scenarios below happen. These are NOT currently
+                    /// covered. These was mainly fixed when we got the allocation working.
+                    /// If we have 1 keyspace, and only 1 spot open in that keyspace
+                    /// then do nothing.
+                    /// If we have more than 1 keyspace with 1 spot open
+                    /// give the entire keyspace
+
                     // Now we have the Node* for the peer with the message
                     if(!this->keySpace.empty()) {
-                        giveKeyspaceToNode(node, 1);
-                        return true;
+                        Keyspace* keyspaceToGive = this->keySpace.at(minimumKeyspaceIndex());
+
+                        // If i have another key spot available
+                        if((keyspaceToGive->getStart() + pow(2, keyspaceToGive->getSuffix())) < keyspaceToGive->getEnd()) {
+                            giveKeyspaceToNode(node, 1);
+                            return true;
+                        }
                     }
                     break;
                 }
@@ -137,15 +133,58 @@ void Node::giveKeyspaceToNode(Node* node, float percentageToGive) {
     newStart += pow(2, newSuffix);
     newSuffix += 1;
 
-//    if(newSuffix <= 32) {
+    if(newStart > 2147483647) {
+        cout << "Error" << endl;
+    }
+
+    if(newSuffix < 32) {
         auto *myKeyspace = new Keyspace(myStart, myEnd, mySuffix);
         auto *newKeyspace = new Keyspace(newStart, newEnd, newSuffix);
 
+        if(newKeyspace->getStart() > newKeyspace->getEnd()) {
+            cout << "Error" << endl;
+        }
+        if(myKeyspace->getStart() > myKeyspace->getEnd()) {
+            cout << "Error" << endl;
+        }
+
         this->keySpace.at(minKeyspaceIndex) = myKeyspace;
         node->keySpace.push_back(newKeyspace);
-//    } else {
+    } else {
 //        cout << "ERROR we have run out of keyspace blocks, need to further sub-divide the keys using start/end" << endl;
-//    }
+
+        // Start breaking into sub-blocks!
+        // (((end - start) / 2^B) / (chunkiness)) * B + start
+        // B is the suffix bits
+
+        unsigned long myStart2 = minKeyspace->getStart();
+        unsigned long myEnd2 = minKeyspace->getEnd();
+        unsigned long suffix = minKeyspace->getSuffix();
+
+        double amountOfBlocks = (double) (myEnd2 - myStart2) / pow(2, suffix);
+        amountOfBlocks = amountOfBlocks + 0.5 - (amountOfBlocks < 0);
+
+        int amountOfBlocksToGive = ((int)amountOfBlocks) / CHUNKINESS;
+        int blocksScaled = amountOfBlocksToGive * suffix;
+        int myNewEnd = blocksScaled + myStart2;
+
+        auto *myKeyspace = new Keyspace(myStart2, myNewEnd, suffix);
+        auto *newKeyspace = new Keyspace(myNewEnd, myEnd2, suffix);
+
+        if(newStart > 2147483647 || myNewEnd > 2147483647) {
+            cout << "Error" << endl;
+        }
+
+        if(newKeyspace->getStart() > newKeyspace->getEnd()) {
+            cout << "Error" << endl;
+        }
+        if(myKeyspace->getStart() > myKeyspace->getEnd()) {
+            cout << "Error" << endl;
+        }
+
+        this->keySpace.at(minKeyspaceIndex) = myKeyspace;
+        node->keySpace.push_back(newKeyspace);
+    }
 }
 
 Message Node::getHeartbeatMessage() {
@@ -163,7 +202,7 @@ Message Node::getHeartbeatMessage() {
     toInformationalMessage(
             msg,
             {
-                CollectionInfoRecord{"test", 0.0, 0.0, 1.0, 1.0},
+                CollectionInfoRecord{"test", 0.0, 0.0, allocation, allocation},
             }
     );
     return msg;

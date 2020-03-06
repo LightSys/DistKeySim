@@ -5,6 +5,7 @@
 // FIXME: make this a tunable parameter
 static const double NETWORK_SCALE = 0.3;
 static const double ALLOCATION_BEFORE_GIVING_KEYSPACE = 0.7;
+static const double CHUNKINESS = 2; // aka. 50%; 1/CHUNKINESS
 
 class Node;
 

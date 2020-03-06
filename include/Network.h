@@ -49,7 +49,7 @@ public:
      */
     void disconnectNodes(const UUID nodeOne, const UUID nodeTwo);
 
-    bool sendMsg(const Message message);
+    void sendMsg(const Message message);
 
     /**
      * Returns a random node from the Node list, useful for creating random events
