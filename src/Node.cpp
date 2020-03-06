@@ -39,7 +39,7 @@ adak_key Node::getNextKey() {
     lastDay->useKey();
     int index = minimumKeyspaceIndex();
     if (index == -1){
-        cout << "ERROR from getNextKey in Node: Not more keys to give";
+        cout << "ERROR from getNextKey in Node: Not more keys to give"<<endl;
         return -1;
     } else {
         return this->keySpace.at(index)->getNextAvailableKey();
@@ -77,6 +77,23 @@ bool Node::receiveMessage(const Message message) {
 
     if(message.messagetype() == Message::MessageType::Message_MessageType_KEYSPACE) {
 
+//        // If the node is addressed to me
+//        if(message.destnodeid() == this->uuid || message.destnodeid() == BROADCAST_UUID) {
+//            for(Node* node : peers) {
+//
+//                // If I know who the message is from
+//                if(node->getUUID() == message.sourcenodeid()) {
+//
+//                    // Need to decide when I give keyspace, for right now, we will automatically give the keyspace
+//                    if(!this->keySpace.empty()) {
+//                        giveKeyspaceToNode(node, 1);
+//
+//                        // Also need to send the ACK
+//                        break;
+//                    }
+//                }
+//            }
+//        }
     } else if(message.messagetype() == Message::MessageType::Message_MessageType_INFORMATION) {
         double allocationRatio = -1;
         for(int &&i = 0; i < message.info().records_size(); i++) {

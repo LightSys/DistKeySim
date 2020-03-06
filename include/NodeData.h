@@ -80,7 +80,7 @@ public:
 
     std::vector<Keyspace*> copyKeyspace(std::vector<Keyspace*> keyspaces);
 
-    int getMinKey(std::vector<Keyspace*> keyspaces);
+    int getMinKeyIndex(std::vector<Keyspace*> keyspaces);
     // Getters and Setters
     double getCreationRate() const {return this->creationRate; }
 

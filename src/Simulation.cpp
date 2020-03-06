@@ -52,13 +52,13 @@ void Simulation::runSimulation() {
             "\nLong Term Allocation: " << Nodedata->updateLongTermAllocationRatio() <<
             "\nShort Term Allocation: " << Nodedata->updateShortTermAllocationRatio() <<
             "\nEnd Key: " << Nodedata->findEndKey(Nodedata->getCreationRate()) <<
-            "\nCreation Rate: " << Nodedata->getCreationRate() <<
-            "\nMin Key: " << Nodedata->getMinKey(tomTest->getKeySpace()) <<
-            "\nSuffix: " << tomTest->getKeySpace().at(0)->getSuffix()<< endl;
+            "\nMin Key: " << Nodedata->getMinKeyIndex(tomTest->getKeySpace()) <<
+            "\nSuffix: " << tomTest->getKeySpace().at(0)->getSuffix()<<
+            "\nFinal Key in actual test: " << tomTest->getKeySpace().at(0)->getEnd() <<endl;
 
 //    this->network.printUUIDList();
 //    this->network.printChannels();
-    this->network.printKeyspaces();
+//    this->network.printKeyspaces();
     this->network.printUUIDList(this->getCSVOutput());
     this->network.printChannels(this->getCSVOutput());
     this->network.printKeyspaces(this->getCSVOutput());

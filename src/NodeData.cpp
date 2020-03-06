@@ -89,11 +89,11 @@ adak_key NodeData::findEndKey(int creationRate){
     adak_key endKey = -1;
     for(int i = 0; i <= creationRate; i++){
         //TODO:May need to actually fix this another way if out keyspace
-        minKeyIndex = getMinKey(copyKeyspaces);
+        minKeyIndex = getMinKeyIndex(copyKeyspaces);
         if(minKeyIndex != -1) {
             endKey = copyKeyspaces.at(minKeyIndex)->getNextAvailableKey();
         }else{
-            cout << "ERROR from findEndKey: no more keys to distribute";
+            cout << "ERROR from findEndKey: no more keys to distribute"<<endl;
         }
     }
     for(Keyspace* key: copyKeyspaces) {
@@ -103,7 +103,7 @@ adak_key NodeData::findEndKey(int creationRate){
     return endKey;
 }
 
-int NodeData::getMinKey(std::vector<Keyspace*> keyspaces){
+int NodeData::getMinKeyIndex(std::vector<Keyspace*> keyspaces){
     unsigned long min = ULONG_MAX;
     int index = -1;
     for(int i =0; i < keyspaces.size(); i++){
