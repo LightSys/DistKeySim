@@ -7,12 +7,24 @@ using json = nlohmann::json;
 
 Config::Config(std::ifstream jsonFile) {
 
-    json jf = json::parse(jsonFile);
-    jf.at("numNodes").get_to(this->numNodes);
-    jf.at("connectionMode").get_to(this->connectionMode);
-    jf.at("csvOutputPath").get_to(this->csvOutputPath);
-    jf.at("creationRate").get_to(this->creationRate);
-    jf.at("networkScale").get_to(this->networkScale);
+    if(jsonFile.is_open()) {
+        json jf = json::parse(jsonFile);
+        if (jf.contains("numNodes")) {
+            jf.at("numNodes").get_to(this->numNodes);
+        }
+        if (jf.contains("connectionMode")){
+            jf.at("connectionMode").get_to(this->connectionMode);
+        }
+        if(jf.contains("csvOutputPath")){
+            jf.at("csvOutputPath").get_to(this->csvOutputPath);
+        }
+        if(jf.contains("creationRate")){
+            jf.at("creationRate").get_to(this->creationRate);
+        }
+        if(jf.contains("networkScale")){
+            jf.at("networkScale").get_to(this->networkScale);
+        }
+    }
 }
 
 //void from_json(const json& j, gop& g) {
