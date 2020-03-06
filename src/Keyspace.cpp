@@ -15,7 +15,6 @@ Keyspace::Keyspace(const Keyspace &obj){
     this->suffix = obj.start;
 }
 
-
 ADAK_Key_t Keyspace::getNextAvailableKey() {
     int skipBy = pow(2, this->suffix);
     unsigned long oldStart = this->start;

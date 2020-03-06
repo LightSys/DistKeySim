@@ -5,8 +5,7 @@
 
 using namespace std;
 
-Simulation::Simulation(const u_int &numNodes, const ConnectionType connType)
-    : numNodes(numNodes), network(Network(connType)) {
+Simulation::Simulation(const struct Config &config) : numNodes(config.numNodes), network(Network(config.connectionMode)) {
     // Seed random number
     srand(time(nullptr));
 }

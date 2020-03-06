@@ -10,6 +10,7 @@
 #include "message.hpp"
 #include "NodeData.h"
 
+
 class NodeData;
 
 static const HexDigest BROADCAST_UUID = "00000000-0000-0000-0000-000000000000";
@@ -28,6 +29,7 @@ private:
     float createdDay;
     float createdWeek;
 
+    Message messageToSend;
 public:
     Node();
     Node(const Keyspace &keyspace);
@@ -88,6 +90,9 @@ public:
 //
 //    int getKeyShareRate() const { return keyShareRate; }
 //    void setKeyShareRate(int ksr) { keyShareRate = ksr; }
+//
+//    bool getActive() const { return active; }
+//    void setActive(bool a) { active = a; }
 
     const std::map<UUID, std::shared_ptr<Message>> getPeers() const { return this->peers; }
 

@@ -71,7 +71,7 @@ ADAK_Key_t Node::getNextKey() {
 
 int Node::minimumKeyspaceIndex() {
     unsigned long min = ULONG_MAX;
-    int index = 0;
+    int index = -1;
     
     for (int i = 0; i < keyspaces.size(); i++){
         if (keyspaces.at(i).getStart() < min && keyspaces.at(i).isKeyAvailable()) {
@@ -228,3 +228,48 @@ Message Node::getHeartbeatMessage(const UUID &peerID) const {
     
     return msg;
 }
+
+///**
+// * computes the generation rate of a node and all its peers.
+// *TODO alter funct so that it excludes the destination node in the computation
+// */
+//double Node::computeAggregateGenRate() {
+//    double totalPeerRate;
+//
+//    for(int i = 0; i < peers.size(); i++) {
+//        totalPeerRate += peers.at(i)->keyGenRate;
+//    }
+//
+//    totalPeerRate = totalPeerRate * 0.30;
+//
+//    aggregateGenRate = totalPeerRate + keyGenRate;
+//    return aggregateGenRate;
+//}
+///**
+// * TODO write next two functions
+// * I'm not certain of how to write these.
+// */
+//double Node::computeShortTermAllocationRatio(){
+//    return -1.0;
+//}
+//
+//double Node::computeLongTermAllocationRatio(){
+//    return -1.0;
+//}
+//
+///**
+// * TODO write function
+// * Requires understanding of the two above for computation
+// */
+//double Node::computeAggregateAllocationRatio() {
+//    return -1.0;
+//}
+//
+///**
+// * TODO write function
+// * found by dividing the relevant creation (gen) rate by the relevant allocation rate.
+// * How do I determine which rates are the relevant ones?
+// */
+//double Node::computeProvisioningRatio() {
+//    return -1.0;
+//}

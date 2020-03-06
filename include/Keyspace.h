@@ -21,6 +21,7 @@ public:
      * @return
      */
     ADAK_Key_t getNextAvailableKey();
+
     /**
      * This returns the same information that getNextAvailableKey does, but it doens't actually use up they keyspace.
      * This is for implementing the ADAK algorithm specification: Find the lowest-numbered starting

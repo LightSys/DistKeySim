@@ -180,7 +180,6 @@ void Network::printUUIDList(ostream &out, char spacer) {
     }
     out << flush;
 }
-
 void Network::printChannels() {
     printChannels(cout, ' ');
 }

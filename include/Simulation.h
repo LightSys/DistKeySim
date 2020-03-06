@@ -3,13 +3,20 @@
 
 #include "UUID.h"
 #include "Network.h"
+#include "config.hpp"
+
+/**
+ * The type of Event Generation type the Simluation should use
+ */
+enum class EventGenerationType { Random, Unused1, Unused2 };
 
 class Simulation {
 private:
+    EventGenerationType eventGenerationType;
     Network network;
     u_int numNodes;
 public:
-    Simulation(const u_int &numNodes, const ConnectionType connType = ConnectionType::Full);
+    Simulation(const struct Config &config);
     ~Simulation() = default;
 
     // Executes simulation
