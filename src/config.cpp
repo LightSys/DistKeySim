@@ -13,14 +13,6 @@ Config Config::fromJSONFile(std::ifstream jsonFile) {
     jf.at("networkScale").get_to(jsonFile.networkScale);
 }
 
-Config Config::fromJSONString(std::string json) {
-    std::ifstream ifs;
-    ifs.open("test.json");
-
-
-
-}
-
 //void from_json(const json& j, gop& g) {
 //    j.at("SentenceStressScore").get_to(g.SentenceStressScore);
 //    j.at("WordsStressScore").get_to(g.WordsStressScore);
