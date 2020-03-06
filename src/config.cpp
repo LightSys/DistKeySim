@@ -40,6 +40,13 @@ Config::Config(std::ifstream jsonFile) {
             networkScale = DEFAULT_NETWORK_SCALE;
         }
     }
+    else {
+        numNodes = DEFAULT_NUM_NODES;
+        connectionMode = DEFAULT_CSV_OUTPUT_PATH;
+        csvOutputPath = DEFAULT_CSV_OUTPUT_PATH;
+        creationRate = DEFAULT_CREATION_RATE;
+        networkScale = DEFAULT_NETWORK_SCALE;
+    }
 }
 
 //void from_json(const json& j, gop& g) {
