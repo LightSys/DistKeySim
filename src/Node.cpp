@@ -10,20 +10,20 @@ static const HexDigest& BROADCAST_UUID = "00000000-0000-0000-0000000000";
 
 Node::Node() : uuid(new_uuid()) {
     // TODO: figure out how to call Node(Keyspace* keySpace) constructor
-    Node(new Keyspace(0, ULONG_MAX, 0));
+    Node(new Keyspace(0, UINT_MAX, 0));
 }
 
 Node::~Node() {
-    for(Keyspace* keyspace : keySpace) {
-        delete keyspace;
-    }
-    for(Node* node : peers) {
-        delete node;
-    }
-    for(NodeData* nodeData : history) {
-        delete nodeData;
-    }
-    delete lastDay;
+//    for(Keyspace* keyspace : keySpace) {
+//        delete keyspace;
+//    }
+//    for(Node* node : peers) {
+//        delete node;
+//    }
+//    for(NodeData* nodeData : history) {
+//        delete nodeData;
+//    }
+//    delete lastDay;
 }
 
 Node::Node(Keyspace* keySpace) {
@@ -47,7 +47,7 @@ adak_key Node::getNextKey() {
 }
 
 int Node::minimumKeyspaceIndex() {
-    unsigned long min = ULONG_MAX;
+    unsigned long min = UINT_MAX;
     int index = -1;
     for(int i = 0; i < keySpace.size(); i++){
         if(keySpace[i]->getStart() < min && keySpace[i]->isKeyAvailable()){
@@ -150,20 +150,9 @@ void Node::giveKeyspaceToNode(Node* node, float percentageToGive) {
     newStart += pow(2, newSuffix);
     newSuffix += 1;
 
-    if(newStart > 2147483647) {
-        cout << "Error" << endl;
-    }
-
     if(newSuffix < 32) {
         auto *myKeyspace = new Keyspace(myStart, myEnd, mySuffix);
         auto *newKeyspace = new Keyspace(newStart, newEnd, newSuffix);
-
-        if(newKeyspace->getStart() > newKeyspace->getEnd()) {
-            cout << "Error" << endl;
-        }
-        if(myKeyspace->getStart() > myKeyspace->getEnd()) {
-            cout << "Error" << endl;
-        }
 
         this->keySpace.at(minKeyspaceIndex) = myKeyspace;
         node->keySpace.push_back(newKeyspace);
@@ -187,17 +176,6 @@ void Node::giveKeyspaceToNode(Node* node, float percentageToGive) {
 
         auto *myKeyspace = new Keyspace(myStart2, myNewEnd, suffix);
         auto *newKeyspace = new Keyspace(myNewEnd, myEnd2, suffix);
-
-        if(newStart > 2147483647 || myNewEnd > 2147483647) {
-            cout << "Error" << endl;
-        }
-
-        if(newKeyspace->getStart() > newKeyspace->getEnd()) {
-            cout << "Error" << endl;
-        }
-        if(myKeyspace->getStart() > myKeyspace->getEnd()) {
-            cout << "Error" << endl;
-        }
 
         this->keySpace.at(minKeyspaceIndex) = myKeyspace;
         node->keySpace.push_back(newKeyspace);

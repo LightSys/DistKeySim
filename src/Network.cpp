@@ -52,7 +52,7 @@ void Network::checkAllNodesForMessages() {
 }
 
 UUID Network::addNode() {
-    return addNode(new Keyspace(0, INT32_MAX, 0));
+    return addNode(new Keyspace(0, UINT_MAX, 0));
 }
 UUID Network::addNode(Keyspace* keyspace) {
     // Create a new new node with the given keyspace

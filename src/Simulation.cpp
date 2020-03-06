@@ -31,7 +31,7 @@ void Simulation::runSimulation() {
     this->network.addNode();
 
     //Testing statisics
-    Node* tomTest = this->network.getNodeFromUUID(this->network.getRandomNode());
+//    Node* tomTest = this->network.getNodeFromUUID(this->network.getRandomNode());
 
     // Create new nodes and add them to the map
     for(int i = 0; i < AMOUNT_OF_NODES; i++) {
@@ -46,20 +46,20 @@ void Simulation::runSimulation() {
         this->network.checkAllNodesForMessages();
     }
 
-    NodeData* Nodedata = tomTest->getLastDay();
-    //Nodedata->setCreationRate(10.0);
-    cout << "Creation Rate: " << Nodedata->updateCreationRate() <<
-            "\nLong Term Allocation: " << Nodedata->updateLongTermAllocationRatio() <<
-            "\nShort Term Allocation: " << Nodedata->updateShortTermAllocationRatio() <<
-            "\nEnd Key: " << Nodedata->findEndKey(Nodedata->getCreationRate()) <<
-            "\nMin Key: " << Nodedata->getMinKeyIndex(tomTest->getKeySpace()) <<
-            "\nSuffix: " << tomTest->getKeySpace().at(0)->getSuffix()<<
-            "\nFinal Key in actual test: " << tomTest->getKeySpace().at(0)->getEnd() <<endl;
+//    NodeData* Nodedata = tomTest->getLastDay();
+//    //Nodedata->setCreationRate(10.0);
+//    cout << "Creation Rate: " << Nodedata->updateCreationRate() <<
+//            "\nLong Term Allocation: " << Nodedata->updateLongTermAllocationRatio() <<
+//            "\nShort Term Allocation: " << Nodedata->updateShortTermAllocationRatio() <<
+//            "\nEnd Key: " << Nodedata->findEndKey(Nodedata->getCreationRate()) <<
+//            "\nMin Key: " << Nodedata->getMinKeyIndex(tomTest->getKeySpace()) <<
+//            "\nSuffix: " << tomTest->getKeySpace().at(0)->getSuffix()<<
+//            "\nFinal Key in actual test: " << tomTest->getKeySpace().at(0)->getEnd() <<endl;
 
 //    this->network.printUUIDList();
-//    this->network.printChannels();
-//    this->network.printKeyspaces();
-    this->network.printUUIDList(this->getCSVOutput());
-    this->network.printChannels(this->getCSVOutput());
-    this->network.printKeyspaces(this->getCSVOutput());
+    this->network.printChannels();
+    this->network.printKeyspaces();
+//    this->network.printUUIDList(this->getCSVOutput());
+//    this->network.printChannels(this->getCSVOutput());
+//    this->network.printKeyspaces(this->getCSVOutput());
 }
