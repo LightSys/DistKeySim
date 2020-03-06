@@ -7,6 +7,8 @@
 4) `make -j4`
 5) The build will be completed at this point, executable is `bin/`
 
+# Class Diagram Link
+https://drive.google.com/file/d/1Czub9HZ2K6M838bzI8IzAxKO0jYjQAwj/view?usp=sharing
 
 # MEMES
 <img src="/memes/Compiler_Errors.jpg" height="400" />
