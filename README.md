@@ -13,3 +13,4 @@
 ![](/memes/Prayer.jpg)
 ![](/memes/google_programmer.jpg)
 ![](/memes/geek_vs_programmers.jpg)
+![](/memes/memeForLightSys.png)
