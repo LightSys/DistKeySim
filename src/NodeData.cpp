@@ -104,7 +104,7 @@ adak_key NodeData::findEndKey(int creationRate){
 }
 
 int NodeData::getMinKeyIndex(std::vector<Keyspace*> keyspaces){
-    unsigned long min = UINT_MAX;
+    unsigned long min = ULONG_MAX;
     int index = -1;
     for(int i =0; i < keyspaces.size(); i++){
         if(keyspaces[i]->getStart() < min && keyspaces[i]->isKeyAvailable()){

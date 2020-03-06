@@ -58,8 +58,8 @@ void Simulation::runSimulation() {
 
 //    this->network.printUUIDList();
 //    this->network.printChannels();
-    this->network.printKeyspaces();
-//    this->network.printUUIDList(this->getCSVOutput());
-//    this->network.printChannels(this->getCSVOutput());
-//    this->network.printKeyspaces(this->getCSVOutput());
+//    this->network.printKeyspaces();
+    this->network.printUUIDList(this->getCSVOutput());
+    this->network.printChannels(this->getCSVOutput());
+    this->network.printKeyspaces(this->getCSVOutput());
 }

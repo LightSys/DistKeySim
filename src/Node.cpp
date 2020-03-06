@@ -10,7 +10,20 @@ static const HexDigest& BROADCAST_UUID = "00000000-0000-0000-0000000000";
 
 Node::Node() : uuid(new_uuid()) {
     // TODO: figure out how to call Node(Keyspace* keySpace) constructor
-    Node(new Keyspace(0, UINT_MAX, 0));
+    Node(new Keyspace(0, ULONG_MAX, 0));
+}
+
+Node::~Node() {
+    for(Keyspace* keyspace : keySpace) {
+        delete keyspace;
+    }
+    for(Node* node : peers) {
+        delete node;
+    }
+    for(NodeData* nodeData : history) {
+        delete nodeData;
+    }
+    delete lastDay;
 }
 
 Node::Node(Keyspace* keySpace) {
@@ -20,19 +33,6 @@ Node::Node(Keyspace* keySpace) {
     if (keySpace != nullptr) {
         this->keySpace.push_back(keySpace);
     }
-}
-
-Node::~Node() {
-//    for(Keyspace* keyspace : keySpace) {
-//        delete keyspace;
-//    }
-//    for(Node* node : peers) {
-//        delete node;
-//    }
-//    for(NodeData* nodeData : history) {
-//        delete nodeData;
-//    }
-//    delete lastDay;
 }
 
 adak_key Node::getNextKey() {
@@ -47,7 +47,7 @@ adak_key Node::getNextKey() {
 }
 
 int Node::minimumKeyspaceIndex() {
-    unsigned long min = UINT_MAX;
+    unsigned long min = ULONG_MAX;
     int index = -1;
     for(int i = 0; i < keySpace.size(); i++){
         if(keySpace[i]->getStart() < min && keySpace[i]->isKeyAvailable()){
