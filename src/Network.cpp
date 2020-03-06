@@ -11,19 +11,31 @@ Network::Network(ConnectionType connectionType) {
     cout << "Network online" << endl;
 }
 
-void Network::sendMsg(const Message &message) {
-    shared_ptr<Node> sourceNode = getNodeFromUUID(message.destnodeid());
-    sourceNode->receiveMessage(message);
+bool Network::sendMsg(const Message &message) {
+    shared_ptr<Node> destNode = getNodeFromUUID(message.destnodeid());
+    return destNode->receiveMessage(message);
 }
 
-void Network::checkAndSendAllNodes() {
+void Network::doAllHeartbeat() {
     // NOTE: Baylor will need to change this, right now we are sending heartbeat messages practically all the time
     // they will probably want to add time to Node to send it periodically
     for (auto const& node : nodes) {
+        node.second->heartbeat();
+    }
+}
+
+void Network::checkAndSendAllNodes() {
+    for (auto const& node : nodes) {
         // Check each node for queued messages, moving all messages to here before working
         deque<Message> nodeMsgs = node.second->getMessages();
+        bool gaveKeyspace = false;
         for (auto const &msg : nodeMsgs) {
-            sendMsg(msg);
+            if (gaveKeyspace && (msg.messagetype() == Message_MessageType_KEYSPACE)) {
+                // Gave keyspace, don't give any more
+                continue;
+            }
+            
+            gaveKeyspace |= sendMsg(msg);
         }
     }
 }

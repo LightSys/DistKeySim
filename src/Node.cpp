@@ -99,7 +99,12 @@ void Node::heartbeat() {
     }
 }
 
-bool Node::receiveMessage(const Message &message) {
+bool Node::receiveMessage(const Message &msg) {
+    if (msg.sourcenodeid() == uuid) {
+        // Destination node is this node, don't receive it
+        return false;
+    }
+    
     // Check time and update lastDay and rotate the history
     if (NodeData::isNewDay(lastDay.getDay())) {
         history.push_back(lastDay);
@@ -113,21 +118,21 @@ bool Node::receiveMessage(const Message &message) {
     }
     
     // Handle last received message ID incrementing
-    auto peer = peers.find(message.sourcenodeid());
+    auto peer = peers.find(msg.sourcenodeid());
     if (peer == peers.end()) {
         // First message received from this peer, add message ID and update find result
-        peers.insert({message.sourcenodeid(), make_shared<Message>(message)});
-        peer = peers.find(message.sourcenodeid());
+        peers.insert({msg.sourcenodeid(), make_shared<Message>(msg)});
+        peer = peers.find(msg.sourcenodeid());
     } else {
-        // Known peer, update message ID
-        peers.at(message.sourcenodeid()) = make_shared<Message>(message);
+        // Known peer, update msg ID
+        peers.at(msg.sourcenodeid()) = make_shared<Message>(msg);
     }
 
-    switch (message.messagetype()) {
+    switch (msg.messagetype()) {
         case Message_MessageType_KEYSPACE:
             // Receiving keyspace from a peer, generate new one for local store
-            for (auto &&i = 0; i < message.keyspace().keyspaces_size(); i++) {
-                KeyspaceMessageContents::Keyspace peerSpace = message.keyspace().keyspaces(i);
+            for (auto &&i = 0; i < msg.keyspace().keyspaces_size(); i++) {
+                KeyspaceMessageContents::Keyspace peerSpace = msg.keyspace().keyspaces(i);
                 keyspaces.emplace_back(
                     Keyspace{peerSpace.startid(), peerSpace.endid(), peerSpace.suffixbits()}
                 );
@@ -138,8 +143,8 @@ bool Node::receiveMessage(const Message &message) {
         case Message_MessageType_INFORMATION:
         {
             double allocationRatio = -1;
-            for (int &&i = 0; i < message.info().records_size(); i++) {
-                allocationRatio = message.info().records(i).creationratedata().shortallocationratio();
+            for (int &&i = 0; i < msg.info().records_size(); i++) {
+                allocationRatio = msg.info().records(i).creationratedata().shortallocationratio();
             }
             if (allocationRatio > ALLOCATION_BEFORE_GIVING_KEYSPACE) {
                 if (peer == peers.end()) {
@@ -149,17 +154,34 @@ bool Node::receiveMessage(const Message &message) {
                 
                 // TODO: Handle decision on giving of keyspace
                 // Peer found, decided to share (congrats, we're not 2 year olds!)
-                Message shareSpaceMsg = newBaseMessage(
-                    uuid,
-                    peer->first,
-                    peer->second->lastreceivedmsg(),
-                    Message_ChannelState_NORMAL_COMMUNICATION,
-                    messageID++
-                );
-                shareKeyspace(shareSpaceMsg);
-                
-                // Send message to peer
-                sendQueue.push_back(shareSpaceMsg);
+                if (!keyspaces.empty()) {
+                    Keyspace keyspaceToGive = keyspaces.at(minimumKeyspaceIndex());
+    
+                    /// FIXME: Baylor, this something to consider. Right now if the keyspace is running low, then
+                    /// there will be a case when we have the following scenarios below happen. These are NOT currently
+                    /// covered. These was mainly fixed when we got the allocation working.
+                    /// If we have 1 keyspace, and only 1 spot open in that keyspace
+                    /// then do nothing.
+                    /// If we have more than 1 keyspace with 1 spot open
+                    /// give the entire keyspace
+                    
+                    // If i have another key spot available
+                    if ((keyspaceToGive.getStart() + pow(2, keyspaceToGive.getSuffix())) < keyspaceToGive.getEnd()) {
+                        Message shareSpaceMsg = newBaseMessage(
+                            uuid,
+                            peer->first,
+                            peer->second->lastreceivedmsg(),
+                            Message_ChannelState_NORMAL_COMMUNICATION,
+                            messageID++
+                        );
+                        shareKeyspace(shareSpaceMsg);
+    
+                        // Send message to peer
+                        sendQueue.push_back(shareSpaceMsg);
+    
+                        return true;
+                    }
+                }
             }
         }
         break;
@@ -213,19 +235,26 @@ Message Node::getHeartbeatMessage(const UUID &peerID) const {
             messageID
         );
     } else {
+        shared_ptr<Message> lastReceived = peers.at(peerID);
         msg = newBaseMessage(
             uuid,
             peerID,
-            peers.at(peerID)->lastreceivedmsg(),
+            lastReceived == nullptr ? 0 : lastReceived->lastreceivedmsg(),
             Message_ChannelState_NORMAL_COMMUNICATION,
             messageID
         );
+    }
+
+    // HACK
+    double allocation = 0;
+    if (keyspaces.empty()) {
+        allocation = 1;
     }
     
     toInformationalMessage(
         msg,
         {
-            CollectionInfoRecord{"test", createdDay, createdWeek, 1.0, 1.0},
+            CollectionInfoRecord{"test", createdDay, createdWeek, allocation, allocation},
         }
     );
     

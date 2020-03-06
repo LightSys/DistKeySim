@@ -2,8 +2,6 @@
 #include <ctime>
 
 #include "Simulation.h"
-#include "EventGen.h"
-#include "Random.h"
 
 using namespace std;
 
@@ -19,7 +17,8 @@ void Simulation::run() {
 
     // Create new nodes and add them to the map
     for (int i = 0; i < numNodes; i++) {
-        network.addEmptyNode();
+        UUID newNodeID = network.addEmptyNode();
+        network.doAllHeartbeat();
         network.checkAndSendAllNodes();
     }
     

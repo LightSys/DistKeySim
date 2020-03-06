@@ -47,8 +47,9 @@ public:
     /**
      * Sends message to Node, based on destination UUID
      * @param message Message to send
+     * @return Boolean indicating whether the message sent passed keyspace (HACK: needed since this is non-threaded)
      */
-    void sendMsg(const Message &message);
+    bool sendMsg(const Message &message);
 
     /**
      * Returns a random node from the Node list, useful for creating random events
@@ -108,6 +109,9 @@ public:
 
     // Checks all nodes for messages and passes on those messages to all other clients
     void checkAndSendAllNodes();
+    
+    // Sends heartbeat for all nodes
+    void doAllHeartbeat();
 
     /**
      * Generates a UUID list based on the known UUIDs from the map<UUID, Node*>
