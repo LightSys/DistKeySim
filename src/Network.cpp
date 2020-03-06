@@ -22,10 +22,9 @@ Network::~Network() {
     }
 }
 
-void Network::sendMsg(const Message message) {
+bool Network::sendMsg(const Message message) {
     const UUID sourceUUID = message.sourcenodeid();
     Node* sourceNode = getNodeFromUUID(sourceUUID);
-    sourceNode->setMessageWaiting(false);
 
     // Send that message to ALL nodes, even ones the sourceNode doesnt' know about
 //    for(auto const& x : nodes) {
@@ -34,19 +33,24 @@ void Network::sendMsg(const Message message) {
 
     // Send the messsage to that Node's peers
     for(Node* node : sourceNode->getPeers()) {
-        node->receiveMessage(message);
+        /// FIXME: this is a temporary fix, without this break when a node asks for keyspace, every single node will give it
+        /// this is obviously not the desired functionality. Ideally, we would have each node on it's own thread and it
+        /// would loop through (starting with the peers it thinks it will give keyspace. And one at a time send the heartbeat
+        /// to them and wait to see if they respond
+        if(node->receiveMessage(message)) {
+            return true;
+        }
     }
+    return false;
 }
 
 void Network::checkAllNodesForMessages() {
     for(auto const& x : nodes) {
-        if(x.second->isMessageWaiting()) {
-            sendMsg(x.second->getWaitingMessage());
-        }
-
         // TODO: Baylor will need to change this, right now we are sending heartbeat messages practically all the time
         // they will probably want to add time to Node to send it periodically
-        sendMsg(x.second->getHeartbeatMessage());
+        if(sendMsg(x.second->getHeartbeatMessage())) {
+            break;
+        }
     }
 }
 
@@ -63,11 +67,24 @@ UUID Network::addNode(Keyspace* keyspace) {
     if(this->connectionType == ConnectionType::Full) {
         fullyConnect(node);
     } else if(this->connectionType == ConnectionType::Partial) {
-        cout << "STUB: addNode() Partial ConnectionType" << endl;
-    } else if(this->connectionType == ConnectionType::Circular) {
-        cout << "STUB: addNode() Circlular ConnectionType" << endl;
+        // rand() % 4 is an arbitrary number to make the connection only happen sometimes.
+        int coinFlip = rand() % 8;
+        for(auto const nodeWrapper : nodes) {
+            Node* nodeListNode = nodeWrapper.second;
+
+            // Don't connect the node to itself
+            if(node->getUUID() != nodeListNode->getUUID()) {
+                // Make sure that the channel doesn't already exist
+                if(!channelExists(node->getUUID(), nodeListNode->getUUID())) {
+                    if(coinFlip == 0) {
+                        connectNodes(node->getUUID(), nodeListNode->getUUID());
+                    }
+                }
+            }
+        }
+        singleConnect(node);
     } else if(this->connectionType == ConnectionType::Single) {
-        cout << "STUB: addNode() Single ConnectionType" << endl;
+        singleConnect(node);
     }
     return node->getUUID();
 }
@@ -83,6 +100,19 @@ void Network::fullyConnect(Node* node) {
                 connectNodes(node->getUUID(), nodeListNode->getUUID());
             }
         }
+    }
+}
+
+void Network::singleConnect(Node* node) {
+    // Go through each node and make sure it has at least 1 connection
+    if(nodes.size() > 1) {
+        UUID randomUUID = getRandomNode();
+
+        // On the off chance that getRandomNode() picks the current node, then we need another node
+        while (randomUUID == node->getUUID()) {
+            randomUUID = getRandomNode();
+        }
+        connectNodes(node->getUUID(), randomUUID);
     }
 }
 
@@ -161,7 +191,7 @@ void Network::printUUIDList(ostream* out, char spacer) {
     *out << "UUID List" << NewLine;
     *out << "COUNT" << spacer << "UUID (in hex)" << spacer << "# bits" << NewLine;
     for(UUID const uuid : generateUUIDList()) {
-        *out << counter << spacer << UUIDToHex(uuid) << spacer << (uuid.size() * 8) << spacer << NewLine;
+        *out << counter << spacer << uuid << spacer << (uuid.size() * 8) << spacer << NewLine;
         counter++;
     }
     *out << flush;
@@ -174,8 +204,8 @@ void Network::printChannels(ostream* out, char spacer) {
     *out << "CHANNELS" << NewLine;
     *out << "TO" << spacer << "FROM" << spacer << "ID" << NewLine;
     for(Channel* channel : this->channels) {
-        *out << UUIDToHex(channel->getToNode()) << spacer;
-        *out << UUIDToHex(channel->getFromNode()) << spacer;
+        *out << channel->getToNode() << spacer;
+        *out << channel->getFromNode() << spacer;
         *out << channel->getChannelId() << NewLine;
     }
     *out << flush;
@@ -192,7 +222,7 @@ void Network::printKeyspaces(std::ostream *out, char spacer) {
         for(Keyspace* keyspace : x.second->getKeySpace()) {
             *out << "Node" << spacer << "UUID" << spacer << "Keyspace" << "Start" << spacer << "End" << spacer;
             *out << "Suffix Bits" << NewLine;
-            *out << counter << spacer << UUIDToHex(x.second->getUUID()) << spacer;
+            *out << counter << spacer << x.second->getUUID() << spacer;
             *out << keyspace->getStart() << spacer << keyspace->getEnd() << spacer;
             *out << keyspace->getSuffix() << NewLine;
         }
