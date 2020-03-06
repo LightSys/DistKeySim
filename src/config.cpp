@@ -16,7 +16,14 @@ Config::Config(ifstream jsonFile) {
         }
         
         if (jf.contains("connectionMode")) {
-            jf.at("connectionMode").get_to(this->connectionMode);
+            jf.at("connectionMode").get_to(this->connModeStr);
+            if (connModeStr == "full") this->connectionMode = ConnectionType::Full;
+            else if (connModeStr == "partial") this->connectionMode = ConnectionType::Partial;
+            else if (connModeStr == "single") this->connectionMode = ConnectionType::Single;
+            else {
+                // Invalid connection mode
+                throw std::invalid_argument("connectionMode not one of 'full', 'partial', or 'single'");
+            }
         } else {
             connectionMode = DEFAULT_CONNECTION_MODE;
         }

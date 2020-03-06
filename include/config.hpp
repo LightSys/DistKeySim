@@ -19,6 +19,7 @@ static const float DEFAULT_NETWORK_SCALE = 0.3;
 
 struct Config {
     u_int numNodes;
+    std::string connModeStr;
     ConnectionType connectionMode;
     std::string csvOutputPath;
     int creationRate;
@@ -28,7 +29,7 @@ struct Config {
         u_int numNodes = DEFAULT_NUM_NODES, std::string connectionMode = "full",
         std::string csvPath = DEFAULT_CSV_OUTPUT_PATH, int creationRate = DEFAULT_CREATION_RATE,
         float networkScale = DEFAULT_NETWORK_SCALE)
-           : numNodes(numNodes), csvOutputPath(std::move(csvPath)),
+           : numNodes(numNodes), csvOutputPath(std::move(csvPath)), connModeStr(connectionMode),
              creationRate(creationRate), networkScale(networkScale)
     {
         if (connectionMode == "full") this->connectionMode = ConnectionType::Full;

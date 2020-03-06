@@ -30,5 +30,6 @@ void Simulation::run() {
 //        network.checkAndSendAllNodes();
 //    }
 
+    network.printChannels();
     network.printKeyspaces();
 }

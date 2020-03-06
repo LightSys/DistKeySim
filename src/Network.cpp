@@ -41,11 +41,11 @@ UUID Network::addEmptyNode() {
     auto newNode = make_shared<Node>();
     UUID newUUID = newNode->getUUID();
     
+    // Add the new node to the nodes map
+    nodes.insert({newNode->getUUID(), newNode});
+    
     // Make connection to peers
     connectNodeToNetwork(newNode);
-    
-    // Add the new node to the nodes map
-    nodes.insert({newNode->getUUID(), move(newNode)});
     
     return newUUID;
 }
@@ -91,7 +91,7 @@ void Network::connectNodeToNetwork(shared_ptr<Node> newNode) {
 void Network::fullyConnect(shared_ptr<Node> node) {
     for (auto const &[uuid, peer] : nodes) {
         // Don't connect the node to itself
-        if (node->getUUID() != uuid) {
+        if (node->getUUID() == uuid) {
             continue;
         }
         
@@ -101,7 +101,7 @@ void Network::fullyConnect(shared_ptr<Node> node) {
         }
         
         // No connection, create one
-        connectNodes(node->getUUID(), node->getUUID());
+        connectNodes(node->getUUID(), uuid);
     }
 }
 
@@ -121,6 +121,7 @@ void Network::singleConnect(shared_ptr<Node> node) {
 bool Network::channelExists(const UUID &nodeOne, const UUID &nodeTwo) {
     return getChannelIndex(nodeOne, nodeTwo) != -1;
 }
+
 int Network::getChannelIndex(const UUID &nodeOne, const UUID &nodeTwo) {
     auto channelItr = find_if(
         channels.begin(),
