@@ -29,7 +29,7 @@ adak_key Keyspace::getNextAvailableKey() {
 }
 
 bool Keyspace::isKeyAvailable() {
-    return start < end;
+    return start <= end;
 }
 
 

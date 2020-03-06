@@ -28,6 +28,10 @@ private:
 
     std::vector<NodeData*> history;
     NodeData* lastDay;
+public:
+    NodeData *getLastDay() const;
+
+    void setLastDay(NodeData *lastDay);
 
 //    Message messageToSend;
 public:

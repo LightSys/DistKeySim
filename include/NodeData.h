@@ -6,12 +6,19 @@
 static const double NETWORK_SCALE = 0.3;
 static const double ALLOCATION_BEFORE_GIVING_KEYSPACE = 0.7;
 
+//#include "Node.h"
+
 class Node;
 
 class NodeData {
 private:
+    int keyShareRate;
+    double keyGenRate;
+    double aggregateGenRate;
     double shortTermAllocationRatio;
     double longTermAllocationRatio;
+    double aggregateAllocationRatio;
+    double provisioningRatio;
 
     double creationRate;
 
@@ -19,15 +26,45 @@ private:
     int day;
 
     Node* parentNode;
+public:
+    int getKeyShareRate() const;
 
+    void setKeyShareRate(int keyShareRate);
 
+    double getKeyGenRate() const;
 
-    // Functions
-    adak_key findEndKey(int creationRate);
+    void setKeyGenRate(double keyGenRate);
 
-    std::vector<Keyspace*> copyKeyspace(std::vector<Keyspace*> keyspaces);
+    double getAggregateGenRate() const;
 
-    int getMinKey(std::vector<Keyspace*> keyspaces);
+    void setAggregateGenRate(double aggregateGenRate);
+
+    double getShortTermAllocationRatio() const;
+
+    void setShortTermAllocationRatio(double shortTermAllocationRatio);
+
+    double getLongTermAllocationRatio() const;
+
+    void setLongTermAllocationRatio(double longTermAllocationRatio);
+
+    double getAggregateAllocationRatio() const;
+
+    void setAggregateAllocationRatio(double aggregateAllocationRatio);
+
+    double getProvisioningRatio() const;
+
+    void setProvisioningRatio(double provisioningRatio);
+
+    void setCreationRate(double creationRate);
+
+    void setKeysUsed(int keysUsed);
+
+    void setDay(int day);
+
+    Node *getParentNode() const;
+
+    void setParentNode(Node *parentNode);
+
 public:
     NodeData(Node* parentNode);
 
@@ -39,6 +76,11 @@ public:
 
     double updateCreationRate();
 
+    adak_key findEndKey(int creationRate);
+
+    std::vector<Keyspace*> copyKeyspace(std::vector<Keyspace*> keyspaces);
+
+    int getMinKey(std::vector<Keyspace*> keyspaces);
     // Getters and Setters
     double getCreationRate() const {return this->creationRate; }
 
@@ -71,6 +113,8 @@ public:
 
 
     int getDay() const { return day; }
+//    void setDay(int day) { NodeData::day = day; }
+
 };
 
 

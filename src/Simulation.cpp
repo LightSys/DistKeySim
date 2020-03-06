@@ -30,22 +30,35 @@ void Simulation::runSimulation() {
     // Create root node that will have the max keyspace 0/0
     this->network.addNode();
 
+    //Testing statisics
+    Node* tomTest = this->network.getNodeFromUUID(this->network.getRandomNode());
+
     // Create new nodes and add them to the map
     for(int i = 0; i < AMOUNT_OF_NODES; i++) {
-        this->network.printKeyspaces();
+//        this->network.printKeyspaces();
         this->network.addNode(nullptr);
         this->network.checkAllNodesForMessages();
     }
 
     // Loop for EventTicks
-//    for(int i = 0; i < 10; i++) {
-//        eventGenerator->eventTick(&this->network);
-//        this->network.checkAllNodesForMessages();
-//    }
+    for(int i = 0; i < 10; i++) {
+        eventGenerator->eventTick(&this->network);
+        this->network.checkAllNodesForMessages();
+    }
+
+    NodeData* Nodedata = tomTest->getLastDay();
+    //Nodedata->setCreationRate(10.0);
+    cout << "Creation Rate: " << Nodedata->updateCreationRate() <<
+            "\nLong Term Allocation: " << Nodedata->updateLongTermAllocationRatio() <<
+            "\nShort Term Allocation: " << Nodedata->updateShortTermAllocationRatio() <<
+            "\nEnd Key: " << Nodedata->findEndKey(Nodedata->getCreationRate()) <<
+            "\nCreation Rate: " << Nodedata->getCreationRate() <<
+            "\nMin Key: " << Nodedata->getMinKey(tomTest->getKeySpace()) <<
+            "\nSuffix: " << tomTest->getKeySpace().at(0)->getSuffix()<< endl;
 
 //    this->network.printUUIDList();
 //    this->network.printChannels();
-    this->network.printKeyspaces();
+//    this->network.printKeyspaces();
     this->network.printUUIDList(this->getCSVOutput());
     this->network.printChannels(this->getCSVOutput());
     this->network.printKeyspaces(this->getCSVOutput());
