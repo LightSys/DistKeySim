@@ -16,3 +16,5 @@ https://drive.google.com/file/d/1Czub9HZ2K6M838bzI8IzAxKO0jYjQAwj/view?usp=shari
 <img src="/memes/google_programmer.jpg" height="400" />
 <img src="/memes/geek_vs_programmers.jpg" height="400" />
 <img src="/memes/memeForLightSys.png" height="400" />
+<img src="/memes/"meme1.jpg" height="400" />
+
