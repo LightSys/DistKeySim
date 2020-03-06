@@ -22,10 +22,11 @@ private:
 //    double longTermAllocationRatio;
 //    double aggregateAllocationRatio;
 //    double provisioningRatio;
-    bool active = true;
 //    bool messageWaiting = false;
-    std::vector<Node*> peers; ///called directConnection on the board.
 
+    u_int messageID = 1;
+    bool active = true;
+    std::vector<Node*> peers; ///called directConnection on the board.
     std::vector<NodeData*> history;
     NodeData* lastDay;
 

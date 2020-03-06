@@ -52,7 +52,7 @@ int Node::minimumKeyspaceIndex() {
     unsigned long min = ULONG_MAX;
     int index = 0;
     for (int i = 0; i < keySpace.size(); i++){
-        if(keySpace[i]->getStart() < min && keySpace[i]->isKeyAvailable()){
+        if (keySpace[i]->getStart() < min && keySpace[i]->isKeyAvailable()){
             min = keySpace[i]->getStart();
             index = i;
         }
@@ -60,10 +60,6 @@ int Node::minimumKeyspaceIndex() {
     return index;
 }
 
-/**
- * This is where the Baylor team will add more statistics to handle the messages that each node receives
- * @param message
- */
 bool Node::receiveMessage(const Message message) {
     // Check time and update lastDay and rotate the history
     if (NodeData::isNewDay(lastDay->getDay())) {
@@ -138,31 +134,30 @@ void Node::giveKeyspaceToNode(Node* node, float percentageToGive) {
     unsigned long newSuffix = minKeyspace->getSuffix();
     newStart += pow(2, newSuffix);
     newSuffix += 1;
+    
+    Keyspace myKeyspace(myStart, myEnd, mySuffix);
+    Keyspace newKeyspace(newStart, newEnd, newSuffix);
 
-//    if(newSuffix <= 32) {
-        auto *myKeyspace = new Keyspace(myStart, myEnd, mySuffix);
-        auto *newKeyspace = new Keyspace(newStart, newEnd, newSuffix);
-
-        this->keySpace.at(minKeyspaceIndex) = myKeyspace;
-        node->keySpace.push_back(newKeyspace);
-//    } else {
-//        cout << "ERROR we have run out of keyspace blocks, need to further sub-divide the keys using start/end" << endl;
-//    }
+    this->keySpace.at(minKeyspaceIndex) = &myKeyspace;
+    node->keySpace.push_back(&newKeyspace);
+    
+    // Sent message to peer, increment local message ID counter
+    this->messageID++;
 }
 
 Message Node::getHeartbeatMessage() {
     Message msg = newBaseMessage(
-            this->uuid,
-            (HexDigest &) BROADCAST_UUID,
-            0,
-            Message::ChannelState::Message_ChannelState_NORMAL_COMMUNICATION,
-            1
+        this->uuid,
+        (HexDigest &) BROADCAST_UUID,
+        0,
+        Message::ChannelState::Message_ChannelState_NORMAL_COMMUNICATION,
+        1
     );
     toInformationalMessage(
-            msg,
-            {
-                CollectionInfoRecord{"test", 0.0, 0.0, 1.0, 1.0},
-            }
+        msg,
+        {
+            CollectionInfoRecord{"test", 0.0, 0.0, 1.0, 1.0},
+        }
     );
     return msg;
 }
