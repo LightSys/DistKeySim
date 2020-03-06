@@ -36,7 +36,7 @@ void parseArgs(const int &argc, char** argv, u_int &numNodes, string &csvPath) {
         {"help", no_argument, nullptr, 'h'},
         {nullptr, no_argument, nullptr, 0}
     };
-    
+
     int opt;
     while ((opt = getopt_long(argc, argv, short_opts, long_opts, nullptr)) != -1)
     {
@@ -68,7 +68,7 @@ int main(int argc, char** argv) {
     u_int numNodes = DEFAULT_NUM_NODES;
     string csvPath = DEFAULT_CSV_PATH;
     parseArgs(argc, argv, numNodes, csvPath);
-    
+
     auto* simulation = new Simulation(EventGenerationType::Random);
     simulation->runSimulation();
 }

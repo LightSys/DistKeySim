@@ -57,6 +57,6 @@ double NodeData::updateShortTermAllocationRatio(){
     if(keysUsed = 0){
         tempKeys = 1;
     }
-    shortTermRatio = keysUsed/();
+    shortTermRatio = keysUsed;
 }
 

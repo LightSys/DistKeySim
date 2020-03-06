@@ -4,7 +4,8 @@
 #include "Simulation.h"
 #include "EventGen.h"
 #include "Random.h"
-
+#include "json.hpp"
+using json = nlohmann::json;
 using namespace std;
 
 Simulation::Simulation(EventGenerationType eventGenerationType) : network(Network(ConnectionType::Full)), eventGenerationType(eventGenerationType) {
@@ -21,6 +22,10 @@ Simulation::~Simulation() {
 
 void Simulation::runSimulation() {
     EventGen *eventGenerator;
+
+    std::ifstream ifs;
+    ifs.open("test.json");
+    json jf = json::parse(ifs);
 
     if(eventGenerationType == EventGenerationType::Random) {
         eventGenerator = new Random();
