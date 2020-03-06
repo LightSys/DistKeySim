@@ -13,6 +13,19 @@ Node::Node() {
     Node(new Keyspace(0, ULONG_MAX, 0));
 }
 
+Node::~Node() {
+    for(Keyspace* keyspace : keySpace) {
+        delete keyspace;
+    }
+    for(Node* node : peers) {
+        delete node;
+    }
+    for(NodeData* nodeData : history) {
+        delete nodeData;
+    }
+    delete lastDay;
+}
+
 Node::Node(Keyspace* keySpace) {
     this->uuid = new_uuid();
     lastDay = new NodeData(this);

@@ -6,19 +6,12 @@
 static const double NETWORK_SCALE = 0.3;
 static const double ALLOCATION_BEFORE_GIVING_KEYSPACE = 0.7;
 
-//#include "Node.h"
-
 class Node;
 
 class NodeData {
 private:
-//    int keyShareRate;
-//    double keyGenRate;
-//    double aggregateGenRate;
     double shortTermAllocationRatio;
     double longTermAllocationRatio;
-//    double aggregateAllocationRatio;
-//    double provisioningRatio;
 
     double creationRate;
 
@@ -27,6 +20,9 @@ private:
 
     Node* parentNode;
 
+
+
+    // Functions
     adak_key findEndKey(int creationRate);
 
     std::vector<Keyspace*> copyKeyspace(std::vector<Keyspace*> keyspaces);
@@ -75,8 +71,6 @@ public:
 
 
     int getDay() const { return day; }
-//    void setDay(int day) { NodeData::day = day; }
-
 };
 
 

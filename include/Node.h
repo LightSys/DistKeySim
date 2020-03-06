@@ -36,7 +36,7 @@ private:
 public:
     Node();
     Node(Keyspace* keySpace);
-    ~Node() = default;
+    ~Node();
 
     void addPeer(Node* peer) { this->peers.push_back(peer); }
 //    void removePeer(Node* peer); /*{ this->peers.erase(peers.begin())}*/
