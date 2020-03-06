@@ -9,7 +9,7 @@ using namespace std;
 static const int NUM_ROUNDS = 50;
 
 Simulation::Simulation(const struct Config &config)
-    : numNodes(config.numNodes - 1), network(Network(config.connectionMode)) {
+    : numNodes(config.numNodes), network(Network(config.connectionMode)) {
     // Seed random number
     srand(time(nullptr));
 }
@@ -31,13 +31,6 @@ void Simulation::run() {
         network.checkAndSendAllNodes();
         network.doAllHeartbeat();
     }
-    
-    // Loop for EventTicks
-//    Random eventGen;
-//    for (int i = 0; i < 10; i++) {
-//        eventGen.eventTick(&network);
-//        network.checkAndSendAllNodes();
-//    }
 
     network.printChannels();
     network.printKeyspaces();
