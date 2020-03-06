@@ -2,11 +2,10 @@
 #include <string>
 #include "getopt.h"
 #include "Simulation.h"
-#include "config.cpp"
+#include "json.hpp"
+using json = nlohmann::json;
 
 using namespace std;
-
-static const char* DEFAULT_CSV_PATH = "out.csv";
 
 /**
  * Displays the help string for our application
@@ -41,17 +40,17 @@ void parseArgs(const int &argc, char** argv, u_int &numNodes, string &csvPath) {
         if (opt == -1) {
             break;
         }
-        
+
         switch (opt)
         {
             case 'n':
                 numNodes = std::stoi(optarg);
                 break;
-            
+
             case 'c':
                 csvPath = optarg;
                 break;
-            
+
             case 'h': // -h or --help
             case '?': // Unrecognized option
             default:
@@ -64,10 +63,8 @@ void parseArgs(const int &argc, char** argv, u_int &numNodes, string &csvPath) {
 int main(int argc, char** argv) {
     // Process arguments
     u_int numNodes = DEFAULT_NUM_NODES;
-    string csvPath = DEFAULT_CSV_PATH;
+    string csvPath = DEFAULT_CSV_OUTPUT_PATH;
     parseArgs(argc, argv, numNodes, csvPath);
-
-    auto config = new Config(ifstream("test.json"));
 
     auto* simulation = new Simulation(EventGenerationType::Random);
     simulation->runSimulation();

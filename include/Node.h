@@ -9,11 +9,8 @@
 #include "message.hpp"
 #include "NodeData.h"
 
-
 class NodeData;
 
-///TODO integrate RPC into the class
-///TODO likely other things that I didn't consider.
 class Node {
 private:
     UUID uuid;
@@ -26,24 +23,24 @@ private:
 //    double aggregateAllocationRatio;
 //    double provisioningRatio;
     bool active = true;
-    bool messageWaiting = false;
+//    bool messageWaiting = false;
     std::vector<Node*> peers; ///called directConnection on the board.
 
     std::vector<NodeData*> history;
     NodeData* lastDay;
 
-    Message messageToSend;
+//    Message messageToSend;
 public:
     Node();
     Node(Keyspace* keySpace);
-    ~Node() = default;
+    ~Node();
 
     void addPeer(Node* peer) { this->peers.push_back(peer); }
 //    void removePeer(Node* peer); /*{ this->peers.erase(peers.begin())}*/
 
     void sendMessage();
 
-    void receiveMessage(const Message message);
+    bool receiveMessage(const Message message);
 
     /**
      * Per the specification, each node will send out a signal letting other nodes know how much
@@ -51,7 +48,6 @@ public:
      * @return
      */
     Message getHeartbeatMessage();
-
 
     /**
      * Gives keyspace to a node
@@ -84,9 +80,9 @@ public:
 
     std::vector<Node*> getPeers() const { return this->peers; }
 
-    bool isMessageWaiting() const { return this->messageWaiting; }
-    void setMessageWaiting(bool messageWaiting) { this->messageWaiting = messageWaiting; }
-    Message getWaitingMessage() const { return this->messageToSend; }
+//    bool isMessageWaiting() const { return this->messageWaiting; }
+//    void setMessageWaiting(bool messageWaiting) { this->messageWaiting = messageWaiting; }
+//    Message getWaitingMessage() const { return this->messageToSend; }
 
 
     NodeData* getNodeData() const { return this->lastDay; }

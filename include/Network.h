@@ -5,7 +5,6 @@
 #include <map>
 #include <vector>
 #include <string>
-
 #include "Node.h"
 #include "UUID.h"
 #include "Channel.h"
@@ -14,7 +13,7 @@
 /**
  * Types of connections that are possible when creating the initial network connection
  */
-enum class ConnectionType { Full, Partial, Circular, Single};
+enum class ConnectionType { Full, Partial, Single};
 
 class Network{
 private:
@@ -49,12 +48,7 @@ public:
      */
     void disconnectNodes(const UUID nodeOne, const UUID nodeTwo);
 
-//    void initiateMessage(UUID to, UUID from, std::string message);
-//    void allocateKeyspace(UUID to, UUID from);
-
-    // FIXME: change message to a Message type
-    void sendMsg(const Message message);
-//    void broadcastMsg(std::string message, UUID fromNode);
+    bool sendMsg(const Message message);
 
     /**
      * Returns a random node from the Node list, useful for creating random events
@@ -85,6 +79,8 @@ public:
      * @param node
      */
     void fullyConnect(Node* node);
+
+    void singleConnect(Node* node);
 
     /**
      * Checks to see if the channel already exists between two nodes,

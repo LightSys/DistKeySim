@@ -1,10 +1,6 @@
-#include <fstream>
-#include <string>
 #include "config.hpp"
-#include "json.hpp"
-#include <iostream>
-using json = nlohmann::json;
 
+//grabs the data from the jsonFIle and puts it into the variables.
 Config::Config(std::ifstream jsonFile) {
 
     if(jsonFile.is_open()) {
@@ -41,7 +37,6 @@ Config::Config(std::ifstream jsonFile) {
         }
     }
     else {
-        std::cout << "not open" << std::endl;
         numNodes = DEFAULT_NUM_NODES;
         connectionMode = DEFAULT_CSV_OUTPUT_PATH;
         csvOutputPath = DEFAULT_CSV_OUTPUT_PATH;

@@ -1,9 +1,14 @@
 #ifndef ADAK_KEYING_CONFIG_HPP
 #define ADAK_KEYING_CONFIG_HPP
 
+
+#include <iostream>
 #include <fstream>
 #include <string>
 #include <utility>
+#include "json.hpp"
+
+using json = nlohmann::json;
 
 static const u_int DEFAULT_NUM_NODES = 100;
 static const char* DEFAULT_CONNECTION_MODE = "full";
@@ -22,6 +27,12 @@ public:
     {}
 
     Config(std::ifstream jsonFile);
+
+    u_int getNumNodes() const { return numNodes; }
+    std::string getConnectionMode() const { return connectionMode; }
+    std::string getCSVOutputPath () const { return csvOutputPath; }
+    int getCreationRate() const { return creationRate; }
+    float getNetworkScale() const { return networkScale; }
 
 private:
     u_int numNodes;

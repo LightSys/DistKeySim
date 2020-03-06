@@ -3,12 +3,19 @@
 
 #include "UUID.h"
 #include "Network.h"
+#include "config.hpp"
 
-// TODO: change to JSON parameter
-static const int AMOUNT_OF_NODES = 2;
+
+// TODO: change to JSON parameter //should be done; remove once confirmed.
+auto const config = new Config( std::ifstream("test.json"));
+static const int AMOUNT_OF_NODES = config->getNumNodes();
+static const std::string CONNECTION_MODE = config->getConnectionMode();
+static const std:: string CSV_OUTPUT_PATH = config->getCSVOutputPath();
+static const int CREATION_RATE = config->getCreationRate();
+static const float NETWORK_SCALE_1 = config->getNetworkScale();
 
 /**
- * The type of Event Generation type the Simluation should use
+ * The type of Event Generation type the Simulation should use
  */
 enum class EventGenerationType { Random, Unused1, Unused2 };
 
