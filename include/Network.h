@@ -18,51 +18,50 @@ enum class ConnectionType { Full, Partial, Single};
 
 class Network{
 private:
-    /**
-     * Map of connecting a UUID to a given Node*
-     */
-    std::map<UUID, Node*> nodes;
-    /**
-     * List of every known channel between nodes, this is basically representing the edges of the graph
-     */
-    std::vector<Channel*> channels;
+    // Pairing UUID with Node instances
+    std::map<UUID, std::unique_ptr<Node>> nodes;
 
-    /**
-     * The type of connection for this network
-     */
+     // All known channel between nodes, this is basically representing the edges of the graph
+    std::vector<Channel> channels;
+
+    // Connection type used to connect member Nodes
     ConnectionType connectionType;
 public:
     Network(ConnectionType connectionType);
-    ~Network();
+    ~Network() = default;
 
     /**
      * Connects two nodes by creating a channel between them and connecting the nodes based on the type of connection
-     * @param nodeOne
-     * @param nodeTwo
+     * @param nodeOne UUID of first node to connect to
+     * @param nodeTwo UUID of second node to connect to
      */
-    void connectNodes(const UUID nodeOne, const UUID nodeTwo);
+    void connectNodes(const UUID &nodeOne, const UUID &nodeTwo);
 
     /**
      * Disconnects the two nodes and removes the existing channel between them
-     * @param nodeOne
-     * @param nodeTwo
+     * @param nodeOne UUID of first node to disconnect
+     * @param nodeTwo UUID of second node to disconnect
      */
-    void disconnectNodes(const UUID nodeOne, const UUID nodeTwo);
+    void disconnectNodes(const UUID &nodeOne, const UUID &nodeTwo);
 
-    bool sendMsg(const Message message);
+    /**
+     * Sends message to Node, based on destination UUID
+     * @param message Message to send
+     */
+    void sendMsg(const Message &message);
 
     /**
      * Returns a random node from the Node list, useful for creating random events
-     * @return
+     * @return UUID of random node within network
      */
     UUID getRandomNode();
 
     /**
      * Converts the UUID to the associated Node*
-     * @param uuid
-     * @return Node* (associated Node)
+     * @param uuid UUID of Node to retrieve
+     * @return Safe pointer to Node
      */
-    Node* getNodeFromUUID(const UUID uuid) const { return nodes.find(uuid)->second; }
+    std::unique_ptr<Node> getNodeFromUUID(const UUID &uuid);
 
     /**
      * Adds the initial node to the Network, this defaults to the max Keyspace, so it should only be used once.
@@ -73,7 +72,7 @@ public:
      * The typical way to add a node to the network
      * @param keyspace
      */
-    UUID addNode(Keyspace* keyspace);
+    UUID addNode(const Keyspace &keyspace);
 
     /**
      * Fully connects all the nodes to each other according to the ConnectionType
@@ -90,20 +89,21 @@ public:
      * @param nodeTwo
      * @return bool (channelExists)
      */
-    bool channelExists(const UUID nodeOne, const UUID nodeTwo);
-    int getChannelIndex(const UUID nodeOne, const UUID nodeTwo);
+    bool channelExists(const UUID &nodeOne, const UUID &nodeTwo);
+    int getChannelIndex(const UUID &nodeOne, const UUID &nodeTwo);
 
-    void checkAllNodesForMessages();
+    // Checks all nodes for messages and passes on those messages to all other clients
+    void checkAndSendAllNodes();
 
     /**
      * Generates a UUID list based on the known UUIDs from the map<UUID, Node*>
-     * @return
+     * @return List of all UUIDs for the network
      */
     std::vector<UUID> generateUUIDList();
 
     // Getters
-    std::map<UUID, Node*> getNodes() { return this->nodes; }
-    std::vector<Channel*> getChannels() { return this->channels; }
+    std::map<UUID, std::unique_ptr<Node>> getNodes() { return this->nodes; }
+    std::vector<Channel> getChannels() { return this->channels; }
 
     // Printing
     void printUUIDList();

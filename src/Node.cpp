@@ -53,6 +53,7 @@ void Node::removePeer(const UUID &peerUUID) {
     peers.erase(foundPeer);
 }
 
+
 const NodeData* Node::getNodeData() const {
     return &lastDay;
 }
@@ -84,14 +85,14 @@ int Node::minimumKeyspaceIndex() {
 void Node::heartbeat() {
     // No peers connected, so send
     if (peers.empty()) {
-        sendQueue.emplace(getHeartbeatMessage(BROADCAST_UUID));
+        sendQueue.push_back(getHeartbeatMessage(BROADCAST_UUID));
         messageID++;
         return;
     }
     
     for (const auto &[uuid, _] : peers) {
         // Create heartbeat message for each peer
-        sendQueue.emplace(getHeartbeatMessage(uuid));
+        sendQueue.push_back(getHeartbeatMessage(uuid));
     }
 }
 
@@ -155,7 +156,7 @@ bool Node::receiveMessage(const Message &message) {
                 shareKeyspace(shareSpaceMsg);
                 
                 // Send message to peer
-                sendQueue.emplace(shareSpaceMsg);
+                sendQueue.push_back(shareSpaceMsg);
             }
         }
         break;
@@ -166,6 +167,12 @@ bool Node::receiveMessage(const Message &message) {
     }
     
     return false;
+}
+
+deque<Message> Node::getMessages() {
+    deque<Message> toSend = move(sendQueue);
+    sendQueue.empty();
+    return toSend;
 }
 
 void Node::shareKeyspace(Message &msg) {

@@ -18,7 +18,7 @@ class Node {
 private:
     UUID uuid;
     u_int messageID = 1;
-    std::queue<Message> sendQueue;
+    std::deque<Message> sendQueue;
     std::vector<Keyspace> keyspaces;
     std::map<UUID, u_int> peers;
     std::vector<NodeData> history;
@@ -58,6 +58,11 @@ public:
     void removePeer(const UUID &peerUUID);
     
     // Network interaction
+    /**
+     * Moves all messages out of queue
+     * @return Vector of all messages queued for sending
+     */
+    std::deque<Message> getMessages();
     
     // Generate heartbeat messages for all peers
     void heartbeat();

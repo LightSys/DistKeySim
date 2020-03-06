@@ -10,48 +10,42 @@ Network::Network(ConnectionType connectionType) {
     this->connectionType = connectionType;
     cout << "Network online" << endl;
 }
-Network::~Network() {
-    // Delete all the channels
-    for (Channel* channel : this->channels) {
-        delete channel;
-    }
 
-    // Delete all the nodes
-    for(auto const& x : nodes ) {
-        delete x.second;
-    }
+void Network::sendMsg(const Message &message) {
+    unique_ptr<Node> sourceNode = getNodeFromUUID(message.destnodeid());
+    sourceNode->receiveMessage(message);
 }
 
-bool Network::sendMsg(const Message message) {
-    const UUID sourceUUID = message.sourcenodeid();
-    Node* sourceNode = getNodeFromUUID(sourceUUID);
-
-    return false;
-}
-
-void Network::checkAllNodesForMessages() {
-    for(auto const& x : nodes) {
-        // TODO: Baylor will need to change this, right now we are sending heartbeat messages practically all the time
-        // they will probably want to add time to Node to send it periodically
-        if(sendMsg(x.second->getHeartbeatMessage())) {
-            break;
+void Network::checkAndSendAllNodes() {
+    // NOTE: Baylor will need to change this, right now we are sending heartbeat messages practically all the time
+    // they will probably want to add time to Node to send it periodically
+    for (auto const& node : nodes) {
+        // Check each node for queued messages, moving all messages to here before working
+        deque<Message> nodeMsgs = node.second->getMessages();
+        for (auto const &msg : nodeMsgs) {
+            sendMsg(msg);
         }
     }
 }
 
-UUID Network::addNode() {
-    return addNode(new Keyspace(0, INT32_MAX, 0));
+unique_ptr<Node> Network::getNodeFromUUID(const UUID &uuid) {
+    return move(nodes.find(uuid)->second);
 }
-UUID Network::addNode(Keyspace* keyspace) {
+
+UUID Network::addNode() {
+    return addNode(Keyspace(0, INT32_MAX, 0));
+}
+
+UUID Network::addNode(const Keyspace &keyspace) {
     // Create a new new node with the given keyspace
-    Node* node = new Node(keyspace);
+    auto newNode = make_unique<Node>(keyspace);
 
-    // Add the new node to the map <UUID, Node*>
-    this->nodes.emplace(node->getUUID(), node);
+    // Add the new node to the nodes map
+    nodes.insert({newNode->getUUID(), move(newNode)});
 
-    if(this->connectionType == ConnectionType::Full) {
-        fullyConnect(node);
-    } else if(this->connectionType == ConnectionType::Partial) {
+    if (this->connectionType == ConnectionType::Full) {
+        fullyConnect(newNode);
+    } else if (this->connectionType == ConnectionType::Partial) {
         // rand() % 4 is an arbitrary number to make the connection only happen sometimes.
         int coinFlip = rand() % 8;
         for(auto const nodeWrapper : nodes) {

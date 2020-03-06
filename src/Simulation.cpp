@@ -2,8 +2,6 @@
 #include <ctime>
 
 #include "Simulation.h"
-#include "EventGen.h"
-#include "Random.h"
 
 using namespace std;
 
@@ -20,8 +18,8 @@ void Simulation::run() {
     // Create new nodes and add them to the map
     for (int i = 0; i < numNodes; i++) {
         this->network.printKeyspaces();
-        this->network.addNode(nullptr);
-        this->network.checkAllNodesForMessages();
+        this->network.addNode();
+        this->network.checkAndSendAllNodes();
     }
     
     this->network.printKeyspaces();
