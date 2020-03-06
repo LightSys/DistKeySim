@@ -21,7 +21,7 @@ void Node::addPeer(const UUID &peerUUID) {
         // Found a match, don't add duplicate connections
         return;
     }
-    
+
     peers.insert({peerUUID, nullptr});
 }
 
@@ -30,7 +30,7 @@ void Node::addPeer(shared_ptr<Node> peer) {
         // Found a match, don't add duplicate connections
         return;
     }
-    
+
     peers.insert({peer->getUUID(), nullptr});
 }
 
@@ -40,7 +40,7 @@ void Node::removePeer(shared_ptr<Node> peer) {
         // Found a match, don't add duplicate connections
         return;
     }
-    
+
     // Found match, remove it
     peers.erase(foundPeer);
 }
@@ -52,12 +52,12 @@ void Node::removePeer(const UUID &peerUUID) {
         // No peers that match that UUID exist
         return;
     }
-    
+
     // Found match, remove it
     peers.erase(foundPeer);
 }
 
-shared_ptr<const NodeData> Node::getNodeData() const {
+shared_ptr<NodeData> Node::getNodeData() const {
     return make_shared<NodeData>(lastDay);
 }
 
@@ -65,7 +65,12 @@ ADAK_Key_t Node::getNextKey() {
     lastDay.useKey();
     int index = minimumKeyspaceIndex();
     if (index == -1){
-        cout << "ERROR from getNextKey in Node: Not more keys to give";
+
+        ///Baylor This does mean there is an error in the code its more in how to distibute Keys correctly.
+        ///Usually this happens in long term allocation statistics because it goes through till the end of
+        ///the keyspace to see if th allocation is an issue. However if this happens. The problem is that the keys are
+        ///getting distributed more than the current node has capcity for.
+        cout << "ERROR from getNextKey in Node: Not more keys to give"<<endl;
         return -1;
     } else {
         return this->keyspaces.at(index).getNextAvailableKey();
@@ -75,7 +80,7 @@ ADAK_Key_t Node::getNextKey() {
 int Node::minimumKeyspaceIndex() {
     unsigned long min = ULONG_MAX;
     int index = -1;
-    
+
     for (int i = 0; i < keyspaces.size(); i++){
         if (keyspaces.at(i).getStart() < min && keyspaces.at(i).isKeyAvailable()) {
             min = keyspaces.at(i).getStart();
@@ -85,6 +90,21 @@ int Node::minimumKeyspaceIndex() {
     return index;
 }
 
+bool Node::isKeyAvailable(){
+    bool isAKey = false;
+    for(const Keyspace& keys: this->keyspaces ){
+        if(keys.isKeyAvailable()){
+            isAKey = true;
+            break;
+        }
+    }
+    return isAKey;
+}
+
+/**
+ * This is where the Baylor team will add more statistics to handle the messages that each node receives
+ * @param message
+ */
 void Node::heartbeat() {
     // No peers connected, so send
     if (peers.empty()) {
@@ -92,7 +112,7 @@ void Node::heartbeat() {
         messageID++;
         return;
     }
-    
+
     for (const auto &[uuid, _] : peers) {
         // Create heartbeat message for each peer
         sendQueue.push_back(getHeartbeatMessage(uuid));
@@ -104,19 +124,19 @@ bool Node::receiveMessage(const Message &msg) {
         // Destination node is this node, don't receive it
         return false;
     }
-    
+
     // Check time and update lastDay and rotate the history
     if (NodeData::isNewDay(lastDay.getDay())) {
         history.push_back(lastDay);
-        
+
         if (history.size() > 7) {
             // Remove the first value from the vector, shifting the time, so we only store 1 week
             history.erase(history.begin());
         }
-        
+
         lastDay = NodeData();
     }
-    
+
     // Handle last received message ID incrementing
     auto peer = peers.find(msg.sourcenodeid());
     if (peer == peers.end()) {
@@ -137,9 +157,9 @@ bool Node::receiveMessage(const Message &msg) {
                     Keyspace{peerSpace.startid(), peerSpace.endid(), peerSpace.suffixbits()}
                 );
             }
-            
+
             break;
-    
+
         case Message_MessageType_INFORMATION:
         {
             double allocationRatio = -1;
@@ -151,12 +171,12 @@ bool Node::receiveMessage(const Message &msg) {
                     // No peer found matching UUID in message, ignore this message
                     break;
                 }
-                
+
                 // TODO: Handle decision on giving of keyspace
                 // Peer found, decided to share (congrats, we're not 2 year olds!)
                 if (!keyspaces.empty()) {
                     Keyspace keyspaceToGive = keyspaces.at(minimumKeyspaceIndex());
-    
+
                     /// FIXME: Baylor, this something to consider. Right now if the keyspace is running low, then
                     /// there will be a case when we have the following scenarios below happen. These are NOT currently
                     /// covered. These was mainly fixed when we got the allocation working.
@@ -164,7 +184,7 @@ bool Node::receiveMessage(const Message &msg) {
                     /// then do nothing.
                     /// If we have more than 1 keyspace with 1 spot open
                     /// give the entire keyspace
-                    
+
                     // If i have another key spot available
                     if ((keyspaceToGive.getStart() + pow(2, keyspaceToGive.getSuffix())) < keyspaceToGive.getEnd()) {
                         Message shareSpaceMsg = newBaseMessage(
@@ -175,22 +195,22 @@ bool Node::receiveMessage(const Message &msg) {
                             messageID++
                         );
                         shareKeyspace(shareSpaceMsg);
-    
+
                         // Send message to peer
                         sendQueue.push_back(shareSpaceMsg);
-    
+
                         return true;
                     }
                 }
             }
         }
         break;
-        
+
         default:
             // Should never reach this point in normal operation
             throw invalid_argument("message invalid type");
     }
-    
+
     return false;
 }
 
@@ -202,22 +222,22 @@ deque<Message> Node::getMessages() {
 
 void Node::shareKeyspace(Message &msg) {
     int minKeyspaceIndex = minimumKeyspaceIndex();
-    
+
     Keyspace minKeyspace = keyspaces.at(minKeyspaceIndex);
-    
+
     uint32_t myStart = minKeyspace.getStart();
     uint32_t myEnd = minKeyspace.getEnd();
     uint32_t mySuffix = minKeyspace.getSuffix();
     mySuffix += 1;
-    
+
     uint32_t newStart = minKeyspace.getStart();
     uint32_t newEnd = minKeyspace.getEnd();
     uint32_t newSuffix = minKeyspace.getSuffix();
     newStart += pow(2, newSuffix);
     newSuffix += 1;
-    
+
     KeyspaceExchangeRecord newKeyspace{};
-    
+
     if (newSuffix < 32) {
         // Update local keyspace records
         keyspaces.at(minKeyspaceIndex) = Keyspace(myStart, myEnd, mySuffix);
@@ -226,23 +246,23 @@ void Node::shareKeyspace(Message &msg) {
         // Start breaking into sub-blocks!
         // (((end - start) / 2^B) / (chunkiness)) * B + start
         // B is the suffix bits
-        
+
         uint32_t myStart2 = minKeyspace.getStart();
         uint32_t myEnd2 = minKeyspace.getEnd();
         uint32_t suffix = minKeyspace.getSuffix();
-        
+
         double amountOfBlocks = (double) (myEnd2 - myStart2) / pow(2, suffix);
         amountOfBlocks = amountOfBlocks + 0.5 - (amountOfBlocks < 0);
-        
+
         uint32_t amountOfBlocksToGive = ((uint32_t) amountOfBlocks) / CHUNKINESS;
         uint32_t blocksScaled = amountOfBlocksToGive * suffix;
         uint32_t myNewEnd = blocksScaled + myStart2;
-        
+
         newKeyspace = KeyspaceExchangeRecord{"share", myNewEnd, myEnd2, suffix};
-    
+
         keyspaces.at(minKeyspaceIndex) = Keyspace(myStart2, myNewEnd, mySuffix);
     }
-    
+
     // Update message type and contents
     toKeyspaceMessage(msg, {newKeyspace});
 }
@@ -274,13 +294,13 @@ Message Node::getHeartbeatMessage(const UUID &peerID) const {
     if (keyspaces.empty()) {
         allocation = 1;
     }
-    
+
     toInformationalMessage(
         msg,
         {
             CollectionInfoRecord{"test", createdDay, createdWeek, allocation, allocation},
         }
     );
-    
+
     return msg;
 }

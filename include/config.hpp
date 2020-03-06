@@ -11,7 +11,7 @@
 
 using json = nlohmann::json;
 
-static const u_int DEFAULT_NUM_NODES = 100;
+static const u_int DEFAULT_NUM_NODES = 10;
 static ConnectionType DEFAULT_CONNECTION_MODE = ConnectionType::Full;
 static const char* DEFAULT_CSV_OUTPUT_PATH = "out.csv";
 static const int DEFAULT_CREATION_RATE = 1;
