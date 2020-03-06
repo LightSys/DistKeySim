@@ -1,6 +1,6 @@
 #include "config.hpp"
 
-//grabs the data from the jsonFIle and puts it into the variables.
+//grabs the data from the jsonFIle and puts it into the config variables
 Config::Config(std::ifstream jsonFile) {
 
     if(jsonFile.is_open()) {

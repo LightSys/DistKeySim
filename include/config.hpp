@@ -28,6 +28,7 @@ public:
 
     Config(std::ifstream jsonFile);
 
+    //getters
     u_int getNumNodes() const { return numNodes; }
     std::string getConnectionMode() const { return connectionMode; }
     std::string getCSVOutputPath () const { return csvOutputPath; }

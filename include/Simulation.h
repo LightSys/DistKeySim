@@ -6,7 +6,7 @@
 #include "config.hpp"
 
 
-// TODO: change to JSON parameter //should be done; remove once confirmed.
+// gets parameters from the json file and puts them into the variables.
 auto const config = new Config( std::ifstream("test.json"));
 static const int AMOUNT_OF_NODES = config->getNumNodes();
 static const std::string CONNECTION_MODE = config->getConnectionMode();
