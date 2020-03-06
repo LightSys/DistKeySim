@@ -202,25 +202,49 @@ deque<Message> Node::getMessages() {
 
 void Node::shareKeyspace(Message &msg) {
     int minKeyspaceIndex = minimumKeyspaceIndex();
-
+    
     Keyspace minKeyspace = keyspaces.at(minKeyspaceIndex);
-
+    
     uint32_t myStart = minKeyspace.getStart();
     uint32_t myEnd = minKeyspace.getEnd();
     uint32_t mySuffix = minKeyspace.getSuffix();
     mySuffix += 1;
-
+    
     uint32_t newStart = minKeyspace.getStart();
     uint32_t newEnd = minKeyspace.getEnd();
     uint32_t newSuffix = minKeyspace.getSuffix();
     newStart += pow(2, newSuffix);
     newSuffix += 1;
     
-    // Update local keyspace records
-    keyspaces.at(minKeyspaceIndex) = Keyspace(myStart, myEnd, mySuffix);
+    KeyspaceExchangeRecord newKeyspace{};
+    
+    if (newSuffix < 32) {
+        // Update local keyspace records
+        keyspaces.at(minKeyspaceIndex) = Keyspace(myStart, myEnd, mySuffix);
+        newKeyspace = KeyspaceExchangeRecord{"share", newStart, newEnd, newSuffix};
+    } else {
+        // Start breaking into sub-blocks!
+        // (((end - start) / 2^B) / (chunkiness)) * B + start
+        // B is the suffix bits
+        
+        uint32_t myStart2 = minKeyspace.getStart();
+        uint32_t myEnd2 = minKeyspace.getEnd();
+        uint32_t suffix = minKeyspace.getSuffix();
+        
+        double amountOfBlocks = (double) (myEnd2 - myStart2) / pow(2, suffix);
+        amountOfBlocks = amountOfBlocks + 0.5 - (amountOfBlocks < 0);
+        
+        uint32_t amountOfBlocksToGive = ((uint32_t) amountOfBlocks) / CHUNKINESS;
+        uint32_t blocksScaled = amountOfBlocksToGive * suffix;
+        uint32_t myNewEnd = blocksScaled + myStart2;
+        
+        newKeyspace = KeyspaceExchangeRecord{"share", myNewEnd, myEnd2, suffix};
+    
+        keyspaces.at(minKeyspaceIndex) = Keyspace(myStart2, myNewEnd, mySuffix);
+    }
     
     // Update message type and contents
-    toKeyspaceMessage(msg, {KeyspaceExchangeRecord{"share", newStart, newEnd, newSuffix}});
+    toKeyspaceMessage(msg, {newKeyspace});
 }
 
 Message Node::getHeartbeatMessage(const UUID &peerID) const {
