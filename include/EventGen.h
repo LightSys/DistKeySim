@@ -2,6 +2,12 @@
 #define LIGHTSYS_ADAK_EVENT_GEN_H
 
 #include "Simulation.h"
+#include "Network.h"
+
+/**
+* The type of Event Generation type the Simluation should use
+*/
+enum class EventGenerationType { Random, Unused1, Unused2 };
 
 class EventGen {
 public:

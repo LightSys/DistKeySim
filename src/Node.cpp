@@ -1,54 +1,286 @@
+#include <climits>
+#include <iostream>
+
 #include "Node.h"
-#include "UUID.h"
+#include "NodeData.h"
 
-Node::Node(){
-    this->uuid = new_uuid();
+using namespace std;
+
+Node::Node() : uuid(new_uuid()), lastDay(NodeData())  {}
+
+Node::Node(const Keyspace &keySpace) : uuid(new_uuid()), lastDay(NodeData()) {
+    keyspaces.push_back(keySpace);
 }
-///creates the key space for the Node
-Keyspace Node::createKeySpace() {
 
+static Node rootNode() {
+    return Node(Keyspace(0, UINT_MAX, 0));
 }
 
-/**
- * computes the generation rate of a node and all its peers.
- *TODO alter funct so that it excludes the destination node in the computation
- */
-double Node::computeAggregateGenRate() {
-    double totalPeerRate;
+void Node::addPeer(const UUID &peerUUID) {
+    if (peers.find(peerUUID) != peers.end()) {
+        // Found a match, don't add duplicate connections
+        return;
+    }
+    
+    peers.insert({peerUUID, nullptr});
+}
 
-    for (int i = 0; i < peers.size(); i++) {
-        totalPeerRate += peers.at(i)->keyGenRate;
+void Node::addPeer(shared_ptr<Node> peer) {
+    if (peers.find(peer->getUUID()) != peers.end()) {
+        // Found a match, don't add duplicate connections
+        return;
+    }
+    
+    peers.insert({peer->getUUID(), nullptr});
+}
+
+void Node::removePeer(shared_ptr<Node> peer) {
+    auto foundPeer = peers.find(peer->getUUID());
+    if (foundPeer != peers.end()) {
+        // Found a match, don't add duplicate connections
+        return;
+    }
+    
+    // Found match, remove it
+    peers.erase(foundPeer);
+}
+
+void Node::removePeer(const UUID &peerUUID) {
+    // Search for local peer matching UUID
+    auto foundPeer = peers.find(peerUUID);
+    if (foundPeer != peers.end()) {
+        // No peers that match that UUID exist
+        return;
+    }
+    
+    // Found match, remove it
+    peers.erase(foundPeer);
+}
+
+shared_ptr<const NodeData> Node::getNodeData() const {
+    return make_shared<NodeData>(lastDay);
+}
+
+ADAK_Key_t Node::getNextKey() {
+    lastDay.useKey();
+    int index = minimumKeyspaceIndex();
+    if (index == -1){
+        cout << "ERROR from getNextKey in Node: Not more keys to give";
+        return -1;
+    } else {
+        return this->keyspaces.at(index).getNextAvailableKey();
+    }
+}
+
+int Node::minimumKeyspaceIndex() {
+    unsigned long min = ULONG_MAX;
+    int index = -1;
+    
+    for (int i = 0; i < keyspaces.size(); i++){
+        if (keyspaces.at(i).getStart() < min && keyspaces.at(i).isKeyAvailable()) {
+            min = keyspaces.at(i).getStart();
+            index = i;
+        }
+    }
+    return index;
+}
+
+void Node::heartbeat() {
+    // No peers connected, so send
+    if (peers.empty()) {
+        sendQueue.push_back(getHeartbeatMessage(BROADCAST_UUID));
+        messageID++;
+        return;
+    }
+    
+    for (const auto &[uuid, _] : peers) {
+        // Create heartbeat message for each peer
+        sendQueue.push_back(getHeartbeatMessage(uuid));
+    }
+}
+
+bool Node::receiveMessage(const Message &msg) {
+    if (msg.sourcenodeid() == uuid) {
+        // Destination node is this node, don't receive it
+        return false;
+    }
+    
+    // Check time and update lastDay and rotate the history
+    if (NodeData::isNewDay(lastDay.getDay())) {
+        history.push_back(lastDay);
+        
+        if (history.size() > 7) {
+            // Remove the first value from the vector, shifting the time, so we only store 1 week
+            history.erase(history.begin());
+        }
+        
+        lastDay = NodeData();
+    }
+    
+    // Handle last received message ID incrementing
+    auto peer = peers.find(msg.sourcenodeid());
+    if (peer == peers.end()) {
+        // First message received from this peer, add message ID and update find result
+        peers.insert({msg.sourcenodeid(), make_shared<Message>(msg)});
+        peer = peers.find(msg.sourcenodeid());
+    } else {
+        // Known peer, update msg ID
+        peers.at(msg.sourcenodeid()) = make_shared<Message>(msg);
     }
 
-    totalPeerRate = totalPeerRate * 0.30;
-
-    aggregateGenRate = totalPeerRate + keyGenRate;
+    switch (msg.messagetype()) {
+        case Message_MessageType_KEYSPACE:
+            // Receiving keyspace from a peer, generate new one for local store
+            for (auto &&i = 0; i < msg.keyspace().keyspaces_size(); i++) {
+                KeyspaceMessageContents::Keyspace peerSpace = msg.keyspace().keyspaces(i);
+                keyspaces.emplace_back(
+                    Keyspace{peerSpace.startid(), peerSpace.endid(), peerSpace.suffixbits()}
+                );
+            }
+            
+            break;
+    
+        case Message_MessageType_INFORMATION:
+        {
+            double allocationRatio = -1;
+            for (int &&i = 0; i < msg.info().records_size(); i++) {
+                allocationRatio = msg.info().records(i).creationratedata().shortallocationratio();
+            }
+            if (allocationRatio > ALLOCATION_BEFORE_GIVING_KEYSPACE) {
+                if (peer == peers.end()) {
+                    // No peer found matching UUID in message, ignore this message
+                    break;
+                }
+                
+                // TODO: Handle decision on giving of keyspace
+                // Peer found, decided to share (congrats, we're not 2 year olds!)
+                if (!keyspaces.empty()) {
+                    Keyspace keyspaceToGive = keyspaces.at(minimumKeyspaceIndex());
+    
+                    /// FIXME: Baylor, this something to consider. Right now if the keyspace is running low, then
+                    /// there will be a case when we have the following scenarios below happen. These are NOT currently
+                    /// covered. These was mainly fixed when we got the allocation working.
+                    /// If we have 1 keyspace, and only 1 spot open in that keyspace
+                    /// then do nothing.
+                    /// If we have more than 1 keyspace with 1 spot open
+                    /// give the entire keyspace
+                    
+                    // If i have another key spot available
+                    if ((keyspaceToGive.getStart() + pow(2, keyspaceToGive.getSuffix())) < keyspaceToGive.getEnd()) {
+                        Message shareSpaceMsg = newBaseMessage(
+                            uuid,
+                            peer->first,
+                            peer->second->lastreceivedmsg(),
+                            Message_ChannelState_NORMAL_COMMUNICATION,
+                            messageID++
+                        );
+                        shareKeyspace(shareSpaceMsg);
+    
+                        // Send message to peer
+                        sendQueue.push_back(shareSpaceMsg);
+    
+                        return true;
+                    }
+                }
+            }
+        }
+        break;
+        
+        default:
+            // Should never reach this point in normal operation
+            throw invalid_argument("message invalid type");
+    }
+    
+    return false;
 }
-/**
- * TODO write next two functions
- * I'm not certain of how to write these.
- */
-double Node::computeShortTermAllocationRatio(){
 
+deque<Message> Node::getMessages() {
+    deque<Message> toSend = move(sendQueue);
+    sendQueue.empty();
+    return toSend;
 }
 
-double Node::computeLongTermAllocationRatio(){
-
+void Node::shareKeyspace(Message &msg) {
+    int minKeyspaceIndex = minimumKeyspaceIndex();
+    
+    Keyspace minKeyspace = keyspaces.at(minKeyspaceIndex);
+    
+    uint32_t myStart = minKeyspace.getStart();
+    uint32_t myEnd = minKeyspace.getEnd();
+    uint32_t mySuffix = minKeyspace.getSuffix();
+    mySuffix += 1;
+    
+    uint32_t newStart = minKeyspace.getStart();
+    uint32_t newEnd = minKeyspace.getEnd();
+    uint32_t newSuffix = minKeyspace.getSuffix();
+    newStart += pow(2, newSuffix);
+    newSuffix += 1;
+    
+    KeyspaceExchangeRecord newKeyspace{};
+    
+    if (newSuffix < 32) {
+        // Update local keyspace records
+        keyspaces.at(minKeyspaceIndex) = Keyspace(myStart, myEnd, mySuffix);
+        newKeyspace = KeyspaceExchangeRecord{"share", newStart, newEnd, newSuffix};
+    } else {
+        // Start breaking into sub-blocks!
+        // (((end - start) / 2^B) / (chunkiness)) * B + start
+        // B is the suffix bits
+        
+        uint32_t myStart2 = minKeyspace.getStart();
+        uint32_t myEnd2 = minKeyspace.getEnd();
+        uint32_t suffix = minKeyspace.getSuffix();
+        
+        double amountOfBlocks = (double) (myEnd2 - myStart2) / pow(2, suffix);
+        amountOfBlocks = amountOfBlocks + 0.5 - (amountOfBlocks < 0);
+        
+        uint32_t amountOfBlocksToGive = ((uint32_t) amountOfBlocks) / CHUNKINESS;
+        uint32_t blocksScaled = amountOfBlocksToGive * suffix;
+        uint32_t myNewEnd = blocksScaled + myStart2;
+        
+        newKeyspace = KeyspaceExchangeRecord{"share", myNewEnd, myEnd2, suffix};
+    
+        keyspaces.at(minKeyspaceIndex) = Keyspace(myStart2, myNewEnd, mySuffix);
+    }
+    
+    // Update message type and contents
+    toKeyspaceMessage(msg, {newKeyspace});
 }
 
-/**
- * TODO write function
- * Requires understanding of the two above for computation
- */
-double Node::computeAggregateAllocationRatio() {
+Message Node::getHeartbeatMessage(const UUID &peerID) const {
+    Message msg;
+    if (peerID == BROADCAST_UUID) {
+        // Broadcasting
+        msg = newBaseMessage(
+            uuid,
+            peerID,
+            0,
+            Message_ChannelState_INITIAL_STARTUP,
+            messageID
+        );
+    } else {
+        shared_ptr<Message> lastReceived = peers.at(peerID);
+        msg = newBaseMessage(
+            uuid,
+            peerID,
+            lastReceived == nullptr ? 0 : lastReceived->lastreceivedmsg(),
+            Message_ChannelState_NORMAL_COMMUNICATION,
+            messageID
+        );
+    }
 
-}
-
-/**
- * TODO write function
- * found by dividing the relevant creation (gen) rate by the relevant allocation rate.
- * How do I determine which rates are the relevant ones?
- */
-double Node::computeProvisioningRatio() {
-
+    // HACK
+    double allocation = 0;
+    if (keyspaces.empty()) {
+        allocation = 1;
+    }
+    
+    toInformationalMessage(
+        msg,
+        {
+            CollectionInfoRecord{"test", createdDay, createdWeek, allocation, allocation},
+        }
+    );
+    
+    return msg;
 }

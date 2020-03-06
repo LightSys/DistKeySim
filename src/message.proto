@@ -7,10 +7,10 @@ message InformationalMessageContents {
     string collectionName = 1;
 
     message CreationRateData {
-      float shortAllocationRatio = 1;
-      float longAllocationRatio = 2;
-      float createdPreviousDay = 3;
-      float createdPreviousWeek = 4;
+      double shortAllocationRatio = 1;
+      double longAllocationRatio = 2;
+      double createdPreviousDay = 3;
+      double createdPreviousWeek = 4;
     }
 
     CreationRateData creationRateData = 2;
@@ -26,6 +26,8 @@ message KeyspaceMessageContents {
     uint32 endID = 3; // Will be set if this is a sub0block, otherwise 0
     uint32 suffixBits = 4;
   }
+
+  repeated Keyspace keyspaces = 1;
 }
 
 message Message {

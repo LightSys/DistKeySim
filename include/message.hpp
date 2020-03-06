@@ -2,56 +2,38 @@
 #ifndef ADAK_KEYING_MESSAGE_HPP
 #define ADAK_KEYING_MESSAGE_HPP
 
+#include <chrono>
 #include <string>
+#include "UUID.h"
 #include "message.pb.h"
 
-InformationalMessageContents generateInformational() {}
-KeyspaceMessageContents generateKeyspace() {}
+/**
+ * Represents Collection Information Record used in Informational Message
+ */
+struct CollectionInfoRecord {
+    std::string name;
+    float createdDay;
+    float createdWeek;
+    float longTermAllocation;
+    float shortTermAllocation;
+};
 
 /**
- * Adds a collection information record to an informational message contents instance
- * @param msg Informational message contents instance to add record to
- * @param createdDay
- * @param createdWeek
- * @param longAlloc
- * @param shortAlloc
+ * Represents Keyspace Exchange Message used in Message
  */
-void addCollectionInformationRecord(InformationalMessageContents &contents, std::string &&collectionName, float createdDay, float createdWeek, float longAlloc, float shortAlloc) {
-    auto *creationRateData = new InformationalMessageContents_CollectionInformationRecord_CreationRateData();
-    creationRateData->set_createdpreviousday(createdDay);
-    creationRateData->set_createdpreviousweek(createdWeek);
-    creationRateData->set_longallocationratio(longAlloc);
-    creationRateData->set_shortallocationratio(shortAlloc);
-    infoRecord->set_collectionname(collectionName);
-    infoRecord->set_allocated_creationratedata(creationRateData);
-}
+struct KeyspaceExchangeRecord {
+    std::string name;
+    uint32_t startID;
+    uint32_t endID;
+    uint32_t suffixBits;
+    
+};
 
-Message generateMessage() {
-    InformationalMessageContents infoMsg;
-    InformationalMessageContents_CollectionInformationRecord *infoRecord = infoMsg.add_records();
-    addCollectionInformationRecord(infoRecord);
-
-    // Generate message from contents
-    Message msg;
-    msg.set_sourcenodeid("14a89526-82e3-46f4-9fe7-f2d90ae7a84f");
-    msg.set_destnodeid("14a89526-82e3-46f4-9fe7-f2d90ae7a84f");
-    msg.set_lastreceivedmsg(0);
-    msg.set_channelstate(MessageInfo::ChannelState::MessageInfo_ChannelState_INITIAL_STARTUP);
-
-    // Current time
-    google::protobuf::Timestamp time;
-    long unixTS = chrono::duration_cast<chrono::milliseconds>(
-            chrono::system_clock::now().time_since_epoch()
-    ).count();
-    time.set_seconds(unixTS);
-    time.set_nanos(0);
-    msg.set_allocated_timestamp(&time);
-
-    // Messages start at ID 1
-    msg.set_messageid(1);
-    msg.set_messagetype(MessageInfo::MessageType::MessageInfo_MessageType_INFORMATION);
-
-    return msg;
-}
+Message newBaseMessage(const HexDigest &sendingUUID, const HexDigest &destUUID, uint32_t lastReceived,
+                       Message::ChannelState channelState, uint64_t msgID, long unixTimestamp = -1);
+void addCollectionInfoRecord(InformationalMessageContents::CollectionInformationRecord *collection,
+                             float createdDay, float createdWeek, float longAlloc, float shortAlloc);
+void toInformationalMessage(Message &msg, std::initializer_list<CollectionInfoRecord> records);
+void toKeyspaceMessage(Message &msg, std::initializer_list<KeyspaceExchangeRecord> records);
 
 #endif //ADAK_KEYING_MESSAGE_HPP

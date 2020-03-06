@@ -1,4 +1,5 @@
 #include <iostream>
+#include <ctime>
 
 #include "Simulation.h"
 #include "UUID.h"
@@ -7,48 +8,33 @@
 
 using namespace std;
 
-Simulation::Simulation() {
+// Number of rounds to complete to allow the simulation to settle
+static const int NUM_ROUNDS = 50;
+
+Simulation::Simulation(const struct Config &config)
+    : numNodes(config.numNodes), network(Network(config.connectionMode)) {
     // Seed random number
-    srand(time(NULL));
-    this->network = new Network();
+    srand(time(nullptr));
 }
 
-int main(int argc, char **argv){
-
-    EventGen* eventGenerator = new Random();
-    Simulation* simulation = new Simulation();
-    Network* network = simulation->getNetwork();
+void Simulation::run() {
+    // Create root node that will have the max keyspace 0/0
+    network.addRootNode();
+    
+    cout << "Root UUID: " << network.getNodes().begin()->first << endl;
 
     // Create new nodes and add them to the map
-    for(int i = 0; i < AMOUNT_OF_NODES; i++) {
-        network->addNode(new Node());
-    }
-
-    for(int i = 0; i < 10; i++) {
-        eventGenerator->eventTick(network);
+    for (int i = 0; i < numNodes; i++) {
+        UUID newNodeID = network.addEmptyNode();
+        network.checkAndSendAllNodes();
+        network.doAllHeartbeat();
     }
     
-    std::ofstream csvFile;
-    csvFile.open("csvFile.csv", std::ofstream::out | std::ofstream::trunc);
-    csvFile << "UUID, keySpace, keyGenRate, active, provisioningRatio \n";
-    for (int i = 0; i < (network->getUUIDList().size()); i++){
-        UUID uuid = network->getUUIDList().at(i); ///will get the UUID
-        Keyspace kS = network->getNodeFromUUID(uuid)->getKeySpace();
-        double kGR = network->getNodeFromUUID(uuid)->getKeyGenRate();
-        bool active = network->getNodeFromUUID(uuid)->getActive();
-        std::string act = "";
-        if(active == true) {
-            act = "true";
-        }
-        else{
-            act = "false";
-        }
-        double pR = network->getNodeFromUUID(uuid)->getProvisioningRatio();
-        uuid = UUIDToHex(network->getUUIDList().at(i));
-        csvFile << uuid << ", " << kS << ", " << kGR << ", " << act << ", " << pR << "\n";
+    for (int &&i = 0; i < NUM_ROUNDS; i++) {
+        network.checkAndSendAllNodes();
+        network.doAllHeartbeat();
     }
-    csvFile.close();
 
-    network->printUUIDList();
-    network->printChannels();
+    network.printChannels();
+    network.printKeyspaces();
 }

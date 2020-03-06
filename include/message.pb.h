@@ -248,40 +248,40 @@ class InformationalMessageContents_CollectionInformationRecord_CreationRateData 
     kCreatedPreviousDayFieldNumber = 3,
     kCreatedPreviousWeekFieldNumber = 4,
   };
-  // float shortAllocationRatio = 1;
+  // double shortAllocationRatio = 1;
   void clear_shortallocationratio();
-  float shortallocationratio() const;
-  void set_shortallocationratio(float value);
+  double shortallocationratio() const;
+  void set_shortallocationratio(double value);
   private:
-  float _internal_shortallocationratio() const;
-  void _internal_set_shortallocationratio(float value);
+  double _internal_shortallocationratio() const;
+  void _internal_set_shortallocationratio(double value);
   public:
 
-  // float longAllocationRatio = 2;
+  // double longAllocationRatio = 2;
   void clear_longallocationratio();
-  float longallocationratio() const;
-  void set_longallocationratio(float value);
+  double longallocationratio() const;
+  void set_longallocationratio(double value);
   private:
-  float _internal_longallocationratio() const;
-  void _internal_set_longallocationratio(float value);
+  double _internal_longallocationratio() const;
+  void _internal_set_longallocationratio(double value);
   public:
 
-  // float createdPreviousDay = 3;
+  // double createdPreviousDay = 3;
   void clear_createdpreviousday();
-  float createdpreviousday() const;
-  void set_createdpreviousday(float value);
+  double createdpreviousday() const;
+  void set_createdpreviousday(double value);
   private:
-  float _internal_createdpreviousday() const;
-  void _internal_set_createdpreviousday(float value);
+  double _internal_createdpreviousday() const;
+  void _internal_set_createdpreviousday(double value);
   public:
 
-  // float createdPreviousWeek = 4;
+  // double createdPreviousWeek = 4;
   void clear_createdpreviousweek();
-  float createdpreviousweek() const;
-  void set_createdpreviousweek(float value);
+  double createdpreviousweek() const;
+  void set_createdpreviousweek(double value);
   private:
-  float _internal_createdpreviousweek() const;
-  void _internal_set_createdpreviousweek(float value);
+  double _internal_createdpreviousweek() const;
+  void _internal_set_createdpreviousweek(double value);
   public:
 
   // @@protoc_insertion_point(class_scope:InformationalMessageContents.CollectionInformationRecord.CreationRateData)
@@ -289,10 +289,10 @@ class InformationalMessageContents_CollectionInformationRecord_CreationRateData 
   class _Internal;
 
   ::PROTOBUF_NAMESPACE_ID::internal::InternalMetadataWithArena _internal_metadata_;
-  float shortallocationratio_;
-  float longallocationratio_;
-  float createdpreviousday_;
-  float createdpreviousweek_;
+  double shortallocationratio_;
+  double longallocationratio_;
+  double createdpreviousday_;
+  double createdpreviousweek_;
   mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
   friend struct ::TableStruct_message_2eproto;
 };
@@ -866,11 +866,33 @@ class KeyspaceMessageContents :
 
   // accessors -------------------------------------------------------
 
+  enum : int {
+    kKeyspacesFieldNumber = 1,
+  };
+  // repeated .KeyspaceMessageContents.Keyspace keyspaces = 1;
+  int keyspaces_size() const;
+  private:
+  int _internal_keyspaces_size() const;
+  public:
+  void clear_keyspaces();
+  ::KeyspaceMessageContents_Keyspace* mutable_keyspaces(int index);
+  ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::KeyspaceMessageContents_Keyspace >*
+      mutable_keyspaces();
+  private:
+  const ::KeyspaceMessageContents_Keyspace& _internal_keyspaces(int index) const;
+  ::KeyspaceMessageContents_Keyspace* _internal_add_keyspaces();
+  public:
+  const ::KeyspaceMessageContents_Keyspace& keyspaces(int index) const;
+  ::KeyspaceMessageContents_Keyspace* add_keyspaces();
+  const ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::KeyspaceMessageContents_Keyspace >&
+      keyspaces() const;
+
   // @@protoc_insertion_point(class_scope:KeyspaceMessageContents)
  private:
   class _Internal;
 
   ::PROTOBUF_NAMESPACE_ID::internal::InternalMetadataWithArena _internal_metadata_;
+  ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::KeyspaceMessageContents_Keyspace > keyspaces_;
   mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
   friend struct ::TableStruct_message_2eproto;
 };
@@ -1215,82 +1237,82 @@ class Message :
 #endif  // __GNUC__
 // InformationalMessageContents_CollectionInformationRecord_CreationRateData
 
-// float shortAllocationRatio = 1;
+// double shortAllocationRatio = 1;
 inline void InformationalMessageContents_CollectionInformationRecord_CreationRateData::clear_shortallocationratio() {
   shortallocationratio_ = 0;
 }
-inline float InformationalMessageContents_CollectionInformationRecord_CreationRateData::_internal_shortallocationratio() const {
+inline double InformationalMessageContents_CollectionInformationRecord_CreationRateData::_internal_shortallocationratio() const {
   return shortallocationratio_;
 }
-inline float InformationalMessageContents_CollectionInformationRecord_CreationRateData::shortallocationratio() const {
+inline double InformationalMessageContents_CollectionInformationRecord_CreationRateData::shortallocationratio() const {
   // @@protoc_insertion_point(field_get:InformationalMessageContents.CollectionInformationRecord.CreationRateData.shortAllocationRatio)
   return _internal_shortallocationratio();
 }
-inline void InformationalMessageContents_CollectionInformationRecord_CreationRateData::_internal_set_shortallocationratio(float value) {
+inline void InformationalMessageContents_CollectionInformationRecord_CreationRateData::_internal_set_shortallocationratio(double value) {
   
   shortallocationratio_ = value;
 }
-inline void InformationalMessageContents_CollectionInformationRecord_CreationRateData::set_shortallocationratio(float value) {
+inline void InformationalMessageContents_CollectionInformationRecord_CreationRateData::set_shortallocationratio(double value) {
   _internal_set_shortallocationratio(value);
   // @@protoc_insertion_point(field_set:InformationalMessageContents.CollectionInformationRecord.CreationRateData.shortAllocationRatio)
 }
 
-// float longAllocationRatio = 2;
+// double longAllocationRatio = 2;
 inline void InformationalMessageContents_CollectionInformationRecord_CreationRateData::clear_longallocationratio() {
   longallocationratio_ = 0;
 }
-inline float InformationalMessageContents_CollectionInformationRecord_CreationRateData::_internal_longallocationratio() const {
+inline double InformationalMessageContents_CollectionInformationRecord_CreationRateData::_internal_longallocationratio() const {
   return longallocationratio_;
 }
-inline float InformationalMessageContents_CollectionInformationRecord_CreationRateData::longallocationratio() const {
+inline double InformationalMessageContents_CollectionInformationRecord_CreationRateData::longallocationratio() const {
   // @@protoc_insertion_point(field_get:InformationalMessageContents.CollectionInformationRecord.CreationRateData.longAllocationRatio)
   return _internal_longallocationratio();
 }
-inline void InformationalMessageContents_CollectionInformationRecord_CreationRateData::_internal_set_longallocationratio(float value) {
+inline void InformationalMessageContents_CollectionInformationRecord_CreationRateData::_internal_set_longallocationratio(double value) {
   
   longallocationratio_ = value;
 }
-inline void InformationalMessageContents_CollectionInformationRecord_CreationRateData::set_longallocationratio(float value) {
+inline void InformationalMessageContents_CollectionInformationRecord_CreationRateData::set_longallocationratio(double value) {
   _internal_set_longallocationratio(value);
   // @@protoc_insertion_point(field_set:InformationalMessageContents.CollectionInformationRecord.CreationRateData.longAllocationRatio)
 }
 
-// float createdPreviousDay = 3;
+// double createdPreviousDay = 3;
 inline void InformationalMessageContents_CollectionInformationRecord_CreationRateData::clear_createdpreviousday() {
   createdpreviousday_ = 0;
 }
-inline float InformationalMessageContents_CollectionInformationRecord_CreationRateData::_internal_createdpreviousday() const {
+inline double InformationalMessageContents_CollectionInformationRecord_CreationRateData::_internal_createdpreviousday() const {
   return createdpreviousday_;
 }
-inline float InformationalMessageContents_CollectionInformationRecord_CreationRateData::createdpreviousday() const {
+inline double InformationalMessageContents_CollectionInformationRecord_CreationRateData::createdpreviousday() const {
   // @@protoc_insertion_point(field_get:InformationalMessageContents.CollectionInformationRecord.CreationRateData.createdPreviousDay)
   return _internal_createdpreviousday();
 }
-inline void InformationalMessageContents_CollectionInformationRecord_CreationRateData::_internal_set_createdpreviousday(float value) {
+inline void InformationalMessageContents_CollectionInformationRecord_CreationRateData::_internal_set_createdpreviousday(double value) {
   
   createdpreviousday_ = value;
 }
-inline void InformationalMessageContents_CollectionInformationRecord_CreationRateData::set_createdpreviousday(float value) {
+inline void InformationalMessageContents_CollectionInformationRecord_CreationRateData::set_createdpreviousday(double value) {
   _internal_set_createdpreviousday(value);
   // @@protoc_insertion_point(field_set:InformationalMessageContents.CollectionInformationRecord.CreationRateData.createdPreviousDay)
 }
 
-// float createdPreviousWeek = 4;
+// double createdPreviousWeek = 4;
 inline void InformationalMessageContents_CollectionInformationRecord_CreationRateData::clear_createdpreviousweek() {
   createdpreviousweek_ = 0;
 }
-inline float InformationalMessageContents_CollectionInformationRecord_CreationRateData::_internal_createdpreviousweek() const {
+inline double InformationalMessageContents_CollectionInformationRecord_CreationRateData::_internal_createdpreviousweek() const {
   return createdpreviousweek_;
 }
-inline float InformationalMessageContents_CollectionInformationRecord_CreationRateData::createdpreviousweek() const {
+inline double InformationalMessageContents_CollectionInformationRecord_CreationRateData::createdpreviousweek() const {
   // @@protoc_insertion_point(field_get:InformationalMessageContents.CollectionInformationRecord.CreationRateData.createdPreviousWeek)
   return _internal_createdpreviousweek();
 }
-inline void InformationalMessageContents_CollectionInformationRecord_CreationRateData::_internal_set_createdpreviousweek(float value) {
+inline void InformationalMessageContents_CollectionInformationRecord_CreationRateData::_internal_set_createdpreviousweek(double value) {
   
   createdpreviousweek_ = value;
 }
-inline void InformationalMessageContents_CollectionInformationRecord_CreationRateData::set_createdpreviousweek(float value) {
+inline void InformationalMessageContents_CollectionInformationRecord_CreationRateData::set_createdpreviousweek(double value) {
   _internal_set_createdpreviousweek(value);
   // @@protoc_insertion_point(field_set:InformationalMessageContents.CollectionInformationRecord.CreationRateData.createdPreviousWeek)
 }
@@ -1589,6 +1611,45 @@ inline void KeyspaceMessageContents_Keyspace::set_suffixbits(::PROTOBUF_NAMESPAC
 // -------------------------------------------------------------------
 
 // KeyspaceMessageContents
+
+// repeated .KeyspaceMessageContents.Keyspace keyspaces = 1;
+inline int KeyspaceMessageContents::_internal_keyspaces_size() const {
+  return keyspaces_.size();
+}
+inline int KeyspaceMessageContents::keyspaces_size() const {
+  return _internal_keyspaces_size();
+}
+inline void KeyspaceMessageContents::clear_keyspaces() {
+  keyspaces_.Clear();
+}
+inline ::KeyspaceMessageContents_Keyspace* KeyspaceMessageContents::mutable_keyspaces(int index) {
+  // @@protoc_insertion_point(field_mutable:KeyspaceMessageContents.keyspaces)
+  return keyspaces_.Mutable(index);
+}
+inline ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::KeyspaceMessageContents_Keyspace >*
+KeyspaceMessageContents::mutable_keyspaces() {
+  // @@protoc_insertion_point(field_mutable_list:KeyspaceMessageContents.keyspaces)
+  return &keyspaces_;
+}
+inline const ::KeyspaceMessageContents_Keyspace& KeyspaceMessageContents::_internal_keyspaces(int index) const {
+  return keyspaces_.Get(index);
+}
+inline const ::KeyspaceMessageContents_Keyspace& KeyspaceMessageContents::keyspaces(int index) const {
+  // @@protoc_insertion_point(field_get:KeyspaceMessageContents.keyspaces)
+  return _internal_keyspaces(index);
+}
+inline ::KeyspaceMessageContents_Keyspace* KeyspaceMessageContents::_internal_add_keyspaces() {
+  return keyspaces_.Add();
+}
+inline ::KeyspaceMessageContents_Keyspace* KeyspaceMessageContents::add_keyspaces() {
+  // @@protoc_insertion_point(field_add:KeyspaceMessageContents.keyspaces)
+  return _internal_add_keyspaces();
+}
+inline const ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::KeyspaceMessageContents_Keyspace >&
+KeyspaceMessageContents::keyspaces() const {
+  // @@protoc_insertion_point(field_list:KeyspaceMessageContents.keyspaces)
+  return keyspaces_;
+}
 
 // -------------------------------------------------------------------
 
