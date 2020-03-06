@@ -20,7 +20,7 @@ private:
     u_int messageID = 1;
     std::deque<Message> sendQueue;
     std::vector<Keyspace> keyspaces;
-    std::map<UUID, u_int> peers;
+    std::map<UUID, std::shared_ptr<Message>> peers;
     std::vector<NodeData> history;
     
     // Node statistics
@@ -37,7 +37,7 @@ public:
      * Adds a peer to local list of peers
      * @param peer Const reference to Node instance to add as peer
      */
-    void addPeer(const Node &peer);
+    void addPeer(std::shared_ptr<Node> peer);
     
     /**
      * Adds a peer to local list of peers
@@ -49,7 +49,7 @@ public:
      * Attempts to remove peer based on pointer
      * @param peer Reference to Node instance
      */
-    void removePeer(const Node &peer);
+    void removePeer(std::shared_ptr<Node> peer);
     
     /**
      * Attempts to remove peer based on UUID
@@ -76,7 +76,7 @@ public:
     Message getHeartbeatMessage(const UUID &peerID) const;
     
     int minimumKeyspaceIndex();
-    adak_key getNextKey();
+    ADAK_Key_t getNextKey();
     
     const UUID getUUID() const { return uuid; }
     void setUUID(UUID nid) { uuid = nid; }
@@ -89,13 +89,13 @@ public:
 //    int getKeyShareRate() const { return keyShareRate; }
 //    void setKeyShareRate(int ksr) { keyShareRate = ksr; }
 
-    const std::map<UUID, u_int> getPeers() const { return this->peers; }
+    const std::map<UUID, std::shared_ptr<Message>> getPeers() const { return this->peers; }
 
     /**
      * Retrieves latest statistics for this node
-     * @return Constant pointer to most recent NodeData instance
+     * @return Safe shared pointer to most recent NodeData instance
      */
-    const NodeData* getNodeData() const;
+    std::shared_ptr<const NodeData> getNodeData() const;
     
     /**
      * Add Keyspace Exchange message details from keyspace shared from Node's spaces

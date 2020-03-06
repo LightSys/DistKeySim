@@ -8,7 +8,7 @@ using namespace std;
 
 Node::Node() : Node(Keyspace(0, ULONG_MAX, 0)) {}
 
-Node::Node(const Keyspace &keySpace)  : uuid(new_uuid()), lastDay(NodeData(this)) {
+Node::Node(const Keyspace &keySpace) : uuid(new_uuid()), lastDay(NodeData()) {
     keyspaces.push_back(keySpace);
 }
 
@@ -18,20 +18,20 @@ void Node::addPeer(const UUID &peerUUID) {
         return;
     }
     
-    peers.insert({peerUUID, 0});
+    peers.insert({peerUUID, nullptr});
 }
 
-void Node::addPeer(const Node &peer) {
-    if (peers.find(peer.getUUID()) != peers.end()) {
+void Node::addPeer(shared_ptr<Node> peer) {
+    if (peers.find(peer->getUUID()) != peers.end()) {
         // Found a match, don't add duplicate connections
         return;
     }
     
-    peers.insert({peer.getUUID(), 0});
+    peers.insert({peer->getUUID(), nullptr});
 }
 
-void Node::removePeer(const Node &peer) {
-    auto foundPeer = peers.find(peer.getUUID());
+void Node::removePeer(shared_ptr<Node> peer) {
+    auto foundPeer = peers.find(peer->getUUID());
     if (foundPeer != peers.end()) {
         // Found a match, don't add duplicate connections
         return;
@@ -54,11 +54,11 @@ void Node::removePeer(const UUID &peerUUID) {
 }
 
 
-const NodeData* Node::getNodeData() const {
-    return &lastDay;
+shared_ptr<const NodeData> Node::getNodeData() const {
+    return make_shared<NodeData>(lastDay);
 }
 
-adak_key Node::getNextKey() {
+ADAK_Key_t Node::getNextKey() {
     lastDay.useKey();
     int index = minimumKeyspaceIndex();
     if (index == -1){
@@ -106,18 +106,18 @@ bool Node::receiveMessage(const Message &message) {
             history.erase(history.begin());
         }
         
-        lastDay = NodeData(this);
+        lastDay = NodeData();
     }
     
     // Handle last received message ID incrementing
     auto peer = peers.find(message.sourcenodeid());
     if (peer == peers.end()) {
         // First message received from this peer, add message ID and update find result
-        peers.insert({message.sourcenodeid(), message.messageid()});
+        peers.insert({message.sourcenodeid(), make_shared<Message>(message)});
         peer = peers.find(message.sourcenodeid());
     } else {
         // Known peer, update message ID
-        peers.at(message.sourcenodeid()) = message.messageid();
+        peers.at(message.sourcenodeid()) = make_shared<Message>(message);
     }
 
     switch (message.messagetype()) {
@@ -149,7 +149,7 @@ bool Node::receiveMessage(const Message &message) {
                 Message shareSpaceMsg = newBaseMessage(
                     uuid,
                     peer->first,
-                    peer->second,
+                    peer->second->lastreceivedmsg(),
                     Message_ChannelState_NORMAL_COMMUNICATION,
                     messageID++
                 );
@@ -213,7 +213,7 @@ Message Node::getHeartbeatMessage(const UUID &peerID) const {
         msg = newBaseMessage(
             uuid,
             peerID,
-            peers.at(peerID),
+            peers.at(peerID)->lastreceivedmsg(),
             Message_ChannelState_NORMAL_COMMUNICATION,
             messageID
         );
@@ -225,5 +225,6 @@ Message Node::getHeartbeatMessage(const UUID &peerID) const {
             CollectionInfoRecord{"test", createdDay, createdWeek, 1.0, 1.0},
         }
     );
+    
     return msg;
 }

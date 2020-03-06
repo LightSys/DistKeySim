@@ -16,7 +16,7 @@ Keyspace::Keyspace(const Keyspace &obj){
 }
 
 
-adak_key Keyspace::getNextAvailableKey() {
+ADAK_Key_t Keyspace::getNextAvailableKey() {
     int skipBy = pow(2, this->suffix);
     unsigned long oldStart = this->start;
     this->start = start + skipBy;
@@ -26,10 +26,6 @@ adak_key Keyspace::getNextAvailableKey() {
         cout << "ERROR start == end on Keyspace::getNextAvailableKey()" << endl;
     }
     return oldStart;
-}
-
-bool Keyspace::isKeyAvailable() {
-    return start < end;
 }
 
 

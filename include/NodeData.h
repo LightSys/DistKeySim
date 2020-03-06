@@ -16,31 +16,27 @@ private:
     double creationRate;
     int keysUsed = 0;
     int day;
-
-    Node* parentNode;
-
+    
     // Functions
-    adak_key findEndKey(int creationRate);
-
-    std::vector<Keyspace*> copyKeyspace(std::vector<Keyspace*> keyspaces);
-
-    int getMinKey(std::vector<Keyspace*> keyspaces);
+    ADAK_Key_t findEndKey(double creationRate, std::vector<Keyspace> keyspaces);
+    int getMinKey(const std::vector<Keyspace> keyspaces) const;
 public:
-    explicit NodeData(Node* parentNode);
+    explicit NodeData() : day(getCurrentDay()), keysUsed(0) {}
     ~NodeData() = default;
 
-    static bool isNewDay(int currentDay);
+    static inline bool isNewDay(int currentDay) { return currentDay != getCurrentDay(); }
     static int getCurrentDay();
 
-    void useKey() { keysUsed++; }
-    int getKeysUsed() const { return this->keysUsed; }
+    inline void useKey() { keysUsed++; }
+    constexpr inline int getKeysUsed() const { return this->keysUsed; }
 
-    double updateCreationRate();
+    double updateCreationRate(const std::map<UUID, std::shared_ptr<Message>> peers);
 
     // Getters and Setters
-    double getCreationRate() const {return this->creationRate; }
-    double updateLongTermAllocationRatio();
-    double updateShortTermAllocationRatio();
+    constexpr inline double getCreationRate() const {return this->creationRate; }
+    double updateLongTermAllocationRatio(const std::vector<Keyspace> &keyspace);
+    double updateShortTermAllocationRatio(const std::vector<Keyspace> &keyspace, u_int minSpaceIdx,
+                                          const std::map<UUID, std::shared_ptr<Message>> &peers);
     
 //    int getKeyShareRate() const { return keyShareRate; }
 //    void setKeyShareRate(int keyShareRate) { NodeData::keyShareRate = keyShareRate; }
@@ -63,7 +59,7 @@ public:
 //    double getProvisioningRatio() const { return provisioningRatio; }
 //    void setProvisioningRatio(double provisioningRatio) { NodeData::provisioningRatio = provisioningRatio; }
 
-    int getDay() const { return day; }
+    constexpr inline int getDay() const { return day; }
 };
 
 

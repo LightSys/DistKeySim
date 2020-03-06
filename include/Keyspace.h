@@ -1,7 +1,7 @@
 #ifndef ADAK_KEYING_KEYSPACE_H
 #define ADAK_KEYING_KEYSPACE_H
 
-typedef unsigned long adak_key;
+typedef unsigned long ADAK_Key_t;
 class Keyspace {
 private:
     /**
@@ -20,20 +20,22 @@ public:
      * This allows the option to call getNextAvailableKey over and over to use up the keyspace
      * @return
      */
-    adak_key getNextAvailableKey();
+    ADAK_Key_t getNextAvailableKey();
     /**
      * This returns the same information that getNextAvailableKey does, but it doens't actually use up they keyspace.
      * This is for implementing the ADAK algorithm specification: Find the lowest-numbered starting
      * number S in the list of blocks/subblocks assigned to the node for the given database table.
      * @return
      */
-//    adak_key checkNextAvailableKey();
+//    ADAK_Key_t checkNextAvailableKey();
 
     // Getters
     uint32_t getStart() const { return this->start; }
     uint32_t getEnd() const { return this->end; }
     uint32_t getSuffix() const { return this->suffix; }
-
-    bool isKeyAvailable();
+    
+    constexpr inline bool isKeyAvailable() const {
+        return start < end;
+    }
 };
 #endif //ADAK_KEYING_KEYSPACE_H

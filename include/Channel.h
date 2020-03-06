@@ -21,8 +21,8 @@ public:
     Channel(UUID to, UUID from);
 
     //Getters
-    unsigned long long getChannelId();
-    UUID getToNode();
-    UUID getFromNode();
+    unsigned long long getChannelId() const;
+    UUID getToNode() const;
+    UUID getFromNode() const;
 };
 #endif //ADAK_KEYING_CHANNELS_H

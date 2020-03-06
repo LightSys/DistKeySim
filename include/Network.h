@@ -19,7 +19,7 @@ enum class ConnectionType { Full, Partial, Single};
 class Network{
 private:
     // Pairing UUID with Node instances
-    std::map<UUID, std::unique_ptr<Node>> nodes;
+    std::map<UUID, std::shared_ptr<Node>> nodes;
 
      // All known channel between nodes, this is basically representing the edges of the graph
     std::vector<Channel> channels;
@@ -61,7 +61,7 @@ public:
      * @param uuid UUID of Node to retrieve
      * @return Safe pointer to Node
      */
-    std::unique_ptr<Node> getNodeFromUUID(const UUID &uuid);
+    std::shared_ptr<Node> getNodeFromUUID(const UUID &uuid) const;
 
     /**
      * Adds the initial node to the Network, this defaults to the max Keyspace, so it should only be used once.
@@ -78,9 +78,9 @@ public:
      * Fully connects all the nodes to each other according to the ConnectionType
      * @param node
      */
-    void fullyConnect(Node* node);
+    void fullyConnect(std::shared_ptr<Node> &node);
 
-    void singleConnect(Node* node);
+    void singleConnect(std::shared_ptr<Node> &node);
 
     /**
      * Checks to see if the channel already exists between two nodes,
@@ -102,16 +102,18 @@ public:
     std::vector<UUID> generateUUIDList();
 
     // Getters
-    std::map<UUID, std::unique_ptr<Node>> getNodes() { return this->nodes; }
+    std::map<UUID, std::shared_ptr<Node>> getNodes() { return this->nodes; }
     std::vector<Channel> getChannels() { return this->channels; }
 
-    // Printing
+    // Output to cout
     void printUUIDList();
     void printChannels();
     void printKeyspaces();
-    void printUUIDList(std::ostream* out, char spacer = ',');
-    void printChannels(std::ostream* out, char spacer = ',');
-    void printKeyspaces(std::ostream* out, char spacer = ',');
+    
+    // Output to ostream, allowing for file output
+    void printUUIDList(std::ostream &out, char spacer = ',');
+    void printChannels(std::ostream &out, char spacer = ',');
+    void printKeyspaces(std::ostream &out, char spacer = ',');
 };
 
 #endif // ADAK_KEYING_NETWORK_H
