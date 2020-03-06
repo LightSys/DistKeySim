@@ -3,8 +3,12 @@
 using namespace std;
 
 Config::Config(ifstream jsonFile) {
+    // Check if the JSON file can be opened
     if (jsonFile.good()) {
         json jf = json::parse(jsonFile);
+        
+        // This checks for the existence of a key in the JSON file, setting the corresponding key in our Config instance
+        // to the value in the file if it exists, otherwise resorting to the default value
         if (jf.contains("numNodes")) {
             jf.at("numNodes").get_to(this->numNodes);
         } else {
@@ -13,6 +17,8 @@ Config::Config(ifstream jsonFile) {
         
         if (jf.contains("connectionMode")) {
             jf.at("connectionMode").get_to(this->connModeStr);
+            
+            // full, partial, and single are the only implemented connection modes
             if (connModeStr == "full") this->connectionMode = ConnectionType::Full;
             else if (connModeStr == "partial") this->connectionMode = ConnectionType::Partial;
             else if (connModeStr == "single") this->connectionMode = ConnectionType::Single;
@@ -42,7 +48,9 @@ Config::Config(ifstream jsonFile) {
             networkScale = DEFAULT_NETWORK_SCALE;
         }
     } else {
+        // Unable to open JSON file, fall back to all default values
         numNodes = DEFAULT_NUM_NODES;
+        connModeStr = DEFAULT_CONN_MODE_STR;
         connectionMode = DEFAULT_CONNECTION_MODE;
         csvOutputPath = DEFAULT_CSV_OUTPUT_PATH;
         creationRate = DEFAULT_CREATION_RATE;
