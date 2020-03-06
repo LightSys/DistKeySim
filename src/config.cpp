@@ -2,10 +2,6 @@
 
 using namespace std;
 
-/**
- * Populates Config object from JSON file file stream
- * @param jsonFile File stream to parse JSON from
- */
 Config::Config(ifstream jsonFile) {
     if (jsonFile.good()) {
         json jf = json::parse(jsonFile);

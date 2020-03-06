@@ -5,7 +5,7 @@
 #include "Network.h"
 
 /**
-* The type of Event Generation type the Simluation should use
+* The type of Event Generation type the Simulation should use
 */
 enum class EventGenerationType { Random, Unused1, Unused2 };
 

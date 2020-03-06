@@ -94,17 +94,27 @@ public:
      * @param node Node to connect
      */
     void fullyConnect(std::shared_ptr<Node> node);
-
+    
+    /**
+     * Connects the node to a single other node
+     * @param node Node to connect
+     */
     void singleConnect(std::shared_ptr<Node> node);
 
     /**
-     * Checks to see if the channel already exists between two nodes,
-     * if the channel exists return true, false otherwise.
-     * @param nodeOne
-     * @param nodeTwo
-     * @return bool (channelExists)
+     * Checks to see if the channel already exists between two nodes
+     * @param nodeOne Node to check for connection with
+     * @param nodeTwo Node to check for connection with
+     * @return bool indicating existence of channel between the two nodes
      */
     bool channelExists(const UUID &nodeOne, const UUID &nodeTwo);
+    
+    /**
+     * Retrieves the ID within the network for the channel between the two nodes
+     * @param nodeOne Node to retrieve connection with
+     * @param nodeTwo Node to retrieve connection with
+     * @return int of index of channel between the two nodes, returning -1 if there is none
+     */
     int getChannelIndex(const UUID &nodeOne, const UUID &nodeTwo);
 
     // Checks all nodes for messages and passes on those messages to all other clients

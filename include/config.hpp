@@ -11,6 +11,7 @@
 
 using json = nlohmann::json;
 
+// Default values when JSON file is missing or missing a key
 static const u_int DEFAULT_NUM_NODES = 100;
 static ConnectionType DEFAULT_CONNECTION_MODE = ConnectionType::Full;
 static const char* DEFAULT_CSV_OUTPUT_PATH = "out.csv";
@@ -39,7 +40,11 @@ struct Config {
         // Invalid connection mode
         throw std::invalid_argument("connectionMode not one of 'full', 'partial', or 'single'");
     }
-
+    
+    /**
+     * Populates Config object from JSON file file stream
+     * @param jsonFile File stream to parse JSON from
+     */
     Config(std::ifstream jsonFile);
 };
 

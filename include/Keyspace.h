@@ -15,10 +15,11 @@ public:
 
     Keyspace(const Keyspace &obj);
     ~Keyspace() = default;
+    
     /**
      * Uses one the key based on the available keyspace block and moves the start variable to the next position.
      * This allows the option to call getNextAvailableKey over and over to use up the keyspace
-     * @return
+     * @return Next available 32 bit key
      */
     ADAK_Key_t getNextAvailableKey();
 
@@ -28,7 +29,7 @@ public:
      * number S in the list of blocks/subblocks assigned to the node for the given database table.
      * @return
      */
-//    ADAK_Key_t checkNextAvailableKey();
+    // ADAK_Key_t checkNextAvailableKey();
 
     // Getters
     uint32_t getStart() const { return this->start; }

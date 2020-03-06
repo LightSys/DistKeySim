@@ -4,7 +4,6 @@
 #include "UUID.h"
 
 class Channel {
-
 private:
     /**
      * Each channel has a channelId that is auto incremented each creation of a new channel
@@ -20,9 +19,21 @@ private:
 public:
     Channel(UUID to, UUID from);
 
-    //Getters
+    // Getters
+    /**
+     * Retrieves channel ID
+     * @return Channel ID
+     */
     unsigned long long getChannelId() const;
+    
+    /**
+     * @return UUID of node channel is connecting to
+     */
     UUID getToNode() const;
+    
+    /**
+     * @return UUID of node channel is connecting from
+     */
     UUID getFromNode() const;
 };
 #endif //ADAK_KEYING_CHANNELS_H
