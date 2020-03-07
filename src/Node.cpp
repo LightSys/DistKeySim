@@ -290,6 +290,8 @@ Message Node::getHeartbeatMessage(const UUID &peerID) const {
     }
 
     // HACK
+    /// NOTE, this is basically fixed in the develop branch, it is only here right now to tell other nodes,
+    /// "If I don't have a keyspace, than give me a keyspace", this is because 1.0 is above the treshold ALLOCATION_BEFORE_GIVING_KEYSPACE
     double allocation = 0;
     if (keyspaces.empty()) {
         allocation = 1;

@@ -35,6 +35,13 @@ void Simulation::run() {
         network.doAllHeartbeat();
     }
 
+    // Example of an eventTick usage, this is where you would add in the different implementations of EventGen
+    // currently only Random() is implemented
+    EventGen* eventGen = new Random();
+    for(int i = 0; i < 10; i++ ) {
+        eventGen->eventTick(&network);
+    }
+
     shared_ptr<Node> tomTest = this->network.getNodeFromUUID(this->network.getRandomNode());
     shared_ptr<NodeData> Nodedata = tomTest->getNodeData();
     vector<Keyspace> tomSpace = tomTest->getKeySpace();
@@ -62,4 +69,6 @@ void Simulation::run() {
     csv.open("uuidsOut.csv", ofstream::out | ofstream::trunc);
     network.printUUIDList(csv, ',');
     csv.close();
+
+    delete eventGen;
 }

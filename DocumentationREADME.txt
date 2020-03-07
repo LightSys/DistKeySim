@@ -10,7 +10,6 @@ This also outputs everything to a CSV. This can be change relatively easily to g
 Main:
 All this does is run simulation. This is needed to be done here for the makefile to work with catch2 and tests.
 
-//TODO: COME BACK WHEN ITS SOLID
 Network:
 All this function does is pass the messages between node.
 This keeps the peer to peer functionality that we need yet still has an abstraction from node.
@@ -36,6 +35,8 @@ This way it is in hex for protobuf yet easy to compare and read
 EventGen:
 An abstract class for random.
 This will be used in simulation to iteratively go through all the messages from the nodes.
+Baylor team will add more implementations to the EventGen to make it more robust and add more real life scenarios.
+The Random.cpp currently just randomly picks an action (using modulo) to either use a keyspace, connect, or disconnect a node.
 
 Random:
 Picks random nodes to either use a key or connect a node.
