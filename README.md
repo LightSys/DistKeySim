@@ -13,6 +13,17 @@
 The project is configurable via the Config class (`include/config.hpp`, `src/config.cpp`) via JSON. The simulation will
 look in the same directory as the executable for `config.json`
 
+### Example `config.json`
+```json
+{
+    "numNodes": 10,
+    "connModeStr": "full",
+    "csvOutputPath": "out.csv",
+    "creationRate": 1.0,
+    "networkScale": 0.3
+}
+```
+
 ## Branches
 We kept master as our stable branch. We worked solely on develop and then merged things that are fully functional to
 master. It is not 100% functionality, release candidate level, but they are stable and will compile/run without trouble.
