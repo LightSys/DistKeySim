@@ -1,3 +1,5 @@
+#include <iostream>
+
 #include "config.hpp"
 
 using namespace std;
@@ -5,6 +7,7 @@ using namespace std;
 Config::Config(ifstream jsonFile) {
     // Check if the JSON file can be opened
     if (jsonFile.good()) {
+	cout << "Loading from JSON..." << endl;
         json jf = json::parse(jsonFile);
         
         // This checks for the existence of a key in the JSON file, setting the corresponding key in our Config instance
@@ -48,6 +51,7 @@ Config::Config(ifstream jsonFile) {
             networkScale = DEFAULT_NETWORK_SCALE;
         }
     } else {
+	cout << "Unable to open JSON file, falling back to defaults..." << endl;
         // Unable to open JSON file, fall back to all default values
         numNodes = DEFAULT_NUM_NODES;
         connModeStr = DEFAULT_CONN_MODE_STR;
