@@ -267,7 +267,8 @@ void Node::shareKeyspace(Message &msg) {
     toKeyspaceMessage(msg, {newKeyspace});
 
     //log here for sharing keyspace split
-    Logger.log("keyspace split");
+    string message = "Keyspace split";
+    Logger::log(message);
 }
 
 Message Node::getHeartbeatMessage(const UUID &peerID) const {

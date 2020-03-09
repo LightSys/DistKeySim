@@ -9,6 +9,7 @@
 #include "Keyspace.h"
 #include "message.hpp"
 #include "NodeData.h"
+#include "Logger.h"
 
 class NodeData;
 
