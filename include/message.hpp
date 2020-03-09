@@ -12,10 +12,10 @@
  */
 struct CollectionInfoRecord {
     std::string name;
-    float createdDay;
-    float createdWeek;
-    float longTermAllocation;
-    float shortTermAllocation;
+    double createdDay;
+    double createdWeek;
+    double longTermAllocation;
+    double shortTermAllocation;
 };
 
 /**
