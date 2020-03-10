@@ -1,6 +1,7 @@
 #include <climits>
 #include <iostream>
 
+
 #include "Node.h"
 #include "NodeData.h"
 
@@ -120,6 +121,23 @@ void Node::heartbeat() {
         // Create heartbeat message for each peer
         sendQueue.push_back(getHeartbeatMessage(uuid));
     }
+
+
+    //log heartbeat here
+    //log what keyspace we have -- total number in keyspace
+    //how many gave away since last time slot
+    //total consuption rate -- how many keys were used since last timeslot
+    //% of total keyspace remaining
+    vector<string> dataLine;
+    dataLine.push_back(uuid);
+    dataLine.push_back("0");
+    long long totalSize =0;
+    for(Keyspace k: keyspaces){
+        totalSize += k.getSize();
+    }
+    dataLine.push_back((to_string(totalSize)));
+    Logger::logStats(dataLine);
+    //maybe put if ran out of space here, and uuid
 }
 
 bool Node::receiveMessage(const Message &msg) {

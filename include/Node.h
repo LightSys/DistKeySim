@@ -4,6 +4,7 @@
 #include <iostream>
 #include <vector>
 #include <queue>
+#include <string>
 
 #include "UUID.h"
 #include "Keyspace.h"
