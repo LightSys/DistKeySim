@@ -5,7 +5,8 @@
 #include <iostream>
 #include <fstream>
 #include <chrono>
-#include <ctime> 
+#include <ctime>
+#include <vector>
 using namespace std;
 
 const char filename [] = "logOutput.txt";
@@ -13,12 +14,12 @@ const char statslog [] = "statslog.csv";
 const char numberOfCols = 5;
 class Logger {
 
-    public: 
-        // static int heartbeat  
+    public:
+        // static int heartbeat
         static void deleteOldLog (){
             remove(filename);
             remove(statslog);
-        }   
+        }
         static void log (string message){
             ofstream myfile;
             myfile.open(filename,ofstream::app);
@@ -26,7 +27,7 @@ class Logger {
             myfile << message << " -- " << ctime(&date)<<endl;
             myfile.close();
         };
-        static logStats (int stats []){
+        static void logStats (vector<string> stats){
             if(stats.size() == numberOfCols){
                 std::ofstream myfile;
                 myfile.open (statslog);
@@ -38,7 +39,7 @@ class Logger {
             }else{
                 Logger::log("Stats array was incorrect length");
             }
- 
+
         }
 
         //stats logger
