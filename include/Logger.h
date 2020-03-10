@@ -8,12 +8,11 @@
 #include <ctime> 
 using namespace std;
 
-
+const char filename [] = "logOutput.txt";
 class Logger {
 
     public: 
         // static int heartbeat  
-        static char [] filename = "logOutput.txt";
         static void deleteOldLog (){
             remove(filename);
         }   
