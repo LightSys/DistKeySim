@@ -29,8 +29,8 @@ class Logger {
         };
         static void logStats (vector<string> stats){
             if(stats.size() == numberOfCols){
-                std::ofstream myfile;
-                myfile.open (statslog);
+                ofstream myfile;
+                myfile.open (statslog, ofstream::app);
                 for(int i = 0; i < stats.size() ;i++){
                     myfile<<stats[i]<<",";
                 }

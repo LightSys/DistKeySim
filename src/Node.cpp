@@ -129,8 +129,8 @@ void Node::heartbeat() {
     //total consuption rate -- how many keys were used since last timeslot
     //% of total keyspace remaining
     vector<string> dataLine;
-    dataLine.push_back(UUIDToHex(uuid, true));
-
+    dataLine.push_back(uuid);
+    Logger::logStats(dataLine);
     //maybe put if ran out of space here, and uuid
 }
 
