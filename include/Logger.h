@@ -11,7 +11,7 @@ using namespace std;
 
 const char filename [] = "logOutput.txt";
 const char statslog [] = "statslog.csv";
-const char numberOfCols = 3;
+const char numberOfCols = 6;
 class Logger {
 
     public:

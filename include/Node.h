@@ -29,6 +29,7 @@ private:
     NodeData lastDay;
     float createdDay;
     float createdWeek;
+    long long totalLocalKeyspaceSize=0;
 
     /**
      * Generates the heartbeat informational message instance as per the specification
@@ -108,6 +109,10 @@ public:
      * @param msg Base message instance to add records to
      */
     void shareKeyspace(Message &msg);
+
+    void setTotalLocalKeyspaceSize(long long newSize) {this->totalLocalKeyspaceSize = newSize;};
+
+    long long getTotalLocalKeyspaceSize() const {return this->totalLocalKeyspaceSize};
 };
 
 #endif //ADAK_KEYING_NODE_H
