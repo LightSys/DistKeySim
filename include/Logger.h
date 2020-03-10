@@ -11,7 +11,8 @@ using namespace std;
 
 class Logger {
 
-    public:        
+    public: 
+       // static int heartbeat       
         static void log (string message){
             string fileName = "logOutput.txt";
             ofstream myfile;
@@ -20,5 +21,7 @@ class Logger {
             myfile << message << " -- " << ctime(&date)<<endl;
             myfile.close();
         };
+
+        //stats logger
     };
 #endif //LOGGER_H
