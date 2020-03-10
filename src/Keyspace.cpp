@@ -27,3 +27,8 @@ ADAK_Key_t Keyspace::getNextAvailableKey() {
     this->start = start + skipBy;
     return oldStart;
 }
+
+long long Keyspace::getSize(){
+    long long size = (this->end - this->start)>>this->suffix;
+    return size;
+}

@@ -130,6 +130,12 @@ void Node::heartbeat() {
     //% of total keyspace remaining
     vector<string> dataLine;
     dataLine.push_back(uuid);
+    dataLine.push_back("0");
+    long long totalSize =0;
+    for(keyspace k: keyspaces){
+        totalSize += k.getSize();
+    }
+    dataLine.push_back(to_string(totalSize));
     Logger::logStats(dataLine);
     //maybe put if ran out of space here, and uuid
 }
