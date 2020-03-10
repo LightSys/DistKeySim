@@ -13,13 +13,13 @@ class Logger {
 
     public: 
         // static int heartbeat  
-        static string filename = "logOutput.txt";
+        static char [] filename = "logOutput.txt";
         static void deleteOldLog (){
             remove(filename);
         }   
         static void log (string message){
             ofstream myfile;
-            myfile.open(fileName,ofstream::app);
+            myfile.open(filename,ofstream::app);
             time_t date = chrono::system_clock::to_time_t(chrono::system_clock::now());
             myfile << message << " -- " << ctime(&date)<<endl;
             myfile.close();
