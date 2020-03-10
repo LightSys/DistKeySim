@@ -70,7 +70,10 @@ ADAK_Key_t Node::getNextKey() {
         ///Usually this happens in long term allocation statistics because it goes through till the end of
         ///the keyspace to see if th allocation is an issue. However if this happens. The problem is that the keys are
         ///getting distributed more than the current node has capcity for.
-        cout << "ERROR from getNextKey in Node: Not more keys to give"<<endl;
+        
+        string message = "ERROR from getNextKey in Node: Not more keys to give";
+        cout << message <<endl;
+        Logger::log(message);
         return -1;
     } else {
         return this->keyspaces.at(index).getNextAvailableKey();
@@ -266,7 +269,6 @@ void Node::shareKeyspace(Message &msg) {
     // Update message type and contents
     toKeyspaceMessage(msg, {newKeyspace});
 
-    //log here for sharing keyspace split
     string message = "Keyspace split";
     Logger::log(message);
 }
