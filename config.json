@@ -1,0 +1,7 @@
+{
+    "numNodes": 10,
+    "connModeStr": "full",
+    "csvOutputPath": "out.csv",
+    "creationRate": 1.0,
+    "networkScale": 0.3
+}
