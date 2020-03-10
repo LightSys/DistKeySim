@@ -12,9 +12,12 @@ using namespace std;
 class Logger {
 
     public: 
-       // static int heartbeat       
+        // static int heartbeat  
+        static string filename = "logOutput.txt";
+        static void deleteOldLog (){
+            remove(filename);
+        }   
         static void log (string message){
-            string fileName = "logOutput.txt";
             ofstream myfile;
             myfile.open(fileName,ofstream::app);
             time_t date = chrono::system_clock::to_time_t(chrono::system_clock::now());
