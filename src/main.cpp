@@ -10,6 +10,7 @@ using namespace std;
 
 int main(int argc, char** argv) {
     // Load config
+    cout << "Attempting to load config from config.json ..." << endl;
     Config config(ifstream("config.json"));
     
     Simulation simulation(config);

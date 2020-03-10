@@ -236,13 +236,13 @@ void Node::shareKeyspace(Message &msg) {
 
     Keyspace minKeyspace = keyspaces.at(minKeyspaceIndex);
 
-    uint32_t myStart = minKeyspace.getStart();
-    uint32_t myEnd = minKeyspace.getEnd();
+    ADAK_Key_t myStart = minKeyspace.getStart();
+    ADAK_Key_t myEnd = minKeyspace.getEnd();
     uint32_t mySuffix = minKeyspace.getSuffix();
     mySuffix += 1;
 
-    uint32_t newStart = minKeyspace.getStart();
-    uint32_t newEnd = minKeyspace.getEnd();
+    ADAK_Key_t newStart = minKeyspace.getStart();
+    ADAK_Key_t newEnd = minKeyspace.getEnd();
     uint32_t newSuffix = minKeyspace.getSuffix();
     newStart += pow(2, newSuffix);
     newSuffix += 1;
@@ -258,16 +258,16 @@ void Node::shareKeyspace(Message &msg) {
         // (((end - start) / 2^B) / (chunkiness)) * B + start
         // B is the suffix bits
 
-        uint32_t myStart2 = minKeyspace.getStart();
-        uint32_t myEnd2 = minKeyspace.getEnd();
+        ADAK_Key_t myStart2 = minKeyspace.getStart();
+        ADAK_Key_t myEnd2 = minKeyspace.getEnd();
         uint32_t suffix = minKeyspace.getSuffix();
 
         double amountOfBlocks = (double) (myEnd2 - myStart2) / pow(2, suffix);
         amountOfBlocks = amountOfBlocks + 0.5 - (amountOfBlocks < 0);
 
-        uint32_t amountOfBlocksToGive = ((uint32_t) amountOfBlocks) / CHUNKINESS;
-        uint32_t blocksScaled = amountOfBlocksToGive * suffix;
-        uint32_t myNewEnd = blocksScaled + myStart2;
+        ADAK_Key_t amountOfBlocksToGive = ((uint32_t) amountOfBlocks) / CHUNKINESS;
+        ADAK_Key_t blocksScaled = amountOfBlocksToGive * suffix;
+        ADAK_Key_t myNewEnd = blocksScaled + myStart2;
 
         newKeyspace = KeyspaceExchangeRecord{"share", myNewEnd, myEnd2, suffix};
 
