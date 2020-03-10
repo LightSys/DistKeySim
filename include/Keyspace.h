@@ -3,7 +3,7 @@
 
 #include <stdint.h>
 
-typedef std::uint_64_t ADAK_Key_t;
+typedef std::uint64_t ADAK_Key_t;
 
 class KeyspaceException : public std::runtime_error {
 public:
