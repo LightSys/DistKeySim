@@ -123,6 +123,8 @@ void Node::heartbeat() {
     }
 
 
+    //MAKE HEARTBEAT LOGGING FUNCTION
+
     //log heartbeat here
     //log what keyspace we have -- total number in keyspace
     //how many gave away since last time slot
@@ -136,6 +138,16 @@ void Node::heartbeat() {
         totalSize += k.getSize();
     }
     dataLine.push_back((to_string(totalSize)));
+    dataLine.push_back("0");
+    dataLine.push_back("0");
+    if(getTotalLocalKeyspaceSize() >0){
+        long long localSize = getTotalLocalKeyspaceSize();
+        double percent = (double)totalSize/(double)localSize;
+        dataLine.push_back(to_string(percent));
+    }else{
+        dataLine.push_back("0.0");
+    }
+    
     Logger::logStats(dataLine);
     //maybe put if ran out of space here, and uuid
 }
@@ -174,9 +186,9 @@ bool Node::receiveMessage(const Message &msg) {
             // Receiving keyspace from a peer, generate new one for local store
             for (auto &&i = 0; i < msg.keyspace().keyspaces_size(); i++) {
                 KeyspaceMessageContents::Keyspace peerSpace = msg.keyspace().keyspaces(i);
-                keyspaces.emplace_back(
-                    Keyspace{peerSpace.startid(), peerSpace.endid(), peerSpace.suffixbits()}
-                );
+                Keyspace newSpace = Keyspace{peerSpace.startid(), peerSpace.endid(), peerSpace.suffixbits()};
+                keyspaces.emplace_back(newSpace);
+                totalLocalKeyspaceSize+=newSpace.getSize(); //updating total after recieving
             }
 
             break;
@@ -282,6 +294,11 @@ void Node::shareKeyspace(Message &msg) {
         newKeyspace = KeyspaceExchangeRecord{"share", myNewEnd, myEnd2, suffix};
 
         keyspaces.at(minKeyspaceIndex) = Keyspace(myStart2, myNewEnd, mySuffix);
+        totalLocalKeyspaceSize =0;
+        //reseting total after gave away
+        for(Keyspace k: keyspaces){
+            totalLocalKeyspaceSize += k.getSize();
+        }
     }
 
     // Update message type and contents
