@@ -74,8 +74,15 @@ In the simulation, nodes are randomly selected to disconnect and reconnect. The 
     
     + When looking at the graph, there is healthy pattern for node behavior that should be ocurring. A node with high consumption should retain its size, or should get gradually smaller and then return to its previous size or larger. This indicates that as it continues to allocate keys to the objects that it is creating, it is given more keys. A node with low consumption should retain its size without running out if it is small; if it is large relative to its consumption, then it should get smaller as it gives keys to other nodes that have higher consumption rate. At no point should any of the points completely disappear (run out of keys).
     
+ 2. **Node consumption and sharing over time**: This graph displays how the consumption and sharing vary for each time step over the course of the simulation. Each node is a different color. The size of each point varies with the amount of keys that were shared by that node at that time step; the larger the point, the more keys the node gave to other nodes. The y-value of the point (how high it is relative to the y-axis) corresponds to the *consumption* of the node at that time step. The greater the y-value, the more objects created; the smaller the y-value, the fewer the objects created.
+    + Information displayed by hovering => In the box: The time step, consumption, total keys in the keyspace; Next to the box (in colored text): ID of the node.
     
- 2. **Node consumption and sharing over time**:
+    |Good performance indicators | Poor performance indicators |
+    |----------------------------|-----------------------------|
+    | **A small(er) point high up on the y-axis** | **A large(r) point low down on the y-axis** |
+    | This indicates that the node is creating a lot of objects, and it is not sharing (as) many keys, which is what we expect from an active node. | This indicates that the node is creating a lot of objects, but is still sharing many keys; thus, such a node might be at risk of running out. |
+    | **A large(r) point lown on the y-axis** | **A large(r) point high up on the y-axis** |
+    | This indicates that the node is not creating many objects, and it is sharing more keys with other nodes that ask for more. | This means that the node is creating many objects, and is sharing more keys with other nodes that ask more; thus, such a node might be at risk of running out of keys. |
  3. **Local keyspace remaining over time**:
 
 ## Branches
