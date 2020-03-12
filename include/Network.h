@@ -144,7 +144,7 @@ public:
     void doAllHeartbeat();
 
     //sends a single node offline
-    void sendOffline(UUID nodeUUID, double timeToDisconnect, double timeOffline);
+    void sendOffline(UUID nodeUUID, clock_unit_t timeToDisconnect, clock_unit_t timeOffline);
 
     //checks if a node is offline
     bool isOffline(UUID nodeID);

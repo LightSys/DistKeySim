@@ -42,16 +42,18 @@ void Simulation::run() {
     network.checkAndSendAllNodes();
     network.doAllHeartbeat();
     double lambda1 = 2.0, lambda2 = 3.0;//time till offline and time till online
+    //send some nodes offline////TODO:: RUN THIS TEST
+    network.printChannels();
     eventGen.eventTick(network, lambda1, lambda2);//randomly sends up to 10 nodes offline
-    
+    network.printChannels();
 
 
     // Example of an eventTick usage, this is where you would add in the different implementations of EventGen
     // currently only Random() is implemented
-    EventGen* eventGen = new Random();
-    for(int i = 0; i < 10; i++ ) {
-        eventGen->eventTick(&network);
-    }
+    // EventGen* eventGen = new Random();
+    // for(int i = 0; i < 10; i++ ) {
+    //     eventGen->eventTick(&network);
+    // }
 
     shared_ptr<Node> tomTest = this->network.getNodeFromUUID(this->network.getRandomNode());
     shared_ptr<NodeData> Nodedata = tomTest->getNodeData();

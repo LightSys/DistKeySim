@@ -5,11 +5,13 @@
 
 using namespace std;
 
-GeometricDisconnect(ClockType clockType){
+GeometricDisconnect(ClockType clockType, double lambda1, double lambda2){
     clock = SystemClock.makeClock(clockType);
+    this->lambda1 = lambda1;
+    this->lambda2 = lambda2;
 }
 
-void GeometricDisconnect::eventTick(Network* network, double lambda1, double lambda2) {
+void GeometricDisconnect::eventTick(Network* network) {
     // random number between 1-10
     int totalNodes = rand() % 10 + 1;
     // d1 is the model used to randomly generate the amount of time from the
@@ -30,8 +32,8 @@ void GeometricDisconnect::eventTick(Network* network, double lambda1, double lam
       UUID randomUUID = network->getRandomNode();
       shared_ptr<Node> node = network->getNodeFromUUID(randomUUID);
 
-      double timeToDisconnect = d1(gen);
-      double timeOffline = d2(gen);
+      clock_unit_t timeToDisconnect = (clock_unit_t)(d1(gen));
+      clock_unit_t timeOffline = (clock_unit_t)(d2(gen));
 
       // CALL FUNCTION TO GIVE PERSCRIBED COMMAND TO node through network
       //This function also garuntees a node cannot go offline more than once at

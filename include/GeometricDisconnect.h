@@ -36,6 +36,7 @@
 class GeometricDisconnect: public EventGen {
 private:
     shared_ptr<SystemClock> clock;
+    double lambda1, lamda2;
 public:
     GeometricDisconnect(ClockType clockType);
     void eventTick(Network* network, double lambda1, double lambda2);

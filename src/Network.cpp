@@ -15,7 +15,7 @@ Network::Network(ConnectionType connectionType, float PERCENT_CONNECTED) {
 
 
 //sends a single node offline
-void Network::sendOffline(UUID nodeUUID, double timeToDisconnect, double timeOffline){
+void Network::sendOffline(UUID nodeUUID, clock_unit_t timeToDisconnect, clock_unit_t timeOffline){
     //only allow a node to have one offline period set at a time
     if(backOnlineTimer.find(nodeUUID) == backOnlineTimer.end()){
 
@@ -258,10 +258,12 @@ void Network::printChannels(ostream &out, char spacer) {
     out << "CHANNELS\n"
         << "TO" << spacer << "FROM" << spacer << "ID" << "\n";
     for (const Channel &channel : channels) {
-        out << channel.getToNode() << spacer
-            << channel.getFromNode() << spacer
-            << channel.getChannelId()
-            << endl;
+        if(!(this->isOffline(channel.getToNode()) || this->isOffline(channel.getFromNode()))){
+            out << channel.getToNode() << spacer
+                << channel.getFromNode() << spacer
+                << channel.getChannelId()
+                << endl;
+        }
     }
     out << flush;
 }
