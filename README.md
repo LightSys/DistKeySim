@@ -15,10 +15,10 @@ NOTE: a script is included in the scripts folder in this repository but is not g
 The project is configurable via the Config class (`include/config.hpp`, `src/config.cpp`) via JSON. The simulation will
 look in the same directory as the executable for `config.json`.
 
-There are 3 connection modes. To change the connection mode, alter connModeStr in the config file. The three options for the connection mode are: `full`, `partial`, and `single`.
-* Full connection mode:
-* Partial connection mode:
-* Single connection mode:
+There are 3 connection modes. To change the connection mode, alter connModeStr in the config file. The three options for the connection mode are: `"full"`, `"partial"`, and `"single"`.
+* Full connection mode: creates a full connected graph out of the nodes.
+* Partial connection mode: randomly connected graph (dependent on Config.visiblePeer's percentage connected).
+* Single connection mode: randomly connected MST (one connection only per node determined on creation).
 
 ### Example `config.json`
 ```json
@@ -35,6 +35,9 @@ The visualizations created by the project require Python as well as the `pandas`
 1) `pip install pandas`
 2) `pip install plotly==4.5.4`
 
+Alternatively, if pip does not work well on your machine, here are alternate instructions. 
+1) `sudo-apt install python3-pandas`
+
 For more information on [plotyl](https://plot.ly/python/getting-started/).
 For more information on [pandas](https://pandas.pydata.org/pandas-docs/stable/getting_started/install.html).
 
@@ -47,12 +50,16 @@ The User Interface created requires Python as well as the tkinter interface and 
 ## User Interface
 Different parameters in the simulation are controlled by inputs from the UI. Below is a description of each of those inputs as well as how they will be used. Several of these inputs are used as parameters into statistical distributions from which we sample. We describe the distributions and their parameters.
  
- * **Visible Peers \(connected % \)** : This input field only influences the simulation when the connection mode is set to `partial` in the config file. When a new node is added, this is the \% chance that the new node is connected to another node. For example, if you desired there to be a 75\% chance that a new node is connected to another node, then you would enter 75.
- * **Lambda 1 (time offline)** : Expected time for nodes to go from online to offline \(&lambda;<sub>1</sub>\). In the simulation, nodes are set to randomly disconnect and reconnect.
- * **Lambda 2 (time online)** : Expected time for nodes to go from offline back to online \(&lambda;<sub>2</sub>\).
+ * **Visible Peers \(connected % \)** : *This input field only influences the simulation when the connection mode is set to `partial` in the config file.* When a new node is added, this is the \% chance that the new node is connected to another node. For example, if you desired there to be a 75\% chance that a new node is connected to another node, then you would enter 75. 
+
+In the simulation, nodes are set to randomly disconnect and reconnect. The disconnect/reconnect times are randomly generated from a geometric distribution. 
+    * **Lambda 1 (time offline)** : Expected time for nodes to go from online to offline in (real world) seconds \(&lambda;<sub>1</sub>\). 
+    * **Lambda 2 (time online)** : Expected time for nodes to go from offline back to online in (real world) seconds \(&lambda;<sub>2</sub>\).
+ 
+
  * **Lambda 3 (time between creating objects)** : Expected time for nodes between creating objects; how expected much time passes for nodes between creating one object and creating the next object \(&lambda;<sub>3</sub>\).
  * ** Chunkiness (\# of keys to shift) ** :
- * **Heartbeat Frequency** :
+ * **Heartbeat Period** : Distance in time between two consecutive hearbeats. A heartbeat is a message that is broadcasted to all connected nodes to indicate that a particular node is online and connected. A heartbeat is different from a time step in that a time step is . In this simulation a real world clock is used, which means that  each time step represents a second of "real-time" passing.
  
  ## Visualizations
  It's important to know what you're looking at when analyzing the analytics that are produced. 
