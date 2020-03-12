@@ -38,7 +38,7 @@ def setJsonVar(str_results_dict,hardknobs_results_dict):
     print("finished writing!")
     print("running script for simulation...")
     
-    subprocess.call("./run.sh "+str(times_run) + " " + sys.argv[1] + " " + sys.argv[2] + " " + sys.argv[3] + " " + sys.argv[4] + " > simulation_run_"+str(times_run)+".txt",shell=True)
+    subprocess.call("./run.sh "+str(times_run) + " " + sys.argv[1] + " " + sys.argv[2] + " " + sys.argv[3] + " " + sys.argv[4] + " > simulation_"+str(times_run)+"/simulation_run_"+str(times_run)+".txt",shell=True)
     
     print("finished running simulation script!")
     
