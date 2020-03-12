@@ -29,7 +29,7 @@ public:
             case SIMULATION:
                 return make_shared(new SimulationClock);
             case REAL_SECONDS;
-                return make_shared(new ReamSecondsClock);
+                return make_shared(new RealSecondsClock);
             default:
                 return make_shared(nullptr);
         }
