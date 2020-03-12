@@ -22,8 +22,8 @@ message InformationalMessageContents {
 message KeyspaceMessageContents {
   message Keyspace {
     string name = 1;
-    uint32 startID = 2;
-    uint32 endID = 3; // Will be set if this is a sub0block, otherwise 0
+    uint64 startID = 2;
+    uint64 endID = 3; // Will be set if this is a sub0block, otherwise 0
     uint32 suffixBits = 4;
   }
 
@@ -33,7 +33,7 @@ message KeyspaceMessageContents {
 message Message {
   bytes sourceNodeID = 1;
   bytes destNodeID = 2;
-  uint32 lastReceivedMsg = 3;
+  uint64 lastReceivedMsg = 3;
 
   enum ChannelState {
     INITIAL_STARTUP = 0;
