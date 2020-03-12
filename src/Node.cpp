@@ -121,7 +121,7 @@ void Node::heartbeat() {
         // Create heartbeat message for each peer
         sendQueue.push_back(getHeartbeatMessage(uuid));
     }
-    logInfoForHeartbeat()
+    logInfoForHeartbeat();
 }
 
 bool Node::receiveMessage(const Message &msg) {
