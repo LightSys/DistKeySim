@@ -43,7 +43,7 @@ Different parameters in the simulation are controlled by inputs from the UI. Bel
  * \(\lambda\)_1
  * {\lambda}_2
  * {\lambda}_3
- *
+ * h<sub>&theta;</sub>(x) = &theta;<sub>o</sub> x + &theta;<sub>1</sub>x
  
  ## Visualizations
  It's important to know what you're looking at when analyzing the analytics that are produced. 
