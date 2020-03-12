@@ -5,7 +5,7 @@
 #include <map>
 #include <chrono>
 
-enum class ClockType { SIMULATION, REAL_SECONDS };
+enum ClockType { SIMULATION, REAL_SECONDS };
 
 typedef std::uint64_t clock_counter_t;
 typedef std::uint32_t clock_unit_t;
@@ -58,7 +58,7 @@ public:
     void setTimer(unsigned int timerID, clock_unit_t units){
         clock_counter_t timer_target = systemCount;
         timer_target += ((clock_counter_t) units);
-        if(timer_target > ROLLOVER_VALUE){ 
+        if(timer_target > ROLLOVER_VALUE){
             timer_target -= ROLLOVER_VALUE;
         }
         timer_targets[timerID] = timer_target;
@@ -70,13 +70,13 @@ public:
     }
 
     TimerStatus checkTimer(unsigned int timerID){
-        
+
         auto t_done_ptr = timer_status.find(timerID);
         auto t_ptr = timer_targets.find(timerID);
         if(t_done_ptr == timer_status.end() || t_ptr == timer_targets.end()){
             return CLEARED;
         }
-        
+
         if(t_done_ptr->second == STARTED && t_ptr->second <= systemCount){
             timer_status[timerID] = ENDED;
         }
@@ -89,7 +89,7 @@ typedef std::chrono::high_resolution_clock::time_point time_point_t;
 class RealSecondsClock : public SystemClock {
 private:
 
-    
+
     std::map<unsigned int, time_point_t> timer_targets;
     std::map<unsigned int, TimerStatus> timer_status;
 
@@ -122,7 +122,7 @@ public:
     }
 
     TimerStatus checkTimer(unsigned int timerID){
-        
+
         time_point_t now = std::chrono::high_resolution_clock::now();
         auto t_ptr = timer_targets.find(timerID);
         auto t_done_ptr = timer_status.find(timerID);
@@ -133,9 +133,9 @@ public:
         if(t_done_ptr->second == STARTED && t_ptr->second <= now){
             timer_status[timerID] = ENDED;
         }
-        
+
         return timer_status[timerID];
-        
+
     }
 };
 
