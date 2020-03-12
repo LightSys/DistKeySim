@@ -28,7 +28,7 @@ ADAK_Key_t Keyspace::getNextAvailableKey() {
     return oldStart;
 }
 
-long long Keyspace::getSize(){
-    long long size = (this->end - this->start)>>this->suffix;
+ADAK_Key_t Keyspace::getSize(){
+    ADAK_Key_t size = (this->end - this->start)>>this->suffix;
     return size;
 }
