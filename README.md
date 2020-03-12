@@ -42,7 +42,7 @@ The User Interface created requires Python as well as the tkinter interface and 
 ## User Interface
 Different parameters in the simulation are controlled by inputs from the UI. Below is a description of each of those inputs as well as how they will be used. Several of these inputs are used as parameters into statistical distributions from which we sample. We describe the distributions and their parameters.
  
- * **Visible Peers \(connected % \)**
+ * **Visible Peers \(connected % \)** : When a new node is added, this is the \% chance that the new node is connected to another node. For example, if you desired there to be a 75\% chance that a new node is connected to another node, then you would enter 75.
  * **Lambda 1 (time offline)** : Expected time for nodes to go from online to offline \(&lambda;<sub>1</sub>\).
  * **Lambda 2 (time online)** : Expected time for nodes to go from offline back to online \(&lambda;<sub>2</sub>\).
  * **Lambda 3 (time between creating objects)** : Expected time for nodes between creating objects; how expected much time passes for nodes between creating one object and creating the next object \(&lambda;<sub>3</sub>\).
