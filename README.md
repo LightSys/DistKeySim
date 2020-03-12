@@ -40,10 +40,9 @@ The User Interface created requires Python as well as the tkinter interface and 
 ## User Interface
 Different parameters in the simulation are controlled by inputs from the UI. Below is a description of each of those inputs as well as how they will be used. Several of these inputs are used as parameters into statistical distributions from which we sample. We describe the distributions and their parameters.
  
- * \(\lambda\)_1
- * {\lambda}_2
- * {\lambda}_3
- * h<sub>&theta;</sub>(x) = &theta;<sub>o</sub> x + &theta;<sub>1</sub>x
+ * &lambda<sub>1</sub>
+ * &lambda<sub>2</sub>
+ * &lambda<sub>3</sub>
  
  ## Visualizations
  It's important to know what you're looking at when analyzing the analytics that are produced. 
