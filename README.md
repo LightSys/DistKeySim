@@ -34,9 +34,9 @@ For more information on [pandas](https://pandas.pydata.org/pandas-docs/stable/ge
 ## User Interface
 Different parameters in the simulation are controlled by inputs from the UI. Below is a description of each of those inputs as well as how they will be used. Several of these inputs are used as parameters into statistical distributions from which we sample. We describe the distributions and their parameters.
  
- * $\lambda_1$
- * $\lambda_2$
- * $\lambda_3$
+ * {\lambda}_1
+ * {\lambda}_2
+ * {\lambda}_3
  *
  
  ## Visualizations
