@@ -56,6 +56,7 @@ Config::Config(ifstream jsonFile) {
 
         if (jf.contains("Visible_Peers_(connected_%)")) {
             jf.at("Visible_Peers_(connected_%)").get_to(this->visiblePeers);
+            this->visiblePeers /= 100; // percent to decimal chance
         } else {
             this->visiblePeers = DEFAULT_VISIBLE_PEERS;
         }
