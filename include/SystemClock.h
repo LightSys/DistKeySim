@@ -11,7 +11,7 @@ typedef std::uint64_t clock_counter_t;
 typedef std::uint32_t clock_unit_t;
 
 const std::uint64_t ROLLOVER_VALUE = 0x000000FFFFFFFFFF;
-enum TimerStatus { CLEARED, STARTED, ENDED};
+enum TimerStatus { CLEARED, STARTED, ENDED };
 
 class SystemClock{
 public:
@@ -102,6 +102,15 @@ public:
     void setTimer(unsigned int  timerID, clock_unit_t units){
         time_point_t timer_target = std::chrono::high_resolution_clock::now();
         std::chrono::duration<unsigned int> delta(units);
+        timer_target += delta;
+
+        timer_targets[timerID] = timer_target;
+        timer_status[timerID] = STARTED;
+    }
+
+    void setTimer(unsigned int timerID, double high_res_units){
+        time_point_t timer_target = std::chrono::high_resolution_clock::now();
+        std::chrono::duration<double> delta( high_res_units);
         timer_target += delta;
 
         timer_targets[timerID] = timer_target;
