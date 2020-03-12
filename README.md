@@ -67,9 +67,9 @@ In the simulation, nodes are randomly selected to disconnect and reconnect. The 
     
     |Good performance indicators | Poor performance indicators |
     |----------------------------|-----------------------------|
-    | **A large point high up on the y-axis ** | **A large point low down on the y-axis ** |
+    | **A large point high up on the y-axis** | **A large point low down on the y-axis** |
     | This indicates that the node is creating a lot of objects, but it also has lots of keys | This indicates that the node is creating a lot of object, but it does not have keys and might be at risk of running out. |
-    | **A small point lown on the y-axis ** | **A small point highup on the y-axis ** |
+    | **A small point lown on the y-axis** | **A small point highup on the y-axis** |
     | This indicates that the node is not creating many object, and it does not have many keys, so it is not at risk of running out | This means that the node is creating many objects, but it does not have many keys, so it is at risk of running out. |
     
     + When looking at the graph, there is healthy pattern for node behavior that should be ocurring. A node with high consumption should retain its size, or should get gradually smaller and then return to its previous size or larger. This indicates that as it continues to allocate keys to the objects that it is creating, it is given more keys. A node with low consumption should retain its size without running out if it is small; if it is large relative to its consumption, then it should get smaller as it gives keys to other nodes that have higher consumption rate. At no point should any of the points completely disappear (run out of keys).
