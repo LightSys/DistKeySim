@@ -31,6 +31,12 @@ The visualizations created by the project require Python as well as the `pandas`
 For more information on [plotyl](https://plot.ly/python/getting-started/).
 For more information on [pandas](https://pandas.pydata.org/pandas-docs/stable/getting_started/install.html).
 
+## Configuration for User Interface 
+(also requires the configuration for visual analytics for the visual analytics to work properly through the UI)
+The User Interface created requires Python as well as the tkinter interface and sshpass. To install tkinter and sshpass on linux use: 
+1) `sudo apt-get install python3-tk`
+2) `sudo apt install sshpass`
+
 ## User Interface
 Different parameters in the simulation are controlled by inputs from the UI. Below is a description of each of those inputs as well as how they will be used. Several of these inputs are used as parameters into statistical distributions from which we sample. We describe the distributions and their parameters.
  
