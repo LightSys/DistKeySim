@@ -113,6 +113,8 @@ public:
     void setTotalLocalKeyspaceSize(long long newSize) {this->totalLocalKeyspaceSize = newSize;};
 
     long long getTotalLocalKeyspaceSize() const {return this->totalLocalKeyspaceSize;};
+
+    void logInfoForHeartbeat();
 };
 
 #endif //ADAK_KEYING_NODE_H

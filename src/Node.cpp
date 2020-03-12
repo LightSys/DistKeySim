@@ -121,35 +121,7 @@ void Node::heartbeat() {
         // Create heartbeat message for each peer
         sendQueue.push_back(getHeartbeatMessage(uuid));
     }
-
-
-    //MAKE HEARTBEAT LOGGING FUNCTION
-
-    //log heartbeat here
-    //log what keyspace we have -- total number in keyspace
-    //how many gave away since last time slot
-    //total consuption rate -- how many keys were used since last timeslot
-    //% of total keyspace remaining
-    vector<string> dataLine;
-    dataLine.push_back(uuid);
-    dataLine.push_back("0");
-    long long totalSize =0;
-    for(Keyspace k: keyspaces){
-        totalSize += k.getSize();
-    }
-    dataLine.push_back((to_string(totalSize)));
-    dataLine.push_back("0");
-    dataLine.push_back("0");
-    if(getTotalLocalKeyspaceSize() >0){
-        long long localSize = getTotalLocalKeyspaceSize();
-        double percent = (double)totalSize/(double)localSize;
-        dataLine.push_back(to_string(percent));
-    }else{
-        dataLine.push_back("0.0");
-    }
-    
-    Logger::logStats(dataLine);
-    //maybe put if ran out of space here, and uuid
+    logInfoForHeartbeat()
 }
 
 bool Node::receiveMessage(const Message &msg) {
@@ -346,4 +318,27 @@ Message Node::getHeartbeatMessage(const UUID &peerID) const {
     );
 
     return msg;
+}
+
+void Node::logInfoForHeartbeat(){
+    vector<string> dataLine;
+    dataLine.push_back(uuid);
+    dataLine.push_back("0");
+    long long totalSize =0;
+    for(Keyspace k: keyspaces){
+        totalSize += k.getSize();
+    }
+    dataLine.push_back((to_string(totalSize)));
+    dataLine.push_back("0");
+    dataLine.push_back("0");
+    if(getTotalLocalKeyspaceSize() >0){
+        long long localSize = getTotalLocalKeyspaceSize();
+        double percent = (double)totalSize/(double)localSize;
+        dataLine.push_back(to_string(percent));
+    }else{
+        dataLine.push_back("0.0");
+    }
+    
+    Logger::logStats(dataLine);
+    //maybe put if ran out of space here, and uuid
 }
