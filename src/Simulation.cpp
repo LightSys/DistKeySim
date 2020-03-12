@@ -12,7 +12,7 @@ using namespace std;
 static const int NUM_ROUNDS = 50;
 
 Simulation::Simulation(const struct Config &config)
-    : numNodes(config.numNodes), network(Network(config.connectionMode)) {
+    : numNodes(config.numNodes), network(Network(config.connectionMode, config.visiblePeer)) {
     // Seed random number
     srand(time(nullptr));
 }
@@ -30,10 +30,18 @@ void Simulation::run() {
         network.doAllHeartbeat();
     }
 
-    for (int &&i = 0; i < NUM_ROUNDS; i++) {
-        network.checkAndSendAllNodes();
-        network.doAllHeartbeat();
-    }
+    // for (int &&i = 0; i < NUM_ROUNDS; i++) {
+    //     network.checkAndSendAllNodes();
+    //     network.doAllHeartbeat();
+    // }
+
+    EventGen* eventGen = new GeometricDisconnect();
+    network.checkAndSendAllNodes();
+    network.doAllHeartbeat();
+    double lambda1 = 2.0, lambda2 = 3.0;//time till offline and time till online
+    eventGen.eventTick(network, lambda1, lambda2);//randomly sends up to 10 nodes offline
+    
+
 
     // Example of an eventTick usage, this is where you would add in the different implementations of EventGen
     // currently only Random() is implemented
@@ -55,17 +63,17 @@ void Simulation::run() {
             "\nProvisional Ration: " << Nodedata->updateProvisioningRatio(Nodedata->getKeysUsed(), Nodedata->getShortTermAllocationRatio());
     network.printChannels();
     network.printKeyspaces();
-    
+
     // Output to CSV
     ofstream csv;
     csv.open("channelsOut.csv", ofstream::out | ofstream::trunc);
     network.printChannels(csv, ',');
     csv.close();
-    
+
     csv.open("keyspacesOut.csv", ofstream::out | ofstream::trunc);
     network.printKeyspaces(csv, ',');
     csv.close();
-    
+
     csv.open("uuidsOut.csv", ofstream::out | ofstream::trunc);
     network.printUUIDList(csv, ',');
     csv.close();
