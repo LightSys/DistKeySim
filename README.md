@@ -31,6 +31,20 @@ The visualizations created by the project require Python as well as the `pandas`
 For more information on [plotyl](https://plot.ly/python/getting-started/).
 For more information on [pandas](https://pandas.pydata.org/pandas-docs/stable/getting_started/install.html).
 
+## User Interface
+Different parameters in the simulation are controlled by inputs from the UI. Below is a description of each of those inputs as well as how they will be used. Several of these inputs are used as parameters into statistical distributions from which we sample. We describe the distributions and their parameters.
+ 
+ * $\lambda_1$
+ * $\lambda_2$
+ * $\lambda_3$
+ *
+ 
+ ## Visualizations
+ It's important to know what you're looking at when analyzing the analytics that are produced. 
+ 1.
+ 2.
+ 3.
+
 ## Branches
 We kept master as our stable branch. We worked solely on develop and then merged things that are fully functional to
 master. It is not 100% functionality, release candidate level, but they are stable and will compile/run without trouble.
