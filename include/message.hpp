@@ -27,7 +27,6 @@ struct KeyspaceExchangeRecord {
     ADAK_Key_t startID;
     ADAK_Key_t endID;
     uint32_t suffixBits;
-    
 };
 
 /** Generate new base protobuf message instance. Preferrably use newInformationalMessage or newKeyspaceMessage
@@ -41,7 +40,7 @@ struct KeyspaceExchangeRecord {
  * @throw std::invalid_argument if msgID is 0
  * @return Message instance created. Need to add message contents (either Keyspace or Informational) to have valid message
  */
-Message newBaseMessage(const HexDigest &sendingUUID, const HexDigest &destUUID, uint32_t lastReceived,
+Message newBaseMessage(const HexDigest &sendingUUID, const HexDigest &destUUID, uint64_t lastReceived,
                        Message::ChannelState channelState, uint64_t msgID, long unixTimestamp = -1);
 
 /**

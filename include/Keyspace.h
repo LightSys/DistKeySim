@@ -3,6 +3,15 @@
 
 #include <stdint.h>
 
+/*
+    If this typedefed value is expanded to a value with greater precision
+    (e.g: std bit array) ensure that all arithmetic operators are properly defined:
+    
+    e.g: +, -, *, /, << (rshift), >> (lshift), =, ==, etc.
+
+    Also. ensure that the protobuf schema in message.proto
+    is modified to store the correspondimg type (currently uint64)
+*/
 typedef std::uint64_t ADAK_Key_t;
 
 class KeyspaceException : public std::runtime_error {
