@@ -15,6 +15,10 @@
 
 /**
  * Types of connections that are possible when creating the initial network connection
+ *    Each type has its own implementation function which is called by connectNodeToNetwork
+ *      Full = fully connected graph
+ *      Partial = randomly connected graph (dependent on Config.visiblePeer's percentage connected)
+ *      Single = randomly connected MST (one connection only on creation)
  */
 enum class ConnectionType { Full, Partial, Single };
 
@@ -38,8 +42,10 @@ private:
 
     // Connection type used to connect member Nodes
     ConnectionType connectionType;
+    //amount it is connected if it is partially connected
+    int PERCENT_CONNECTED;
 public:
-    Network(ConnectionType connectionType);
+    Network(ConnectionType connectionType, float PERCENT_CONNECTED);
     ~Network() = default;
 
     /**
@@ -97,6 +103,8 @@ public:
 
     /**
      * Make connections within network for new node
+     *
+     * ***This is a strategy to connect nodes to the graph.
      * @param newNode Node to connect
      */
     void connectNodeToNetwork(std::shared_ptr<Node> newNode);

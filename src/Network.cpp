@@ -6,8 +6,10 @@
 
 using namespace std;
 
-Network::Network(ConnectionType connectionType) {
+Network::Network(ConnectionType connectionType, float PERCENT_CONNECTED) {
     this->connectionType = connectionType;
+    //PERCENT_CONNECTED is a 5 digit int (99.999% = 99999)
+    this->PERCENT_CONNECTED = (int)(PERCENT_CONNECTED*1000);
     cout << "Network online" << endl;
 }
 
@@ -116,7 +118,8 @@ void Network::connectNodeToNetwork(shared_ptr<Node> newNode) {
         fullyConnect(newNode);
     } else if (this->connectionType == ConnectionType::Partial) {
         // rand() % 4 is an arbitrary number to make the connection only happen sometimes.
-        int coinFlip = rand() % 8;
+        //PERCENT_CONNECTED is a 5 digit int (99.9995% = 99999)
+        int coinFlip = rand() % PERCENT_CONNECTED;
         for (auto &[uuid, node] : nodes) {
             // Don't connect the node to itself
             if (newNode->getUUID() == node->getUUID()) {
@@ -130,7 +133,7 @@ void Network::connectNodeToNetwork(shared_ptr<Node> newNode) {
         }
 
         singleConnect(newNode);
-    } else if (this->connectionType == ConnectionType::Single) {
+    } else if (this->connectionType == ConnectionType::Single) {//randomly generated MST
         singleConnect(newNode);
     }
 }
