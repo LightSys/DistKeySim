@@ -9,6 +9,8 @@
 4) `make -j4 -DBUILD_TESTING=0`
 5) The build will be completed at this point, executable is `bin/`
 
+NOTE: a script is included in the scripts folder in this repository but is not guaranteed to work on every system. It is an example script that is used with the development environment. 
+
 ## Configuration for simulation
 The project is configurable via the Config class (`include/config.hpp`, `src/config.cpp`) via JSON. The simulation will
 look in the same directory as the executable for `config.json`
@@ -40,9 +42,10 @@ The User Interface created requires Python as well as the tkinter interface and 
 ## User Interface
 Different parameters in the simulation are controlled by inputs from the UI. Below is a description of each of those inputs as well as how they will be used. Several of these inputs are used as parameters into statistical distributions from which we sample. We describe the distributions and their parameters.
  
- * &lambda;<sub>1</sub>
- * &lambda;<sub>2</sub>
- * &lambda;<sub>3</sub>
+ * \(\lambda\)_1
+ * {\lambda}_2
+ * {\lambda}_3
+ *
  
  ## Visualizations
  It's important to know what you're looking at when analyzing the analytics that are produced. 
