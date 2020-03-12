@@ -13,14 +13,6 @@
 The project is configurable via the Config class (`include/config.hpp`, `src/config.cpp`) via JSON. The simulation will
 look in the same directory as the executable for `config.json`
 
-## Configuration for visual analytics
-The visualizations created by the project require Python as well as the `pandas` and `plotly` modules to be installed. This assumes that PIP has been installed to manage Python packages.
-1) `pip install pandas`
-2) `pip install plotly==4.5.4`
-
-For more information on [plotyl](https://plot.ly/python/getting-started/).
-For more information on [pandas](https://pandas.pydata.org/pandas-docs/stable/getting_started/install.html)
-
 ### Example `config.json`
 ```json
 {
@@ -31,6 +23,13 @@ For more information on [pandas](https://pandas.pydata.org/pandas-docs/stable/ge
     "networkScale": 0.3
 }
 ```
+## Configuration for visual analytics
+The visualizations created by the project require Python as well as the `pandas` and `plotly` modules to be installed. This assumes that PIP has been installed to manage Python packages.
+1) `pip install pandas`
+2) `pip install plotly==4.5.4`
+
+For more information on [plotyl](https://plot.ly/python/getting-started/).
+For more information on [pandas](https://pandas.pydata.org/pandas-docs/stable/getting_started/install.html)
 
 ## Branches
 We kept master as our stable branch. We worked solely on develop and then merged things that are fully functional to
