@@ -17,6 +17,7 @@ look in the same directory as the executable for `config.json`
 The visualizations created by the project require Python as well as the `pandas` and `plotly` modules to be installed. This assumes that PIP has been installed to manage Python packages.
 1) `pip install pandas`
 2) `pip install plotly==4.5.4`
+
 For more information on [plotyl](https://plot.ly/python/getting-started/).
 For more information on [pandas](https://pandas.pydata.org/pandas-docs/stable/getting_started/install.html)
 
