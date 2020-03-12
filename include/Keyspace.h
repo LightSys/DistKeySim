@@ -1,7 +1,9 @@
 #ifndef ADAK_KEYING_KEYSPACE_H
 #define ADAK_KEYING_KEYSPACE_H
 
-typedef unsigned long ADAK_Key_t;
+#include <stdint.h>
+
+typedef std::uint64_t ADAK_Key_t;
 
 class KeyspaceException : public std::runtime_error {
 public:
@@ -22,8 +24,8 @@ private:
     /**
      * Each keyspace block is designated by S-E/B, start is the S, end is the E, and suffix is B
      */
-    uint32_t start;
-    uint32_t end;
+    ADAK_Key_t start;
+    ADAK_Key_t end;
     uint32_t suffix;
 public:
     Keyspace(unsigned long start, unsigned long end, unsigned long suffix);
@@ -38,6 +40,8 @@ public:
      */
     ADAK_Key_t getNextAvailableKey();
 
+    long long getSize();
+
     /**
      * This returns the same information that getNextAvailableKey does, but it doens't actually use up they keyspace.
      * This is for implementing the ADAK algorithm specification: Find the lowest-numbered starting
@@ -47,9 +51,9 @@ public:
     // ADAK_Key_t checkNextAvailableKey();
 
     // Getters
-    uint32_t getStart() const { return this->start; }
-    uint32_t getEnd() const { return this->end; }
-    uint32_t getSuffix() const { return this->suffix; }
+    ADAK_Key_t getStart() const { return this->start; }
+    ADAK_Key_t getEnd() const { return this->end; }
+    ADAK_Key_t getSuffix() const { return this->suffix; }
     
     constexpr inline bool isKeyAvailable() const {
         return start < end;

@@ -72,7 +72,8 @@ UUID Network::addNode(const Keyspace &keyspace) {
     
     // Add the new node to the nodes map
     nodes.insert({newNode->getUUID(), move(newNode)});
-    
+
+    //log node created    
     return newUUID;
 }
 

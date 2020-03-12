@@ -76,7 +76,7 @@ Config::Config(ifstream jsonFile) {
         if (jf.contains("Max_Keys_(2^n,_give_n)")) {
             jf.at("Max_Keys_(2^n,_give_n)").get_to(this->maxKeysBits);
         } else {
-            this->maxKeys = DEFAULT_MAX_KEYS_BITS;
+            this->maxKeysBits = DEFAULT_MAX_KEYS_BITS;
         }
         
         if (jf.contains("lambda_3_(time_between_creating_objects)")) {
@@ -103,7 +103,7 @@ Config::Config(ifstream jsonFile) {
             std::string input;
             jf.at("Smallest_Key_for_Priority").get_to(input);
             bool found = false;
-            for(int opt = 0; opt < SMALLEST_KEY_OPTIONS.length; opt++){
+            for(int opt = 0; opt < SIZEOF_SMALLEST_KEY_OPTIONS; opt++){
                 if(SMALLEST_KEY_OPTIONS[opt] == input){
                     found = true;
                     this->smallestKeyOption = opt;
@@ -122,7 +122,7 @@ Config::Config(ifstream jsonFile) {
             std::string input;
             jf.at("Algorithm_Strategy").get_to(input);
             bool found = false;
-            for(int opt = 0; opt < ALGORITHM_STAT_OPTIONS.length; opt++){
+            for(int opt = 0; opt < SIZEOF_ALGORITHM_STAT_OPTIONS; opt++){
                 if(ALGORITHM_STAT_OPTIONS[opt] == input){
                     found = true;
                     this->algorithmStrategyOption = opt;

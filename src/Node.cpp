@@ -1,6 +1,7 @@
 #include <climits>
 #include <iostream>
 
+
 #include "Node.h"
 #include "NodeData.h"
 
@@ -70,7 +71,10 @@ ADAK_Key_t Node::getNextKey() {
         ///Usually this happens in long term allocation statistics because it goes through till the end of
         ///the keyspace to see if th allocation is an issue. However if this happens. The problem is that the keys are
         ///getting distributed more than the current node has capcity for.
-        cout << "ERROR from getNextKey in Node: Not more keys to give"<<endl;
+        
+        string message = "ERROR from getNextKey in Node: Not more keys to give";
+        cout << message <<endl;
+        Logger::log(message);
         return -1;
     } else {
         return this->keyspaces.at(index).getNextAvailableKey();
@@ -117,6 +121,35 @@ void Node::heartbeat() {
         // Create heartbeat message for each peer
         sendQueue.push_back(getHeartbeatMessage(uuid));
     }
+
+
+    //MAKE HEARTBEAT LOGGING FUNCTION
+
+    //log heartbeat here
+    //log what keyspace we have -- total number in keyspace
+    //how many gave away since last time slot
+    //total consuption rate -- how many keys were used since last timeslot
+    //% of total keyspace remaining
+    vector<string> dataLine;
+    dataLine.push_back(uuid);
+    dataLine.push_back("0");
+    long long totalSize =0;
+    for(Keyspace k: keyspaces){
+        totalSize += k.getSize();
+    }
+    dataLine.push_back((to_string(totalSize)));
+    dataLine.push_back("0");
+    dataLine.push_back("0");
+    if(getTotalLocalKeyspaceSize() >0){
+        long long localSize = getTotalLocalKeyspaceSize();
+        double percent = (double)totalSize/(double)localSize;
+        dataLine.push_back(to_string(percent));
+    }else{
+        dataLine.push_back("0.0");
+    }
+    
+    Logger::logStats(dataLine);
+    //maybe put if ran out of space here, and uuid
 }
 
 bool Node::receiveMessage(const Message &msg) {
@@ -153,9 +186,9 @@ bool Node::receiveMessage(const Message &msg) {
             // Receiving keyspace from a peer, generate new one for local store
             for (auto &&i = 0; i < msg.keyspace().keyspaces_size(); i++) {
                 KeyspaceMessageContents::Keyspace peerSpace = msg.keyspace().keyspaces(i);
-                keyspaces.emplace_back(
-                    Keyspace{peerSpace.startid(), peerSpace.endid(), peerSpace.suffixbits()}
-                );
+                Keyspace newSpace = Keyspace{peerSpace.startid(), peerSpace.endid(), peerSpace.suffixbits()};
+                keyspaces.emplace_back(newSpace);
+                totalLocalKeyspaceSize+=newSpace.getSize(); //updating total after recieving
             }
 
             break;
@@ -225,13 +258,13 @@ void Node::shareKeyspace(Message &msg) {
 
     Keyspace minKeyspace = keyspaces.at(minKeyspaceIndex);
 
-    uint32_t myStart = minKeyspace.getStart();
-    uint32_t myEnd = minKeyspace.getEnd();
+    ADAK_Key_t myStart = minKeyspace.getStart();
+    ADAK_Key_t myEnd = minKeyspace.getEnd();
     uint32_t mySuffix = minKeyspace.getSuffix();
     mySuffix += 1;
 
-    uint32_t newStart = minKeyspace.getStart();
-    uint32_t newEnd = minKeyspace.getEnd();
+    ADAK_Key_t newStart = minKeyspace.getStart();
+    ADAK_Key_t newEnd = minKeyspace.getEnd();
     uint32_t newSuffix = minKeyspace.getSuffix();
     newStart += pow(2, newSuffix);
     newSuffix += 1;
@@ -247,24 +280,32 @@ void Node::shareKeyspace(Message &msg) {
         // (((end - start) / 2^B) / (chunkiness)) * B + start
         // B is the suffix bits
 
-        uint32_t myStart2 = minKeyspace.getStart();
-        uint32_t myEnd2 = minKeyspace.getEnd();
+        ADAK_Key_t myStart2 = minKeyspace.getStart();
+        ADAK_Key_t myEnd2 = minKeyspace.getEnd();
         uint32_t suffix = minKeyspace.getSuffix();
 
         double amountOfBlocks = (double) (myEnd2 - myStart2) / pow(2, suffix);
         amountOfBlocks = amountOfBlocks + 0.5 - (amountOfBlocks < 0);
 
-        uint32_t amountOfBlocksToGive = ((uint32_t) amountOfBlocks) / CHUNKINESS;
-        uint32_t blocksScaled = amountOfBlocksToGive * suffix;
-        uint32_t myNewEnd = blocksScaled + myStart2;
+        ADAK_Key_t amountOfBlocksToGive = ((uint32_t) amountOfBlocks) / CHUNKINESS;
+        ADAK_Key_t blocksScaled = amountOfBlocksToGive * suffix;
+        ADAK_Key_t myNewEnd = blocksScaled + myStart2;
 
         newKeyspace = KeyspaceExchangeRecord{"share", myNewEnd, myEnd2, suffix};
 
         keyspaces.at(minKeyspaceIndex) = Keyspace(myStart2, myNewEnd, mySuffix);
+        totalLocalKeyspaceSize =0;
+        //reseting total after gave away
+        for(Keyspace k: keyspaces){
+            totalLocalKeyspaceSize += k.getSize();
+        }
     }
 
     // Update message type and contents
     toKeyspaceMessage(msg, {newKeyspace});
+
+    string message = "Keyspace split";
+    Logger::log(message);
 }
 
 Message Node::getHeartbeatMessage(const UUID &peerID) const {

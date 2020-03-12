@@ -4,4 +4,5 @@ build
 /cmake-build-debug---local/
 /cmake-build-debug-centos-8/
 /cmake-build-release-centos-8/
+.vscode
 scripts

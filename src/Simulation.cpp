@@ -18,6 +18,9 @@ Simulation::Simulation(const struct Config &config)
 }
 
 void Simulation::run() {
+    string message = "Started Simulation";
+    Logger::log(message);
+
     // Create root node that will have the max keyspace 0/0
     network.addRootNode();
 
