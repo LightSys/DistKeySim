@@ -11,9 +11,44 @@ Network::Network(ConnectionType connectionType) {
     cout << "Network online" << endl;
 }
 
+
+//sends a single node offline
+void Network::sendOffline(UUID nodeUUID, double timeToDisconnect, double timeOffline){
+    //only allow a node to have one offline period set at a time
+    if(backOnlineTimer.find(nodeUUID) == backOnlineTimer.end()){
+
+        //need to start the timer until the offline starts
+        //need to record the length of the offline
+        //once the timer ends, need to reset the timer with offline length
+        //  and record that it's offline (somehow)
+
+        //set up when it goes offline
+        goOfflineTimer[nodeUUID] = nextTimerID;
+        clock.setTimer(nextTimerID, timeToDisconnect);
+        nextTimerID++;
+
+        //set up when if comes back online after going offline
+        backOnlineTimer[nodeUUID] = nextTimerID;
+        clock.setTimer(nextTimerID, timeToDisconnect + timeOffline);
+        nextTimerID++;
+    }
+}
+
+bool Network::isOffline(UUID nodeID){
+    //if in the offline list but not the waiting to go offline queue
+    return (goOfflineTimer.find(nodeID) == goOfflineTimer.end() &&
+            backOnlineTimer.find(nodeID) != backOnlineTimer.end());
+}
+
 bool Network::sendMsg(const Message &message) {
-    shared_ptr<Node> destNode = getNodeFromUUID(message.destnodeid());
-    return destNode->receiveMessage(message);
+    UUID destID = message.destnodeid(), srcID = message.sourcenodeid();
+
+    if(!isOffline(destID) && !isOffline(srcID)){
+        shared_ptr<Node> destNode = getNodeFromUUID(destID);
+        return destNode->receiveMessage(message);
+    } else {
+        return false;
+    }
 }
 
 void Network::doAllHeartbeat() {
@@ -34,7 +69,7 @@ void Network::checkAndSendAllNodes() {
                 // Gave keyspace, don't give any more
                 continue;
             }
-            
+
             gaveKeyspace |= sendMsg(msg);
         }
     }
@@ -52,13 +87,13 @@ UUID Network::addEmptyNode() {
     // Create a new new node with the no keyspace
     auto newNode = make_shared<Node>();
     UUID newUUID = newNode->getUUID();
-    
+
     // Add the new node to the nodes map
     nodes.insert({newNode->getUUID(), newNode});
-    
+
     // Make connection to peers
     connectNodeToNetwork(newNode);
-    
+
     return newUUID;
 }
 
@@ -66,13 +101,13 @@ UUID Network::addNode(const Keyspace &keyspace) {
     // Create a new new node with the given keyspace
     auto newNode = make_shared<Node>(keyspace);
     UUID newUUID = newNode->getUUID();
-    
+
     // Make connection to peers
     connectNodeToNetwork(newNode);
-    
+
     // Add the new node to the nodes map
     nodes.insert({newNode->getUUID(), move(newNode)});
-    
+
     return newUUID;
 }
 
@@ -87,13 +122,13 @@ void Network::connectNodeToNetwork(shared_ptr<Node> newNode) {
             if (newNode->getUUID() == node->getUUID()) {
                 continue;
             }
-            
+
             // Make sure that the channel doesn't already exist
             if (!channelExists(node->getUUID(), node->getUUID()) && coinFlip == 0) {
                 connectNodes(node->getUUID(), node->getUUID());
             }
         }
-        
+
         singleConnect(newNode);
     } else if (this->connectionType == ConnectionType::Single) {
         singleConnect(newNode);
@@ -106,12 +141,12 @@ void Network::fullyConnect(shared_ptr<Node> node) {
         if (node->getUUID() == uuid) {
             continue;
         }
-        
+
         // Make sure that the channel doesn't already exist
         if (channelExists(node->getUUID(), uuid)) {
             continue;
         }
-        
+
         // No connection, create one
         connectNodes(node->getUUID(), uuid);
     }
@@ -145,7 +180,7 @@ int Network::getChannelIndex(const UUID &nodeOne, const UUID &nodeTwo) {
             );
         }
     );
-    
+
     return (channelItr != channels.end()) ? distance(channels.begin(), channelItr) : -1;
 }
 
@@ -154,7 +189,7 @@ void Network::connectNodes(const UUID &nodeOne, const UUID &nodeTwo) {
     if (nodeOne == nodeTwo || channelExists(nodeOne, nodeTwo)) {
         return;
     }
-    
+
     Channel channel(nodeOne, nodeTwo);
     channels.push_back(channel);
 
@@ -168,13 +203,13 @@ void Network::disconnectNodes(const UUID &nodeOne, const UUID &nodeTwo) {
     int channelIndex = getChannelIndex(nodeOne, nodeTwo);
     if (channelIndex > -1) {
         const Channel &channel = channels.at(channelIndex);
-        
+
         // Remove peer from node
         shared_ptr<Node> node1 = getNodeFromUUID(channel.getFromNode());
         shared_ptr<Node> node2 = getNodeFromUUID(channel.getToNode());
         node1->removePeer(node2->getUUID());
         node2->removePeer(node1->getUUID());
-        
+
         channels.erase(channels.begin() + channelIndex);
     }
 }
@@ -232,7 +267,7 @@ void Network::printKeyspaces() {
 }
 void Network::printKeyspaces(ostream &out, char spacer) {
     out << "KEYSPACES\n";
-    
+
     int counter = 0;
     for (auto const& x : nodes) {
         for (const Keyspace &keyspace : x.second->getKeySpace()) {

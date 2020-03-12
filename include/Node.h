@@ -73,6 +73,7 @@ public:
 
     // Generate heartbeat messages for all peers
     void heartbeat();
+    //return success
     bool receiveMessage(const Message &message);
 
     int minimumKeyspaceIndex();
