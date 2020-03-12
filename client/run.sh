@@ -64,9 +64,9 @@ EOF
 
 #copy files from server 
 echo "copying files from server... "
-
-rm -rf "simulation_$1"
-mkdir "simulation_$1" 
+mkdir "simulations"
+rm -rf "simulations/simulation_$1"
+mkdir "simulations/simulation_$1" 
 sshpass -p "$server_password" scp -r $server_username@$server_address:$server_file_loc/temp_simulation_out/* ./simulations/simulation_$1/ 
 
 echo "removing temp files from server..."
