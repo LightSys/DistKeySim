@@ -1,7 +1,9 @@
 #ifndef ADAK_KEYING_KEYSPACE_H
 #define ADAK_KEYING_KEYSPACE_H
 
-typedef unsigned long ADAK_Key_t;
+#include <stdint.h>
+
+typedef std::uint64_t ADAK_Key_t;
 
 class KeyspaceException : public std::runtime_error {
 public:

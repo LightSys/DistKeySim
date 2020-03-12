@@ -6,6 +6,7 @@
 #include <string>
 #include "UUID.h"
 #include "message.pb.h"
+#include "Keyspace.h"
 
 /**
  * Represents Collection Information Record used in Informational Message
@@ -23,8 +24,8 @@ struct CollectionInfoRecord {
  */
 struct KeyspaceExchangeRecord {
     std::string name;
-    uint32_t startID;
-    uint32_t endID;
+    ADAK_Key_t startID;
+    ADAK_Key_t endID;
     uint32_t suffixBits;
     
 };

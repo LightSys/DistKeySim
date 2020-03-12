@@ -50,6 +50,95 @@ Config::Config(ifstream jsonFile) {
         } else {
             networkScale = DEFAULT_NETWORK_SCALE;
         }
+        
+        
+        //added for the UI input: 
+
+        if (jf.contains("Visible_Peers_(connected_%)")) {
+            jf.at("Visible_Peers_(connected_%)").get_to(this->visiblePeers);
+            this->visiblePeers /= 100; // percent to decimal chance
+        } else {
+            this->visiblePeers = DEFAULT_VISIBLE_PEERS;
+        }
+        
+        if (jf.contains("Lambda_1_(time_offline)")) {
+            jf.at("Lambda_1_(time_offline)").get_to(this->lambda1);
+        } else {
+            this->lambda1 = DEFAULT_LAMBDA1;
+        }
+        
+        if (jf.contains("Lambda_2_(time_online)")) {
+            jf.at("Lambda_2_(time_online)").get_to(this->lambda2);
+        } else {
+            this->lambda2 = DEFAULT_LAMBDA2;
+        }
+        
+        if (jf.contains("Max_Keys_(2^n,_give_n)")) {
+            jf.at("Max_Keys_(2^n,_give_n)").get_to(this->maxKeysBits);
+        } else {
+            this->maxKeysBits = DEFAULT_MAX_KEYS_BITS;
+        }
+        
+        if (jf.contains("lambda_3_(time_between_creating_objects)")) {
+            jf.at("lambda_3_(time_between_creating_objects)").get_to(this->lambda3);
+        } else {
+            this->lambda3 = DEFAULT_LAMBDA3;
+        }
+        
+        if (jf.contains("Chunkiness_(#_of_keys_to_shift)")) {
+            jf.at("Chunkiness_(#_of_keys_to_shift)").get_to(this->chunkiness);
+        } else {
+            this->chunkiness = DEFAULT_CHUNKINESS;
+        }
+        
+        if (jf.contains("Heartbeat_Frequency")){
+            jf.at("Heartbeat_Frequency").get_to(this->heartbeatFrequency);
+        } else {
+            this->heartbeatFrequency = DEFAULT_HEARTBEAT;
+        }
+        
+        //hard knobs: 
+        
+        if (jf.contains("Smallest_Key_for_Priority")) {
+            std::string input;
+            jf.at("Smallest_Key_for_Priority").get_to(input);
+            bool found = false;
+            for(int opt = 0; opt < SIZEOF_SMALLEST_KEY_OPTIONS; opt++){
+                if(SMALLEST_KEY_OPTIONS[opt] == input){
+                    found = true;
+                    this->smallestKeyOption = opt;
+                }
+            }
+            
+            if(!found){
+                this->smallestKeyOption = INVALID_HARD_KNOB_OPTION;
+            }
+            
+        } else {
+            this->smallestKeyOption = INVALID_HARD_KNOB_OPTION;
+        }
+        
+        if (jf.contains("Algorithm_Strategy")) {
+            std::string input;
+            jf.at("Algorithm_Strategy").get_to(input);
+            bool found = false;
+            for(int opt = 0; opt < SIZEOF_ALGORITHM_STAT_OPTIONS; opt++){
+                if(ALGORITHM_STAT_OPTIONS[opt] == input){
+                    found = true;
+                    this->algorithmStrategyOption = opt;
+                }
+            }
+            
+            if(!found){
+                this->algorithmStrategyOption = INVALID_HARD_KNOB_OPTION;
+            }
+            
+        } else {
+            this->algorithmStrategyOption = INVALID_HARD_KNOB_OPTION;
+        }
+        
+        
+        
     } else {
 	cout << "Unable to open JSON file, falling back to defaults..." << endl;
         // Unable to open JSON file, fall back to all default values

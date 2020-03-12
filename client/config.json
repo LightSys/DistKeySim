@@ -1,0 +1,17 @@
+{
+    "Creation_Rate(%_of_keyspace)": 2.0,
+    "Max_Keys_(2^n,_give_n)": 4.0,
+    "csvOutputPath": "Path of Righteousness",
+    "lambda_3_(time_between_creating_objects)": 5.0,
+    "connectionMode": "full",
+    "Visible_Peers_(connected_%)": 1.0,
+    "Lambda_2_(time_online)": 3.0,
+    "networkScale": 0.42,
+    "Chunkiness_(#_of_keys_to_shift)": 6.0,
+    "creationRate": 42,
+    "numNodes": 42,
+    "Algorithm_Strategy": "temperature based",
+    "Lambda_1_(time_offline)": 2.0,
+    "Smallest_Key_for_Priority": "smallest overall",
+    "Heartbeat_Frequency": 7.0
+}
