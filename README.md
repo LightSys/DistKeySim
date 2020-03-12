@@ -29,7 +29,7 @@ The visualizations created by the project require Python as well as the `pandas`
 2) `pip install plotly==4.5.4`
 
 For more information on [plotyl](https://plot.ly/python/getting-started/).
-For more information on [pandas](https://pandas.pydata.org/pandas-docs/stable/getting_started/install.html)
+For more information on [pandas](https://pandas.pydata.org/pandas-docs/stable/getting_started/install.html).
 
 ## Branches
 We kept master as our stable branch. We worked solely on develop and then merged things that are fully functional to
