@@ -20,13 +20,22 @@ static const int DEFAULT_CREATION_RATE = 1;
 static const float DEFAULT_NETWORK_SCALE = 0.3;
 
 //added for UI string inputs:
-static const std::string[] SMALLEST_KEY_OPTIONS = {"smallest overall","smallest key of the block with the least space left"};
-static const std::string[] ALGORITHM_STAT_OPTIONS={"temperature based", "temperature with priority transmission based"};
+static const unsigned int SIZEOF_SMALLEST_KEY_OPTIONS = 2;
+static const std::string SMALLEST_KEY_OPTIONS[SIZEOF_SMALLEST_KEY_OPTIONS] = {
+	"smallest overall",
+	"smallest key of the block with the least space left"
+};
+
+static const unsigned int SIZEOF_ALGORITHM_STAT_OPTIONS = 2;
+static const std::string ALGORITHM_STAT_OPTIONS[SIZEOF_ALGORITHM_STAT_OPTIONS] = {
+	"temperature based", 
+	"temperature with priority transmission based"
+};
 
 static const short INVALID_HARD_KNOB_OPTION = -1;
 
 //defaults for UI input: 
-static const float DEFAULT_VISIBLE_PEERS = 0.1;
+static const float DEFAULT_VISIBLE_PEERS = 0.01;
 static const float DEFAULT_LAMBDA1 = 8;
 static const float DEFAULT_LAMBDA2 = 6;
 static const float DEFAULT_LAMBDA3 = 0.5;
@@ -43,7 +52,7 @@ struct Config {
     float networkScale;
     
     //added for the UI input: 
-    float visiblePeers;
+    float visiblePeers;//chance (from percent) in decimal 0-1
     float lambda1;
     float lambda2;
     float lambda3;

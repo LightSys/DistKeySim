@@ -12,7 +12,7 @@ TEST_CASE("Testing nodeLinking", "[anything]") {
 
     // Create new nodes and add them to the map
     for(int i = 0; i < AMOUNT_OF_NODES; i++) {
-    network->addNode();
+        network->addNode();
     }
     UUID randomUUID = network->getRandomNode();
     Node* randomNode = network->getNodeFromUUID(randomUUID);

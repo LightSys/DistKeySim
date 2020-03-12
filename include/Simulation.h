@@ -5,6 +5,7 @@
 #include "UUID.h"
 #include "Network.h"
 #include "config.hpp"
+#include "Logger.h"
 
 class Simulation {
 private:

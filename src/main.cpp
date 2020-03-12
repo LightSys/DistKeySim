@@ -14,5 +14,7 @@ int main(int argc, char** argv) {
     Config config(ifstream("config.json"));
     
     Simulation simulation(config);
+    Logger::deleteOldLog();
+    Logger::setCSVHeaders();
     simulation.run();
 }
