@@ -26,7 +26,7 @@ static const std::string[] ALGORITHM_STAT_OPTIONS={"temperature based", "tempera
 static const short INVALID_HARD_KNOB_OPTION = -1;
 
 //defaults for UI input: 
-static const float DEFAULT_VISIBLE_PEERS = 0.1;
+static const float DEFAULT_VISIBLE_PEERS = 0.01;
 static const float DEFAULT_LAMBDA1 = 8;
 static const float DEFAULT_LAMBDA2 = 6;
 static const float DEFAULT_LAMBDA3 = 0.5;
@@ -43,7 +43,7 @@ struct Config {
     float networkScale;
     
     //added for the UI input: 
-    float visiblePeers;
+    float visiblePeers;//chance (from percent) in decimal 0-1
     float lambda1;
     float lambda2;
     float lambda3;
