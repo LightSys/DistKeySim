@@ -67,10 +67,24 @@ In the simulation, nodes are randomly selected to disconnect and reconnect. The 
     
     |Good performance indicators | Poor performance indicators |
     |----------------------------|-----------------------------|
-    | Content cell               | Content cell                |
+    | **A large point high up on the y-axis** | **A large point low down on the y-axis** |
+    | This indicates that the node is creating a lot of objects, but it also has lots of keys | This indicates that the node is creating a lot of object, but it does not have keys and might be at risk of running out. |
+    | **A small point lown on the y-axis** | **A small point highup on the y-axis** |
+    | This indicates that the node is not creating many object, and it does not have many keys, so it is not at risk of running out | This means that the node is creating many objects, but it does not have many keys, so it is at risk of running out. |
     
- 2. **Node consumption and sharing over time**:
- 3. **Local keyspace remaining over time**:
+    + When looking at the graph, there is healthy pattern for node behavior that should be ocurring. A node with high consumption should retain its size, or should get gradually smaller and then return to its previous size or larger. This indicates that as it continues to allocate keys to the objects that it is creating, it is given more keys. A node with low consumption should retain its size without running out if it is small; if it is large relative to its consumption, then it should get smaller as it gives keys to other nodes that have higher consumption rate. At no point should any of the points completely disappear (run out of keys).
+    
+ 2. **Node consumption and sharing over time**: This graph displays how the consumption and sharing vary for each time step over the course of the simulation. Each node is a different color. The size of each point varies with the amount of keys that were shared by that node at that time step; the larger the point, the more keys the node gave to other nodes. The y-value of the point (how high it is relative to the y-axis) corresponds to the *consumption* of the node at that time step. The greater the y-value, the more objects created; the smaller the y-value, the fewer the objects created.
+    + Information displayed by hovering => In the box: The time step, consumption, total number of keys shared/given to other nodes; Next to the box (in colored text): ID of the node.
+    
+    |Good performance indicators | Poor performance indicators |
+    |----------------------------|-----------------------------|
+    | **A small(er) point high up on the y-axis** | **A large(r) point low down on the y-axis** |
+    | This indicates that the node is creating a lot of objects, and it is not sharing (as) many keys, which is what we expect from an active node. | This indicates that the node is creating a lot of objects, but is still sharing many keys; thus, such a node might be at risk of running out. |
+    | **A large(r) point lown on the y-axis** | **A large(r) point high up on the y-axis** |
+    | This indicates that the node is not creating many objects, and it is sharing more keys with other nodes that ask for more. | This means that the node is creating many objects, and is sharing more keys with other nodes that ask more; thus, such a node might be at risk of running out of keys. |
+    + When looking at the graph, there is healthy pattern for node behavior that should be ocurring. A node with high consumption should retain its size, or get smaller if it had a relatively large size. This indicates that such a more active node does not superfluously/excessively give away more keys even though its own demand/need is large. A node with low consumption should retain its size or grow larger; if it is large relative to its consumption, then it should stay the same size or get larger as it gives keys to other nodes that have higher consumption rate. At no point should any of the points completely disappear (run out of keys).
+ 3. **Local keyspace remaining over time**: This graph displays how the total local keyspace varies for node for each time step over the course of the simulation. Each node is a different color. The main thing to look out for is nodes that reach or near 0. The frequency with which nodes reach this point is a good indicator of how well the algorithm shares keys between nodes. If a large number of nodes frequently grounds, then it might indicate that nodes should share a greater number of keys with each other each time more keys are requested.
 
 ## Branches
 We kept master as our stable branch. We worked solely on develop and then merged things that are fully functional to
