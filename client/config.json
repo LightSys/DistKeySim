@@ -1,17 +1,17 @@
 {
     "csvOutputPath": "Path of Righteousness",
-    "Heartbeat_Frequency": 7.0,
-    "Lambda_1_(time_offline)": 2.0,
-    "connectionMode": "full",
-    "Smallest_Key_for_Priority": "smallest overall",
-    "Visible_Peers_(connected_%)": 1.0,
-    "Lambda_2_(time_online)": 3.0,
+    "lambda_3_(time_between_creating_objects)": 5.0,
     "creationRate": 42,
     "numNodes": 42,
-    "Chunkiness_(#_of_keys_to_shift)": 6.0,
-    "Max_Keys_(2^n,_give_n)": 4.0,
-    "Creation_Rate(%_of_keyspace)": 2.0,
-    "Algorithm_Strategy": "temperature based",
+    "Lambda_2_(time_online)": 3.0,
     "networkScale": 0.42,
-    "lambda_3_(time_between_creating_objects)": 5.0
+    "Max_Keys_(2^n,_give_n)": 4.0,
+    "Algorithm_Strategy": "temperature with priority transmission based",
+    "Smallest_Key_for_Priority": "smallest key of the block with the least space left",
+    "Creation_Rate(%_of_keyspace)": 2.0,
+    "connectionMode": "full",
+    "Chunkiness_(#_of_keys_to_shift)": 6.0,
+    "Visible_Peers_(connected_%)": 1.0,
+    "Heartbeat_Frequency": 7.0,
+    "Lambda_1_(time_offline)": 2.0
 }
