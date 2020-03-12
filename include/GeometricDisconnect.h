@@ -1,8 +1,6 @@
 #ifndef LIGHTSYS_ADAK_GEOMETRICTDISCONNECT_H
 #define LIGHTSYS_ADAK_GEOMETRICTDISCONNECT_H
 
-const int TIMESTEP = 10;
-
 #include "SystemClock.h"
 
 /**
