@@ -11,17 +11,17 @@ enum class ADAKStrategyType { Control, LocalAverage };
 
 class ADAKStrategy {
 public:
-    EventGen() {};
+    ADAKStrategy() {};
 
 
     void systemTick(Network* network) {
-        for(auto  &[_, n] : network->getNodes()){ nodeTick(&n); }
+        for(auto [_, n] : network->getNodes()){ nodeTick(n); }
     }
 
     /**
      * This function is called once per system tick for a node to send messages, update status,
      * and process messages in its own message queue.
-     * @param network 
+     * @param network
     */
     virtual void nodeTick(Node* node) = 0;
 };

@@ -3,7 +3,7 @@
 using namespace std;
 
 
-ControlStrategy::ControlStrategy(ClockType type){
+ControlStrategy::ControlStrategy(ClockType type, clock_unit_t heartbeatPeriod){
     nodeClock = SystemClock::makeClock(type);
 }
 
@@ -11,5 +11,3 @@ ControlStrategy::ControlStrategy(ClockType type){
 void ControlStrategy::nodeTick(Node* node){
     // TODO: implement heartbeats here
 }
-
-#endif //LIGHTSYS_ADAK_CONTROL_STRATEGY_H
