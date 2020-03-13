@@ -3,8 +3,6 @@
 
 #include "GeometricDisconnect.h"
 
-using namespace std;
-
 GeometricDisconnect::GeometricDisconnect(ClockType clockType, double lambda1, double lambda2){
     clock = shared_ptr<SystemClock>(SystemClock.makeClock(clockType));
 

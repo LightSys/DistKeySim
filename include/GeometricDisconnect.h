@@ -4,6 +4,7 @@
 #include <map>
 #include "UUID.h"
 #include "SystemClock.h"
+#include "EventGen.h"
 
 /**
  * This is an implementation of EventGen class. This class is used to randomly
@@ -33,7 +34,6 @@
  *    Note: timeStep is a set constant that represents a set block of time.
  */
 
-#include "EventGen.h"
 
 class GeometricDisconnect: public EventGen {
 private:
