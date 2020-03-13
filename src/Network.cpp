@@ -15,7 +15,7 @@ Network::Network(ConnectionType connectionType, float PERCENT_CONNECTED, double 
 
 void Network::tellAllNodesToConsumeObjects(){
     for(auto i : nodes){
-        i.second.consumeObjects();
+        i.second->consumeObjects();
     }
 }
 
