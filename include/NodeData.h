@@ -1,7 +1,7 @@
 #ifndef ADAK_KEYING_NODEDATA_H
 #define ADAK_KEYING_NODEDATA_H
 
-
+#include "Logger.h"
 // FIXME: make this a tunable parameter
 static const double NETWORK_SCALE = 0.3;
 static const double ALLOCATION_BEFORE_GIVING_KEYSPACE = 0.7;
@@ -35,7 +35,8 @@ public:
     static inline bool isNewDay(int currentDay) { return currentDay != getCurrentDay(); }
     static int getCurrentDay();
 
-    inline void useKey() { keysUsed++; }
+    inline void useKey() { keysUsed++; 
+                           Logger::getConsumption(false,1);}
     constexpr inline int getKeysUsed() const { return this->keysUsed; }
 
     double updateCreationRate(const std::map<UUID, std::shared_ptr<Message>> peers);

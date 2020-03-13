@@ -24,6 +24,7 @@ class SystemClock {
 public:
 
     SystemClock(){}
+    virtual ~SystemClock() = default;
 
     virtual void tick(clock_unit_t units=1) = 0;
     virtual void setTimer(unsigned int timerID, clock_unit_t units) = 0;

@@ -30,7 +30,7 @@ void Network::enableNode(UUID nodeUUID){
 }
 
 bool Network::isOffline(UUID nodeID){
-    return nodeStatus[nodeID];
+    return !nodeStatus[nodeID];
 }
 
 bool Network::sendMsg(const Message &message) {
@@ -50,6 +50,9 @@ void Network::doAllHeartbeat() {
     for (auto const& node : nodes) {
         node.second->heartbeat();
     }
+    Logger::getTimeslot(true);
+    Logger::getShared(true,0);
+    Logger::getConsumption(true,0);
 }
 
 void Network::checkAndSendAllNodes() {
@@ -103,9 +106,8 @@ UUID Network::addNode(const Keyspace &keyspace) {
     connectNodeToNetwork(newNode);
 
     // Add the new node to the nodes map
-    nodes.insert({newNode->getUUID(), move(newNode)});
-
     nodeStatus[newNode->getUUID()] = true;
+    nodes.insert({newNode->getUUID(), move(newNode)});
 
     //log node created
     return newUUID;
@@ -255,11 +257,12 @@ void Network::printChannels(ostream &out, char spacer) {
     out << "CHANNELS\n"
         << "TO" << spacer << "FROM" << spacer << "ID" << "\n";
     for (const Channel &channel : channels) {
-        if(!(this->isOffline(channel.getToNode()) || this->isOffline(channel.getFromNode()))){
-            out << channel.getToNode() << spacer
-                << channel.getFromNode() << spacer
-                << channel.getChannelId()
-                << endl;
+        out << channel.getToNode() << spacer
+            << channel.getFromNode() << spacer
+            << channel.getChannelId()
+            << endl;
+        if(this->isOffline(channel.getToNode()) || this->isOffline(channel.getFromNode())){
+            out << "  OFFLINE!!" << endl;
         }
     }
     out << flush;

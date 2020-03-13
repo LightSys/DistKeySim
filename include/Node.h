@@ -5,6 +5,7 @@
 #include <vector>
 #include <queue>
 #include <string>
+#include <climits>
 
 #include "UUID.h"
 #include "Keyspace.h"
@@ -55,7 +56,10 @@ public:
     Node(double lambda3);
     Node(const Keyspace &keyspace, double lambda3);
     static Node rootNode(double lambda3);
-    ~Node() = default;
+    ~Node(){
+        delete d3;
+        delete gen;
+    }
 
     shared_ptr<vector<NodeData>> getHistory(){
         return shared_ptr<vector<NodeData>>(&history);
@@ -118,7 +122,7 @@ public:
     // consume objects as determined by the rate of consumption
     void consumeObjects();
 
-    const UUID getUUID() const { return uuid; }
+    UUID getUUID() const { return uuid; }
     void setUUID(UUID nid) { uuid = nid; }
 
     std::vector<Keyspace> getKeySpace() const { return keyspaces; }

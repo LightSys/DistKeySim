@@ -42,6 +42,7 @@ static const float DEFAULT_LAMBDA3 = 0.5;
 static const unsigned int DEFAULT_MAX_KEYS_BITS = 31;
 static const int DEFAULT_CHUNKINESS = 10;
 static const int DEFAULT_HEARTBEAT = 5;
+static const unsigned int DEFAULT_LONG_PRECISION = 5;
 
 struct Config {
     u_int numNodes;
@@ -59,6 +60,7 @@ struct Config {
     unsigned int maxKeysBits;
     int chunkiness;
     int heartbeatFrequency;
+    unsigned int longTermPrecision;
     short smallestKeyOption;
     short algorithmStrategyOption;
     
