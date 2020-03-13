@@ -99,6 +99,16 @@ In the simulation, nodes are randomly selected to disconnect and reconnect. The 
  3. **Local keyspace remaining over time**: This graph displays how the total local keyspace varies for node for each time step over the course of the simulation. Each node is a different color. The main thing to look out for is nodes that reach or near 0. The frequency with which nodes reach this point is a good indicator of how well the algorithm shares keys between nodes. If a large number of nodes frequently grounds, then it might indicate that nodes should share a greater number of keys with each other each time more keys are requested.
  
 # DataVis2.py
+This script produces two graphs for each node, a histogram and a KDE density plot.
+1. **Histogram** : The x-axis is the number of keys/object; the y-axis represents the frequency that the node had that many object/keys. The axis used is NOT a standardize axis. That is, each histogram has different axis scales/values to make viewing the png as easy as possible. There are three kinds of information that are displayed on the histogram:
+    a. Trace 0 (Blue) is the total number of keys this node has.
+    b. Trace 1 (Red) is the total consumption for this node; that is, it is the total number of objects that this node created.
+    c. Trace 2 (Green) is the total number of keys that this node shared to other nodes.
+
+2. **Density plot**: In many ways, the density plot appears like a smoothed over histogram. However, the KDE density plot is an statistical approximation of the distribution of the plotted entities. The x-axis is the number of objects, and the y-axis is the density. Because it is a statistical approximation of the distribution of data entered, it does allow for the distribution to have negative values; in this context, that doesn't mean anything (because we can't have negative keys), so all negative portions of the plotted distribution are ignored, and the x-axis only displays the portion of the distribution that is greater than or equal to zero. There are three kinds of information displayed on the density plot:
+    a. The blue density plot is the total number of keys.
+    b. The red density plot is the total consumption for this node.
+    c. The green density plot is the total number of keys shared by this node.
 
 ## Branches
 We kept master as our stable branch. We worked solely on develop and then merged things that are fully functional to
