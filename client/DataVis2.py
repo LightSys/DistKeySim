@@ -13,13 +13,9 @@ def runDataAnalytics(path):
     df = pd.read_csv(path)
     # print(df)
 
-    dd = df['UUID'][0]
-
-    aa = df[(df['UUID'] == dd)]
-
     # Produces all histogams
     for data in df['UUID'].unique():
-        dd = df['UUID'] == df['UUID'][0]
+        dd = df['UUID'] == data
         aa = df[dd]
 
         fig = go.Figure()
