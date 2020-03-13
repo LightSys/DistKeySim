@@ -50,7 +50,10 @@ public:
     Node(double lambda3);
     Node(const Keyspace &keyspace, double lambda3);
     static Node rootNode(double lambda3);
-    ~Node() = default;
+    ~Node(){
+        delete d3;
+        delete gen;
+    }
 
     /**
      * Adds a peer to local list of peers
