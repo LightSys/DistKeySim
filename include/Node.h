@@ -5,6 +5,7 @@
 #include <vector>
 #include <queue>
 #include <string>
+#include <climits>
 
 #include "UUID.h"
 #include "Keyspace.h"

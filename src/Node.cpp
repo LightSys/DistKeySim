@@ -1,9 +1,7 @@
 #include <climits>
 #include <iostream>
 
-
 #include "Node.h"
-#include "NodeData.h"
 
 using namespace std;
 
