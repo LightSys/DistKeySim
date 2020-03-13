@@ -15,7 +15,7 @@ public:
 
 
     void systemTick(Network* network) {
-        for(auto [_, n] : network->getNodes()){ nodeTick(n); }
+        for(auto &[_, n] : network->getNodes()){ nodeTick(n); }
     }
 
     /**
@@ -23,7 +23,7 @@ public:
      * and process messages in its own message queue.
      * @param network
     */
-    virtual void nodeTick(Node* node) = 0;
+    virtual void nodeTick(shared_ptr<Node>& node) = 0;
 };
 
 #endif //LIGHTSYS_ADAK_STRATEGY_H
