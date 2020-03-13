@@ -35,7 +35,8 @@ void Node::generateObjectCreationRateDistribution(){
 
 #include <iostream>
 void Node::changeConsumptionRate(){
-    objectConsuptionRatePerSecond = 1.0/((*d3)(*gen));
+    double randomNum = (*d3)(*gen) + 1;
+    objectConsuptionRatePerSecond = 1.0/();
     std::cout << "Changed object consumption rate to " << objectConsuptionRatePerSecond << std::endl;
 }
 
