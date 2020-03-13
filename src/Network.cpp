@@ -13,6 +13,11 @@ Network::Network(ConnectionType connectionType, float PERCENT_CONNECTED, double 
     cout << "Network online" << endl;
 }
 
+//Change a random nodes' consumption rate
+void Network::changeRandomNodeConsumptionRate(){
+    nodes[this->getRandomNode()]->changeConsumptionRate();
+}
+
 void Network::tellAllNodesToConsumeObjects(){
     for(auto i : nodes){
         i.second->consumeObjects();

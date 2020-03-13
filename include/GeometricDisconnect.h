@@ -39,6 +39,8 @@
 
 class GeometricDisconnect : public EventGen {
 private:
+    //TODO:: NOTE:: make this an input variable/config variable
+    const int CREATION_RATE_CHANGE_CHANCE = 20;//In %
     shared_ptr<SystemClock> clock;
     double lambda1, lambda2;
     int nextTimerID = 0;

@@ -87,6 +87,7 @@ void GeometricDisconnect::eventTick(Network* network) {
 
 
     // random number between 1-10
+    srand(time(NULL));
     int totalNodes = rand() % 10 + 1;
 
     for (int i = 0; i < totalNodes; i ++){
@@ -106,4 +107,8 @@ void GeometricDisconnect::eventTick(Network* network) {
     network->tellAllNodesToConsumeObjects();
 
     //TODO:::: randomly change object consuption rate for a random node
+    int randNum = rand() % 100;
+    if(randNum <= CREATION_RATE_CHANGE_CHANCE){
+        network->changeRandomNodeConsumptionRate();
+    }
 }

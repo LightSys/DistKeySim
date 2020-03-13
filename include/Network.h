@@ -151,6 +151,9 @@ public:
     //tells All Nodes To Consume Objects
     void tellAllNodesToConsumeObjects();
 
+    //Change a random nodes' consumption rate
+    void changeRandomNodeConsumptionRate();
+
     /**
      * Generates a UUID list based on the known UUIDs from the map<UUID, Node*>
      * @return List of all UUIDs for the network
