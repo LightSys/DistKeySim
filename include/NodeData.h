@@ -35,7 +35,8 @@ public:
     static inline bool isNewDay(int currentDay) { return currentDay != getCurrentDay(); }
     static int getCurrentDay();
 
-    inline void useKey() { keysUsed++; }
+    inline void useKey() { keysUsed++; 
+                           Logger::getConsumption(false);}
     constexpr inline int getKeysUsed() const { return this->keysUsed; }
 
     double updateCreationRate(const std::map<UUID, std::shared_ptr<Message>> peers);

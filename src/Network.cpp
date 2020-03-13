@@ -24,6 +24,7 @@ void Network::doAllHeartbeat() {
     }
     Logger::getTimeslot(true);
     Logger::getShared(true,0);
+    Logger::getConsumption(true);
 }
 
 void Network::checkAndSendAllNodes() {
