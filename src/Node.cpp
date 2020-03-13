@@ -266,11 +266,13 @@ void Node::shareKeyspace(Message &msg) {
         newKeyspace = KeyspaceExchangeRecord{"share", myNewEnd, myEnd2, suffix};
 
         keyspaces.at(minKeyspaceIndex) = Keyspace(myStart2, myNewEnd, mySuffix);
+        int oldValue = totalLocalKeyspaceSize;
         totalLocalKeyspaceSize =0;
         //reseting total after gave away
         for(Keyspace k: keyspaces){
             totalLocalKeyspaceSize += k.getSize();
         }
+        Logger::getShared(false,oldValue-totalLocalKeyspaceSize);
     }
 
     // Update message type and contents
@@ -330,7 +332,7 @@ void Node::logInfoForHeartbeat(){
         totalSize += k.getSize();
     }
     dataLine.push_back((to_string(totalSize)));
-    dataLine.push_back(tempValue);
+    dataLine.push_back(to_string(Logger::getShared(false,0)));
     dataLine.push_back(tempValue);
     if(getTotalLocalKeyspaceSize() >0){
         ADAK_Key_t localSize = getTotalLocalKeyspaceSize();

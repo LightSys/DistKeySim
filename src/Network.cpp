@@ -23,6 +23,7 @@ void Network::doAllHeartbeat() {
         node.second->heartbeat();
     }
     Logger::getTimeslot(true);
+    Logger::getShared(true,0);
 }
 
 void Network::checkAndSendAllNodes() {

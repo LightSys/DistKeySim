@@ -49,6 +49,14 @@ class Logger {
                 timeslot++;
             }
             return timeslot;
-        }   
+        }  
+        static int getShared(bool clear,int more){
+            static int shared = 0;
+            shared += more;
+            if(clear){
+                shared =0;
+            }
+            return shared;
+        }  
     };
 #endif //LOGGER_H
