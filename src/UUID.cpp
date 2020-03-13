@@ -18,7 +18,6 @@ HexDigest new_uuid() {
     for(int i = 0; i < TRUNCATED_UUID; i++){
         strUUID += sha_uuid[i];
     }
-    std::cout << "Returning: " << UUIDToHex(strUUID) << std::endl;
     return UUIDToHex(strUUID);
 }
 
