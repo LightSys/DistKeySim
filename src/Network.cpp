@@ -104,7 +104,7 @@ UUID Network::addNode(const Keyspace &keyspace) {
 
     // Add the new node to the nodes map
     nodes.insert({newNode->getUUID(), move(newNode)});
-
+    cout << "UUID: " << newNode->getUUID() << endl;
     nodeStatus[newNode->getUUID()] = true;
 
     //log node created
