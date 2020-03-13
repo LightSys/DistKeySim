@@ -1,6 +1,8 @@
 #ifndef LIGHTSYS_ADAK_GEOMETRICTDISCONNECT_H
 #define LIGHTSYS_ADAK_GEOMETRICTDISCONNECT_H
 
+#include <map>
+#include "UUID.h"
 #include "SystemClock.h"
 
 /**
@@ -36,10 +38,42 @@
 class GeometricDisconnect: public EventGen {
 private:
     shared_ptr<SystemClock> clock;
-    double lambda1, lamda2;
+    double lambda1, lamda2, lambda3;
+
+    //node id -> index into the clock timer array for the current timer
+    // (time to start)
+    std::map<UUID, int> goOfflineTimer;
+    //node id -> when the node will come back oneline timer index in the Clock class
+    std::map<UUID, int> backOnlineTimer;
+
+    // d1 is the model used to randomly generate the amount of time from the
+    // current time step when the node will go offline
+    geometric_distribution<> *d1;
+    // d2 is the model used to randomly generate the amount of time the current
+    // node will remain offline
+    geometric_distribution<> *d2;
+
+    mt19937 *gen;
 public:
-    GeometricDisconnect(ClockType clockType);
-    void eventTick(Network* network, double lambda1, double lambda2);
+    GeometricDisconnect(ClockType clockType, double lambda1, double lambda2, double lambda3);
+    /**
+     * Event tick causes one tick in the events, meaning that nodes could go offline
+     *  or do other predefined things (none other yet)
+     */
+    void eventTick(Network* network);
+
+    /**
+     *  Checks if any nodes have gone offline based on the timers generated during
+     *    the event tick (with a statistical model).  If they go offline, it cancels
+     *    the timer and tells the network to send the node offline.  If it comes
+     *    back online (another timer), it tells the network and removes the timer.
+     */
+    void GeometricDisconnect::checkOffline(Network* network);
+    /**
+     * Generates timers for a node going offline and coming back online which will
+     * be checked once an event tick.  Times based on the Geometric Statistical Distribution
+     */
+    void GeometricDisconnect::sendOffline(Network* network, UUID nodeUUID, clock_unit_t timeToDisconnect, clock_unit_t timeOffline);
 };
 
 #endif //LIGHTSYS_ADAK_GEOMETRICTIMEGEN_H

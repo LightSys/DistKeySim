@@ -7,10 +7,37 @@
 
 using namespace std;
 
-Node::Node() : uuid(new_uuid()), lastDay(NodeData())  {}
+Node::Node(double lambda3) : uuid(new_uuid()), lastDay(NodeData()), lambda3(lambda3)  {
+    generateObjectCreationRateDistribution();
+    changeConsumptionRate();
+}
 
-Node::Node(const Keyspace &keySpace) : uuid(new_uuid()), lastDay(NodeData()) {
+Node::Node(const Keyspace &keySpace, double lambda3) : uuid(new_uuid()), lastDay(NodeData()), lambda3(lambda3) {
     keyspaces.push_back(keySpace);
+    generateObjectCreationRateDistribution();
+    changeConsumptionRate();
+}
+
+void Node::consumeObjects(){
+    amountOfOneKeyUsed += objectConsuptionRatePerSecond;
+    if(amountOfOneKeyUsed >= 1.0){
+        this->getNextKey();
+        amountOfOneKeyUsed--;
+    }
+}
+
+void Node::generateObjectCreationRateDistribution(){
+    d3 = new geometric_distribution<>(this->lambda3);
+    // These are required for the geometric distribution function to operate
+    // correctly
+    random_device rd;
+    // Save the seed for debugging
+    unsigned int seed = rd();
+    gen = new mt19937(seed);
+}
+
+void Node::changeConsumptionRate(){
+    objectConsuptionRatePerSecond = 1.0/((*d3)(*gen));
 }
 
 static Node rootNode() {
@@ -71,7 +98,7 @@ ADAK_Key_t Node::getNextKey() {
         ///Usually this happens in long term allocation statistics because it goes through till the end of
         ///the keyspace to see if th allocation is an issue. However if this happens. The problem is that the keys are
         ///getting distributed more than the current node has capcity for.
-        
+
         string message = "ERROR from getNextKey in Node: Not more keys to give";
         cout << message <<endl;
         Logger::log(message);
@@ -338,7 +365,7 @@ void Node::logInfoForHeartbeat(){
     }else{
         dataLine.push_back("0.0");
     }
-    
+
     Logger::logStats(dataLine);
     //maybe put if ran out of space here, and uuid
 }

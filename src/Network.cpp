@@ -13,33 +13,24 @@ Network::Network(ConnectionType connectionType, float PERCENT_CONNECTED) {
     cout << "Network online" << endl;
 }
 
-
-//sends a single node offline
-void Network::sendOffline(UUID nodeUUID, clock_unit_t timeToDisconnect, clock_unit_t timeOffline){
-    //only allow a node to have one offline period set at a time
-    if(backOnlineTimer.find(nodeUUID) == backOnlineTimer.end()){
-
-        //need to start the timer until the offline starts
-        //need to record the length of the offline
-        //once the timer ends, need to reset the timer with offline length
-        //  and record that it's offline (somehow)
-
-        //set up when it goes offline
-        goOfflineTimer[nodeUUID] = nextTimerID;
-        clock.setTimer(nextTimerID, timeToDisconnect);
-        nextTimerID++;
-
-        //set up when if comes back online after going offline
-        backOnlineTimer[nodeUUID] = nextTimerID;
-        clock.setTimer(nextTimerID, timeToDisconnect + timeOffline);
-        nextTimerID++;
+void Network::tellAllNodesToConsumeObjects(){
+    for(auto i : nodes){
+        i.second.consumeObjects();
     }
 }
 
+//sends a single node offline
+void Network::disableNode(UUID nodeUUID){
+    nodeStatus[nodeUUID] = false;
+}
+
+//sends a single node online
+void Network::enableNode(UUID nodeUUID){
+    nodeStatus[nodeUUID] = true;
+}
+
 bool Network::isOffline(UUID nodeID){
-    //if in the offline list but not the waiting to go offline queue
-    return (goOfflineTimer.find(nodeID) == goOfflineTimer.end() &&
-            backOnlineTimer.find(nodeID) != backOnlineTimer.end());
+    return nodeStatus[nodeID];
 }
 
 bool Network::sendMsg(const Message &message) {
@@ -82,7 +73,9 @@ shared_ptr<Node> Network::getNodeFromUUID(const UUID &uuid) const {
 }
 
 UUID Network::addRootNode() {
-    return addNode(Keyspace(0, UINT_MAX, 0));
+    UUID root = addNode(Keyspace(0, UINT_MAX, 0));
+    nodeStatus[root] = true;
+    return root;
 }
 
 UUID Network::addEmptyNode() {
@@ -95,6 +88,8 @@ UUID Network::addEmptyNode() {
 
     // Make connection to peers
     connectNodeToNetwork(newNode);
+
+    nodeStatus[newNode->getUUID()] = true;
 
     return newUUID;
 }
@@ -109,6 +104,8 @@ UUID Network::addNode(const Keyspace &keyspace) {
 
     // Add the new node to the nodes map
     nodes.insert({newNode->getUUID(), move(newNode)});
+
+    nodeStatus[newNode->getUUID()] = true;
 
     //log node created
     return newUUID;

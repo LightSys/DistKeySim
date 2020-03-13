@@ -29,15 +29,12 @@ private:
      // All known channel between nodes, this is basically representing the edges of the graph
     std::vector<Channel> channels;
     // std::map<UUID, std::shared_ptr<Node>> incoming, outgoing;
-    //node id to index into the clock timer array for the current timer
-    // (time to start)
-    std::map<UUID, int> goOfflineTimer;
-    //node id to when the node will come back oneline timer index in the Clock class
-    std::map<UUID, int> backOnlineTimer;
+
+    //true = online, false = offline
+    std::map<UUID, bool> nodeStatus;
+
     //next timer id to use
     int nextTimerID = 0;
-
-    ClockType clock = new Clock();
 
     // Connection type used to connect member Nodes
     ConnectionType connectionType;
@@ -143,10 +140,15 @@ public:
     void doAllHeartbeat();
 
     //sends a single node offline
-    void sendOffline(UUID nodeUUID, clock_unit_t timeToDisconnect, clock_unit_t timeOffline);
+    void disableNode(UUID nodeUUID);
+    //sends a single node online
+    void enableNode(UUID nodeUUID);
 
     //checks if a node is offline
     bool isOffline(UUID nodeID);
+
+    //tells All Nodes To Consume Objects
+    void tellAllNodesToConsumeObjects();
 
     /**
      * Generates a UUID list based on the known UUIDs from the map<UUID, Node*>

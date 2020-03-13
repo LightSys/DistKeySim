@@ -5,7 +5,7 @@
 #include "UUID.h"
 #include "EventGen.h"
 #include "Random.h"
-
+#include "SystemClock.h"
 using namespace std;
 
 // Number of rounds to complete to allow the simulation to settle
@@ -38,15 +38,22 @@ void Simulation::run() {
     //     network.doAllHeartbeat();
     // }
 
-    EventGen* eventGen = new GeometricDisconnect();
+    double lambda1 = 2.0, lambda2 = 3.0;//time till offline and time till online
+    EventGen* eventGen = new GeometricDisconnect(ClockType::SIMULATION, lambda1, lambda2);
     network.checkAndSendAllNodes();
     network.doAllHeartbeat();
-    double lambda1 = 2.0, lambda2 = 3.0;//time till offline and time till online
     //send some nodes offline////TODO:: RUN THIS TEST
     network.printChannels();
-    eventGen.eventTick(network, lambda1, lambda2);//randomly sends up to 10 nodes offline
+    eventGen.eventTick(network);//randomly sends up to 10 nodes offline
+    network.tick();
     network.printChannels();
 
+    cout << "Ticking network a bunch" << endl;
+    for(int i=0; i<NUM_ROUNDS; i++){
+        cout << "***********************************************Tick" << endl;
+        network.tick();
+        network.printChannels();
+    }
 
     // Example of an eventTick usage, this is where you would add in the different implementations of EventGen
     // currently only Random() is implemented

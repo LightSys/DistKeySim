@@ -30,6 +30,13 @@ private:
     float createdDay;
     float createdWeek;
     long long totalLocalKeyspaceSize=0;
+    double objectConsuptionRatePerSecond;
+    double amountOfOneKeyUsed = 0;
+    double lambda3;
+    // d3 is the model used to randomly generate the object consuption rate
+    geometric_distribution<> *d3;
+
+    mt19937 *gen;
 
     /**
      * Generates the heartbeat informational message instance as per the specification
@@ -79,9 +86,24 @@ public:
     //return success
     bool receiveMessage(const Message &message);
 
+    /**
+     * Change the consumption rate according the geometric distribution
+     */
+    void changeConsumptionRate();
+
+    /**
+     * This generates the geometric distribution from which the consumption
+     * rate is randomly generated with changeConsumptionRate
+     */
+    void generateObjectCreationRateDistribution();
+
+
     int minimumKeyspaceIndex();
     ADAK_Key_t getNextKey();
     bool isKeyAvailable();
+
+    // consume objects as determined by the rate of consumption
+    void consumeObjects();
 
     const UUID getUUID() const { return uuid; }
     void setUUID(UUID nid) { uuid = nid; }
