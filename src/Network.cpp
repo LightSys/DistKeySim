@@ -23,7 +23,7 @@ void Network::tellAllNodesToConsumeObjects(){
 void Network::disableNode(UUID nodeUUID){
     nodeStatus[nodeUUID] = false;
     string message = nodeUUID + " has gone offline.";
-    Logger::log(message);
+    Logger::log(message);//log that the node has gone offline
 }
 
 //sends a single node online
@@ -52,9 +52,9 @@ void Network::doAllHeartbeat() {
     for (auto const& node : nodes) {
         node.second->heartbeat();
     }
-    Logger::getTimeslot(true);
-    Logger::getShared(true,0);
-    Logger::getConsumption(true,0);
+    Logger::getTimeslot(true);//increment timeslot
+    Logger::getShared(true,0);//reset shared
+    Logger::getConsumption(true,0);//reset consumption
 }
 
 void Network::checkAndSendAllNodes() {
