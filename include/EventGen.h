@@ -1,5 +1,5 @@
-#ifndef LIGHTSYS_ADAK_EVENT_GEN_H
-#define LIGHTSYS_ADAK_EVENT_GEN_H
+#ifndef ADAK_KEYING_EVENT_GEN_H
+#define ADAK_KEYING_EVENT_GEN_H
 
 #include "Network.h"
 
