@@ -1,7 +1,8 @@
 /**
  * implemetation of the geometric disconnect class
  */
- 
+
+#include "SystemClock.h"
 #include "GeometricDisconnect.h"
 
 GeometricDisconnect::GeometricDisconnect(ClockType clockType, double lambda1, double lambda2){
