@@ -33,8 +33,10 @@ void Node::generateObjectCreationRateDistribution(){
     gen = new mt19937(seed);
 }
 
+import <iostream>
 void Node::changeConsumptionRate(){
     objectConsuptionRatePerSecond = 1.0/((*d3)(*gen));
+    std::cout << "Changed object consumption rate to " << objectConsuptionRatePerSecond << std::endl;
 }
 
 static Node rootNode(double lambda3) {
