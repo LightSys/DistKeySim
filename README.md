@@ -102,9 +102,9 @@ https://drive.google.com/file/d/1Czub9HZ2K6M838bzI8IzAxKO0jYjQAwj/view?usp=shari
 
 ## Keyspace Sharing Algorithm
 
-The node will look at all of it's peers. It will calculate the average keyspace size that each node should have if we are to reach "equilibrium". If the keyspace of the current node is smaller than or equal to that average, the node does nothing. However, if the node's keyspace is larger, it will share its keyspace surplus with it's peers.
+In this algorithm the node will look at all of it's peers. It will calculate the average keyspace size that each node should have if we are to reach "equilibrium" (where equilibrium is defined as all the nodes having very close provisioning rates -- which is object creation rate multiplied by long term allocation rate Al -- which is object creation rate over keyspace in a node, otherwise defined as how fast a node is consuming the keyspace it has been given). If the keyspace of the current node is smaller than or equal to that average, the node does nothing. However, if the node's keyspace is larger, it will share its keyspace surplus with it's peers.
 
-The keyspace sharing mentioned above will take place in the following way. First, look through all of the Nodes peers. For each peer with a keyspace size less than the average, add up the deficit. Second, create an int array of all the peers who were under the average. Third, for each peer under the average, set the respective spot in the array with the quantity (Node surplus* peer deficit/ sum of deficit). For each index in that array use a binary expansion to determine how big of blocks to send.
+The keyspace sharing mentioned above will take place in the following way. First, look through all of the Nodes' peers. For each peer with a keyspace size less than the average, add up the deficit. Second, create an int array of all the peers who were under the average. Third, for each peer under the average, set the respective spot in the array with the quantity (Node surplus * peer deficit/sum of deficit). For each index in that array use a binary expansion to determine how big of blocks to send.
 
 Each node will use this algorithm and it's repeated running will result in the whole network ending in a balanced state. This algorithm will avoid oscillations as well because a node will give away more keyspace than its surplus.
 
