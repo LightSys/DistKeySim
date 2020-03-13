@@ -47,6 +47,13 @@ The User Interface created requires Python as well as the tkinter interface and 
 1) `sudo apt-get install python3-tk`
 2) `sudo apt install sshpass`
 
+## User Interface Start 
+navigate to the client directory in DistKeySim and run GUI.py with python3 using the parameters: 
+1) server ip 
+2) username
+3) password
+4) FULL DistKeySim folder location on the server (including the DistKeySim folder)
+
 ## User Interface Parameters
 Different parameters in the simulation are controlled by inputs from the UI. Below is a description of each of those inputs as well as how they will be used. Several of these inputs are used as parameters into statistical distributions from which we sample. We describe the distributions and their parameters.
  
