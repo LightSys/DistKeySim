@@ -324,7 +324,7 @@ void Node::logInfoForHeartbeat(){
     string tempValue = "1.0";
     vector<string> dataLine;
     dataLine.push_back(uuid);
-    dataLine.push_back(Logger::timeSlot);
+    dataLine.push_back(to_string((Logger::getTimeslot(false))));
     ADAK_Key_t totalSize =0;
     for(Keyspace k: keyspaces){
         totalSize += k.getSize();

@@ -14,8 +14,6 @@ const char statslog [] = "statslog.csv";
 const char numberOfCols = 6;
 const vector<string> csvHeaders { "UUID", "timeSlot", "totalKeys","sharing", "consumption", "remainder" }; 
 class Logger {
-    private:
-        static int timeSlot =0;
     public:
         static void deleteOldLog (){
             remove(filename);
@@ -45,8 +43,12 @@ class Logger {
         static void setCSVHeaders (){
             Logger::logStats(csvHeaders);
         }
-        static void incrementTimeslot (){
-            timeSlot++;
-        }    
+        static int getTimeslot(bool increment){
+            static int timeslot = 0;
+            if (increment){
+                timeslot++;
+            }
+            return timeslot;
+        }   
     };
 #endif //LOGGER_H

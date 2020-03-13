@@ -22,7 +22,7 @@ void Network::doAllHeartbeat() {
     for (auto const& node : nodes) {
         node.second->heartbeat();
     }
-    Logger::incrementTimeslot();
+    Logger::getTimeslot(true);
 }
 
 void Network::checkAndSendAllNodes() {
