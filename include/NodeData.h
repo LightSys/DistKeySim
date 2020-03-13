@@ -36,7 +36,7 @@ public:
     static int getCurrentDay();
 
     inline void useKey() { keysUsed++; 
-                           Logger::getConsumption(false);}
+                           Logger::getConsumption(false,1);}
     constexpr inline int getKeysUsed() const { return this->keysUsed; }
 
     double updateCreationRate(const std::map<UUID, std::shared_ptr<Message>> peers);

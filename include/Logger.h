@@ -58,9 +58,9 @@ class Logger {
             }
             return shared;
         }  
-        static int getConsumption(bool clear){
+        static int getConsumption(bool clear, int more){
             static int rate = 0;
-            rate++;
+            rate+=more;
             if(clear){
                 rate =0;
             }
