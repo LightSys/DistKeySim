@@ -8,7 +8,7 @@ add_library(messages message.cpp ${PROTO_SRCS} ${PROTO_HDRS})
 target_link_libraries(messages ${Protobuf_LIBRARIES})
 target_include_directories(messages PUBLIC ${PROJECT_SOURCE_DIR}/include)
 
-add_library(adakCore Simulation.cpp Node.cpp Keyspace.cpp Network.cpp UUID.cpp Channel.cpp Random.cpp NodeData.cpp config.cpp)
+add_library(adakCore  Simulation.cpp Node.cpp Keyspace.cpp Network.cpp UUID.cpp Channel.cpp Random.cpp NodeData.cpp config.cpp ControlStrategy.cpp GeometricDisconnect.cpp SystemClock.cpp)
 target_link_libraries(adakCore messages)
 target_include_directories(adakCore PUBLIC ${PROJECT_SOURCE_DIR}/include)
 

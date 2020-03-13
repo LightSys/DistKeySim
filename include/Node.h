@@ -5,6 +5,7 @@
 #include <vector>
 #include <queue>
 #include <string>
+#include <climits>
 
 #include "UUID.h"
 #include "Keyspace.h"
@@ -30,6 +31,13 @@ private:
     float createdDay;
     float createdWeek;
     ADAK_Key_t totalLocalKeyspaceSize=0;
+    double objectConsuptionRatePerSecond;
+    double amountOfOneKeyUsed = 0;
+    double lambda3;
+    // d3 is the model used to randomly generate the object consuption rate
+    geometric_distribution<> *d3;
+
+    mt19937 *gen;
 
     /**
      * Generates the heartbeat informational message instance as per the specification
@@ -37,12 +45,15 @@ private:
      * @return Message with hearbeat information for this node
      */
     Message getHeartbeatMessage(const UUID &peerID) const;
-    
+
 public:
-    Node();
-    Node(const Keyspace &keyspace);
-    static Node rootNode();
-    ~Node() = default;
+    Node(double lambda3);
+    Node(const Keyspace &keyspace, double lambda3);
+    static Node rootNode(double lambda3);
+    ~Node(){
+        delete d3;
+        delete gen;
+    }
 
     /**
      * Adds a peer to local list of peers
@@ -77,13 +88,29 @@ public:
 
     // Generate heartbeat messages for all peers
     void heartbeat();
+    //return success
     bool receiveMessage(const Message &message);
+
+    /**
+     * Change the consumption rate according the geometric distribution
+     */
+    void changeConsumptionRate();
+
+    /**
+     * This generates the geometric distribution from which the consumption
+     * rate is randomly generated with changeConsumptionRate
+     */
+    void generateObjectCreationRateDistribution();
+
 
     int minimumKeyspaceIndex();
     ADAK_Key_t getNextKey();
     bool isKeyAvailable();
 
-    const UUID getUUID() const { return uuid; }
+    // consume objects as determined by the rate of consumption
+    void consumeObjects();
+
+    UUID getUUID() const { return uuid; }
     void setUUID(UUID nid) { uuid = nid; }
 
     std::vector<Keyspace> getKeySpace() const { return keyspaces; }

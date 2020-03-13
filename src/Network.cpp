@@ -6,14 +6,42 @@
 
 using namespace std;
 
-Network::Network(ConnectionType connectionType) {
+Network::Network(ConnectionType connectionType, float PERCENT_CONNECTED, double lambda3): lambda3(lambda3) {
     this->connectionType = connectionType;
+    //PERCENT_CONNECTED is a 5 digit int (99.999% = 99999)
+    this->PERCENT_CONNECTED = (int)(PERCENT_CONNECTED*1000);
     cout << "Network online" << endl;
 }
 
+void Network::tellAllNodesToConsumeObjects(){
+    for(auto i : nodes){
+        i.second->consumeObjects();
+    }
+}
+
+//sends a single node offline
+void Network::disableNode(UUID nodeUUID){
+    nodeStatus[nodeUUID] = false;
+}
+
+//sends a single node online
+void Network::enableNode(UUID nodeUUID){
+    nodeStatus[nodeUUID] = true;
+}
+
+bool Network::isOffline(UUID nodeID){
+    return !nodeStatus[nodeID];
+}
+
 bool Network::sendMsg(const Message &message) {
-    shared_ptr<Node> destNode = getNodeFromUUID(message.destnodeid());
-    return destNode->receiveMessage(message);
+    UUID destID = message.destnodeid(), srcID = message.sourcenodeid();
+
+    if(!isOffline(destID) && !isOffline(srcID)){
+        shared_ptr<Node> destNode = getNodeFromUUID(destID);
+        return destNode->receiveMessage(message);
+    } else {
+        return false;
+    }
 }
 
 void Network::doAllHeartbeat() {
@@ -37,7 +65,7 @@ void Network::checkAndSendAllNodes() {
                 // Gave keyspace, don't give any more
                 continue;
             }
-            
+
             gaveKeyspace |= sendMsg(msg);
         }
     }
@@ -48,35 +76,40 @@ shared_ptr<Node> Network::getNodeFromUUID(const UUID &uuid) const {
 }
 
 UUID Network::addRootNode() {
-    return addNode(Keyspace(0, UINT_MAX, 0));
+    UUID root = addNode(Keyspace(0, UINT_MAX, 0));
+    nodeStatus[root] = true;
+    return root;
 }
 
 UUID Network::addEmptyNode() {
     // Create a new new node with the no keyspace
-    auto newNode = make_shared<Node>();
+    auto newNode = make_shared<Node>(this->lambda3);
     UUID newUUID = newNode->getUUID();
-    
+
     // Add the new node to the nodes map
     nodes.insert({newNode->getUUID(), newNode});
-    
+
     // Make connection to peers
     connectNodeToNetwork(newNode);
-    
+
+    nodeStatus[newNode->getUUID()] = true;
+
     return newUUID;
 }
 
 UUID Network::addNode(const Keyspace &keyspace) {
     // Create a new new node with the given keyspace
-    auto newNode = make_shared<Node>(keyspace);
+    auto newNode = make_shared<Node>(keyspace, this->lambda3);
     UUID newUUID = newNode->getUUID();
-    
+
     // Make connection to peers
     connectNodeToNetwork(newNode);
-    
+
     // Add the new node to the nodes map
+    nodeStatus[newNode->getUUID()] = true;
     nodes.insert({newNode->getUUID(), move(newNode)});
 
-    //log node created    
+    //log node created
     return newUUID;
 }
 
@@ -85,21 +118,22 @@ void Network::connectNodeToNetwork(shared_ptr<Node> newNode) {
         fullyConnect(newNode);
     } else if (this->connectionType == ConnectionType::Partial) {
         // rand() % 4 is an arbitrary number to make the connection only happen sometimes.
-        int coinFlip = rand() % 8;
+        //PERCENT_CONNECTED is a 5 digit int (99.9995% = 99999)
+        int coinFlip = rand() % PERCENT_CONNECTED;
         for (auto &[uuid, node] : nodes) {
             // Don't connect the node to itself
             if (newNode->getUUID() == node->getUUID()) {
                 continue;
             }
-            
+
             // Make sure that the channel doesn't already exist
             if (!channelExists(node->getUUID(), node->getUUID()) && coinFlip == 0) {
                 connectNodes(node->getUUID(), node->getUUID());
             }
         }
-        
+
         singleConnect(newNode);
-    } else if (this->connectionType == ConnectionType::Single) {
+    } else if (this->connectionType == ConnectionType::Single) {//randomly generated MST
         singleConnect(newNode);
     }
 }
@@ -110,12 +144,12 @@ void Network::fullyConnect(shared_ptr<Node> node) {
         if (node->getUUID() == uuid) {
             continue;
         }
-        
+
         // Make sure that the channel doesn't already exist
         if (channelExists(node->getUUID(), uuid)) {
             continue;
         }
-        
+
         // No connection, create one
         connectNodes(node->getUUID(), uuid);
     }
@@ -149,7 +183,7 @@ int Network::getChannelIndex(const UUID &nodeOne, const UUID &nodeTwo) {
             );
         }
     );
-    
+
     return (channelItr != channels.end()) ? distance(channels.begin(), channelItr) : -1;
 }
 
@@ -158,7 +192,7 @@ void Network::connectNodes(const UUID &nodeOne, const UUID &nodeTwo) {
     if (nodeOne == nodeTwo || channelExists(nodeOne, nodeTwo)) {
         return;
     }
-    
+
     Channel channel(nodeOne, nodeTwo);
     channels.push_back(channel);
 
@@ -172,13 +206,13 @@ void Network::disconnectNodes(const UUID &nodeOne, const UUID &nodeTwo) {
     int channelIndex = getChannelIndex(nodeOne, nodeTwo);
     if (channelIndex > -1) {
         const Channel &channel = channels.at(channelIndex);
-        
+
         // Remove peer from node
         shared_ptr<Node> node1 = getNodeFromUUID(channel.getFromNode());
         shared_ptr<Node> node2 = getNodeFromUUID(channel.getToNode());
         node1->removePeer(node2->getUUID());
         node2->removePeer(node1->getUUID());
-        
+
         channels.erase(channels.begin() + channelIndex);
     }
 }
@@ -227,6 +261,9 @@ void Network::printChannels(ostream &out, char spacer) {
             << channel.getFromNode() << spacer
             << channel.getChannelId()
             << endl;
+        if(this->isOffline(channel.getToNode()) || this->isOffline(channel.getFromNode())){
+            out << "  OFFLINE!!" << endl;
+        }
     }
     out << flush;
 }
@@ -236,7 +273,7 @@ void Network::printKeyspaces() {
 }
 void Network::printKeyspaces(ostream &out, char spacer) {
     out << "KEYSPACES\n";
-    
+
     int counter = 0;
     for (auto const& x : nodes) {
         for (const Keyspace &keyspace : x.second->getKeySpace()) {

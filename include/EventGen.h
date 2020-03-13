@@ -1,7 +1,6 @@
-#ifndef LIGHTSYS_ADAK_EVENT_GEN_H
-#define LIGHTSYS_ADAK_EVENT_GEN_H
+#ifndef ADAK_KEYING_EVENT_GEN_H
+#define ADAK_KEYING_EVENT_GEN_H
 
-#include "Simulation.h"
 #include "Network.h"
 
 /**
@@ -12,7 +11,7 @@ enum class EventGenerationType { Random, Unused1, Unused2 };
 class EventGen {
 public:
     EventGen() {};
-
+    virtual ~EventGen() = default;
     /**
      * Probably should change to a new name, but this method will do a random action based on the implementation of this
      * pure virtual function.

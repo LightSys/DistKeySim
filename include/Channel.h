@@ -25,12 +25,12 @@ public:
      * @return Channel ID
      */
     unsigned long long getChannelId() const;
-    
+
     /**
      * @return UUID of node channel is connecting to
      */
     UUID getToNode() const;
-    
+
     /**
      * @return UUID of node channel is connecting from
      */

@@ -16,7 +16,7 @@ enum NodeTimer { HEARTBEAT_TIMER };
 class ControlStrategy: public ADAKStrategy {
 private:
 
-    unique_ptr<SystemClock> nodeClock;
+    shared_ptr<SystemClock> nodeClock;
     clock_unit_t heartbeatPeriod;
 
 public:
@@ -25,7 +25,7 @@ public:
 
     ~ControlStrategy();
 
-    void nodeTick(Node* node);
+    void nodeTick(shared_ptr<Node>& node);
 };
 
 #endif //LIGHTSYS_ADAK_CONTROL_STRATEGY_H
