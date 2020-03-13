@@ -254,11 +254,12 @@ void Network::printChannels(ostream &out, char spacer) {
     out << "CHANNELS\n"
         << "TO" << spacer << "FROM" << spacer << "ID" << "\n";
     for (const Channel &channel : channels) {
+        out << channel.getToNode() << spacer
+            << channel.getFromNode() << spacer
+            << channel.getChannelId()
+            << endl;
         if(!(this->isOffline(channel.getToNode()) || this->isOffline(channel.getFromNode()))){
-            out << channel.getToNode() << spacer
-                << channel.getFromNode() << spacer
-                << channel.getChannelId()
-                << endl;
+            out << "  OFFLINE!!" << endl;
         }
     }
     out << flush;

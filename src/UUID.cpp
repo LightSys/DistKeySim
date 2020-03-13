@@ -1,5 +1,4 @@
 #include "UUID.h"
-#include <iostream>
 
 HexDigest new_uuid() {
     // generate seed bits:
