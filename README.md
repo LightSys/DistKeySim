@@ -121,7 +121,9 @@ master. It is not 100% functionality, release candidate level, but they are stab
 # Class Diagram Link
 https://drive.google.com/file/d/1Czub9HZ2K6M838bzI8IzAxKO0jYjQAwj/view?usp=sharing
 
-## Keyspace Sharing Algorithm
+## Alernative Algorithms
+
+In further development of this project, it may be worthwhile to examine some alternative strategies that can be implemented by extending the ``ADAKStrategy`` class in a new class. Due to time considerations, we did not implement any alternatives to the algorithm given in the specification (aside from the Control strategy). However, we did propose an optimal alternative algorithm. The general idea is described as follows:
 
 In this algorithm the node will look at all of it's peers. It will calculate the average keyspace size that each node should have if we are to reach "equilibrium" (where equilibrium is defined as all the nodes having very close provisioning rates -- which is object creation rate multiplied by long term allocation rate Al -- which is object creation rate over keyspace in a node, otherwise defined as how fast a node is consuming the keyspace it has been given). If the keyspace of the current node is smaller than or equal to that average, the node does nothing. However, if the node's keyspace is larger, it will share its keyspace surplus with it's peers.
 
