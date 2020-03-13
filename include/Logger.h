@@ -12,6 +12,7 @@ using namespace std;
 const char filename [] = "logOutput.txt";
 const char statslog [] = "statslog.csv";
 const char numberOfCols = 6;
+const vector<string> csvHeaders { "UUID", "timeSlot", "totalKeys","sharing", "consumption", "remainder" }; 
 class Logger {
 
     public:
@@ -26,7 +27,7 @@ class Logger {
             time_t date = chrono::system_clock::to_time_t(chrono::system_clock::now());
             myfile << message << " -- " << ctime(&date)<<endl;
             myfile.close();
-        };
+        }
         static void logStats (vector<string> stats){
             if(stats.size() == numberOfCols){
                 ofstream myfile;
@@ -39,9 +40,10 @@ class Logger {
             }else{
                 Logger::log("Stats array was incorrect length");
             }
-
         }
 
-        //stats logger
+        static void setCSVHeaders (){
+            Logger::logStats(csvHeaders);
+        }
     };
 #endif //LOGGER_H
