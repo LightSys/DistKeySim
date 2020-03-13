@@ -10,7 +10,7 @@ void addCollectionInfoRecord(InformationalMessageContents::CollectionInformation
     collection->set_allocated_creationratedata(creationRateData);
 }
 
-Message newBaseMessage(const HexDigest &sendingUUID, const HexDigest &destUUID, uint32_t lastReceived,
+Message newBaseMessage(const HexDigest &sendingUUID, const HexDigest &destUUID, uint64_t lastReceived,
                        Message::ChannelState channelState, uint64_t msgID, long unixTimestamp) {
     if (msgID == 0) {
         throw std::invalid_argument("msgID is zero");

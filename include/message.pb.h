@@ -718,22 +718,22 @@ class KeyspaceMessageContents_Keyspace :
   std::string* _internal_mutable_name();
   public:
 
-  // uint32 startID = 2;
+  // uint64 startID = 2;
   void clear_startid();
-  ::PROTOBUF_NAMESPACE_ID::uint32 startid() const;
-  void set_startid(::PROTOBUF_NAMESPACE_ID::uint32 value);
+  ::PROTOBUF_NAMESPACE_ID::uint64 startid() const;
+  void set_startid(::PROTOBUF_NAMESPACE_ID::uint64 value);
   private:
-  ::PROTOBUF_NAMESPACE_ID::uint32 _internal_startid() const;
-  void _internal_set_startid(::PROTOBUF_NAMESPACE_ID::uint32 value);
+  ::PROTOBUF_NAMESPACE_ID::uint64 _internal_startid() const;
+  void _internal_set_startid(::PROTOBUF_NAMESPACE_ID::uint64 value);
   public:
 
-  // uint32 endID = 3;
+  // uint64 endID = 3;
   void clear_endid();
-  ::PROTOBUF_NAMESPACE_ID::uint32 endid() const;
-  void set_endid(::PROTOBUF_NAMESPACE_ID::uint32 value);
+  ::PROTOBUF_NAMESPACE_ID::uint64 endid() const;
+  void set_endid(::PROTOBUF_NAMESPACE_ID::uint64 value);
   private:
-  ::PROTOBUF_NAMESPACE_ID::uint32 _internal_endid() const;
-  void _internal_set_endid(::PROTOBUF_NAMESPACE_ID::uint32 value);
+  ::PROTOBUF_NAMESPACE_ID::uint64 _internal_endid() const;
+  void _internal_set_endid(::PROTOBUF_NAMESPACE_ID::uint64 value);
   public:
 
   // uint32 suffixBits = 4;
@@ -751,8 +751,8 @@ class KeyspaceMessageContents_Keyspace :
 
   ::PROTOBUF_NAMESPACE_ID::internal::InternalMetadataWithArena _internal_metadata_;
   ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr name_;
-  ::PROTOBUF_NAMESPACE_ID::uint32 startid_;
-  ::PROTOBUF_NAMESPACE_ID::uint32 endid_;
+  ::PROTOBUF_NAMESPACE_ID::uint64 startid_;
+  ::PROTOBUF_NAMESPACE_ID::uint64 endid_;
   ::PROTOBUF_NAMESPACE_ID::uint32 suffixbits_;
   mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
   friend struct ::TableStruct_message_2eproto;
@@ -1079,8 +1079,8 @@ class Message :
     kTimestampFieldNumber = 5,
     kLastReceivedMsgFieldNumber = 3,
     kChannelStateFieldNumber = 4,
-    kMessageIDFieldNumber = 6,
     kMessageTypeFieldNumber = 7,
+    kMessageIDFieldNumber = 6,
     kInfoFieldNumber = 8,
     kKeyspaceFieldNumber = 9,
   };
@@ -1131,13 +1131,13 @@ class Message :
   PROTOBUF_NAMESPACE_ID::Timestamp* _internal_mutable_timestamp();
   public:
 
-  // uint32 lastReceivedMsg = 3;
+  // uint64 lastReceivedMsg = 3;
   void clear_lastreceivedmsg();
-  ::PROTOBUF_NAMESPACE_ID::uint32 lastreceivedmsg() const;
-  void set_lastreceivedmsg(::PROTOBUF_NAMESPACE_ID::uint32 value);
+  ::PROTOBUF_NAMESPACE_ID::uint64 lastreceivedmsg() const;
+  void set_lastreceivedmsg(::PROTOBUF_NAMESPACE_ID::uint64 value);
   private:
-  ::PROTOBUF_NAMESPACE_ID::uint32 _internal_lastreceivedmsg() const;
-  void _internal_set_lastreceivedmsg(::PROTOBUF_NAMESPACE_ID::uint32 value);
+  ::PROTOBUF_NAMESPACE_ID::uint64 _internal_lastreceivedmsg() const;
+  void _internal_set_lastreceivedmsg(::PROTOBUF_NAMESPACE_ID::uint64 value);
   public:
 
   // .Message.ChannelState channelState = 4;
@@ -1149,15 +1149,6 @@ class Message :
   void _internal_set_channelstate(::Message_ChannelState value);
   public:
 
-  // sint64 messageID = 6;
-  void clear_messageid();
-  ::PROTOBUF_NAMESPACE_ID::int64 messageid() const;
-  void set_messageid(::PROTOBUF_NAMESPACE_ID::int64 value);
-  private:
-  ::PROTOBUF_NAMESPACE_ID::int64 _internal_messageid() const;
-  void _internal_set_messageid(::PROTOBUF_NAMESPACE_ID::int64 value);
-  public:
-
   // .Message.MessageType messageType = 7;
   void clear_messagetype();
   ::Message_MessageType messagetype() const;
@@ -1165,6 +1156,15 @@ class Message :
   private:
   ::Message_MessageType _internal_messagetype() const;
   void _internal_set_messagetype(::Message_MessageType value);
+  public:
+
+  // sint64 messageID = 6;
+  void clear_messageid();
+  ::PROTOBUF_NAMESPACE_ID::int64 messageid() const;
+  void set_messageid(::PROTOBUF_NAMESPACE_ID::int64 value);
+  private:
+  ::PROTOBUF_NAMESPACE_ID::int64 _internal_messageid() const;
+  void _internal_set_messageid(::PROTOBUF_NAMESPACE_ID::int64 value);
   public:
 
   // .InformationalMessageContents info = 8;
@@ -1212,10 +1212,10 @@ class Message :
   ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr sourcenodeid_;
   ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr destnodeid_;
   PROTOBUF_NAMESPACE_ID::Timestamp* timestamp_;
-  ::PROTOBUF_NAMESPACE_ID::uint32 lastreceivedmsg_;
+  ::PROTOBUF_NAMESPACE_ID::uint64 lastreceivedmsg_;
   int channelstate_;
-  ::PROTOBUF_NAMESPACE_ID::int64 messageid_;
   int messagetype_;
+  ::PROTOBUF_NAMESPACE_ID::int64 messageid_;
   union MessageUnion {
     MessageUnion() {}
     ::InformationalMessageContents* info_;
@@ -1548,42 +1548,42 @@ inline void KeyspaceMessageContents_Keyspace::set_allocated_name(std::string* na
   // @@protoc_insertion_point(field_set_allocated:KeyspaceMessageContents.Keyspace.name)
 }
 
-// uint32 startID = 2;
+// uint64 startID = 2;
 inline void KeyspaceMessageContents_Keyspace::clear_startid() {
-  startid_ = 0u;
+  startid_ = PROTOBUF_ULONGLONG(0);
 }
-inline ::PROTOBUF_NAMESPACE_ID::uint32 KeyspaceMessageContents_Keyspace::_internal_startid() const {
+inline ::PROTOBUF_NAMESPACE_ID::uint64 KeyspaceMessageContents_Keyspace::_internal_startid() const {
   return startid_;
 }
-inline ::PROTOBUF_NAMESPACE_ID::uint32 KeyspaceMessageContents_Keyspace::startid() const {
+inline ::PROTOBUF_NAMESPACE_ID::uint64 KeyspaceMessageContents_Keyspace::startid() const {
   // @@protoc_insertion_point(field_get:KeyspaceMessageContents.Keyspace.startID)
   return _internal_startid();
 }
-inline void KeyspaceMessageContents_Keyspace::_internal_set_startid(::PROTOBUF_NAMESPACE_ID::uint32 value) {
+inline void KeyspaceMessageContents_Keyspace::_internal_set_startid(::PROTOBUF_NAMESPACE_ID::uint64 value) {
   
   startid_ = value;
 }
-inline void KeyspaceMessageContents_Keyspace::set_startid(::PROTOBUF_NAMESPACE_ID::uint32 value) {
+inline void KeyspaceMessageContents_Keyspace::set_startid(::PROTOBUF_NAMESPACE_ID::uint64 value) {
   _internal_set_startid(value);
   // @@protoc_insertion_point(field_set:KeyspaceMessageContents.Keyspace.startID)
 }
 
-// uint32 endID = 3;
+// uint64 endID = 3;
 inline void KeyspaceMessageContents_Keyspace::clear_endid() {
-  endid_ = 0u;
+  endid_ = PROTOBUF_ULONGLONG(0);
 }
-inline ::PROTOBUF_NAMESPACE_ID::uint32 KeyspaceMessageContents_Keyspace::_internal_endid() const {
+inline ::PROTOBUF_NAMESPACE_ID::uint64 KeyspaceMessageContents_Keyspace::_internal_endid() const {
   return endid_;
 }
-inline ::PROTOBUF_NAMESPACE_ID::uint32 KeyspaceMessageContents_Keyspace::endid() const {
+inline ::PROTOBUF_NAMESPACE_ID::uint64 KeyspaceMessageContents_Keyspace::endid() const {
   // @@protoc_insertion_point(field_get:KeyspaceMessageContents.Keyspace.endID)
   return _internal_endid();
 }
-inline void KeyspaceMessageContents_Keyspace::_internal_set_endid(::PROTOBUF_NAMESPACE_ID::uint32 value) {
+inline void KeyspaceMessageContents_Keyspace::_internal_set_endid(::PROTOBUF_NAMESPACE_ID::uint64 value) {
   
   endid_ = value;
 }
-inline void KeyspaceMessageContents_Keyspace::set_endid(::PROTOBUF_NAMESPACE_ID::uint32 value) {
+inline void KeyspaceMessageContents_Keyspace::set_endid(::PROTOBUF_NAMESPACE_ID::uint64 value) {
   _internal_set_endid(value);
   // @@protoc_insertion_point(field_set:KeyspaceMessageContents.Keyspace.endID)
 }
@@ -1775,22 +1775,22 @@ inline void Message::set_allocated_destnodeid(std::string* destnodeid) {
   // @@protoc_insertion_point(field_set_allocated:Message.destNodeID)
 }
 
-// uint32 lastReceivedMsg = 3;
+// uint64 lastReceivedMsg = 3;
 inline void Message::clear_lastreceivedmsg() {
-  lastreceivedmsg_ = 0u;
+  lastreceivedmsg_ = PROTOBUF_ULONGLONG(0);
 }
-inline ::PROTOBUF_NAMESPACE_ID::uint32 Message::_internal_lastreceivedmsg() const {
+inline ::PROTOBUF_NAMESPACE_ID::uint64 Message::_internal_lastreceivedmsg() const {
   return lastreceivedmsg_;
 }
-inline ::PROTOBUF_NAMESPACE_ID::uint32 Message::lastreceivedmsg() const {
+inline ::PROTOBUF_NAMESPACE_ID::uint64 Message::lastreceivedmsg() const {
   // @@protoc_insertion_point(field_get:Message.lastReceivedMsg)
   return _internal_lastreceivedmsg();
 }
-inline void Message::_internal_set_lastreceivedmsg(::PROTOBUF_NAMESPACE_ID::uint32 value) {
+inline void Message::_internal_set_lastreceivedmsg(::PROTOBUF_NAMESPACE_ID::uint64 value) {
   
   lastreceivedmsg_ = value;
 }
-inline void Message::set_lastreceivedmsg(::PROTOBUF_NAMESPACE_ID::uint32 value) {
+inline void Message::set_lastreceivedmsg(::PROTOBUF_NAMESPACE_ID::uint64 value) {
   _internal_set_lastreceivedmsg(value);
   // @@protoc_insertion_point(field_set:Message.lastReceivedMsg)
 }
