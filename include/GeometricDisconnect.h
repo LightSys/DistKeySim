@@ -1,5 +1,5 @@
-#ifndef LIGHTSYS_ADAK_GEOMETRICTDISCONNECT_H
-#define LIGHTSYS_ADAK_GEOMETRICTDISCONNECT_H
+#ifndef ADAK_KEYING_GEOMETRICTDISCONNECT_H
+#define ADAK_KEYING_GEOMETRICTDISCONNECT_H
 
 #include <map>
 #include <ctime>
@@ -58,6 +58,7 @@ private:
     mt19937 *gen;
 public:
     GeometricDisconnect(ClockType clockType, double lambda1, double lambda2);
+
     /**
      * Event tick causes one tick in the events, meaning that nodes could go offline
      *  or do other predefined things (none other yet)
@@ -78,4 +79,4 @@ public:
     void sendOffline(Network* network, UUID nodeUUID, clock_unit_t timeToDisconnect, clock_unit_t timeOffline);
 };
 
-#endif //LIGHTSYS_ADAK_GEOMETRICTIMEGEN_H
+#endif
