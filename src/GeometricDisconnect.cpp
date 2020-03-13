@@ -1,6 +1,7 @@
-#include <ctime>
-#include <random>
-
+/**
+ * implemetation of the geometric disconnect class
+ */
+ 
 #include "GeometricDisconnect.h"
 
 GeometricDisconnect::GeometricDisconnect(ClockType clockType, double lambda1, double lambda2){

@@ -2,6 +2,8 @@
 #define LIGHTSYS_ADAK_GEOMETRICTDISCONNECT_H
 
 #include <map>
+#include <ctime>
+#include <random>
 #include "UUID.h"
 #include "SystemClock.h"
 #include "EventGen.h"
