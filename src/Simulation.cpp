@@ -1,13 +1,4 @@
-#include <iostream>
-#include <ctime>
 
-#include "Simulation.h"
-#include "UUID.h"
-#include "EventGen.h"
-#include "GeometricDisconnect.h"
-#include "Random.h"
-#include "SystemClock.h"
-using namespace std;
 
 // Number of rounds to complete to allow the simulation to settle
 static const int NUM_ROUNDS = 50;
