@@ -11,7 +11,7 @@ enum class EventGenerationType { Random, Unused1, Unused2 };
 class EventGen {
 public:
     EventGen() {};
-
+    virtual ~EventGen() = default;
     /**
      * Probably should change to a new name, but this method will do a random action based on the implementation of this
      * pure virtual function.
