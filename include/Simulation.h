@@ -17,6 +17,7 @@ public:
 
     // Executes simulation
     void run();
+    void runOLD();
 
     // Getters
     Network *getNetwork() { return &this->network; }

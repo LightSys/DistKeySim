@@ -17,7 +17,7 @@ Simulation::Simulation(const struct Config &config)
     srand(time(nullptr));
 }
 
-void Simulation::run() {
+void Simulation::runOLD() {
     string message = "Started Simulation";
     Logger::log(message);
 
@@ -56,6 +56,51 @@ void Simulation::run() {
             "\nSuffix: " << tomTest->getKeySpace().at(0).getSuffix()<<
             "\nFinal Key in actual test: " << tomTest->getKeySpace().at(0).getEnd() <<
             "\nProvisional Ration: " << Nodedata->updateProvisioningRatio(Nodedata->getKeysUsed(), Nodedata->getShortTermAllocationRatio());
+    network.printChannels();
+    network.printKeyspaces();
+    
+    // Output to CSV
+    ofstream csv;
+    csv.open("channelsOut.csv", ofstream::out | ofstream::trunc);
+    network.printChannels(csv, ',');
+    csv.close();
+    
+    csv.open("keyspacesOut.csv", ofstream::out | ofstream::trunc);
+    network.printKeyspaces(csv, ',');
+    csv.close();
+    
+    csv.open("uuidsOut.csv", ofstream::out | ofstream::trunc);
+    network.printUUIDList(csv, ',');
+    csv.close();
+
+    delete eventGen;
+}
+
+void Simulation::run() {
+    string message = "Started Simulation";
+    Logger::log(message);
+
+    // Create root node that will have the max keyspace 0/0
+    network.addRootNode();
+
+    cout << "Root UUID: " << network.getNodes().begin()->first << endl;
+
+    // Create new nodes and add them to the map
+    for (int i = 0; i < numNodes; i++) {
+        UUID newNodeID = network.addEmptyNode();
+    }
+    
+    
+    EventGen* eventGen = new Random();//TODO switch to GeometricDisconnect once merged 
+    for(int i = 0 ; i < NUM_ROUNDS; i++){
+        eventGen->eventTick(&network);
+        network.checkAndSendAllNodes();
+        network.doAllHeartbeat();
+    }
+    
+    // 1: get node 
+    // 2: 
+    
     network.printChannels();
     network.printKeyspaces();
     
