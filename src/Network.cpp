@@ -38,7 +38,10 @@ bool Network::sendMsg(const Message &message) {
 
     if(!isOffline(destID) && !isOffline(srcID)){
         shared_ptr<Node> destNode = getNodeFromUUID(destID);
-        return destNode->receiveMessage(message);
+
+	// enqueue message in Node's send queue:
+       	destNode->receiveMessage(message);
+	return true;
     } else {
         return false;
     }

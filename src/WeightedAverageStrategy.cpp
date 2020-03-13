@@ -4,17 +4,24 @@
 using namespace std;
 
 
-WeightedAverageStrategy::WeightedAverageStrategy(ClockType type, clock_unit_t heartbeatPeriod){
+WeightedAverageStrategy::WeightedAverageStrategy(
+	ClockType type, clock_unit_t heartbeatPeriod,
+	int keyspaceChunkSize, double diffusionRate, 
+        double allocationThreshold
+){
+    this->keyspaceChunkSize = keyspaceChunkSize;
+    this->diffusionRate = diffusionRate;
+    this->allocationThreshold = allocationThreshold;
     this->nodeClock = SystemClock::makeClock(type);
     this->heartbeatPeriod = heartbeatPeriod;
-    this->nodeClock->setTimer(HEARTBEAT_TIMER, heartbeatPeriod);
+    this->nodeClock->setTimer(W_AVG_HEARTBEAT_TIMER, heartbeatPeriod);
 }
 
 void WeightedAverageStrategy::nodeTick(Node* node){
 
     nodeClock.tick();
 
-    if(nodeClock->checkTimer(HEARTBEAT_TIMER) == ENDED){
+    if(nodeClock->checkTimer(W_AVG_HEARTBEAT_TIMER) == ENDED){
 
         //check new messages:
         queue<Messages> newMessages = node->getReceivedMessages();
@@ -24,7 +31,7 @@ void WeightedAverageStrategy::nodeTick(Node* node){
         }
 
         node->heartbeat();
-        nodeClock->setTimer(HEARTBEAT_TIMER, heartbeatPeriod);
+        nodeClock->setTimer(W_AVG_HEARTBEAT_TIMER, heartbeatPeriod);
     }
 }
 
@@ -103,4 +110,3 @@ void processMessage(Node* node, const Message& msg){
     return false;
 }
 
-#endif //LIGHTSYS_ADAK_CONTROL_STRATEGY_H

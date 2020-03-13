@@ -15,13 +15,12 @@
 
 class NodeData;
 
+const unsigned int MAXIMUM_HISTORY_SIZE = 100;
+
+
 static const HexDigest BROADCAST_UUID = "00000000-0000-0000-0000-000000000000";
 
 class Node {
-public:
-
-    static const unsigned int MAXIMUM_HISTORY_SIZE;
-
 private:
 
     UUID uuid;
@@ -99,7 +98,7 @@ public:
     // Generate heartbeat messages for all peers
     void heartbeat();
 
-    queue<Message> getReceivedMessages();
+    std::deque<Message> getReceivedMessages();
     
     //bool receiveMessage(const Message &message);
 
@@ -121,6 +120,10 @@ public:
 
     // consume objects as determined by the rate of consumption
     void consumeObjects();
+	
+    void receiveMessage(const Message& message){
+	receiveQueue.push_back(message);
+    }
 
     UUID getUUID() const { return uuid; }
     void setUUID(UUID nid) { uuid = nid; }

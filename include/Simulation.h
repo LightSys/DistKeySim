@@ -14,6 +14,9 @@
 #include "GeometricDisconnect.h"
 #include "Random.h"
 #include "SystemClock.h"
+#include "ADAKStrategy.h"
+#include "WeightedAverageStrategy.h"
+#include "ControlStrategy.h"
 
 using namespace std;
 

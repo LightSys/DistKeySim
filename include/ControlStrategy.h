@@ -1,17 +1,12 @@
 #ifndef LIGHTSYS_ADAK_CONTROL_STRATEGY_H
-#define LIGHTSYS_ADAK_CONTROL_STARTEGY_H
-
-/**
- * This is an implementation of EventGen class. It is not currently used or fully implemented, but it is intended
- * to be used as a source of random event generation such as network "disconnects", lost messages, etc.
- */
+#define LIGHTSYS_ADAK_CONTROL_STRATEGY_H
 
 #include "ADAKStrategy.h"
 #include "SystemClock.h"
 
 using namespace std;
 
-enum NodeTimer { HEARTBEAT_TIMER };
+enum ControlNodeTimer { CONTROL_HEARTBEAT_TIMER };
 
 class ControlStrategy: public ADAKStrategy {
 private:
@@ -25,7 +20,7 @@ public:
 
     ~ControlStrategy();
 
-    void nodeTick(stared_ptr<Node>& node);
+    void nodeTick(shared_ptr<Node>& node);
 };
 
 #endif //LIGHTSYS_ADAK_CONTROL_STRATEGY_H

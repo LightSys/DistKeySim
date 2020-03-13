@@ -1,7 +1,6 @@
 #ifndef LIGHTSYS_ADAK_STRATEGY_H
 #define LIGHTSYS_ADAK_STRATEGY_H
 
-#include "Simulation.h"
 #include "Network.h"
 
 /**

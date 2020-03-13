@@ -5,7 +5,7 @@
 using namespace std;
 
 //maximum history size:
-NodeData::MAXIMUM_HISTORY_SIZE = 100;
+//Node::MAXIMUM_HISTORY_SIZE = 100;
 
 Node::Node(double lambda3) : uuid(new_uuid()), lastDay(NodeData()), lambda3(lambda3)  {
     generateObjectCreationRateDistribution();

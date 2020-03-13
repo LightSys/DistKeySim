@@ -1,6 +1,5 @@
 
 #include "Simulation.h"
-#include "ADAKStrategy.h"
 
 // Number of rounds to complete to allow the simulation to settle
 static const int NUM_ROUNDS = 50;
@@ -43,7 +42,7 @@ void Simulation::run() {
     cout << "Ticking network a bunch" << endl;
 
     // run the simulation for NUM_ROUNDS timesteps:
-    for(int i=0; i<NUM_ROUNDS; i++){}
+    for(int i=0; i<NUM_ROUNDS; i++){
 
         cout << "***********************************************Tick" << endl;
         eventGen->eventTick(&network);
@@ -79,6 +78,6 @@ void Simulation::run() {
     // csv.open("uuidsOut.csv", ofstream::out | ofstream::trunc);
     // network.printUUIDList(csv, ',');
     // csv.close();
-
+    delete algorithm;
     delete eventGen;
 }
