@@ -5,7 +5,7 @@
 
 using namespace std;
 
-GeometricDisconnect(ClockType clockType, double lambda1, double lambda2){
+GeometricDisconnect::GeometricDisconnect(ClockType clockType, double lambda1, double lambda2){
     clock = shared_ptr<SystemClock>(SystemClock.makeClock(clockType));
 
     this->lambda1 = lambda1;
