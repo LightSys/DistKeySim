@@ -28,17 +28,17 @@ static const std::string SMALLEST_KEY_OPTIONS[SIZEOF_SMALLEST_KEY_OPTIONS] = {
 
 static const unsigned int SIZEOF_ALGORITHM_STAT_OPTIONS = 2;
 static const std::string ALGORITHM_STAT_OPTIONS[SIZEOF_ALGORITHM_STAT_OPTIONS] = {
-	"temperature based", 
+	"temperature based",
 	"temperature with priority transmission based"
 };
 
 static const short INVALID_HARD_KNOB_OPTION = -1;
 
-//defaults for UI input: 
+//defaults for UI input:
 static const float DEFAULT_VISIBLE_PEERS = 0.01;
 static const float DEFAULT_LAMBDA1 = 8;
 static const float DEFAULT_LAMBDA2 = 6;
-static const float DEFAULT_LAMBDA3 = 0.5;
+static const float DEFAULT_LAMBDA3 = 5;
 static const unsigned int DEFAULT_MAX_KEYS_BITS = 31;
 static const int DEFAULT_CHUNKINESS = 10;
 static const int DEFAULT_HEARTBEAT = 5;
@@ -51,8 +51,8 @@ struct Config {
     std::string csvOutputPath;
     int creationRate;
     float networkScale;
-    
-    //added for the UI input: 
+
+    //added for the UI input:
     float visiblePeers;//chance (from percent) in decimal 0-1
     float lambda1;
     float lambda2;
@@ -63,8 +63,8 @@ struct Config {
     unsigned int longTermPrecision;
     short smallestKeyOption;
     short algorithmStrategyOption;
-    
-    
+
+
     explicit Config(
         u_int numNodes = DEFAULT_NUM_NODES, std::string connectionMode = DEFAULT_CONN_MODE_STR,
         std::string csvPath = DEFAULT_CSV_OUTPUT_PATH, int creationRate = DEFAULT_CREATION_RATE,
@@ -80,7 +80,7 @@ struct Config {
             throw std::invalid_argument("connectionMode not one of 'full', 'partial', or 'single'");
         }
     }
-    
+
     /**
      * Populates Config object from JSON file file stream
      * @param jsonFile File stream to parse JSON from
