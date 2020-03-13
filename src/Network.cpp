@@ -50,6 +50,9 @@ void Network::doAllHeartbeat() {
     for (auto const& node : nodes) {
         node.second->heartbeat();
     }
+    Logger::getTimeslot(true);
+    Logger::getShared(true,0);
+    Logger::getConsumption(true,0);
 }
 
 void Network::checkAndSendAllNodes() {
