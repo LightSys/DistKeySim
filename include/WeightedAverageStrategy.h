@@ -20,6 +20,7 @@ private:
     clock_unit_t heartbeatPeriod;
     double diffusionRate;
     double allocationThreshold;
+    int keyspaceChunkSize;
 
 public:
 

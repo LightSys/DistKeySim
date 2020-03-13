@@ -12,22 +12,22 @@ WeightedAverageStrategy::WeightedAverageStrategy(
     this->keyspaceChunkSize = keyspaceChunkSize;
     this->diffusionRate = diffusionRate;
     this->allocationThreshold = allocationThreshold;
-    this->nodeClock = SystemClock::makeClock(type);
+    this->nodeClock = unique_ptr<SystemClock>(SystemClock::makeClock(type));
     this->heartbeatPeriod = heartbeatPeriod;
     this->nodeClock->setTimer(W_AVG_HEARTBEAT_TIMER, heartbeatPeriod);
 }
 
 void WeightedAverageStrategy::nodeTick(Node* node){
 
-    nodeClock.tick();
+    nodeClock->tick();
 
     if(nodeClock->checkTimer(W_AVG_HEARTBEAT_TIMER) == ENDED){
 
         //check new messages:
-        queue<Messages> newMessages = node->getReceivedMessages();
+        deque<Message> newMessages = node->getReceivedMessages();
         while(!newMessages.empty()){
-            processMessage(newMessages.front());
-            newMessages.pop();
+            processMessage(node, newMessages.front());
+            newMessages.pop_front();
         }
 
         node->heartbeat();
@@ -35,7 +35,7 @@ void WeightedAverageStrategy::nodeTick(Node* node){
     }
 }
 
-void processMessage(Node* node, const Message& msg){
+void WeightedAverageStrategy::processMessage(Node* node, const Message& msg){
 
     // If destination node is this node, don't receive it
     if (msg.sourcenodeid() == node->getUUID()) {
@@ -45,24 +45,25 @@ void processMessage(Node* node, const Message& msg){
     // Check time and update lastDay and rotate the history
 
     // Handle last received message ID incrementing
+    auto peers = node->getPeers();
     auto peer = peers.find(msg.sourcenodeid());
 
     if (peer == peers.end()) {
         // First message received from this peer, add message ID and update find result
-        peers.insert({msg.sourcenodeid(), make_shared<Message>(msg)});
+       	// node->getPeers().insert({msg.sourcenodeid(), make_shared<Message>(msg)});
         peer = peers.find(msg.sourcenodeid());
     } else {
         // Known peer, update msg ID
         peers.at(msg.sourcenodeid()) = make_shared<Message>(msg);
     }
 
-    switch (msg.messagetype()) {
+    switch (msg.messagetype()){
         case Message_MessageType_KEYSPACE:
             node->receiveKeyspace(msg);
             break;
 
         case Message_MessageType_INFORMATION:
-
+	    /*
             double shortAllocationRatio = 0.0;
             double longAllocationRatio = 0.0;
 
@@ -71,7 +72,7 @@ void processMessage(Node* node, const Message& msg){
                 longAllocationRatio = msg.info().records(i).creationratedata().longallocationratio();
             }
 
-            if (allocationRatio > ALLOCATION_BEFORE_GIVING_KEYSPACE) {
+            if ((node->getHistory()->back().getLongTermAllocationRatio() - longAllocationRatio) * diffusionRate > allocationThreshold ) {
                 if (peer == peers.end()) {
                     // No peer found matching UUID in message, ignore this message
                     break;
@@ -79,8 +80,8 @@ void processMessage(Node* node, const Message& msg){
 
                 // Handle decision on giving of keyspace
                 if (!keyspaces.empty()) {
-                    Keyspace keyspaceToGive = keyspaces.at(minimumKeyspaceIndex());
 
+                    Keyspace keyspaceToGive = keyspaces.at(minimumKeyspaceIndex());
 
                     // If there is at least one spot available
                     if ((keyspaceToGive.getStart() + pow(2, keyspaceToGive.getSuffix())) < keyspaceToGive.getEnd()) {
@@ -100,6 +101,8 @@ void processMessage(Node* node, const Message& msg){
                     }
                 }
             }
+	    */
+
         break;
 
         default:

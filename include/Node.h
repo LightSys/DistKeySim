@@ -6,6 +6,7 @@
 #include <queue>
 #include <string>
 #include <climits>
+#include <memory>
 
 #include "UUID.h"
 #include "Keyspace.h"
@@ -60,10 +61,11 @@ public:
         delete gen;
     }
 
-    shared_ptr<vector<NodeData>> getHistory(){
-        return shared_ptr<vector<NodeData>>(&history);
+    std::shared_ptr<vector<NodeData>> getHistory(){
+        return std::shared_ptr<vector<NodeData>>(&history);
     }
 
+    
     /**
      * Adds a peer to local list of peers
      * @param peer Const reference to Node instance to add as peer
