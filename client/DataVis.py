@@ -3,15 +3,20 @@ import plotly.graph_objects as go
 import plotly.express as px
 import numpy as np
 
-def drawAnalytics(path):
+def runDataAnalytics(path):
     # Be sure to replace this path with whatever is appropriate
     df = pd.read_csv(path)
+    # print(df)
 
     # First figure produced
     fig = go.Figure()
     for data in df['UUID']:
         d = df['UUID'] == data
         a = df[d]
+        if max(a['totalKeys']) == 0:
+            sizeVal= [5]* len(a['totalKeys'])
+        else:
+            sizeVal = (a['totalKeys']/max(a['totalKeys']))*20 + 5
         fig.add_trace(go.Scatter(
             y = a['consumption'],
             x = a['timeSlot'],
@@ -24,17 +29,21 @@ def drawAnalytics(path):
             hoverinfo = 'x+y+text',
             hovertemplate = "Time step: %{x}<br>Consumption: %{y:,.0f}<br>Total keys: %{text}",
             hoveron='points',
-            marker=dict(size=a['totalKeys']/max(a['totalKeys'])*20)
+            marker=dict(size=sizeVal)
             ))
     fig.update_layout(title="Node consumption and keyspace size over time",xaxis_title="Time", yaxis_title="Consumption (objects created since last time step)")
     fig.update_layout(template="plotly")
     fig.show()
 
-    # Second figure produced
+    #Second figure produced
     fig1 = go.Figure()
     for data in df['UUID']:
         d = df['UUID'] == data
         a = df[d]
+        if max(a['sharing']) == 0:
+            sizeVal= [5]* len(a['sharing'])
+        else:
+            sizeVal = (a['sharing']/max(a['sharing']))*20 + 5
         fig1.add_trace(go.Scatter(
             y = a['consumption'],
             x = a['timeSlot'],
@@ -47,7 +56,7 @@ def drawAnalytics(path):
             hoverinfo = 'x+y+text',
             hovertemplate = "Time step: %{x}<br>Consumption: %{y:,.0f}<br>Sharing: %{text}",
             hoveron='points',
-            marker=dict(size=a['sharing']/max(a['sharing'])*20)
+            marker=dict(size=sizeVal)
             ))
     fig1.update_layout(title="Node consumption and sharing over time",xaxis_title="Time", yaxis_title="Consumption (objects created since last time step)")
     fig1.update_layout(template="ggplot2")

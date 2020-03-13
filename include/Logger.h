@@ -40,11 +40,11 @@ class Logger {
         }
 
         static void setCSVHeaders (){
-            Logger::logStats(csvHeaders);
+            Logger::logStats(csvHeaders);//first line should be column titles
         }
         static int getTimeslot(bool increment){
             static int timeslot = 0;
-            if (increment){
+            if (increment){//only increment if it is from doAllHearbeat()
                 timeslot++;
             }
             return timeslot;
@@ -52,7 +52,7 @@ class Logger {
         static int getShared(bool clear,int more){
             static int shared = 0;
             shared += more;
-            if(clear){
+            if(clear){//reset after timeslot changes
                 shared =0;
             }
             return shared;
@@ -60,7 +60,7 @@ class Logger {
         static int getConsumption(bool clear, int more){
             static int rate = 0;
             rate+=more;
-            if(clear){
+            if(clear){//reset after timeslot changes
                 rate =0;
             }
             return rate;

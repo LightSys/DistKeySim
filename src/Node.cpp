@@ -351,7 +351,7 @@ Message Node::getHeartbeatMessage(const UUID &peerID) const {
 
 void Node::logInfoForHeartbeat(){
     string tempValue = "1.0";
-    vector<string> dataLine;
+    vector<string> dataLine; //line in the csv
     dataLine.push_back(uuid);
     dataLine.push_back(to_string((Logger::getTimeslot(false))));
     ADAK_Key_t totalSize =0;
@@ -359,7 +359,7 @@ void Node::logInfoForHeartbeat(){
         totalSize += k.getSize();
     }
     dataLine.push_back((to_string(totalSize)));
-    dataLine.push_back(tempValue);
+    dataLine.push_back(tempValue);// these lines are for shared and consumption until algorithm actually shares and consumes
     dataLine.push_back(to_string(objectConsuptionRatePerSecond));
     //dataLine.push_back(to_string(Logger::getShared(false,0)));
     //dataLine.push_back(to_string(Logger::getConsumption(false,0)));
