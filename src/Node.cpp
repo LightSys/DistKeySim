@@ -332,8 +332,10 @@ void Node::logInfoForHeartbeat(){
         totalSize += k.getSize();
     }
     dataLine.push_back((to_string(totalSize)));
-    dataLine.push_back(to_string(Logger::getShared(false,0)));
-    dataLine.push_back(to_string(Logger::getConsumption(false,0)));
+    dataLine.push_back(tempValue);
+    dataLine.push_back(tempValue);
+    //dataLine.push_back(to_string(Logger::getShared(false,0)));
+    //dataLine.push_back(to_string(Logger::getConsumption(false,0)));
     if(getTotalLocalKeyspaceSize() >0){
         ADAK_Key_t localSize = getTotalLocalKeyspaceSize();
         double percent = (double)totalSize/(double)localSize;
