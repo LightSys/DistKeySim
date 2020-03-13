@@ -29,6 +29,6 @@ ADAK_Key_t Keyspace::getNextAvailableKey() {
 }
 
 ADAK_Key_t Keyspace::getSize(){
-    ADAK_Key_t size = (this->end - this->start)>>this->suffix;
+    ADAK_Key_t size = (this->end - this->start)>>this->suffix;//using bitshifting to calculate the size of the keyspace 
     return size;
 }
