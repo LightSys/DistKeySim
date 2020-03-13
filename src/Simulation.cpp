@@ -81,5 +81,5 @@ void Simulation::run() {
     network.printUUIDList(csv, ',');
     csv.close();
 
-    delete (GeometricDisconnect*)eventGen;
+    delete eventGen;
 }
