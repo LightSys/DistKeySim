@@ -35,13 +35,14 @@ private:
 
     //next timer id to use
     int nextTimerID = 0;
+    double lambda3;
 
     // Connection type used to connect member Nodes
     ConnectionType connectionType;
     //amount it is connected if it is partially connected
     int PERCENT_CONNECTED;
 public:
-    Network(ConnectionType connectionType, float PERCENT_CONNECTED);
+    Network(ConnectionType connectionType, float PERCENT_CONNECTED, double lambda3);
     ~Network() = default;
 
     /**

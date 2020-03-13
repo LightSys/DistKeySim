@@ -40,8 +40,8 @@ void Node::changeConsumptionRate(){
     objectConsuptionRatePerSecond = 1.0/((*d3)(*gen));
 }
 
-static Node rootNode() {
-    return Node(Keyspace(0, UINT_MAX, 0));
+static Node rootNode(double lambda3) {
+    return Node(Keyspace(0, UINT_MAX, 0), lambda3);
 }
 
 void Node::addPeer(const UUID &peerUUID) {

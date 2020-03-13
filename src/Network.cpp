@@ -6,7 +6,7 @@
 
 using namespace std;
 
-Network::Network(ConnectionType connectionType, float PERCENT_CONNECTED) {
+Network::Network(ConnectionType connectionType, float PERCENT_CONNECTED, double lambda3): lambda3(lambda3) {
     this->connectionType = connectionType;
     //PERCENT_CONNECTED is a 5 digit int (99.999% = 99999)
     this->PERCENT_CONNECTED = (int)(PERCENT_CONNECTED*1000);
@@ -80,7 +80,7 @@ UUID Network::addRootNode() {
 
 UUID Network::addEmptyNode() {
     // Create a new new node with the no keyspace
-    auto newNode = make_shared<Node>();
+    auto newNode = make_shared<Node>(this->lambda3);
     UUID newUUID = newNode->getUUID();
 
     // Add the new node to the nodes map
@@ -96,7 +96,7 @@ UUID Network::addEmptyNode() {
 
 UUID Network::addNode(const Keyspace &keyspace) {
     // Create a new new node with the given keyspace
-    auto newNode = make_shared<Node>(keyspace);
+    auto newNode = make_shared<Node>(keyspace, this->lambda3);
     UUID newUUID = newNode->getUUID();
 
     // Make connection to peers

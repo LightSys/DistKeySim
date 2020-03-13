@@ -13,7 +13,7 @@ using namespace std;
 static const int NUM_ROUNDS = 50;
 
 Simulation::Simulation(const struct Config &config)
-    : numNodes(config.numNodes), network(Network(config.connectionMode, config.visiblePeers)) {
+    : numNodes(config.numNodes), network(Network(config.connectionMode, config.visiblePeers, config.lambda3)) {
     // Seed random number
     srand(time(nullptr));
 }

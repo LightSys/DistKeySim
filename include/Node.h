@@ -48,7 +48,7 @@ private:
 public:
     Node(double lambda3);
     Node(const Keyspace &keyspace, double lambda3);
-    static Node rootNode();
+    static Node rootNode(double lambda3);
     ~Node() = default;
 
     /**
