@@ -53,33 +53,33 @@ void Simulation::run() {
     //     eventGen->eventTick(&network);
     // }
 
-    shared_ptr<Node> tomTest = this->network.getNodeFromUUID(this->network.getRandomNode());
-    shared_ptr<NodeData> Nodedata = tomTest->getNodeData();
-    vector<Keyspace> tomSpace = tomTest->getKeySpace();
-    cout << "Creation Rate: " << Nodedata->getKeysUsed() <<
-            "\nLong Term Allocation: " << Nodedata->updateLongTermAllocationRatio(tomSpace) <<
-            "\nShort Term Allocation: " << Nodedata->updateShortTermAllocationRatio(tomSpace) <<
-            "\nEnd Key: " << Nodedata->findEndKey(Nodedata->getCreationRate(), tomSpace) <<
-            "\nMin Key: " << tomTest->getKeySpace().at(Nodedata->getMinKeyIndex(tomSpace)).getStart() <<
-            "\nSuffix: " << tomTest->getKeySpace().at(0).getSuffix()<<
-            "\nFinal Key in actual test: " << tomTest->getKeySpace().at(0).getEnd() <<
-            "\nProvisional Ration: " << Nodedata->updateProvisioningRatio(Nodedata->getKeysUsed(), Nodedata->getShortTermAllocationRatio());
-    network.printChannels();
-    network.printKeyspaces();
+    // shared_ptr<Node> tomTest = this->network.getNodeFromUUID(this->network.getRandomNode());
+    // shared_ptr<NodeData> Nodedata = tomTest->getNodeData();
+    // vector<Keyspace> tomSpace = tomTest->getKeySpace();
+    // cout << "Creation Rate: " << Nodedata->getKeysUsed() <<
+    //         "\nLong Term Allocation: " << Nodedata->updateLongTermAllocationRatio(tomSpace) <<
+    //         "\nShort Term Allocation: " << Nodedata->updateShortTermAllocationRatio(tomSpace) <<
+    //         "\nEnd Key: " << Nodedata->findEndKey(Nodedata->getCreationRate(), tomSpace) <<
+    //         "\nMin Key: " << tomTest->getKeySpace().at(Nodedata->getMinKeyIndex(tomSpace)).getStart() <<
+    //         "\nSuffix: " << tomTest->getKeySpace().at(0).getSuffix()<<
+    //         "\nFinal Key in actual test: " << tomTest->getKeySpace().at(0).getEnd() <<
+    //         "\nProvisional Ration: " << Nodedata->updateProvisioningRatio(Nodedata->getKeysUsed(), Nodedata->getShortTermAllocationRatio());
+    // network.printChannels();
+    // network.printKeyspaces();
 
     // Output to CSV
-    ofstream csv;
-    csv.open("channelsOut.csv", ofstream::out | ofstream::trunc);
-    network.printChannels(csv, ',');
-    csv.close();
-
-    csv.open("keyspacesOut.csv", ofstream::out | ofstream::trunc);
-    network.printKeyspaces(csv, ',');
-    csv.close();
-
-    csv.open("uuidsOut.csv", ofstream::out | ofstream::trunc);
-    network.printUUIDList(csv, ',');
-    csv.close();
+    // ofstream csv;
+    // csv.open("channelsOut.csv", ofstream::out | ofstream::trunc);
+    // network.printChannels(csv, ',');
+    // csv.close();
+    //
+    // csv.open("keyspacesOut.csv", ofstream::out | ofstream::trunc);
+    // network.printKeyspaces(csv, ',');
+    // csv.close();
+    //
+    // csv.open("uuidsOut.csv", ofstream::out | ofstream::trunc);
+    // network.printUUIDList(csv, ',');
+    // csv.close();
 
     delete eventGen;
 }
