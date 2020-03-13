@@ -40,7 +40,7 @@ void Simulation::run() {
     // }
 
     double lambda1 = 2.0, lambda2 = 3.0;//time till offline and time till online
-    EventGen* eventGen = new GeometricDisconnect(ClockType::SIMULATION, lambda1, lambda2);
+    EventGen* eventGen = new GeometricDisconnect(SIMULATION, lambda1, lambda2);
     network.checkAndSendAllNodes();
     network.doAllHeartbeat();
     //send some nodes offline////TODO:: RUN THIS TEST
