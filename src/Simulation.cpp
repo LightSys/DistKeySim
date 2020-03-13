@@ -1,4 +1,5 @@
 
+#include "Simulation.h"
 
 // Number of rounds to complete to allow the simulation to settle
 static const int NUM_ROUNDS = 50;
