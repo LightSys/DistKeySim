@@ -21,6 +21,7 @@ private:
     UUID uuid;
     u_int messageID = 1;
     std::deque<Message> sendQueue;
+    std::deque<Message> receiveQueue;
     std::vector<Keyspace> keyspaces;
     std::map<UUID, std::shared_ptr<Message>> peers;
     std::vector<NodeData> history;
@@ -37,12 +38,18 @@ private:
      * @return Message with hearbeat information for this node
      */
     Message getHeartbeatMessage(const UUID &peerID) const;
-    
+
 public:
     Node();
     Node(const Keyspace &keyspace);
     static Node rootNode();
     ~Node() = default;
+
+    shared_ptr<vector<NodeData>> getHistory(){
+        return shared_ptr<vector<NodeData>>(&history);
+    }
+
+    shared_ptr<map<UUID, std::shared_ptr>> 
 
     /**
      * Adds a peer to local list of peers
@@ -77,7 +84,8 @@ public:
 
     // Generate heartbeat messages for all peers
     void heartbeat();
-    bool receiveMessage(const Message &message);
+
+    queue<Message> getReceivedMessages();
 
     int minimumKeyspaceIndex();
     ADAK_Key_t getNextKey();

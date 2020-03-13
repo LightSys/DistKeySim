@@ -13,7 +13,7 @@ using namespace std;
 
 enum NodeTimer { HEARTBEAT_TIMER };
 
-class ControlStrategy: public ADAKStrategy {
+class WeightedAverageStrategy: public ADAKStrategy {
 private:
 
     unique_ptr<SystemClock> nodeClock;
@@ -21,9 +21,10 @@ private:
 
 public:
 
-    ControlStrategy(ClockType clockType, clock_unit_t heartbeatPeriod);
+    WeightedAverageStrategy(ClockType clockType, clock_unit_t heartbeatPeriod, int keyspaceChunkSize);
+    ~WeightedAverageStrategy();
 
-    ~ControlStrategy();
+    void processMessage(Node* node, const Message& msg);
 
     void nodeTick(Node* node);
 };

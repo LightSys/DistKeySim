@@ -152,6 +152,7 @@ void Node::heartbeat() {
     //maybe put if ran out of space here, and uuid
 }
 
+/*
 bool Node::receiveMessage(const Message &msg) {
     if (msg.sourcenodeid() == uuid) {
         // Destination node is this node, don't receive it
@@ -189,6 +190,9 @@ bool Node::receiveMessage(const Message &msg) {
                 Keyspace newSpace = Keyspace{peerSpace.startid(), peerSpace.endid(), peerSpace.suffixbits()};
                 keyspaces.emplace_back(newSpace);
                 totalLocalKeyspaceSize+=newSpace.getSize(); //updating total after recieving
+
+                // update local NodeData history with this keyspace:
+
             }
 
             break;
@@ -246,10 +250,17 @@ bool Node::receiveMessage(const Message &msg) {
 
     return false;
 }
+*/
 
 deque<Message> Node::getMessages() {
     deque<Message> toSend = move(sendQueue);
     sendQueue.empty();
+    return toSend;
+}
+
+deque<Message> Node::getReceivedMessages() {
+    deque<Message> toSend = move(receiveQueue);
+    receiveQueue.empty();
     return toSend;
 }
 
@@ -275,6 +286,7 @@ void Node::shareKeyspace(Message &msg) {
         // Update local keyspace records
         keyspaces.at(minKeyspaceIndex) = Keyspace(myStart, myEnd, mySuffix);
         newKeyspace = KeyspaceExchangeRecord{"share", newStart, newEnd, newSuffix};
+
     } else {
         // Start breaking into sub-blocks!
         // (((end - start) / 2^B) / (chunkiness)) * B + start

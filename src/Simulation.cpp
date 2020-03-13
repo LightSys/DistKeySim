@@ -48,6 +48,7 @@ void Simulation::run() {
     shared_ptr<Node> tomTest = this->network.getNodeFromUUID(this->network.getRandomNode());
     shared_ptr<NodeData> Nodedata = tomTest->getNodeData();
     vector<Keyspace> tomSpace = tomTest->getKeySpace();
+
     cout << "Creation Rate: " << Nodedata->getKeysUsed() <<
             "\nLong Term Allocation: " << Nodedata->updateLongTermAllocationRatio(tomSpace) <<
             "\nShort Term Allocation: " << Nodedata->updateShortTermAllocationRatio(tomSpace) <<
