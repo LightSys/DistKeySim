@@ -10,7 +10,6 @@
 #include "Network.h"
 #include "config.hpp"
 #include "Logger.h"
-#include "Simulation.h"
 #include "UUID.h"
 #include "GeometricDisconnect.h"
 #include "Random.h"
