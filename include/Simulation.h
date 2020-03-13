@@ -16,7 +16,7 @@
 #include "Random.h"
 #include "SystemClock.h"
 
-
+using namespace std;
 
 class Simulation {
 private:
