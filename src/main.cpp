@@ -15,5 +15,6 @@ int main(int argc, char** argv) {
     
     Simulation simulation(config);
     Logger::deleteOldLog();
+    Logger::setCSVHeaders();
     simulation.run();
 }
