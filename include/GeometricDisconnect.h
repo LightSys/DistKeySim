@@ -37,7 +37,7 @@
  */
 
 
-class GeometricDisconnect: public EventGen {
+class GeometricDisconnect : public EventGen {
 private:
     shared_ptr<SystemClock> clock;
     double lambda1, lamda2, lambda3;

@@ -1,7 +1,6 @@
 #ifndef LIGHTSYS_ADAK_EVENT_GEN_H
 #define LIGHTSYS_ADAK_EVENT_GEN_H
 
-#include "Simulation.h"
 #include "Network.h"
 
 /**
