@@ -106,7 +106,7 @@ public:
     // consume objects as determined by the rate of consumption
     void consumeObjects();
 
-    const UUID getUUID() const { return uuid; }
+    UUID getUUID() const { return uuid; }
     void setUUID(UUID nid) { uuid = nid; }
 
     std::vector<Keyspace> getKeySpace() const { return keyspaces; }
