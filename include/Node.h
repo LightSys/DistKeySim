@@ -44,6 +44,7 @@ private:
      * @return Message with hearbeat information for this node
      */
     Message getHeartbeatMessage(const UUID &peerID) const;
+    
 public:
     Node();
     Node(const Keyspace &keyspace);

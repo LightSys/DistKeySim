@@ -227,10 +227,10 @@ const char descriptor_table_protodef_message_2eproto[] PROTOBUF_SECTION_VARIABLE
   "usWeek\030\004 \001(\001\"\235\001\n\027KeyspaceMessageContents"
   "\0224\n\tkeyspaces\030\001 \003(\0132!.KeyspaceMessageCon"
   "tents.Keyspace\032L\n\010Keyspace\022\014\n\004name\030\001 \001(\t"
-  "\022\017\n\007startID\030\002 \001(\r\022\r\n\005endID\030\003 \001(\r\022\022\n\nsuff"
+  "\022\017\n\007startID\030\002 \001(\004\022\r\n\005endID\030\003 \001(\004\022\022\n\nsuff"
   "ixBits\030\004 \001(\r\"\356\003\n\007Message\022\024\n\014sourceNodeID"
   "\030\001 \001(\014\022\022\n\ndestNodeID\030\002 \001(\014\022\027\n\017lastReceiv"
-  "edMsg\030\003 \001(\r\022+\n\014channelState\030\004 \001(\0162\025.Mess"
+  "edMsg\030\003 \001(\004\022+\n\014channelState\030\004 \001(\0162\025.Mess"
   "age.ChannelState\022-\n\ttimestamp\030\005 \001(\0132\032.go"
   "ogle.protobuf.Timestamp\022\021\n\tmessageID\030\006 \001"
   "(\022\022)\n\013messageType\030\007 \001(\0162\024.Message.Messag"
@@ -1083,14 +1083,14 @@ const char* KeyspaceMessageContents_Keyspace::_InternalParse(const char* ptr, ::
           CHK_(ptr);
         } else goto handle_unusual;
         continue;
-      // uint32 startID = 2;
+      // uint64 startID = 2;
       case 2:
         if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 16)) {
           startid_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint(&ptr);
           CHK_(ptr);
         } else goto handle_unusual;
         continue;
-      // uint32 endID = 3;
+      // uint64 endID = 3;
       case 3:
         if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 24)) {
           endid_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint(&ptr);
@@ -1140,16 +1140,16 @@ failure:
         1, this->_internal_name(), target);
   }
 
-  // uint32 startID = 2;
+  // uint64 startID = 2;
   if (this->startid() != 0) {
     target = stream->EnsureSpace(target);
-    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteUInt32ToArray(2, this->_internal_startid(), target);
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteUInt64ToArray(2, this->_internal_startid(), target);
   }
 
-  // uint32 endID = 3;
+  // uint64 endID = 3;
   if (this->endid() != 0) {
     target = stream->EnsureSpace(target);
-    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteUInt32ToArray(3, this->_internal_endid(), target);
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteUInt64ToArray(3, this->_internal_endid(), target);
   }
 
   // uint32 suffixBits = 4;
@@ -1181,17 +1181,17 @@ size_t KeyspaceMessageContents_Keyspace::ByteSizeLong() const {
         this->_internal_name());
   }
 
-  // uint32 startID = 2;
+  // uint64 startID = 2;
   if (this->startid() != 0) {
     total_size += 1 +
-      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::UInt32Size(
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::UInt64Size(
         this->_internal_startid());
   }
 
-  // uint32 endID = 3;
+  // uint64 endID = 3;
   if (this->endid() != 0) {
     total_size += 1 +
-      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::UInt32Size(
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::UInt64Size(
         this->_internal_endid());
   }
 
@@ -1558,8 +1558,8 @@ Message::Message(const Message& from)
     timestamp_ = nullptr;
   }
   ::memcpy(&lastreceivedmsg_, &from.lastreceivedmsg_,
-    static_cast<size_t>(reinterpret_cast<char*>(&messagetype_) -
-    reinterpret_cast<char*>(&lastreceivedmsg_)) + sizeof(messagetype_));
+    static_cast<size_t>(reinterpret_cast<char*>(&messageid_) -
+    reinterpret_cast<char*>(&lastreceivedmsg_)) + sizeof(messageid_));
   clear_has_message();
   switch (from.message_case()) {
     case kInfo: {
@@ -1582,8 +1582,8 @@ void Message::SharedCtor() {
   sourcenodeid_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
   destnodeid_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
   ::memset(&timestamp_, 0, static_cast<size_t>(
-      reinterpret_cast<char*>(&messagetype_) -
-      reinterpret_cast<char*>(&timestamp_)) + sizeof(messagetype_));
+      reinterpret_cast<char*>(&messageid_) -
+      reinterpret_cast<char*>(&timestamp_)) + sizeof(messageid_));
   clear_has_message();
 }
 
@@ -1642,8 +1642,8 @@ void Message::Clear() {
   }
   timestamp_ = nullptr;
   ::memset(&lastreceivedmsg_, 0, static_cast<size_t>(
-      reinterpret_cast<char*>(&messagetype_) -
-      reinterpret_cast<char*>(&lastreceivedmsg_)) + sizeof(messagetype_));
+      reinterpret_cast<char*>(&messageid_) -
+      reinterpret_cast<char*>(&lastreceivedmsg_)) + sizeof(messageid_));
   clear_message();
   _internal_metadata_.Clear();
 }
@@ -1671,7 +1671,7 @@ const char* Message::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::in
           CHK_(ptr);
         } else goto handle_unusual;
         continue;
-      // uint32 lastReceivedMsg = 3;
+      // uint64 lastReceivedMsg = 3;
       case 3:
         if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 24)) {
           lastreceivedmsg_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint(&ptr);
@@ -1760,10 +1760,10 @@ failure:
         2, this->_internal_destnodeid(), target);
   }
 
-  // uint32 lastReceivedMsg = 3;
+  // uint64 lastReceivedMsg = 3;
   if (this->lastreceivedmsg() != 0) {
     target = stream->EnsureSpace(target);
-    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteUInt32ToArray(3, this->_internal_lastreceivedmsg(), target);
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteUInt64ToArray(3, this->_internal_lastreceivedmsg(), target);
   }
 
   // .Message.ChannelState channelState = 4;
@@ -1847,10 +1847,10 @@ size_t Message::ByteSizeLong() const {
         *timestamp_);
   }
 
-  // uint32 lastReceivedMsg = 3;
+  // uint64 lastReceivedMsg = 3;
   if (this->lastreceivedmsg() != 0) {
     total_size += 1 +
-      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::UInt32Size(
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::UInt64Size(
         this->_internal_lastreceivedmsg());
   }
 
@@ -1860,17 +1860,17 @@ size_t Message::ByteSizeLong() const {
       ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::EnumSize(this->_internal_channelstate());
   }
 
+  // .Message.MessageType messageType = 7;
+  if (this->messagetype() != 0) {
+    total_size += 1 +
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::EnumSize(this->_internal_messagetype());
+  }
+
   // sint64 messageID = 6;
   if (this->messageid() != 0) {
     total_size += 1 +
       ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::SInt64Size(
         this->_internal_messageid());
-  }
-
-  // .Message.MessageType messageType = 7;
-  if (this->messagetype() != 0) {
-    total_size += 1 +
-      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::EnumSize(this->_internal_messagetype());
   }
 
   switch (message_case()) {
@@ -1940,11 +1940,11 @@ void Message::MergeFrom(const Message& from) {
   if (from.channelstate() != 0) {
     _internal_set_channelstate(from._internal_channelstate());
   }
-  if (from.messageid() != 0) {
-    _internal_set_messageid(from._internal_messageid());
-  }
   if (from.messagetype() != 0) {
     _internal_set_messagetype(from._internal_messagetype());
+  }
+  if (from.messageid() != 0) {
+    _internal_set_messageid(from._internal_messageid());
   }
   switch (from.message_case()) {
     case kInfo: {
@@ -1989,8 +1989,8 @@ void Message::InternalSwap(Message* other) {
   swap(timestamp_, other->timestamp_);
   swap(lastreceivedmsg_, other->lastreceivedmsg_);
   swap(channelstate_, other->channelstate_);
-  swap(messageid_, other->messageid_);
   swap(messagetype_, other->messagetype_);
+  swap(messageid_, other->messageid_);
   swap(message_, other->message_);
   swap(_oneof_case_[0], other->_oneof_case_[0]);
 }
