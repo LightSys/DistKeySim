@@ -4,6 +4,7 @@
 #include "Simulation.h"
 #include "UUID.h"
 #include "EventGen.h"
+#include "GeometricDisconnect.h"
 #include "Random.h"
 #include "SystemClock.h"
 using namespace std;
@@ -12,7 +13,7 @@ using namespace std;
 static const int NUM_ROUNDS = 50;
 
 Simulation::Simulation(const struct Config &config)
-    : numNodes(config.numNodes), network(Network(config.connectionMode, config.visiblePeer)) {
+    : numNodes(config.numNodes), network(Network(config.connectionMode, config.visiblePeers)) {
     // Seed random number
     srand(time(nullptr));
 }
@@ -44,14 +45,12 @@ void Simulation::run() {
     network.doAllHeartbeat();
     //send some nodes offline////TODO:: RUN THIS TEST
     network.printChannels();
-    eventGen.eventTick(network);//randomly sends up to 10 nodes offline
-    network.tick();
+    eventGen->eventTick(network);//randomly sends up to 10 nodes offline
     network.printChannels();
 
     cout << "Ticking network a bunch" << endl;
     for(int i=0; i<NUM_ROUNDS; i++){
         cout << "***********************************************Tick" << endl;
-        network.tick();
         network.printChannels();
     }
 
