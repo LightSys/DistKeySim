@@ -2,7 +2,9 @@ import tkinter as tk
 from multiprocessing import Pipe, Process, Event
 from time import sleep
 
-import DataVis as datavis 
+# import DataVis as datavis 
+import DataVis2 as datavis2
+
 
 import sys
 
@@ -52,7 +54,8 @@ def setJsonVar(str_results_dict,hardknobs_results_dict):
     
     print("opening results data visualization...")
     
-    datavis.drawAnalytics("simulations/simulation_"+str(times_run)+"/statslog.csv")
+    #datavis.drawAnalytics("simulations/simulation_"+str(times_run)+"/statslog.csv")
+    datavis2.runDataAnalytics("sample_statslog.csv")
     
     print("opened analytics!")
     
@@ -201,7 +204,7 @@ def start_GUI(innrPipe):
     button.grid(row = count, column = 1)
     count += 1
     
-    hour_desc_label = tk.Label(frame,text = "Note: metrics in time are in hours\nexcept for heartbeat frequency.")
+    hour_desc_label = tk.Label(frame,text = "Note: metrics in time are in seconds\nexcept for heartbeat frequency.")
     config_label(hour_desc_label)
     hour_desc_label.grid(row = count, column = 1)
     count += 1 

@@ -70,7 +70,7 @@ In the simulation, nodes are randomly selected to disconnect and reconnect. The 
  ## Visualizations
  There were several different visualizations with which we experiemented. These are run by two different python scripts (DataVis.py, DataVis2.py) in the project. Below, by file, are listed descriptions of the different visualizations. Both run on the provided data and can take up to several minutes to display.
  
- # DataVis.py
+ ### DataVis.py
  Running this script will result in three pages opening in the default browser. The three analytic graphs that are displayed are described below. Note: for large datasets, this script takes an ***extremely long*** amount of time to run, and while it offers some insight, the density of nodes can render it largely indeciperable.
  
  It's important to know what you're looking at when analyzing the analytics that are produced. For each graph, hovering over a point displays a box with exact data about that node.
@@ -98,8 +98,8 @@ In the simulation, nodes are randomly selected to disconnect and reconnect. The 
     + When looking at the graph, there is healthy pattern for node behavior that should be ocurring. A node with high consumption should retain its size, or get smaller if it had a relatively large size. This indicates that such a more active node does not superfluously/excessively give away more keys even though its own demand/need is large. A node with low consumption should retain its size or grow larger; if it is large relative to its consumption, then it should stay the same size or get larger as it gives keys to other nodes that have higher consumption rate. At no point should any of the points completely disappear (run out of keys).
  3. **Local keyspace remaining over time**: This graph displays how the total local keyspace varies for node for each time step over the course of the simulation. Each node is a different color. The main thing to look out for is nodes that reach or near 0. The frequency with which nodes reach this point is a good indicator of how well the algorithm shares keys between nodes. If a large number of nodes frequently grounds, then it might indicate that nodes should share a greater number of keys with each other each time more keys are requested.
  
-# DataVis2.py
-This script produces two graphs for each node, a histogram and a KDE density plot.
+### DataVis2.py
+This script produces two graphs for each node, a histogram and a KDE density plot. 
 1. **Histogram** : The x-axis is the number of keys/object; the y-axis represents the frequency that the node had that many object/keys. The axis used is NOT a standardize axis. That is, each histogram has different axis scales/values to make viewing the png as easy as possible. There are three kinds of information that are displayed on the histogram:
     a. Trace 0 (Blue) is the total number of keys this node has.
     b. Trace 1 (Red) is the total consumption for this node; that is, it is the total number of objects that this node created.
@@ -109,6 +109,10 @@ This script produces two graphs for each node, a histogram and a KDE density plo
     a. The blue density plot is the total number of keys.
     b. The red density plot is the total consumption for this node.
     c. The green density plot is the total number of keys shared by this node.
+    
+### A note about the visualizations
+All visualizations are based off of the data output by the logging system to the statslLog.csv file. Given that certain parts of the algorithm have not been fully implemented/tested, care should be given when analyzing these data analytics. Use lots and lots of salt when viewing.... Also:
+**NOTE: FOR THE HISTOGRAM, EACH NODE APPEARS IN ITS OWN BROWSER WINDOW. THAT MEANS THAT IF THERE ARE 100 NODES IN THE SIMULATION, 100 BROWSER WINDOWS WILL OPEN. BEWARE!!** For the density plots, a window will open, and plots must be viewed one by one. Once you're done viewing the current plot, exit out of a window, and the next plot will appear. There is no way to go back to a previous plot. Given these incoveniences and limitations, we wanted to output these plots as PNGs and display them side-by-side for each node on an HTML page. As a consequence of our desire, we spent the next 4.5 hours trying to download/install/use the necessary dependencies to use the image_write() and savefig() functions. We did our best to install orca using multiple methods (including npm and conda), but alas, we were not able. This would be a good project for someone to work on in the future.
 
 ## Branches
 We kept master as our stable branch. We worked solely on develop and then merged things that are fully functional to
@@ -117,7 +121,9 @@ master. It is not 100% functionality, release candidate level, but they are stab
 # Class Diagram Link
 https://drive.google.com/file/d/1Czub9HZ2K6M838bzI8IzAxKO0jYjQAwj/view?usp=sharing
 
-## Keyspace Sharing Algorithm
+## Alernative Algorithms
+
+In further development of this project, it may be worthwhile to examine some alternative strategies that can be implemented by extending the ``ADAKStrategy`` class in a new class. Due to time considerations, we did not implement any alternatives to the algorithm given in the specification (aside from the Control strategy). However, we did propose an optimal alternative algorithm. The general idea is described as follows:
 
 In this algorithm the node will look at all of it's peers. It will calculate the average keyspace size that each node should have if we are to reach "equilibrium" (where equilibrium is defined as all the nodes having very close provisioning rates -- which is object creation rate multiplied by long term allocation rate Al -- which is object creation rate over keyspace in a node, otherwise defined as how fast a node is consuming the keyspace it has been given). If the keyspace of the current node is smaller than or equal to that average, the node does nothing. However, if the node's keyspace is larger, it will share its keyspace surplus with it's peers.
 
