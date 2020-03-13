@@ -30,7 +30,7 @@ void Network::enableNode(UUID nodeUUID){
 }
 
 bool Network::isOffline(UUID nodeID){
-    return nodeStatus[nodeID];
+    return !nodeStatus[nodeID];
 }
 
 bool Network::sendMsg(const Message &message) {
@@ -258,7 +258,7 @@ void Network::printChannels(ostream &out, char spacer) {
             << channel.getFromNode() << spacer
             << channel.getChannelId()
             << endl;
-        if(!(this->isOffline(channel.getToNode()) || this->isOffline(channel.getFromNode()))){
+        if(this->isOffline(channel.getToNode()) || this->isOffline(channel.getFromNode())){
             out << "  OFFLINE!!" << endl;
         }
     }
