@@ -29,7 +29,7 @@ private:
     NodeData lastDay;
     float createdDay;
     float createdWeek;
-    long long totalLocalKeyspaceSize=0;
+    ADAK_Key_t totalLocalKeyspaceSize=0;
     double objectConsuptionRatePerSecond;
     double amountOfOneKeyUsed = 0;
     double lambda3;
@@ -133,9 +133,9 @@ public:
      */
     void shareKeyspace(Message &msg);
 
-    void setTotalLocalKeyspaceSize(long long newSize) {this->totalLocalKeyspaceSize = newSize;};
+    void setTotalLocalKeyspaceSize(ADAK_Key_t newSize) {this->totalLocalKeyspaceSize = newSize;};
 
-    long long getTotalLocalKeyspaceSize() const {return this->totalLocalKeyspaceSize;};
+    ADAK_Key_t getTotalLocalKeyspaceSize() const {return this->totalLocalKeyspaceSize;};
 
     void logInfoForHeartbeat();
 };

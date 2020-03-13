@@ -40,7 +40,7 @@ public:
      */
     ADAK_Key_t getNextAvailableKey();
 
-    long long getSize();
+    ADAK_Key_t getSize();
 
     /**
      * This returns the same information that getNextAvailableKey does, but it doens't actually use up they keyspace.

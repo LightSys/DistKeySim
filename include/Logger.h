@@ -12,8 +12,7 @@ using namespace std;
 const char filename [] = "logOutput.txt";
 const char statslog [] = "statslog.csv";
 const char numberOfCols = 6;
-const vector<string> csvHeaders { "UUID", "Timeslot", "TotalNumberOfKeys","Sharing Rate", "Consumption Rate", "% of Local Keyspace Remaining" }; 
-
+const vector<string> csvHeaders { "UUID", "timeSlot", "totalKeys","sharing", "consumption", "remainder" }; 
 class Logger {
 
     public:

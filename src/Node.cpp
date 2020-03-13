@@ -350,16 +350,16 @@ Message Node::getHeartbeatMessage(const UUID &peerID) const {
 void Node::logInfoForHeartbeat(){
     vector<string> dataLine;
     dataLine.push_back(uuid);
-    dataLine.push_back("0");
-    long long totalSize =0;
+    dataLine.push_back("1.0");
+    ADAK_Key_t totalSize =0;
     for(Keyspace k: keyspaces){
         totalSize += k.getSize();
     }
     dataLine.push_back((to_string(totalSize)));
-    dataLine.push_back("0");
-    dataLine.push_back("0");
+    dataLine.push_back("1.0");
+    dataLine.push_back("1.0");
     if(getTotalLocalKeyspaceSize() >0){
-        long long localSize = getTotalLocalKeyspaceSize();
+        ADAK_Key_t localSize = getTotalLocalKeyspaceSize();
         double percent = (double)totalSize/(double)localSize;
         dataLine.push_back(to_string(percent));
     }else{
