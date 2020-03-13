@@ -97,6 +97,13 @@ Config::Config(ifstream jsonFile) {
             this->heartbeatFrequency = DEFAULT_HEARTBEAT;
         }
         
+        
+        if (jf.contains("Long_Term_Precision")){
+            jf.at("Long_Term_Precision").get_to(this->longTermPrecision);
+        } else {
+            this->longTermPrecision = DEFAULT_LONG_PRECISION;
+        }
+        
         //hard knobs: 
         
         if (jf.contains("Smallest_Key_for_Priority")) {

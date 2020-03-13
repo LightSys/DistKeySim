@@ -120,7 +120,8 @@ fine_knob_labels = ["Visible Peers (connected %)",\
                     "Max Keys (2^n, give n)",\
                     "lambda 3 (time between creating objects)",\
                     "Chunkiness (# of keys to shift)",\
-                    "Heartbeat Frequency"]
+                    "Heartbeat Frequency",\
+                    "Long Term Precision"]
                     
                     
 #label, [array of options]

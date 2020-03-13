@@ -27,6 +27,8 @@ void Network::tellAllNodesToConsumeObjects(){
 //sends a single node offline
 void Network::disableNode(UUID nodeUUID){
     nodeStatus[nodeUUID] = false;
+    string message = nodeUUID + " has gone offline.";
+    Logger::log(message);
 }
 
 //sends a single node online
