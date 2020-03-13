@@ -45,7 +45,7 @@ void Simulation::run() {
     network.doAllHeartbeat();
     //send some nodes offline////TODO:: RUN THIS TEST
     network.printChannels();
-    eventGen->eventTick(network);//randomly sends up to 10 nodes offline
+    eventGen->eventTick(&network);//randomly sends up to 10 nodes offline
     network.printChannels();
 
     cout << "Ticking network a bunch" << endl;

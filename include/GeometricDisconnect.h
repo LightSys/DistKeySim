@@ -55,7 +55,7 @@ private:
 
     mt19937 *gen;
 public:
-    GeometricDisconnect(ClockType clockType, double lambda1, double lambda2, double lambda3);
+    GeometricDisconnect(ClockType clockType, double lambda1, double lambda2);
     /**
      * Event tick causes one tick in the events, meaning that nodes could go offline
      *  or do other predefined things (none other yet)
@@ -68,12 +68,12 @@ public:
      *    the timer and tells the network to send the node offline.  If it comes
      *    back online (another timer), it tells the network and removes the timer.
      */
-    void GeometricDisconnect::checkOffline(Network* network);
+    void checkOffline(Network* network);
     /**
      * Generates timers for a node going offline and coming back online which will
      * be checked once an event tick.  Times based on the Geometric Statistical Distribution
      */
-    void GeometricDisconnect::sendOffline(Network* network, UUID nodeUUID, clock_unit_t timeToDisconnect, clock_unit_t timeOffline);
+    void sendOffline(Network* network, UUID nodeUUID, clock_unit_t timeToDisconnect, clock_unit_t timeOffline);
 };
 
 #endif //LIGHTSYS_ADAK_GEOMETRICTIMEGEN_H
