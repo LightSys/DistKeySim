@@ -59,7 +59,7 @@ private:
     mt19937 *gen;
 public:
     GeometricDisconnect(ClockType clockType, double lambda1, double lambda2);
-
+    ~GeometricDisconnect(){ delete d1; delete d2; delete gen; }
     /**
      * Event tick causes one tick in the events, meaning that nodes could go offline
      *  or do other predefined things (none other yet)
