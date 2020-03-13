@@ -6,7 +6,7 @@
 #include "GeometricDisconnect.h"
 
 GeometricDisconnect::GeometricDisconnect(ClockType clockType, double lambda1, double lambda2){
-    clock = shared_ptr<SystemClock>(SystemClock.makeClock(clockType));
+    clock = shared_ptr<SystemClock>(SystemClock::makeClock(clockType));
 
     this->lambda1 = lambda1;
     this->lambda2 = lambda2;
@@ -26,7 +26,7 @@ GeometricDisconnect::GeometricDisconnect(ClockType clockType, double lambda1, do
     gen = new mt19937(seed);
 }
 
-void GeometricDisconnect::sendOffline(Network* network, UUID nodeUUID, clock_unit_t timeToDisconnect, clock_unit_t timeOffline){
+void GeometricDisconnect::sendOffline(UUID nodeUUID, clock_unit_t timeToDisconnect, clock_unit_t timeOffline){
     //only allow a node to have one offline period set at a time
     if(backOnlineTimer.find(nodeUUID) == backOnlineTimer.end()){
 
@@ -37,12 +37,12 @@ void GeometricDisconnect::sendOffline(Network* network, UUID nodeUUID, clock_uni
 
         //set up when it goes offline
         goOfflineTimer[nodeUUID] = nextTimerID;
-        clock.setTimer(nextTimerID, timeToDisconnect);
+        clock->setTimer(nextTimerID, timeToDisconnect);
         nextTimerID++;
 
         //set up when if comes back online after going offline
         backOnlineTimer[nodeUUID] = nextTimerID;
-        clock.setTimer(nextTimerID, timeToDisconnect + timeOffline);
+        clock->setTimer(nextTimerID, timeToDisconnect + timeOffline);
         nextTimerID++;
     }
 }
@@ -52,9 +52,9 @@ void GeometricDisconnect::checkOffline(Network* network){
 
     //detect if a node's offline timer has expired (meaning that it is time to go offline)
     for(auto i : goOfflineTimer){
-        if(clock.checkTimer(i.second) == TimerStatus::ENDED){
+        if(clock->checkTimer(i.second) == TimerStatus::ENDED){
             toClear.push_back(i.first);
-            clock.clearTimer(i.second);
+            clock->clearTimer(i.second);
             network->disableNode(i.first);
         }
     }
@@ -67,9 +67,9 @@ void GeometricDisconnect::checkOffline(Network* network){
 
     //detect if a node's online timer has expired (meaning that it's time to come back online)
     for(auto i : backOnlineTimer){
-        if(clock.checkTimer(i.second) == TimerStatus::ENDED){
+        if(clock->checkTimer(i.second) == TimerStatus::ENDED){
             toClear.push_back(i.first);
-            clock.clearTimer(i.second);
+            clock->clearTimer(i.second);
             network->enableNode(i.first);
         }
     }
@@ -90,16 +90,16 @@ void GeometricDisconnect::eventTick(Network* network) {
     int totalNodes = rand() % 10 + 1;
 
     for (int i = 0; i < totalNodes; i ++){
-      UUID randomUUID = network->getRandomNode();
-      shared_ptr<Node> node = network->getNodeFromUUID(randomUUID);
+        UUID randomUUID = network->getRandomNode();
+        shared_ptr<Node> node = network->getNodeFromUUID(randomUUID);
 
-      clock_unit_t timeToDisconnect = (clock_unit_t)((*d1)(*gen));
-      clock_unit_t timeOffline = (clock_unit_t)((*d2)(*gen));
+        clock_unit_t timeToDisconnect = (clock_unit_t)((*d1)(*gen));
+        clock_unit_t timeOffline = (clock_unit_t)((*d2)(*gen));
 
-      // CALL FUNCTION TO GIVE PERSCRIBED COMMAND TO node through network
-      //This function also garuntees a node cannot go offline more than once at
-      //  a time
-      network->sendOffline(randomUUID, timeToDisconnect, timeOffline);
+        // CALL FUNCTION TO GIVE PERSCRIBED COMMAND TO node through network
+        //This function also garuntees a node cannot go offline more than once at
+        //  a time
+        this->sendOffline(randomUUID, timeToDisconnect, timeOffline);
     }
 
     //tell nodes to CONSUMEEEEE (nom nom nom nom nom)

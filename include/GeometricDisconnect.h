@@ -40,7 +40,8 @@
 class GeometricDisconnect : public EventGen {
 private:
     shared_ptr<SystemClock> clock;
-    double lambda1, lamda2, lambda3;
+    double lambda1, lambda2;
+    int nextTimerID = 0;
 
     //node id -> index into the clock timer array for the current timer
     // (time to start)
@@ -76,7 +77,7 @@ public:
      * Generates timers for a node going offline and coming back online which will
      * be checked once an event tick.  Times based on the Geometric Statistical Distribution
      */
-    void sendOffline(Network* network, UUID nodeUUID, clock_unit_t timeToDisconnect, clock_unit_t timeOffline);
+    void sendOffline(UUID nodeUUID, clock_unit_t timeToDisconnect, clock_unit_t timeOffline);
 };
 
 #endif
