@@ -44,10 +44,10 @@ private:
      * @return Message with hearbeat information for this node
      */
     Message getHeartbeatMessage(const UUID &peerID) const;
-    
+
 public:
-    Node();
-    Node(const Keyspace &keyspace);
+    Node(double lambda3);
+    Node(const Keyspace &keyspace, double lambda3);
     static Node rootNode();
     ~Node() = default;
 
