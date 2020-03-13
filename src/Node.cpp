@@ -7,14 +7,44 @@
 
 using namespace std;
 
-Node::Node() : uuid(new_uuid()), lastDay(NodeData())  {}
+//maximum history size:
+NodeData::MAXIMUM_HISTORY_SIZE = 100;
 
-Node::Node(const Keyspace &keySpace) : uuid(new_uuid()), lastDay(NodeData()) {
-    keyspaces.push_back(keySpace);
+Node::Node(double lambda3) : uuid(new_uuid()), lastDay(NodeData()), lambda3(lambda3)  {
+    generateObjectCreationRateDistribution();
+    changeConsumptionRate();
 }
 
-static Node rootNode() {
-    return Node(Keyspace(0, UINT_MAX, 0));
+Node::Node(const Keyspace &keySpace, double lambda3) : uuid(new_uuid()), lastDay(NodeData()), lambda3(lambda3) {
+    keyspaces.push_back(keySpace);
+    generateObjectCreationRateDistribution();
+    changeConsumptionRate();
+}
+
+void Node::consumeObjects(){
+    amountOfOneKeyUsed += objectConsuptionRatePerSecond;
+    if(amountOfOneKeyUsed >= 1.0){
+        this->getNextKey();
+        amountOfOneKeyUsed--;
+    }
+}
+
+void Node::generateObjectCreationRateDistribution(){
+    d3 = new geometric_distribution<>(this->lambda3);
+    // These are required for the geometric distribution function to operate
+    // correctly
+    random_device rd;
+    // Save the seed for debugging
+    unsigned int seed = rd();
+    gen = new mt19937(seed);
+}
+
+void Node::changeConsumptionRate(){
+    objectConsuptionRatePerSecond = 1.0/((*d3)(*gen));
+}
+
+static Node rootNode(double lambda3) {
+    return Node(Keyspace(0, UINT_MAX, 0), lambda3);
 }
 
 void Node::addPeer(const UUID &peerUUID) {
@@ -71,7 +101,7 @@ ADAK_Key_t Node::getNextKey() {
         ///Usually this happens in long term allocation statistics because it goes through till the end of
         ///the keyspace to see if th allocation is an issue. However if this happens. The problem is that the keys are
         ///getting distributed more than the current node has capcity for.
-        
+
         string message = "ERROR from getNextKey in Node: Not more keys to give";
         cout << message <<endl;
         Logger::log(message);
@@ -108,7 +138,7 @@ bool Node::isKeyAvailable(){
 /**
  * This is where the Baylor team will add more statistics to handle the messages that each node receives
  * @param message
- */
+*/
 void Node::heartbeat() {
     // No peers connected, so send
     if (peers.empty()) {
@@ -292,6 +322,17 @@ void Node::shareKeyspace(Message &msg) {
     Logger::log(message);
 }
 
+void Node::receiveKeyspace(Message &msg){
+
+    // add each keyspace block:
+    for (auto &&i = 0; i < msg.keyspace().keyspaces_size(); i++) {
+        KeyspaceMessageContents::Keyspace peerSpace = msg.keyspace().keyspaces(i);
+        Keyspace newSpace = Keyspace{peerSpace.startid(), peerSpace.endid(), peerSpace.suffixbits()};
+        keyspaces.emplace_back(newSpace);
+        totalLocalKeyspaceSize+=newSpace.getSize(); //updating total after recieving
+    }
+}
+
 Message Node::getHeartbeatMessage(const UUID &peerID) const {
     Message msg;
     if (peerID == BROADCAST_UUID) {
@@ -350,7 +391,7 @@ void Node::logInfoForHeartbeat(){
     }else{
         dataLine.push_back("0.0");
     }
-    
+
     Logger::logStats(dataLine);
     //maybe put if ran out of space here, and uuid
 }

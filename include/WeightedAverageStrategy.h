@@ -18,12 +18,18 @@ private:
 
     unique_ptr<SystemClock> nodeClock;
     clock_unit_t heartbeatPeriod;
+    double diffusionRate;
+    double allocationThreshold;
 
 public:
 
-    WeightedAverageStrategy(ClockType clockType, clock_unit_t heartbeatPeriod, int keyspaceChunkSize);
+    WeightedAverageStrategy(
+        ClockType clockType, clock_unit_t heartbeatPeriod, 
+        int keyspaceChunkSize, double diffusionRate, 
+        double allocationThreshold
+    );
     ~WeightedAverageStrategy();
-
+    
     void processMessage(Node* node, const Message& msg);
 
     void nodeTick(Node* node);

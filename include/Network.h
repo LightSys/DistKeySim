@@ -10,9 +10,14 @@
 #include "UUID.h"
 #include "Channel.h"
 #include "message.hpp"
+#include "SystemClock.h"
 
 /**
  * Types of connections that are possible when creating the initial network connection
+ *    Each type has its own implementation function which is called by connectNodeToNetwork
+ *      Full = fully connected graph
+ *      Partial = randomly connected graph (dependent on Config.visiblePeer's percentage connected)
+ *      Single = randomly connected MST (one connection only on creation)
  */
 enum class ConnectionType { Full, Partial, Single };
 
@@ -23,11 +28,21 @@ private:
 
      // All known channel between nodes, this is basically representing the edges of the graph
     std::vector<Channel> channels;
+    // std::map<UUID, std::shared_ptr<Node>> incoming, outgoing;
+
+    //true = online, false = offline
+    std::map<UUID, bool> nodeStatus;
+
+    //next timer id to use
+    int nextTimerID = 0;
+    double lambda3;
 
     // Connection type used to connect member Nodes
     ConnectionType connectionType;
+    //amount it is connected if it is partially connected
+    int PERCENT_CONNECTED;
 public:
-    Network(ConnectionType connectionType);
+    Network(ConnectionType connectionType, float PERCENT_CONNECTED, double lambda3);
     ~Network() = default;
 
     /**
@@ -63,13 +78,13 @@ public:
      * @return Safe pointer to Node
      */
     std::shared_ptr<Node> getNodeFromUUID(const UUID &uuid) const;
-    
+
     /**
      * Adds the initial node to the Network with max keyspace
      * @return UUID of created node
      */
     UUID addRootNode();
-    
+
     /**
      * Adds node to network without any keyspace
      * @return UUID of created node
@@ -82,9 +97,11 @@ public:
      * @return UUID of created node
      */
     UUID addNode(const Keyspace &keyspace);
-    
+
     /**
      * Make connections within network for new node
+     *
+     * ***This is a strategy to connect nodes to the graph.
      * @param newNode Node to connect
      */
     void connectNodeToNetwork(std::shared_ptr<Node> newNode);
@@ -94,7 +111,7 @@ public:
      * @param node Node to connect
      */
     void fullyConnect(std::shared_ptr<Node> node);
-    
+
     /**
      * Connects the node to a single other node
      * @param node Node to connect
@@ -108,7 +125,7 @@ public:
      * @return bool indicating existence of channel between the two nodes
      */
     bool channelExists(const UUID &nodeOne, const UUID &nodeTwo);
-    
+
     /**
      * Retrieves the ID within the network for the channel between the two nodes
      * @param nodeOne Node to retrieve connection with
@@ -119,9 +136,20 @@ public:
 
     // Checks all nodes for messages and passes on those messages to all other clients
     void checkAndSendAllNodes();
-    
+
     // Sends heartbeat for all nodes
     void doAllHeartbeat();
+
+    //sends a single node offline
+    void disableNode(UUID nodeUUID);
+    //sends a single node online
+    void enableNode(UUID nodeUUID);
+
+    //checks if a node is offline
+    bool isOffline(UUID nodeID);
+
+    //tells All Nodes To Consume Objects
+    void tellAllNodesToConsumeObjects();
 
     /**
      * Generates a UUID list based on the known UUIDs from the map<UUID, Node*>
@@ -137,12 +165,12 @@ public:
     void printUUIDList();
     void printChannels();
     void printKeyspaces();
-    
+
     // Output to ostream, allowing for file output
     void printUUIDList(std::ostream &out, char spacer = ',');
     void printChannels(std::ostream &out, char spacer = ',');
     void printKeyspaces(std::ostream &out, char spacer = ',');
-    
+
     // Number of nodes
     inline size_t numNodes() const { return nodes.size(); }
 };

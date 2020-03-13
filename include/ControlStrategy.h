@@ -25,7 +25,7 @@ public:
 
     ~ControlStrategy();
 
-    void nodeTick(Node* node);
+    void nodeTick(stared_ptr<Node>& node);
 };
 
 #endif //LIGHTSYS_ADAK_CONTROL_STRATEGY_H

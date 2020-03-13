@@ -17,7 +17,12 @@ class NodeData;
 static const HexDigest BROADCAST_UUID = "00000000-0000-0000-0000-000000000000";
 
 class Node {
+public:
+
+    static const unsigned int MAXIMUM_HISTORY_SIZE;
+
 private:
+
     UUID uuid;
     u_int messageID = 1;
     std::deque<Message> sendQueue;
@@ -31,6 +36,13 @@ private:
     float createdDay;
     float createdWeek;
     ADAK_Key_t totalLocalKeyspaceSize=0;
+    double objectConsuptionRatePerSecond;
+    double amountOfOneKeyUsed = 0;
+    double lambda3;
+    // d3 is the model used to randomly generate the object consuption rate
+    geometric_distribution<> *d3;
+
+    mt19937 *gen;
 
     /**
      * Generates the heartbeat informational message instance as per the specification
@@ -40,16 +52,14 @@ private:
     Message getHeartbeatMessage(const UUID &peerID) const;
 
 public:
-    Node();
-    Node(const Keyspace &keyspace);
-    static Node rootNode();
+    Node(double lambda3);
+    Node(const Keyspace &keyspace, double lambda3);
+    static Node rootNode(double lambda3);
     ~Node() = default;
 
     shared_ptr<vector<NodeData>> getHistory(){
         return shared_ptr<vector<NodeData>>(&history);
     }
-
-    shared_ptr<map<UUID, std::shared_ptr>> 
 
     /**
      * Adds a peer to local list of peers
@@ -86,10 +96,27 @@ public:
     void heartbeat();
 
     queue<Message> getReceivedMessages();
+    
+    //bool receiveMessage(const Message &message);
+
+    /**
+     * Change the consumption rate according the geometric distribution
+     */
+    void changeConsumptionRate();
+
+    /**
+     * This generates the geometric distribution from which the consumption
+     * rate is randomly generated with changeConsumptionRate
+     */
+    void generateObjectCreationRateDistribution();
+
 
     int minimumKeyspaceIndex();
     ADAK_Key_t getNextKey();
     bool isKeyAvailable();
+
+    // consume objects as determined by the rate of consumption
+    void consumeObjects();
 
     const UUID getUUID() const { return uuid; }
     void setUUID(UUID nid) { uuid = nid; }
@@ -119,9 +146,12 @@ public:
      */
     void shareKeyspace(Message &msg);
 
+    void receiveKeyspace(Message &msg);
+
     void setTotalLocalKeyspaceSize(ADAK_Key_t newSize) {this->totalLocalKeyspaceSize = newSize;};
 
     ADAK_Key_t getTotalLocalKeyspaceSize() const {return this->totalLocalKeyspaceSize;};
+
 
     void logInfoForHeartbeat();
 };
