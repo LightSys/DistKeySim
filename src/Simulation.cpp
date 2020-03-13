@@ -39,12 +39,14 @@ void Simulation::run() {
     network.printChannels();
     eventGen->eventTick(&network);//randomly sends up to 10 nodes offline
     network.printChannels();
-
-    cout << "Ticking network a bunch" << endl;
-    for(int i=0; i<NUM_ROUNDS; i++){
-        cout << "***********************************************Tick" << endl;
-        network.printChannels();
-    }
+    cout << "Now sending node offline." << endl;
+    network.disableNode(network.getRandomNode());
+    network.printChannels();
+    // cout << "Ticking network a bunch" << endl;
+    // for(int i=0; i<NUM_ROUNDS; i++){
+    //     cout << "***********************************************Tick" << endl;
+    //     network.printChannels();
+    // }
 
     // Example of an eventTick usage, this is where you would add in the different implementations of EventGen
     // currently only Random() is implemented
