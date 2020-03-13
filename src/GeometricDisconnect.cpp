@@ -4,6 +4,15 @@
 
 #include "SystemClock.h"
 #include "GeometricDisconnect.h"
+#include "Network.h"
+
+
+Network::Network(ConnectionType connectionType, float PERCENT_CONNECTED, double lambda3): lambda3(lambda3) {
+    this->connectionType = connectionType;
+    //PERCENT_CONNECTED is a 5 digit int (99.999% = 99999)
+    this->PERCENT_CONNECTED = (int)(PERCENT_CONNECTED*1000);
+    cout << "Network online" << endl;
+}
 
 GeometricDisconnect::GeometricDisconnect(ClockType clockType, double lambda1, double lambda2){
     clock = shared_ptr<SystemClock>(SystemClock.makeClock(clockType));
