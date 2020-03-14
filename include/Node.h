@@ -35,7 +35,7 @@ private:
     double amountOfOneKeyUsed = 0;
     double lambda3;
     // d3 is the model used to randomly generate the object consuption rate
-    geometric_distribution<> *d3;
+    exponential_distribution<> *d3;
 
     mt19937 *gen;
 

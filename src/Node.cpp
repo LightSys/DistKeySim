@@ -24,7 +24,7 @@ void Node::consumeObjects(){
 }
 
 void Node::generateObjectCreationRateDistribution(){
-    d3 = new geometric_distribution<>(this->lambda3);
+    d3 = new exponential_distribution<>(this->lambda3);
     // These are required for the geometric distribution function to operate
     // correctly
     random_device rd;
