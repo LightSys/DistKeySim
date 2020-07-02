@@ -1,0 +1,286 @@
+Attempting to load config from config.json ...
+Loading from JSON...
+Network online
+Loading from JSON...
+Root UUID: 10ac4169eb37c4de0176b3b8839b9b23
+sending a heartbeat took 52968 ns
+chekcing control strat took 11456 ns
+sending a heartbeat took 20428 ns
+chekcing control strat took 4014 ns
+sending a heartbeat took 18610 ns
+chekcing control strat took 3464 ns
+sending a message took 15838 ms
+sending a message took 9885 ms
+sending a message took 9751 ms
+sending a message took 10402 ms
+sending a message took 10191 ms
+sending a message took 9991 ms
+CHANNELS
+TO FROM ID
+a5ebea9ff719df9ea3c4446b6b5a884f 10ac4169eb37c4de0176b3b8839b9b23 0
+69d70afc0a6b0d88a4b5f39de7a79aca 10ac4169eb37c4de0176b3b8839b9b23 1
+69d70afc0a6b0d88a4b5f39de7a79aca a5ebea9ff719df9ea3c4446b6b5a884f 2
+Ticking network a bunch
+Time Step:4 ... 
+sending a heartbeat took 29220 ns
+chekcing control strat took 36758 ns
+sending a heartbeat took 19876 ns
+chekcing control strat took 1918 ns
+sending a heartbeat took 18190 ns
+chekcing control strat took 1630 ns
+Time Step:5 ... 
+sending a message took 17123 ms
+sending a message took 11568 ms
+sending a message took 11562 ms
+sending a message took 9518 ms
+sending a message took 12101 ms
+sending a message took 13999 ms
+sending a message took 13320 ms
+sending a message took 11640 ms
+Time Step:6 ... 
+sending a heartbeat took 28246 ns
+chekcing control strat took 90135 ns
+sending a heartbeat took 21951 ns
+chekcing control strat took 21522 ns
+sending a heartbeat took 19331 ns
+chekcing control strat took 20374 ns
+Time Step:7 ... 
+sending a message took 18248 ms
+sending a message took 11458 ms
+sending a message took 10803 ms
+sending a message took 13288 ms
+sending a message took 13278 ms
+sending a message took 10213 ms
+sending a message took 13278 ms
+sending a message took 12227 ms
+sending a message took 11015 ms
+Time Step:8 ... 
+sending a heartbeat took 27626 ns
+chekcing control strat took 12998 ns
+sending a heartbeat took 21150 ns
+chekcing control strat took 32060 ns
+sending a heartbeat took 20997 ns
+chekcing control strat took 9630 ns
+Time Step:9 ... 
+sending a message took 18190 ms
+sending a message took 12485 ms
+sending a message took 12357 ms
+sending a message took 12485 ms
+sending a message took 11316 ms
+sending a message took 13026 ms
+sending a message took 11707 ms
+Time Step:10 ... 
+sending a heartbeat took 26806 ns
+chekcing control strat took 11604 ns
+sending a heartbeat took 21490 ns
+chekcing control strat took 132210 ns
+sending a heartbeat took 21690 ns
+chekcing control strat took 9313 ns
+Time Step:11 ... 
+sending a message took 22826 ms
+sending a message took 12566 ms
+sending a message took 12719 ms
+sending a message took 11342 ms
+sending a message took 12537 ms
+sending a message took 10630 ms
+sending a message took 11405 ms
+sending a message took 10433 ms
+sending a message took 10332 ms
+sending a message took 13465 ms
+sending a message took 13465 ms
+Time Step:12 ... 
+sending a heartbeat took 38824 ns
+chekcing control strat took 16431 ns
+sending a heartbeat took 24171 ns
+chekcing control strat took 79887 ns
+sending a heartbeat took 23875 ns
+chekcing control strat took 52081 ns
+Time Step:13 ... 
+sending a message took 26292 ms
+sending a message took 13467 ms
+sending a message took 12231 ms
+sending a message took 11695 ms
+sending a message took 11812 ms
+sending a message took 12434 ms
+sending a message took 10486 ms
+sending a message took 13049 ms
+sending a message took 13884 ms
+sending a message took 10799 ms
+sending a message took 9966 ms
+Time Step:14 ... 
+sending a heartbeat took 29178 ns
+chekcing control strat took 19318 ns
+sending a heartbeat took 22848 ns
+chekcing control strat took 18804 ns
+sending a heartbeat took 21773 ns
+chekcing control strat took 182752 ns
+Time Step:15 ... 
+sending a message took 23217 ms
+sending a message took 17262 ms
+sending a message took 11483 ms
+sending a message took 13711 ms
+sending a message took 11802 ms
+sending a message took 12975 ms
+sending a message took 10925 ms
+sending a message took 9725 ms
+sending a message took 9695 ms
+sending a message took 9798 ms
+sending a message took 19870 ms
+Time Step:16 ... 
+sending a heartbeat took 31027 ns
+chekcing control strat took 92021 ns
+sending a heartbeat took 23934 ns
+chekcing control strat took 18993 ns
+sending a heartbeat took 24272 ns
+chekcing control strat took 93018 ns
+Time Step:17 ... 
+sending a message took 22266 ms
+sending a message took 16578 ms
+sending a message took 13036 ms
+sending a message took 11118 ms
+sending a message took 13787 ms
+sending a message took 14979 ms
+sending a message took 13061 ms
+sending a message took 11871 ms
+sending a message took 10313 ms
+sending a message took 10027 ms
+sending a message took 9539 ms
+Time Step:18 ... 
+sending a heartbeat took 30857 ns
+chekcing control strat took 119531 ns
+sending a heartbeat took 25563 ns
+chekcing control strat took 87255 ns
+sending a heartbeat took 23517 ns
+chekcing control strat took 89036 ns
+Time Step:19 ... 
+sending a message took 33736 ms
+sending a message took 17490 ms
+sending a message took 14201 ms
+sending a message took 18296 ms
+sending a message took 12513 ms
+sending a message took 16394 ms
+sending a message took 16226 ms
+sending a message took 13426 ms
+sending a message took 12454 ms
+sending a message took 11982 ms
+sending a message took 13499 ms
+sending a message took 13465 ms
+sending a message took 11327 ms
+sending a message took 11022 ms
+sending a message took 11209 ms
+Time Step:20 ... 
+sending a heartbeat took 45269 ns
+chekcing control strat took 117643 ns
+sending a heartbeat took 25861 ns
+chekcing control strat took 160434 ns
+sending a heartbeat took 24207 ns
+chekcing control strat took 28025 ns
+Time Step:21 ... 
+sending a message took 27693 ms
+sending a message took 15727 ms
+sending a message took 13351 ms
+sending a message took 11724 ms
+sending a message took 11577 ms
+sending a message took 14857 ms
+sending a message took 14790 ms
+sending a message took 12300 ms
+sending a message took 11675 ms
+sending a message took 11378 ms
+sending a message took 11190 ms
+sending a message took 20272 ms
+sending a message took 15763 ms
+sending a message took 15454 ms
+Time Step:22 ... 
+sending a heartbeat took 76048 ns
+chekcing control strat took 154586 ns
+sending a heartbeat took 26890 ns
+chekcing control strat took 112257 ns
+sending a heartbeat took 24970 ns
+chekcing control strat took 80558 ns
+Time Step:23 ... 
+sending a message took 27477 ms
+sending a message took 16310 ms
+sending a message took 14074 ms
+sending a message took 12486 ms
+sending a message took 12386 ms
+sending a message took 12188 ms
+sending a message took 14991 ms
+sending a message took 14277 ms
+sending a message took 11527 ms
+sending a message took 10832 ms
+sending a message took 10521 ms
+sending a message took 180243 ms
+sending a message took 17558 ms
+sending a message took 15851 ms
+sending a message took 14018 ms
+Time Step:24 ... 
+sending a heartbeat took 33002 ns
+chekcing control strat took 214187 ns
+sending a heartbeat took 26385 ns
+chekcing control strat took 74473 ns
+sending a heartbeat took 29169 ns
+chekcing control strat took 66751 ns
+Time Step:25 ... 
+sending a message took 24048 ms
+sending a message took 14611 ms
+sending a message took 26543 ms
+sending a message took 14876 ms
+sending a message took 11652 ms
+sending a message took 11396 ms
+sending a message took 11123 ms
+sending a message took 18427 ms
+sending a message took 13766 ms
+sending a message took 15789 ms
+sending a message took 14197 ms
+sending a message took 11545 ms
+Time Step:26 ... 
+sending a heartbeat took 33282 ns
+chekcing control strat took 96424 ns
+sending a heartbeat took 27245 ns
+chekcing control strat took 180063 ns
+sending a heartbeat took 27805 ns
+chekcing control strat took 150767 ns
+Time Step:27 ... 
+sending a message took 25486 ms
+sending a message took 14892 ms
+sending a message took 16623 ms
+sending a message took 16536 ms
+sending a message took 18886 ms
+sending a message took 15620 ms
+sending a message took 18396 ms
+sending a message took 14561 ms
+sending a message took 12689 ms
+sending a message took 12514 ms
+sending a message took 12296 ms
+sending a message took 14060 ms
+sending a message took 15330 ms
+sending a message took 12828 ms
+sending a message took 24196 ms
+sending a message took 12725 ms
+sending a message took 11943 ms
+sending a message took 12321 ms
+Time Step:28 ... 
+sending a heartbeat took 36278 ns
+chekcing control strat took 46070 ns
+sending a heartbeat took 27970 ns
+chekcing control strat took 160841 ns
+sending a heartbeat took 25887 ns
+chekcing control strat took 33429 ns
+Time Step:29 ... 
+sending a message took 27227 ms
+sending a message took 14394 ms
+sending a message took 14083 ms
+sending a message took 14215 ms
+sending a message took 19672 ms
+sending a message took 14943 ms
+sending a message took 10942 ms
+sending a message took 10639 ms
+sending a message took 12746 ms
+sending a message took 15336 ms
+Time Step:30 ... 
+sending a heartbeat took 35946 ns
+chekcing control strat took 202447 ns
+sending a heartbeat took 29714 ns
+chekcing control strat took 133908 ns
+sending a heartbeat took 25003 ns
+Sub-Block creation error: full starts 51, sub ends 307
