@@ -1,5 +1,5 @@
-ADAK - Distributed Keying Distribution
-Build Instructions
+#ADAK - Distributed Keying Distribution
+#Build Instructions
 mkdir build
 cd build
 cmake .. -DBUILD_TESTING=0
@@ -7,9 +7,9 @@ Note: The -DBUILD_TESTING=0 flag disables building unit tests. Building the unit
 make -j4 -DBUILD_TESTING=0
 The build will be completed at this point, executable is bin/
 NOTE: a script is included in the scripts folder in this repository but is not guaranteed to work on every system. It is an example script that is used with the development environment.
-Configuration for simulation
+#Configuration for simulation
 The project is configurable via the Config class (include/config.hpp, src/config.cpp) via JSON. The simulation will look in the same directory as the executable for config.json.
-General Simulation Turntables:
+##General Simulation Turntables:
 The simulation a has several turntables which can be used to affect how it will run, The most straightforward of these are as follows: 
 simLength: This determines the length of the simulation in seconds, which is equivalent to the smallest possible timestep, or tick. 
 numNodes: This determines the number of nodes the simulation will contain
