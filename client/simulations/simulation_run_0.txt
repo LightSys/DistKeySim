@@ -1,0 +1,94 @@
+using server at: "63.230.75.125"
+sending config file to server...
+sshing to server...
+Activate the web console with: systemctl enable --now cockpit.socket
+
+Last login: Wed Jul  1 16:52:23 2020 from 63.230.75.123
+    cd /home/devel/devel-steven/DistKeySim
+    cd scripts
+
+    echo "run simulation! ..."
+
+    rm -rf /home/devel/devel-steven/DistKeySim/temp_simulation_out
+
+    mkdir /home/devel/devel-steven/DistKeySim/temp_simulation_out
+
+    touch /home/devel/devel-steven/DistKeySim/temp_simulation_out/build_output.txt
+
+    
+    echo "building..."
+    ./build.sh > /home/devel/devel-steven/DistKeySim/temp_simulation_out/build_output.txt
+    echo "done building!"
+    
+    
+    cd ../build/bin/
+
+    touch /home/devel/devel-steven/DistKeySim/temp_simulation_out/output.txt 
+    
+    echo "running ADAK..."
+    ./adak > /home/devel/devel-steven/DistKeySim/temp_simulation_out/output.txt 
+    echo "adak finished running! "
+
+    rm /home/devel/devel-steven/DistKeySim/temp_simulation_out/logOutput.txt
+    cp ./logOutput.txt /home/devel/devel-steven/DistKeySim/temp_simulation_out/logOutput.txt
+    rm ./logOutput.txt
+    
+    rm /home/devel/devel-steven/DistKeySim/temp_simulation_out/statslog.csv
+    cp ./statslog.csv /home/devel/devel-steven/DistKeySim/temp_simulation_out/statslog.csv
+    rm ./statslog.csv
+
+    exit
+
+]0;devel@distkeysim8:~[devel@distkeysim8 ~]$     cd /home/devel/devel-steven/DistKeySim
+]0;devel@distkeysim8:~/devel-steven/DistKeySim[devel@distkeysim8 DistKeySim]$     cd scripts
+]0;devel@distkeysim8:~/devel-steven/DistKeySim/scripts[devel@distkeysim8 scripts]$ 
+]0;devel@distkeysim8:~/devel-steven/DistKeySim/scripts[devel@distkeysim8 scripts]$     echo "run simulation! ..."
+run simulation! ...
+]0;devel@distkeysim8:~/devel-steven/DistKeySim/scripts[devel@distkeysim8 scripts]$ 
+]0;devel@distkeysim8:~/devel-steven/DistKeySim/scripts[devel@distkeysim8 scripts]$     rm -rf /home/devel/devel-steven/DistKeySim/temp__simulation_out
+]0;devel@distkeysim8:~/devel-steven/DistKeySim/scripts[devel@distkeysim8 scripts]$ 
+]0;devel@distkeysim8:~/devel-steven/DistKeySim/scripts[devel@distkeysim8 scripts]$     mkdir /home/devel/devel-steven/DistKeySim/temp_ssimulation_out
+]0;devel@distkeysim8:~/devel-steven/DistKeySim/scripts[devel@distkeysim8 scripts]$ 
+]0;devel@distkeysim8:~/devel-steven/DistKeySim/scripts[devel@distkeysim8 scripts]$     touch /home/devel/devel-steven/DistKeySim/temp_ssimulation_out/build_output.txt
+]0;devel@distkeysim8:~/devel-steven/DistKeySim/scripts[devel@distkeysim8 scripts]$ 
+]0;devel@distkeysim8:~/devel-steven/DistKeySim/scripts[devel@distkeysim8 scripts]$     
+]0;devel@distkeysim8:~/devel-steven/DistKeySim/scripts[devel@distkeysim8 scripts]$     echo "building..."
+building...
+]0;devel@distkeysim8:~/devel-steven/DistKeySim/scripts[devel@distkeysim8 scripts]$     ./build.sh > /home/devel/devel-steven/DistKeySimm/temp_simulation_out/build_output.txt
+]0;devel@distkeysim8:~/devel-steven/DistKeySim/scripts[devel@distkeysim8 scripts]$     echo "done building!"
+done building!
+]0;devel@distkeysim8:~/devel-steven/DistKeySim/scripts[devel@distkeysim8 scripts]$     
+]0;devel@distkeysim8:~/devel-steven/DistKeySim/scripts[devel@distkeysim8 scripts]$     
+]0;devel@distkeysim8:~/devel-steven/DistKeySim/scripts[devel@distkeysim8 scripts]$     cd ../build/bin/
+]0;devel@distkeysim8:~/devel-steven/DistKeySim/build/bin[devel@distkeysim8 bin]$ 
+]0;devel@distkeysim8:~/devel-steven/DistKeySim/build/bin[devel@distkeysim8 bin]$     touch /home/devel/devel-steven/DistKeySim/temp_simullation_out/output.txt 
+]0;devel@distkeysim8:~/devel-steven/DistKeySim/build/bin[devel@distkeysim8 bin]$     
+]0;devel@distkeysim8:~/devel-steven/DistKeySim/build/bin[devel@distkeysim8 bin]$     echo "running ADAK..."
+running ADAK...
+]0;devel@distkeysim8:~/devel-steven/DistKeySim/build/bin[devel@distkeysim8 bin]$     ./adak > /home/devel/devel-steven/DistKeySim/temp_siimulation_out/output.txt 
+]0;devel@distkeysim8:~/devel-steven/DistKeySim/build/bin[devel@distkeysim8 bin]$     echo "adak finished running! "
+adak finished running! 
+]0;devel@distkeysim8:~/devel-steven/DistKeySim/build/bin[devel@distkeysim8 bin]$ 
+]0;devel@distkeysim8:~/devel-steven/DistKeySim/build/bin[devel@distkeysim8 bin]$     rm /home/devel/devel-steven/DistKeySim/temp_simulatiion_out/logOutput.txt
+rm: cannot remove '/home/devel/devel-steven/DistKeySim/temp_simulation_out/logOutput.txt': No such file or directory
+]0;devel@distkeysim8:~/devel-steven/DistKeySim/build/bin[devel@distkeysim8 bin]$     cp ./logOutput.txt /home/devel/devel-steven/DistKeySSim/temp_simulation_out/logOutput.txt
+]0;devel@distkeysim8:~/devel-steven/DistKeySim/build/bin[devel@distkeysim8 bin]$     rm ./logOutput.txt
+]0;devel@distkeysim8:~/devel-steven/DistKeySim/build/bin[devel@distkeysim8 bin]$     
+]0;devel@distkeysim8:~/devel-steven/DistKeySim/build/bin[devel@distkeysim8 bin]$     rm /home/devel/devel-steven/DistKeySim/temp_simulatiion_out/statslog.csv
+rm: cannot remove '/home/devel/devel-steven/DistKeySim/temp_simulation_out/statslog.csv': No such file or directory
+]0;devel@distkeysim8:~/devel-steven/DistKeySim/build/bin[devel@distkeysim8 bin]$     cp ./statslog.csv /home/devel/devel-steven/DistKeySiim/temp_simulation_out/statslog.csv
+]0;devel@distkeysim8:~/devel-steven/DistKeySim/build/bin[devel@distkeysim8 bin]$     rm ./statslog.csv
+]0;devel@distkeysim8:~/devel-steven/DistKeySim/build/bin[devel@distkeysim8 bin]$ 
+]0;devel@distkeysim8:~/devel-steven/DistKeySim/build/bin[devel@distkeysim8 bin]$     exit
+logout
+copying files from server... 
+removing temp files from server...
+Activate the web console with: systemctl enable --now cockpit.socket
+
+Last login: Wed Jul  1 17:05:48 2020 from 98.30.104.23
+    rm /home/devel/devel-steven/DistKeySim/temp_simulation_out/ -rf
+    exit
+]0;devel@distkeysim8:~[devel@distkeysim8 ~]$     rm /home/devel/devel-steven/DistKeySim/temp_simulationn_out/ -rf
+]0;devel@distkeysim8:~[devel@distkeysim8 ~]$     exit
+logout
+finished!

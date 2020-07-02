@@ -14,8 +14,8 @@ import json
 import os 
 
 #command line args: 
-if len(sys.argv) != 5:
-    print("ERROR: include 4 parameters of ip, username, password, and FULL DistKeySim folder location on the server (including the DistKeySim folder)")
+if len(sys.argv) != 6:
+    print("ERROR: include 5 parameters of ip, username, password, FULL DistKeySim folder location on the server (including the DistKeySim folder), and port number")
     sys.exit(2)
 
 config_json_file_location = "config.json"
@@ -48,18 +48,20 @@ def setJsonVar(str_results_dict,hardknobs_results_dict):
     print("running script for simulation...")
     
     
-    subprocess.call("./run.sh "+str(times_run) + " " + sys.argv[1] + " " + sys.argv[2] + " " + sys.argv[3] + " " + sys.argv[4] + " > simulations/simulation_run_"+str(times_run)+".txt",shell=True)
+    subprocess.call("./run.sh "+str(times_run) + " " + sys.argv[1] + " " + sys.argv[2] + " " + sys.argv[3] + " " + sys.argv[4] + " " + sys.argv[5] + " > simulations/simulation_run_"+str(times_run)+".txt",shell=True)
     
     print("finished running simulation script!")
     
     print("opening results data visualization...")
     
     #datavis.drawAnalytics("simulations/simulation_"+str(times_run)+"/statslog.csv")
-    datavis2.runDataAnalytics("sample_statslog.csv")
+    #datavis2.runDataAnalytics("sample_statslog.csv")
+    
+    datavis2.runDataAnalytics("simulations/simulation_"+str(times_run)+"/statslog.csv")
     
     print("opened analytics!")
-    
     times_run += 1
+    
     
     
 def getStringFromBox(box):
@@ -118,10 +120,13 @@ original_height = 500
 
 #labels / identifiers for fine knobs 
 fine_knob_labels = ["Visible Peers (connected %)",\
+                    "numNodes",\
                     "Lambda 1 (time offline)",\
                     "Lambda 2 (time online)",\
+                    "networkScale",\
                     "Max Keys (2^n, give n)",\
                     "lambda 3 (time between creating objects)",\
+                    "simLength",\
                     "Chunkiness (# of keys to shift)",\
                     "Heartbeat Frequency",\
                     "Long Term Precision"]
@@ -221,4 +226,3 @@ def start_GUI(innrPipe):
 
 #none: no pipe needed 
 start_GUI(None)
-
