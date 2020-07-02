@@ -1,5 +1,5 @@
-#ADAK - Distributed Keying Distribution
-#Build Instructions
+# ADAK - Distributed Keying Distribution
+# Build Instructions
 mkdir build
 cd build
 cmake .. -DBUILD_TESTING=0
