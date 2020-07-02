@@ -10,12 +10,12 @@ void addCollectionInfoRecord(InformationalMessageContents::CollectionInformation
     collection->set_allocated_creationratedata(creationRateData);
 }
 
-Message newBaseMessage(const HexDigest &sendingUUID, const HexDigest &destUUID, uint64_t lastReceived,
-                       Message::ChannelState channelState, uint64_t msgID, long unixTimestamp) {
-    if (msgID == 0) {
+Message newBaseMessage(uint64_t messageID, const HexDigest &sendingUUID, const HexDigest &destUUID, uint64_t lastReceived,
+                       Message::ChannelState channelState, long unixTimestamp) {
+    if (messageID == 0) {
         throw std::invalid_argument("msgID is zero");
     }
-    
+
     Message msg;
     msg.set_sourcenodeid(sendingUUID);
     msg.set_destnodeid(destUUID);
@@ -34,7 +34,7 @@ Message newBaseMessage(const HexDigest &sendingUUID, const HexDigest &destUUID, 
     timestamp->set_nanos(0);
     msg.set_allocated_timestamp(timestamp);
     
-    msg.set_messageid(msgID);
+    msg.set_messageid(messageID);
     
     return msg;
 }
@@ -56,6 +56,23 @@ void toInformationalMessage(Message &msg, std::initializer_list<CollectionInfoRe
 }
 
 void toKeyspaceMessage(Message &msg, std::initializer_list<KeyspaceExchangeRecord> records) {
+    // Indicate message type as information
+    msg.set_messagetype(Message::MessageType::Message_MessageType_KEYSPACE);
+    
+    // Add default empty message contents
+    auto *contents = new KeyspaceMessageContents();
+    for (KeyspaceExchangeRecord record : records) {
+        auto *keyspace = contents->add_keyspaces();
+        keyspace->set_name(record.name);
+        keyspace->set_startid(record.startID);
+        keyspace->set_endid(record.endID);
+        keyspace->set_suffixbits(record.suffixBits);
+    }
+    
+    msg.set_allocated_keyspace(contents);
+}
+
+void toKeyspaceMessage(Message &msg, std::vector<KeyspaceExchangeRecord> records) {
     // Indicate message type as information
     msg.set_messagetype(Message::MessageType::Message_MessageType_KEYSPACE);
     

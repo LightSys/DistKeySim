@@ -25,6 +25,7 @@ Config::Config(ifstream jsonFile) {
             if (connModeStr == "full") this->connectionMode = ConnectionType::Full;
             else if (connModeStr == "partial") this->connectionMode = ConnectionType::Partial;
             else if (connModeStr == "single") this->connectionMode = ConnectionType::Single;
+	    else if (connModeStr == "custom") this->connectionMode = ConnectionType::Custom;
             else {
                 // Invalid connection mode
                 throw std::invalid_argument("connectionMode not one of 'full', 'partial', or 'single'");
@@ -50,8 +51,23 @@ Config::Config(ifstream jsonFile) {
         } else {
             networkScale = DEFAULT_NETWORK_SCALE;
         }
-        
-        
+       
+        if (jf.contains("simLength")) {
+            jf.at("simLength").get_to(this->simLength);
+        } else {
+            simLength = DEFAULT_SIM_LENGTH;
+        }
+         
+	if(jf.contains("Latency")){
+	    jf.at("Latency").get_to(this->latency);
+	} else {
+	    latency = DEFAULT_LATENCY;
+	}if(jf.contains("runEvents")){
+             jf.at("runEvents").get_to(this->runEvents);
+	} else{
+             runEvents = DEFAULT_RUN_EVENTS;
+	}
+
         //added for the UI input: 
 
         if (jf.contains("Visible_Peers_(connected_%)")) {
@@ -85,6 +101,22 @@ Config::Config(ifstream jsonFile) {
             this->lambda3 = DEFAULT_LAMBDA3;
         }
         
+        if(jf.contains("customLambda1")){
+           jf.at("customLambda1").get_to(this->customLambda1);
+	}else{
+           this->customLambda1 = DEFAULT_CUSTOM_LAMBDA1;
+	}
+        if(jf.contains("customLambda2")){
+           jf.at("customLambda2").get_to(this->customLambda2);
+	}else{
+           this->customLambda2 = DEFAULT_CUSTOM_LAMBDA2;
+	}
+        if(jf.contains("customLambda3")){
+           jf.at("customLambda3").get_to(this->customLambda3);
+	}else{
+           this->customLambda3 = DEFAULT_CUSTOM_LAMBDA3;
+	}
+
         if (jf.contains("Chunkiness_(#_of_keys_to_shift)")) {
             jf.at("Chunkiness_(#_of_keys_to_shift)").get_to(this->chunkiness);
         } else {
@@ -102,6 +134,12 @@ Config::Config(ifstream jsonFile) {
             jf.at("Long_Term_Precision").get_to(this->longTermPrecision);
         } else {
             this->longTermPrecision = DEFAULT_LONG_PRECISION;
+        }
+        
+        if (jf.contains("Units_Per_Day")){
+            jf.at("Units_Per_Day").get_to(this->unitsPerDay);
+        } else {
+            this->unitsPerDay = DEFAULT_UNITS_PER_DAY;
         }
         
         //hard knobs: 

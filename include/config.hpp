@@ -18,6 +18,13 @@ static const char* DEFAULT_CONN_MODE_STR = "full";
 static const char* DEFAULT_CSV_OUTPUT_PATH = "out.csv";
 static const int DEFAULT_CREATION_RATE = 1;
 static const float DEFAULT_NETWORK_SCALE = 0.3;
+static const int DEFAULT_LATENCY = 1; //this is the minmum in the current structure right now
+static const std::vector<float> DEFAULT_CUSTOM_LAMBDA1 = {};
+static const std::vector<float> DEFAULT_CUSTOM_LAMBDA2 = {};
+static const std::vector<float> DEFAULT_CUSTOM_LAMBDA3 = {}; //if it is empty, the lambda3 will be used
+static const bool DEFAULT_RUN_EVENTS = false; 
+static const double DEFAULT_UNITS_PER_DAY = 3600;
+
 
 //added for UI string inputs:
 static const unsigned int SIZEOF_SMALLEST_KEY_OPTIONS = 2;
@@ -43,28 +50,38 @@ static const unsigned int DEFAULT_MAX_KEYS_BITS = 31;
 static const int DEFAULT_CHUNKINESS = 10;
 static const int DEFAULT_HEARTBEAT = 5;
 static const unsigned int DEFAULT_LONG_PRECISION = 5;
+static const unsigned int DEFAULT_SIM_LENGTH = 50;
 
 struct Config {
+    //all of the data memebers, in no particular order. 
+    //See documentation for purpose of each
     u_int numNodes;
     std::string connModeStr;
     ConnectionType connectionMode;
     std::string csvOutputPath;
     int creationRate;
     float networkScale;
-    
+    int latency; 
+    bool runEvents;
+
     //added for the UI input: 
     float visiblePeers;//chance (from percent) in decimal 0-1
     float lambda1;
     float lambda2;
     float lambda3;
+    std::vector<float> customLambda1;
+    std::vector<float> customLambda2;
+    std::vector<float> customLambda3;
     unsigned int maxKeysBits;
     int chunkiness;
     int heartbeatFrequency;
     unsigned int longTermPrecision;
     short smallestKeyOption;
     short algorithmStrategyOption;
+    int simLength;
+    double unitsPerDay;
     
-    
+    //a minimalist intialization of sorts
     explicit Config(
         u_int numNodes = DEFAULT_NUM_NODES, std::string connectionMode = DEFAULT_CONN_MODE_STR,
         std::string csvPath = DEFAULT_CSV_OUTPUT_PATH, int creationRate = DEFAULT_CREATION_RATE,
@@ -75,6 +92,7 @@ struct Config {
         if (connectionMode == "full") this->connectionMode = ConnectionType::Full;
         else if (connectionMode == "partial") this->connectionMode = ConnectionType::Partial;
         else if (connectionMode == "single") this->connectionMode = ConnectionType::Single;
+	else if (connectionMode == "custom") this->connectionMode = ConnectionType::Custom;
         else {
             // Invalid connection mode
             throw std::invalid_argument("connectionMode not one of 'full', 'partial', or 'single'");

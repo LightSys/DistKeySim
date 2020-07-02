@@ -6,7 +6,6 @@
 #include "NodeData.h"
 
 using namespace std;
-double Node::unitsPerDay = 60*60; //an hour in seconds
 
 int NodeData::getCurrentDay() {
     // current date/time based on current system
@@ -16,12 +15,51 @@ int NodeData::getCurrentDay() {
     return ltm->tm_mday;
 }
 
+double NodeData::updateCreationRate(const map<UUID, Message*> peers) {
+    double totalRate = 0.0;
+    for (const auto &[_, peer] : peers) {
+	if(peer == nullptr) continue; 
+	/*if(peer->info().records().size() == 0){
+	   cout << "there are no records for message " << peer->messageid() << endl; 
+	}*/
+        totalRate += peer->info().records(0).creationratedata().shortallocationratio();
+    }
 
+    totalRate *= NETWORK_SCALE;
+    creationRate = this->getKeysUsed() + totalRate;
+
+    return creationRate;
+}
+
+/*
+//could need this, ask greg
+double NodeData::sendingCreationRate(const map<UUID, Message*> peers, UUID targetID, double alloc, bool isShortTerm){
+    double totalRate = 0.0;
+    if(isShortTerm){
+       for (const auto &[_, peer] : peers) {
+          //leave the target out
+          if(targetID == peer->sourcenodeid()) continue;  
+          totalRate += peer->info().records(0).creationratedata().shortallocationratio();
+       }
+    } else { //must be long term allocation
+       for (const auto &[_, peer] : peers) {
+          //leave the target out
+          if(targetID == peer->sourcenodeid()) continue;  
+          totalRate += peer->info().records(0).creationratedata().longallocationratio();
+       }
+    }
+    totalRate *= NETWORK_SCALE;
+    totalRate += alloc;
+
+    return totalRate;
+}	
+*/
 
 double NodeData::updateLongTermAllocationRatio(vector<Keyspace> &keyspace) {
     double longTermRatio = 0.0;
     for (const auto &keyspace : keyspace) {
-        longTermRatio +=  keyspace.getPercent();
+	if(keyspace.getEnd() != UINT_MAX) continue;
+        longTermRatio +=  static_cast<double>(1.0 / pow(2, keyspace.getSuffix()));
     }
 
     longTermAllocationRatio = longTermRatio;
@@ -34,8 +72,7 @@ double NodeData::updateShortTermAllocationRatio(const vector<Keyspace> &keyspace
     int minIndex = getMinKeyIndex(keyspace);
     if(minIndex == -1) return -1;
     ADAK_Key_t startKey = keyspace.at(minIndex).getStart();
-    ADAK_Key_t endKey = keyspace.size() == 0 ? -2 : UINT_MAX; //if you have any keys, must have a full block
-                                                              //if you have a full block, UINT_MAX is your last key
+    ADAK_Key_t endKey = findEndKey(tempKeys, keyspace);
 
     ///-2 means you ran out of keyspace thus set the ratio to one saying we need more keyspace right away.
     ///Baylor you may want to change this if you want a different value saying I need help right away.

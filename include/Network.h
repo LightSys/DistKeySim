@@ -1,16 +1,22 @@
 #ifndef ADAK_KEYING_NETWORK_H
 #define ADAK_KEYING_NETWORK_H
 
+#include <cmath>
 #include <iostream>
 #include <map>
 #include <vector>
 #include <string>
+#include <fstream> 
+#include <queue>
 
 #include "Node.h"
 #include "UUID.h"
 #include "Channel.h"
 #include "message.hpp"
 #include "SystemClock.h"
+#include "json.hpp"
+
+using json = nlohmann::json;
 
 /**
  * Types of connections that are possible when creating the initial network connection
@@ -19,7 +25,7 @@
  *      Partial = randomly connected graph (dependent on Config.visiblePeer's percentage connected)
  *      Single = randomly connected MST (one connection only on creation)
  */
-enum class ConnectionType { Full, Partial, Single };
+enum class ConnectionType { Full, Partial, Single, Custom };
 
 class Network{
 private:
@@ -36,13 +42,33 @@ private:
     //next timer id to use
     int nextTimerID = 0;
     double lambda3;
+    double lambda2;
+    double lambda1;
 
     // Connection type used to connect member Nodes
     ConnectionType connectionType;
     //amount it is connected if it is partially connected
     int PERCENT_CONNECTED;
+    std::vector<float> custLambda3;
+    //store all messages waiting on latency. Used for checkAndSendAllNodesLatency
+    int latencyStall = 1; //incriment untill it >= latency. Once it does, then can start working on message queue
+    //the queue holds muultiple timesteps to account for latency. Each timestep is a vector of all of the message sets
+    // sent by nodes previously, but held due to delays. Nodes hold thier messahes in in a deque. 
+    //queue<vector<deque<Message>>> timeSteps; 
+    std::queue<std::vector<Message>> toSend;
+    std::vector<float> custLambda1;
+    std::vector<float> custLambda2;
+ 
+    double networkScale;
+    int latency;
 public:
-    Network(ConnectionType connectionType, float PERCENT_CONNECTED, double lambda3);
+    Network(ConnectionType connectionType, float PERCENT_CONNECTED, double lambda1, double lambda2, 
+		double lambda3, double netScale, int latency);
+
+    Network(ConnectionType connectionType, float PERCENT_CONNECTED, double lambda1, double lambda2, 
+		double lambda3, double netScale,
+	       	int latency, vector<float>lam1s, vector<float>lam2s, vector<float>lam3s);
+
     ~Network() = default;
 
     /**
@@ -119,6 +145,12 @@ public:
     void singleConnect(std::shared_ptr<Node> node);
 
     /**
+     * Connects nodes as specified in customConnections.txt
+     * @param node Node to connect
+     */
+    bool customConnect(std::shared_ptr<Node> node);
+
+    /**
      * Checks to see if the channel already exists between two nodes
      * @param nodeOne Node to check for connection with
      * @param nodeTwo Node to check for connection with
@@ -137,8 +169,14 @@ public:
     // Checks all nodes for messages and passes on those messages to all other clients
     void checkAndSendAllNodes();
 
+    //same as the above, but allows messages to be delayed to simulate latency 
+    void checkAndSendAllNodesLatency(int latency); 
+
     // Sends heartbeat for all nodes
-    void doAllHeartbeat();
+    void doAllHeartbeat(int keysToShift);
+    
+    //ticks all of the nodes
+    void doAllTicks();
 
     //sends a single node offline
     void disableNode(UUID nodeUUID);
@@ -173,6 +211,7 @@ public:
 
     // Number of nodes
     inline size_t numNodes() const { return nodes.size(); }
+    
+    double checkAllKeyspace();
 };
-
 #endif // ADAK_KEYING_NETWORK_H

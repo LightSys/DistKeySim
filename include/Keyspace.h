@@ -36,6 +36,7 @@ private:
     ADAK_Key_t start;
     ADAK_Key_t end;
     uint32_t suffix;
+    double percent; 
 public:
     Keyspace(unsigned long start, unsigned long end, unsigned long suffix);
 
@@ -48,7 +49,8 @@ public:
      * @return Next available 32 bit key
      */
     ADAK_Key_t getNextAvailableKey();
-
+    
+    //return the size of the keyspace in keys
     ADAK_Key_t getSize();
 
     /**
@@ -60,12 +62,17 @@ public:
     // ADAK_Key_t checkNextAvailableKey();
 
     // Getters
-    ADAK_Key_t getStart() const { return this->start; }
-    ADAK_Key_t getEnd() const { return this->end; }
-    ADAK_Key_t getSuffix() const { return this->suffix; }
+    ADAK_Key_t getStart()   const { return this->start;   }
+    ADAK_Key_t getEnd()     const { return this->end;     }
+    ADAK_Key_t getSuffix()  const { return this->suffix;  }
+    double     getPercent() const { return this->percent; }
     
+    //determine if any valid keys are left in the keyspace.  
     constexpr inline bool isKeyAvailable() const {
         return start < end;
     }
+    
+    //Equality operator
+    bool operator==(const Keyspace &rhs); 
 };
 #endif //ADAK_KEYING_KEYSPACE_H

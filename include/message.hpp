@@ -4,6 +4,7 @@
 
 #include <chrono>
 #include <string>
+#include <iostream>
 #include "UUID.h"
 #include "message.pb.h"
 #include "Keyspace.h"
@@ -29,6 +30,8 @@ struct KeyspaceExchangeRecord {
     uint32_t suffixBits;
 };
 
+static uint64_t msgID =0;
+
 /** Generate new base protobuf message instance. Preferrably use newInformationalMessage or newKeyspaceMessage
  *
  * @param sendingUUID UUID string for node sending message
@@ -40,8 +43,8 @@ struct KeyspaceExchangeRecord {
  * @throw std::invalid_argument if msgID is 0
  * @return Message instance created. Need to add message contents (either Keyspace or Informational) to have valid message
  */
-Message newBaseMessage(const HexDigest &sendingUUID, const HexDigest &destUUID, uint64_t lastReceived,
-                       Message::ChannelState channelState, uint64_t msgID, long unixTimestamp = -1);
+Message newBaseMessage(uint64_t messageID, const HexDigest &sendingUUID, const HexDigest &destUUID, uint64_t lastReceived,
+                       Message::ChannelState channelState, long unixTimestamp = -1);
 
 /**
  * Adds a collection information record to an informational message contents instance
@@ -67,5 +70,7 @@ void toInformationalMessage(Message &msg, std::initializer_list<CollectionInfoRe
  * @param records Keyspace exchange records to add to message
  */
 void toKeyspaceMessage(Message &msg, std::initializer_list<KeyspaceExchangeRecord> records);
+void toKeyspaceMessage(Message &msg, std::vector<KeyspaceExchangeRecord> records);
+
 
 #endif //ADAK_KEYING_MESSAGE_HPP

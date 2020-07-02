@@ -3,15 +3,37 @@
 #include "Network.h"
 #include "Node.h"
 #include "UUID.h"
+#include "ControlStrategy.h"
+
+#include <chrono>
 
 using namespace std;
 
-Network::Network(ConnectionType connectionType, float PERCENT_CONNECTED, double lambda3): lambda3(lambda3) {
+Network::Network(ConnectionType connectionType, float PERCENT_CONNECTED, double lambda1, double lambda2, double lambda3, double netScale, int latency)
+	: lambda1(lambda1), lambda2(lambda2), lambda3(lambda3), networkScale(netScale), latency(latency) {
     this->connectionType = connectionType;
     //PERCENT_CONNECTED is a 5 digit int (99.999% = 99999)
     this->PERCENT_CONNECTED = (int)(PERCENT_CONNECTED*1000);
     cout << "Network online" << endl;
+    custLambda3 = {};
+    custLambda2 = {};
+    custLambda1 = {};
 }
+
+Network::Network(ConnectionType connectionType, float PERCENT_CONNECTED, double lambda1, double lambda2, 
+		double lambda3, double netScale,
+	       	int latency, vector<float>lam1s, vector<float>lam2s, vector<float>lam3s)
+	:  lambda1(lambda1), lambda2(lambda2), lambda3(lambda3), networkScale(netScale), latency(latency) {
+    this->connectionType = connectionType;
+    //PERCENT_CONNECTED is a 5 digit int (99.999% = 99999)
+    this->PERCENT_CONNECTED = (int)(PERCENT_CONNECTED*1000);
+    cout << "Network online" << endl;
+    custLambda3 = lam3s;
+    custLambda2 = lam2s;
+    custLambda1 = lam1s;
+}
+
+
 
 void Network::tellAllNodesToConsumeObjects(){
     for(auto i : nodes){
@@ -46,15 +68,30 @@ bool Network::sendMsg(const Message &message) {
     }
 }
 
-void Network::doAllHeartbeat() {
+void Network::doAllHeartbeat(int keysToSend) {
     // NOTE: Baylor will need to change this, right now we are sending heartbeat messages practically all the time
     // they will probably want to add time to Node to send it periodically
     for (auto const& node : nodes) {
-        node.second->heartbeat();
+//auto start = std::chrono::high_resolution_clock::now();
+
+    	node.second->heartbeat();
+//auto end = std::chrono::high_resolution_clock::now();
+//cout << "sending a heartbeat took " << std::chrono::duration_cast<std::chrono::nanoseconds>(end - start).count()
+//      	<< " ns" << endl;
+
+//start = std::chrono::high_resolution_clock::now();
+      	ControlStrategy::adak(*(node.second), keysToSend); //have the node decide what to do 
+//end = std::chrono::high_resolution_clock::now();
+//cout << "chekcing control strat took " << std::chrono::duration_cast<std::chrono::nanoseconds>(end - start).count()
+//       	<< " ns" << endl;    
     }
-    Logger::getTimeslot(true);//increment timeslot
-    Logger::getShared(true,0);//reset shared
-    Logger::getConsumption(true,0);//reset consumption
+ 
+}
+
+void Network::doAllTicks(){
+    for (auto const& node : nodes) {
+	node.second->tick();
+    }
 }
 
 void Network::checkAndSendAllNodes() {
@@ -73,6 +110,37 @@ void Network::checkAndSendAllNodes() {
     }
 }
 
+void Network::checkAndSendAllNodesLatency(int latency) {
+    //Wait for latencyStall ticks to send anything  
+    vector<Message> tickMsgs;
+  
+    for (auto const& node : nodes) {    
+	// Check each node for queued messages, moving all messages to here before working
+        deque<Message> nodeMsgs = node.second->getMessages();
+        bool gaveKeyspace = false;
+
+	for (auto const &msg : nodeMsgs) {
+	    tickMsgs.push_back(msg);
+        }
+    }
+    //store them to send later
+    toSend.push(tickMsgs);
+
+    if(latency > latencyStall){
+       latencyStall++; //essetially, do nothing
+    }else{
+        vector<Message> temp = toSend.front();
+	toSend.pop(); //get rid of timestep
+	for(int i = 0  ; i < temp.size() ; i ++){
+//auto start = std::chrono::high_resolution_clock::now();
+		sendMsg(temp[i]);
+//auto end = std::chrono::high_resolution_clock::now();
+//cout << "sending a message took " << std::chrono::duration_cast<std::chrono::nanoseconds>(end - start).count()
+//       	<< " ms" << endl; 
+	}
+    }
+}
+
 shared_ptr<Node> Network::getNodeFromUUID(const UUID &uuid) const {
     return nodes.find(uuid)->second;
 }
@@ -85,7 +153,36 @@ UUID Network::addRootNode() {
 
 UUID Network::addEmptyNode() {
     // Create a new new node with the no keyspace
-    auto newNode = make_shared<Node>(this->lambda3);
+    // if consumtion rates (lambda3) are custom, use that. Otherwise, use the provided
+    
+    double tempLam1, tempLam2, tempLam3;
+    if(!custLambda1.empty()){
+       tempLam1 = custLambda1.front();
+       custLambda1.erase(custLambda1.begin());
+
+    }else{
+       tempLam1 = this->lambda1;
+    }
+
+    if(!custLambda2.empty()){
+       tempLam2 = custLambda2.front();
+       custLambda2.erase(custLambda2.begin());
+
+    }else{
+       tempLam2 = this->lambda2;
+    }
+
+    if(!custLambda3.empty()){
+       tempLam3 = custLambda3.front();
+       custLambda3.erase(custLambda3.begin());
+
+    }else{
+       tempLam3 = this->lambda3;
+    }
+
+    shared_ptr<Node> newNode = make_shared<Node>(tempLam1, tempLam2, tempLam3, latency, networkScale);
+
+
     UUID newUUID = newNode->getUUID();
 
     // Add the new node to the nodes map
@@ -101,11 +198,34 @@ UUID Network::addEmptyNode() {
 
 UUID Network::addNode(const Keyspace &keyspace) {
     // Create a new new node with the given keyspace
-    auto newNode = make_shared<Node>(keyspace, this->lambda3);
-    UUID newUUID = newNode->getUUID();
+        double tempLam1, tempLam2, tempLam3;
+    if(!custLambda1.empty()){
+       tempLam1 = custLambda1.front();
+       custLambda1.erase(custLambda1.begin());
 
-    // Make connection to peers
+    }else{
+       tempLam1 = this->lambda1;
+    }
+
+    if(!custLambda2.empty()){
+       tempLam2 = custLambda2.front();
+       custLambda2.erase(custLambda2.begin());
+
+    }else{
+       tempLam2 = this->lambda2;
+    }
+
+    if(!custLambda3.empty()){
+       tempLam3 = custLambda3.front();
+       custLambda3.erase(custLambda3.begin());
+
+    }else{
+       tempLam3 = this->lambda3;
+    }
+
+    shared_ptr<Node> newNode = make_shared<Node>(keyspace, tempLam1, tempLam2, tempLam3, latency, networkScale); 
     connectNodeToNetwork(newNode);
+    UUID newUUID = newNode->getUUID();
 
     // Add the new node to the nodes map
     nodeStatus[newNode->getUUID()] = true;
@@ -137,7 +257,10 @@ void Network::connectNodeToNetwork(shared_ptr<Node> newNode) {
         singleConnect(newNode);
     } else if (this->connectionType == ConnectionType::Single) {//randomly generated MST
         singleConnect(newNode);
+    } else if (this->connectionType == ConnectionType::Custom){
+	customConnect(newNode);
     }
+
 }
 
 void Network::fullyConnect(shared_ptr<Node> node) {
@@ -169,6 +292,74 @@ void Network::singleConnect(shared_ptr<Node> node) {
         connectNodes(node->getUUID(), randomUUID);
     }
 }
+
+//only truly makes connections once the final node is added. Returns isDone. 
+bool Network::customConnect(shared_ptr<Node> node) {   
+    //connect to json file... 
+    std::ifstream inFile ("config.json", std::ifstream::binary);
+    json in = json::parse(inFile); //in is the json object
+    //other vars
+    int numNodes; 
+    string connections;
+    //check if map of nodes is the same length as numnodes:
+    in.at("numNodes").get_to(numNodes);
+
+    //only make matches once all nodes are made
+    if(numNodes == nodes.size()){
+	//get the connections form the json file
+	in.at("Custom_Connections").get_to(connections);
+        map<string, UUID> strToID;
+        
+	//make each connection
+        std::map<UUID, std::shared_ptr<Node>>::iterator nextNode = nodes.begin(); //which node to use next
+	while(connections.find("[") != string::npos){
+	   //connections in the form [a, b]  means a connects to b.
+           //parse pairs
+	   int start = connections.find("[");
+	   int comma = connections.find(",");
+	   int end = connections.find("]");
+           string node1 = connections.substr(start + 1, comma - start - 1);
+	   string node2 = connections.substr(comma + 2, end - comma - 2); 
+	   //cut off current pair from connections
+	   connections = connections.substr(end +1); 
+           cout << "connecting Nodes " << node1 << " and " << node2 << endl; 
+	   //Assign nodes to connection values if needed
+	   if(strToID.find((node1)) == strToID.end()){
+	    if(nextNode == nodes.end()){
+	        cout << "Cannot have a node to represent connection with node " << node1 << endl;
+		continue; //cannot finish this iteration, nothing to connect
+	     }else{ 
+                strToID.insert(pair<string, UUID>(node1, nextNode->first));
+	        nextNode++;
+	     }
+	   } 
+	   //and now the second item
+	   if(strToID.find(node2) == strToID.end()){
+	     if(nextNode == nodes.end()){
+	        cout << "Cannot have a node to represent connection with node " << node2 << endl;
+		continue; //cannot finish this loop; nothing to connect
+	     }else{
+	       strToID.insert(pair<string, UUID>(node2, nextNode->first));
+	       nextNode++;
+	     }
+	   } 
+
+
+
+	   //connect the pair together
+	   connectNodes(strToID[node1], strToID[node2]);
+
+        }
+	//finshed making connections so return true
+	return true;
+    }
+    
+    //false; is not done making connections
+    return false;
+
+}
+
+
 
 bool Network::channelExists(const UUID &nodeOne, const UUID &nodeTwo) {
     return getChannelIndex(nodeOne, nodeTwo) != -1;
@@ -289,4 +480,43 @@ void Network::printKeyspaces(ostream &out, char spacer) {
         counter++;
     }
     out << flush;
+}
+
+double Network::checkAllKeyspace(){
+    double total = 0;
+    //sum all keyspaces hold
+    for (auto const& x : nodes) {
+        total += x.second->getKeyspacePercent();
+
+	//look at node's tosend deque
+	deque<Message> temp = x.second->checkMessages();
+        for (auto const &msg : temp) {
+	    if(msg.messagetype() == Message_MessageType_KEYSPACE){
+               int msgSize = msg.keyspace().keyspaces_size(); 
+	       for(int k =  0; k < msgSize; k++) {
+		  if(msg.keyspace().keyspaces(k).endid() < UINT_MAX) continue; 
+                  total += 1.0/pow(2, msg.keyspace().keyspaces(k).suffixbits());
+	       }
+	    } 
+        }
+    }
+    
+    //sum all in messages to be sent
+    int size = toSend.size(); 
+    for(int i = 0 ; i < size ; i ++){
+        vector<Message> temp = toSend.front();
+	toSend.pop(); //remove the first item
+	toSend.push(temp); //place it back in the queue. Will loop around to original pos.
+	int tempSize = temp.size();
+	for(int j = 0 ; j < tempSize ; j ++){
+            if(temp[j].messagetype() == Message_MessageType_KEYSPACE){
+               int msgSize =temp[j].keyspace().keyspaces_size();  
+	       for(int k =  0; k < msgSize; k++) {
+                  total += 1.0/pow(2, temp[j].keyspace().keyspaces(k).suffixbits());
+	       }
+	    } 
+	}
+    }
+cout << "total keyspace is " << total * 100 << "% of the keyspace" << endl;
+    return total; 
 }

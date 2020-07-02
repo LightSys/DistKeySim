@@ -6,6 +6,7 @@
 #include <queue>
 #include <string>
 #include <climits>
+#include <map> 
 
 #include "UUID.h"
 #include "Keyspace.h"
@@ -17,15 +18,22 @@ class NodeData;
 
 static const HexDigest BROADCAST_UUID = "00000000-0000-0000-0000-000000000000";
 
+
 class Node {
 private:
     UUID uuid;
     u_int messageID = 1;
     std::deque<Message> sendQueue;
     std::vector<Keyspace> keyspaces;
-    std::map<UUID, std::shared_ptr<Message>> peers;
+    std::map<UUID, std::pair<Message*, uint64_t>> peers; //Hold the message and the next ID to send
     std::vector<NodeData> history;
-
+    //map to store confirmation messages
+    std::map<uint64_t, Message*> confirmMsg;  
+    
+    int currentTick;
+    std::map<uint64_t, int> timeStamps; //stores when each message was sent`
+    int networkLatency; 
+    
     // Node statistics
     NodeData lastDay;
     float createdDay;
@@ -34,26 +42,51 @@ private:
     double objectConsuptionRatePerSecond;
     double amountOfOneKeyUsed = 0;
     double lambda3;
+    double lambda2;
+    double lambda1;
+    long double keysShared; 
+    
     // d3 is the model used to randomly generate the object consuption rate
     geometric_distribution<> *d3;
+    geometric_distribution<> *d1;
+    geometric_distribution<> *d2;
 
-    mt19937 *gen;
-
+    mt19937 *gen;   
     /**
      * Generates the heartbeat informational message instance as per the specification
      * @param peerID UUID of peer to send to
      * @return Message with hearbeat information for this node
      */
-    Message getHeartbeatMessage(const UUID &peerID) const;
+    Message getHeartbeatMessage(const UUID &peerID);
+    double networkScale; 
+
+    //helper functions
+    uint64_t getNextMsgId(UUID peerId);
+    
+    
+    static double unitsPerDay;
+    
 
 public:
-    Node(double lambda3);
-    Node(const Keyspace &keyspace, double lambda3);
-    static Node rootNode(double lambda3);
+    //static
+    //handle ticking of simulation
+    Node();     
+    Node(double lambda1, double lambda2, double lambda3, int latency, double netScl);
+    Node(const Keyspace &keyspace, double lambda1, double lambda2, double lambda3, int latency, double netScl);
+    static Node rootNode(double lambda1, double lambda2, double lambda3, int latency, double networkScale);
     ~Node(){
         delete d3;
+	delete d2;
+	delete d1;
         delete gen;
+	//delete message pointers in confirmMsg 
     }
+    
+    //returns the sum of all the keyspace percentages
+    double getKeyspacePercent(); 
+    
+    //the sum of all of the keyspace sizes in keys
+    unsigned long long int getTotalKeyspaceBlockSize(); 
 
     /**
      * Adds a peer to local list of peers
@@ -85,9 +118,14 @@ public:
      * @return Vector of all messages queued for sending
      */
     std::deque<Message> getMessages();
+    std::deque<Message> checkMessages(); //same as getMessages, but do not delete 
 
     // Generate heartbeat messages for all peers
     void heartbeat();
+
+    //update the current tick
+    void tick(); 
+
     //return success
     bool receiveMessage(const Message &message);
 
@@ -102,29 +140,25 @@ public:
      */
     void generateObjectCreationRateDistribution();
 
-
-    int minimumKeyspaceIndex();
+    //returns the smallest keyspace larger than newMin (with no input it returns the smallest overall)
+    int minimumKeyspaceIndex(int newMin = -1);
+    
+    //consumes the smallest key the Node has
     ADAK_Key_t getNextKey();
+    
+    //check if the node has any valid keyspaces that have unconsumed keys
     bool isKeyAvailable();
 
     // consume objects as determined by the rate of consumption
     void consumeObjects();
-
+    
+    //getter/setter
     UUID getUUID() const { return uuid; }
     void setUUID(UUID nid) { uuid = nid; }
-
+   
     std::vector<Keyspace> getKeySpace() const { return keyspaces; }
-
-//    double getKeyGenRate() const { return keyGenRate; }
-//    void setKeyGenRate(double kgr) { keyGenRate = kgr; }
-//
-//    int getKeyShareRate() const { return keyShareRate; }
-//    void setKeyShareRate(int ksr) { keyShareRate = ksr; }
-//
-//    bool getActive() const { return active; }
-//    void setActive(bool a) { active = a; }
-
-    const std::map<UUID, std::shared_ptr<Message>> getPeers() const { return this->peers; }
+     
+    const std::map<UUID, pair<Message*, uint64_t>> getPeers() const { return this->peers; }
 
     /**
      * Retrieves latest statistics for this node
@@ -132,17 +166,46 @@ public:
      */
     std::shared_ptr<NodeData> getNodeData() const;
 
-    /**
-     * Add Keyspace Exchange message details from keyspace shared from Node's spaces
-     * @param msg Base message instance to add records to
-     */
-    void shareKeyspace(Message &msg);
-
     void setTotalLocalKeyspaceSize(ADAK_Key_t newSize) {this->totalLocalKeyspaceSize = newSize;};
 
     ADAK_Key_t getTotalLocalKeyspaceSize() const {return this->totalLocalKeyspaceSize;};
 
+    //adds the information to the logger about this node/
     void logInfoForHeartbeat();
-};
+    
+    //split the designated keyspace in half
+    int splitKeyspace(int keyspaceIndex);
 
+    //send the specifed keyspace to the peer with the specifed index
+    void sendCustKeyspace(UUID id, int keyInd);
+
+    //send multiple keyspaces
+    void sendCustKeyspace(UUID id, vector<int> keyInds);
+
+    //check if the last keyspace message sent to the peer was confirmed
+    bool canSendKeyspace(UUID id);
+
+    //make a sub block if of the designated size 
+    vector<int> makeSubBlock(int range);
+
+    //getters
+    double getCreatedDay(){return createdDay;}
+    double getCreatedWeek(){return createdWeek;} 
+    
+    //calculate the long and short aggegaetes
+    double calcLongAggregate(UUID target);
+    double calcShortAggregate(UUID target);
+
+    //retunr the value from d2
+    double getTimeOnline();
+
+    //return the value from d1
+    double getTimeOffline();
+    
+    //set for all nodes how fine the history should be 
+    static void setUnitsPerDay(double units) {unitsPerDay = units;}
+
+};
+ 
 #endif //ADAK_KEYING_NODE_H
+

@@ -11,8 +11,7 @@ using namespace std;
 int main(int argc, char** argv) {
     // Load config
     cout << "Attempting to load config from config.json ..." << endl;
-    Config config(ifstream("config.json"));
-    
+    Config config(ifstream("config.json")); 
     Simulation simulation(config);
     Logger::deleteOldLog();//clearing old log files
     Logger::setCSVHeaders();//setting the headers of the columns of the csv file

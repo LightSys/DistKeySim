@@ -13,10 +13,10 @@ GeometricDisconnect::GeometricDisconnect(ClockType clockType, double lambda1, do
 
     // d1 is the model used to randomly generate the amount of time from the
     // current time step when the node will go offline
-    d1 = new geometric_distribution<>(lambda1);
+    d1 = new geometric_distribution<>(1/lambda1);
     // d2 is the model used to randomly generate the amount of time the current
     // node will remain offline
-    d2 = new geometric_distribution<>(lambda2);
+    d2 = new geometric_distribution<>(1/lambda2);
 
     // These are required for the geometric distribution function to operate
     // correctly
@@ -24,6 +24,7 @@ GeometricDisconnect::GeometricDisconnect(ClockType clockType, double lambda1, do
     // Save the seed for debugging
     unsigned int seed = rd();
     gen = new mt19937(seed);
+
 }
 
 void GeometricDisconnect::sendOffline(UUID nodeUUID, clock_unit_t timeToDisconnect, clock_unit_t timeOffline){
@@ -44,6 +45,7 @@ void GeometricDisconnect::sendOffline(UUID nodeUUID, clock_unit_t timeToDisconne
         backOnlineTimer[nodeUUID] = nextTimerID;
         clock->setTimer(nextTimerID, timeToDisconnect + timeOffline);
         nextTimerID++;
+cout << "just prepped " << nodeUUID << " to go offline" << endl; 
     }
 }
 
@@ -56,6 +58,7 @@ void GeometricDisconnect::checkOffline(Network* network){
             toClear.push_back(i.first);
             clock->clearTimer(i.second);
             network->disableNode(i.first);
+cout << "just send  " << i.first << " offline" << endl;
         }
     }
 
@@ -71,12 +74,14 @@ void GeometricDisconnect::checkOffline(Network* network){
             toClear.push_back(i.first);
             clock->clearTimer(i.second);
             network->enableNode(i.first);
-        }
+cout << "just woke up " << i.first << endl; 
+	}
     }
 
     //clear the timers which have expired
     for(UUID i : toClear){
-        goOfflineTimer.erase(goOfflineTimer.find(i));
+        //goOfflineTimer.erase(goOfflineTimer.find(i)); //this is the wrong vector
+	backOnlineTimer.erase(backOnlineTimer.find(i));
     }
     toClear.clear();
 }
@@ -85,25 +90,27 @@ void GeometricDisconnect::eventTick(Network* network) {
     //check the offline timers and update node status's as necessary
     this->checkOffline(network);
 
-
+//FIXME: make this based on a percentage of numNodes. 
     // random number between 1-10
-    int totalNodes = rand() % 10 + 1;
-
-    for (int i = 0; i < totalNodes; i ++){
-        UUID randomUUID = network->getRandomNode();
-        shared_ptr<Node> node = network->getNodeFromUUID(randomUUID);
-
-        clock_unit_t timeToDisconnect = (clock_unit_t)((*d1)(*gen));
-        clock_unit_t timeOffline = (clock_unit_t)((*d2)(*gen));
+    //srand (time(NULL));
+    //int totalNodes = rand() % 10 + 1;
+    
+    map<UUID, std::shared_ptr<Node>> nodes = network->getNodes(); 
+    for (auto i : nodes){
+        UUID nodeUUID = i.first;
+        shared_ptr<Node> node = i.second;
+        clock_unit_t timeToDisconnect = (clock_unit_t)(node->getTimeOffline());  //Cannot do imediatly; no 0.
+        clock_unit_t timeOffline = (clock_unit_t)(node->getTimeOnline());        //No instant timers; no 0 
 
         // CALL FUNCTION TO GIVE PERSCRIBED COMMAND TO node through network
         //This function also garuntees a node cannot go offline more than once at
         //  a time
-        this->sendOffline(randomUUID, timeToDisconnect, timeOffline);
+cout << "attempting to send node " << nodeUUID << " offline in " << timeToDisconnect << " for "
+	<< timeOffline << endl;
+        this->sendOffline(nodeUUID, timeToDisconnect, timeOffline);
     }
 
-    //tell nodes to CONSUMEEEEE (nom nom nom nom nom)
-    network->tellAllNodesToConsumeObjects();
-
-    //TODO:::: randomly change object consuption rate for a random node
+     
+    //tick the internal clock
+    clock->tick();  
 }

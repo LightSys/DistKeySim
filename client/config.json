@@ -14,5 +14,6 @@
     "Heartbeat_Frequency": 7.0,
     "Lambda_1_(time_offline)": 2.0,
     "numNodes": 42,
-    "Max_Keys_(2^n,_give_n)": 4.0
+    "Max_Keys_(2^n,_give_n)": 4.0,
+    "customLambda3": [1, 2, 3, 4, 5]
 }
