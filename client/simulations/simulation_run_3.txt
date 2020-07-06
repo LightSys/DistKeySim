@@ -1,22 +1,0 @@
-using server at: "63.230.75.125"
-sending config file to server...
-sshing to server...
-Activate the web console with: systemctl enable --now cockpit.socket
-
-Last login: Tue May 26 15:10:07 2020 from 66.214.225.150
-]0;devel@distkeysim8:~[devel@distkeysim8 ~]$     cd /home/devel/devel-steven/DistKeySim
-]0;devel@distkeysim8:~/devel-steven/DistKeySim[devel@distkeysim8 DistKeySim]$     cd scripts
-]0;devel@distkeysim8:~/devel-steven/DistKeySim/scripts[devel@distkeysim8 scripts]$ 
-]0;devel@distkeysim8:~/devel-steven/DistKeySim/scripts[devel@distkeysim8 scripts]$     echo "run simulation! ..."
-run simulation! ...
-]0;devel@distkeysim8:~/devel-steven/DistKeySim/scripts[devel@distkeysim8 scripts]$ 
-]0;devel@distkeysim8:~/devel-steven/DistKeySim/scripts[devel@distkeysim8 scripts]$     rm -rf /home/devel/devel-steven/DistKeySim/temp__simulation_out
-]0;devel@distkeysim8:~/devel-steven/DistKeySim/scripts[devel@distkeysim8 scripts]$ 
-]0;devel@distkeysim8:~/devel-steven/DistKeySim/scripts[devel@distkeysim8 scripts]$     mkdir /home/devel/devel-steven/DistKeySim/temp_ssimulation_out
-]0;devel@distkeysim8:~/devel-steven/DistKeySim/scripts[devel@distkeysim8 scripts]$ 
-]0;devel@distkeysim8:~/devel-steven/DistKeySim/scripts[devel@distkeysim8 scripts]$     touch /home/devel/devel-steven/DistKeySim/temp_ssimulation_out/build_output.txt
-]0;devel@distkeysim8:~/devel-steven/DistKeySim/scripts[devel@distkeysim8 scripts]$ 
-]0;devel@distkeysim8:~/devel-steven/DistKeySim/scripts[devel@distkeysim8 scripts]$     
-]0;devel@distkeysim8:~/devel-steven/DistKeySim/scripts[devel@distkeysim8 scripts]$     echo "building..."
-building...
-]0;devel@distkeysim8:~/devel-steven/DistKeySim/scripts[devel@distkeysim8 scripts]$     ./build.sh > /home/devel/devel-steven/DistKeySimm/temp_simulation_out/build_output.txt

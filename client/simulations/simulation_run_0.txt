@@ -3,7 +3,7 @@ sending config file to server...
 sshing to server...
 Activate the web console with: systemctl enable --now cockpit.socket
 
-Last login: Wed Jul  1 16:52:23 2020 from 63.230.75.123
+Last login: Mon Jul  6 12:09:44 2020 from 98.30.104.23
     cd /home/devel/devel-steven/DistKeySim
     cd scripts
 
@@ -85,7 +85,7 @@ copying files from server...
 removing temp files from server...
 Activate the web console with: systemctl enable --now cockpit.socket
 
-Last login: Wed Jul  1 17:05:48 2020 from 98.30.104.23
+Last login: Mon Jul  6 12:21:55 2020 from 98.30.104.23
     rm /home/devel/devel-steven/DistKeySim/temp_simulation_out/ -rf
     exit
 ]0;devel@distkeysim8:~[devel@distkeysim8 ~]$     rm /home/devel/devel-steven/DistKeySim/temp_simulationn_out/ -rf

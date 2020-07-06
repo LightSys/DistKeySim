@@ -3,7 +3,7 @@ sending config file to server...
 sshing to server...
 Activate the web console with: systemctl enable --now cockpit.socket
 
-Last login: Fri Jun 26 12:25:27 2020 from 63.230.75.123
+Last login: Mon Jul  6 12:22:30 2020 from 98.30.104.23
     cd /home/devel/devel-steven/DistKeySim
     cd scripts
 
@@ -66,8 +66,6 @@ done building!
 ]0;devel@distkeysim8:~/devel-steven/DistKeySim/build/bin[devel@distkeysim8 bin]$     echo "running ADAK..."
 running ADAK...
 ]0;devel@distkeysim8:~/devel-steven/DistKeySim/build/bin[devel@distkeysim8 bin]$     ./adak > /home/devel/devel-steven/DistKeySim/temp_siimulation_out/output.txt 
-terminate called after throwing an instance of 'int'
-Aborted (core dumped)
 ]0;devel@distkeysim8:~/devel-steven/DistKeySim/build/bin[devel@distkeysim8 bin]$     echo "adak finished running! "
 adak finished running! 
 ]0;devel@distkeysim8:~/devel-steven/DistKeySim/build/bin[devel@distkeysim8 bin]$ 
@@ -87,7 +85,7 @@ copying files from server...
 removing temp files from server...
 Activate the web console with: systemctl enable --now cockpit.socket
 
-Last login: Fri Jun 26 13:01:54 2020 from 98.30.104.23
+Last login: Mon Jul  6 12:22:51 2020 from 98.30.104.23
     rm /home/devel/devel-steven/DistKeySim/temp_simulation_out/ -rf
     exit
 ]0;devel@distkeysim8:~[devel@distkeysim8 ~]$     rm /home/devel/devel-steven/DistKeySim/temp_simulationn_out/ -rf

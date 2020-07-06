@@ -13,6 +13,8 @@ import subprocess
 import json 
 import os 
 
+graphIsLog = False #whether or not the graph scale is logrithmic
+
 #command line args: 
 if len(sys.argv) != 6:
     print("ERROR: include 5 parameters of ip, username, password, FULL DistKeySim folder location on the server (including the DistKeySim folder), and port number")
@@ -56,8 +58,14 @@ def setJsonVar(str_results_dict,hardknobs_results_dict):
     
     #datavis.drawAnalytics("simulations/simulation_"+str(times_run)+"/statslog.csv")
     #datavis2.runDataAnalytics("sample_statslog.csv")
-    
-    datavis2.runDataAnalytics("simulations/simulation_"+str(times_run)+"/statslog.csv")
+    print("graph is log: ")
+    global graphIsLog
+    print(graphIsLog)
+    if(graphIsLog):
+        #run with logrithmic scale
+        datavis2.runDataAnalyticsLog("simulations/simulation_"+str(times_run)+"/statslog.csv")
+    else:
+        datavis2.runDataAnalytics("simulations/simulation_"+str(times_run)+"/statslog.csv")
     
     print("opened analytics!")
     times_run += 1
@@ -90,7 +98,13 @@ def submit_button_hit(boxes_dict,hardknobs_dict):
         str_results_dict.update({label : float(gotten_str)})
     
     for txt, menu in  hardknobs_dict.items():
-        hardknobs_results_dict.update({txt : menu.get()})
+        global graphIsLog
+        if(txt == "Graph Scale"):
+            graphIsLog = (menu.get() == "logarithmic")
+        else:
+            hardknobs_results_dict.update({txt : menu.get()})
+        print("graph is log: ")
+        print(graphIsLog)
     
     
     #numbers are verified and strings are retrieved 
@@ -134,7 +148,8 @@ fine_knob_labels = ["Visible Peers (connected %)",\
                     
 #label, [array of options]
 coarse_knobs_info = {"Smallest Key for Priority": ["smallest overall","smallest key of the block with the least space left"], \
-                     "Algorithm Strategy": ["temperature based", "temperature with priority transmission based"]\
+                     "Algorithm Strategy": ["temperature based", "temperature with priority transmission based"], \
+                     "Graph Scale": ["linear", "logarithmic"]\
                     }
 
 def start_GUI(innrPipe):
@@ -186,7 +201,8 @@ def start_GUI(innrPipe):
         #label:
         newlabel = tk.Label(frame, text = (txt+":"))
         newlabel.grid(row = count, column = 0)
-        config_label(newlabel) 
+        if(txt != "Graph Scale"):
+            config_label(newlabel) 
         labels_dict.update({txt : newlabel})
         
         #option menu:
