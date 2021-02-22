@@ -5,4 +5,6 @@ build
 /cmake-build-debug-centos-8/
 /cmake-build-release-centos-8/
 .vscode
-scripts
+logOutput.txt
+statslog.csv
+make.out
