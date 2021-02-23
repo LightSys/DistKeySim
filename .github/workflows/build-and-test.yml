@@ -1,0 +1,21 @@
+name: actions
+on: [push]
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - run: make cores
+      - name: Build protobuf library
+         run: |
+           git clone https://github.com/protocolbuffers/protobuf.git
+           cd protobuf
+           git submodule update --init --recursive
+           ./autogen.sh
+           ./autogen.sh  # run autogen twice due to alleged bug
+           ./configure
+           make
+           make check
+           sudo make install
+           sudo ldconfig
+      - run: make USE_CORES=1
