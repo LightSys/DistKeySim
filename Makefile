@@ -1,6 +1,7 @@
 BUILD     = build
 SRC       = src
 INCLUDE   = include
+CLIENT    = client
 MESSAGE   = message
 USE_CORES = 1
 
@@ -36,6 +37,12 @@ run-scenario :
 
 run-scenario1 :
 	$(MAKE) run-scenario SCENARIO=1
+
+STATS_LOG    = ./statslog.csv
+VIS_NUM      = 2
+GRAPH_IS_LOG = True
+show-vis :
+	$(CLIENT)/showVis.py $(VIS_NUM) $(GRAPH_IS_LOG) $(STATS_LOG)
 
 clean :
 	rm -rf build
