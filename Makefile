@@ -27,7 +27,7 @@ $(SRC)/$(MESSAGE).pb.cc $(INCLUDE)/$(MESSAGE).pb.h : $(SRC)/$(MESSAGE).proto
 $(BUILD)/$(SRC)/adak : $(INCLUDE)/*.h $(INCLUDE)/*.hpp $(SRC)/*.cc $(SRC)/*.cpp  
 	mkdir -p $(BUILD)
 	cd $(BUILD) && \
-		cmake .. -DBUILD_TESTING=0 && \
+		cmake -j$(USE_CORES) .. -DBUILD_TESTING=0 && \
 		make -j$(USE_CORES)
 
 run-scenario :
