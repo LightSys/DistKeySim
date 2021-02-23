@@ -5,7 +5,14 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
+      - name: Cache protobuf library
+        id: cache-protobuf
+        uses: actions/cache@v1
+        with:
+          path: protobuf
+          key: ${{ runner.os }}-protobuf
       - name: Build protobuf library
+        if: steps.cache-protobuf.outputs.cache-hit != 'true'
         run: |
           git clone https://github.com/protocolbuffers/protobuf.git
           cd protobuf
@@ -15,6 +22,10 @@ jobs:
           ./configure
           make
           make check
+      - name: Install protobuf library
+        run: |
+          cd protobuf
           sudo make install
           sudo ldconfig
-      - run: make all USE_CORES=1
+      - name: make
+        run: make all USE_CORES=1
