@@ -24,7 +24,7 @@ $(SRC)/$(MESSAGE).pb.cc $(INCLUDE)/$(MESSAGE).pb.h : $(SRC)/$(MESSAGE).proto
 		mv  message.pb.h ../$(INCLUDE)
 
 # Build ADAK
-$(BUILD)/$(SRC)/adak : $(INCLUDE)/*.h $(INCLUDE)/*.hpp $(BUILD)/$(SRC)/*.cc $(SRC)/*.cpp  
+$(BUILD)/$(SRC)/adak : $(INCLUDE)/*.h $(INCLUDE)/*.hpp $(SRC)/*.cc $(SRC)/*.cpp  
 	mkdir -p $(BUILD)
 	cd $(BUILD) && \
 		cmake .. -DBUILD_TESTING=0 && \
