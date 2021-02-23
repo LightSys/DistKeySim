@@ -9,3 +9,4 @@ logOutput.txt
 statslog.csv
 make.out
 *.pyc
+*.zip
