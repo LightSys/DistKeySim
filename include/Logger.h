@@ -1,7 +1,7 @@
 #ifndef LOGGER_H
 #define LOGGER_H
 
-
+#include <filesystem>
 #include <iostream>
 #include <fstream>
 #include <chrono>
@@ -66,17 +66,22 @@ class Logger {
             return rate;
         }
 	static void copyFile(string path){
-             //check for the num.txt at the locaton
-	     int num = -1;
-	     //look for the txt at the path
-	     ifstream numFile(path + "num.txt");
-	     if(!numFile.is_open()){
-                cout << "ERROR opening file for the number... no num.txt \n";
-	     }
-	     numFile >> num; //just an int, so it should work
-	     //replace file
-	     numFile.close();
+        // create directory if last char of path is /
+        if (path.size() > 0) {
+            if (path.back() == '/') {
+                filesystem::create_directory(path);
+            }
+        }
 
+	     int num = 1;
+	     //look for the num.txt at the path
+	     ifstream numFile(path + "num.txt");
+	     if (numFile.is_open()) {
+	        numFile >> num;
+	        numFile.close();
+	     }
+
+	     //increment num.txt file
 	     ofstream numFileII(path + "num.txt", std::ofstream::out | std::ofstream::trunc);
 	     numFileII << to_string(num + 1);  //replace and increment
 	     numFileII.close();
@@ -100,7 +105,7 @@ class Logger {
 	     dest.close();
              
 	     //copy the config files
-             src.open("config.json", std::ios::binary);
+         src.open("config.json", std::ios::binary);
 	     dest.open(path + "config" + to_string(num) + ".json", std::ios::binary);   
 	     //move over the information
 	     dest << src.rdbuf();
