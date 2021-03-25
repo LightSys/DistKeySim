@@ -8,7 +8,7 @@
     "connectionMode": "full",
     "Chunkiness_(#_of_keys_to_shift)": 2.0,
     "lambda_3_(time_between_creating_objects)": 2.0,
-    "csvOutputPath": "Path of Righteousness",
+    "csvOutputPath": "outputs/",
     "Creation_Rate(%_of_keyspace)": 2.0,
     "Heartbeat_Frequency": 2.0,
     "Lambda_1_(time_offline)": 2.0,
