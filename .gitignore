@@ -1,6 +1,7 @@
 cmake-build-debug/
 .idea/
-build
+build/
+outputs/
 /cmake-build-debug---local/
 /cmake-build-debug-centos-8/
 /cmake-build-release-centos-8/
