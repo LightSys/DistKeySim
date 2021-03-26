@@ -65,12 +65,12 @@ unsigned long long int Node::getTotalKeyspaceBlockSize(){
 
 void Node::consumeObjects(){
     amountOfOneKeyUsed += objectConsuptionRatePerSecond;
-//cout << "#############" <<  this->uuid << "consumption per second: " << objectConsuptionRatePerSecond << endl;
+//Logger::log(Formatter() << "#############" <<  this->uuid << "consumption per second: " << objectConsuptionRatePerSecond);
  
 //make sure can consume keys.
     if(keyspaces.size() == 0) return;
     if(amountOfOneKeyUsed >= 1.0){
-	cout << "consuming a key!! " << endl; 
+	Logger::log(Formatter() << "consuming a key!! "); 
         this->getNextKey();
         amountOfOneKeyUsed--;
          	
@@ -191,7 +191,6 @@ ADAK_Key_t Node::getNextKey() {
         ///getting distributed more than the current node has capcity for.
 
         string message = "ERROR from getNextKey in Node: No more keys to give";
-        cout << message <<endl;
         Logger::log(message);
         return -1;
     } else {
@@ -219,11 +218,12 @@ int Node::minimumKeyspaceIndex(int newMin) {
             min = keyspaces.at(i).getStart();
             index = i;
         }else if(! keyspaces.at(i).isKeyAvailable()){
-            cout << uuid << " has invalid keyspace " << keyspaces[i].getStart() << "/" << keyspaces[i].getSuffix() << ", end " 
-	<< keyspaces[i].getEnd() << endl; 
-	}else if(!(start > newMin) && newMin == -1){
-            cout << uuid << " has keyspace " << start << "/" << suffix << ", end " << end << ". Start is <= "<< newMin << endl; 
-	}
+            Logger::log(Formatter() << uuid << " has invalid keyspace "
+                << keyspaces[i].getStart() << "/" << keyspaces[i].getSuffix()
+                << ", end " << keyspaces[i].getEnd()); 
+	    }else if(!(start > newMin) && newMin == -1){
+            Logger::log(Formatter() << uuid << " has keyspace " << start << "/" << suffix << ", end " << end << ". Start is <= "<< newMin); 
+	    }
     }
     return index;
 }
@@ -286,11 +286,11 @@ bool Node::receiveMessage(const Message &message) {
     //the other message is const, so just edit a copy
     Message msg = message; 
 
-//cout << "dealing with message " << msg.messageid() <<", confirmation " << msg.lastreceivedmsg() << endl; 
+//Logger::log(Formatter() << "dealing with message " << msg.messageid() <<", confirmation " << msg.lastreceivedmsg()); 
 
     if (msg.sourcenodeid() == uuid) {
         // Destination node is this node, don't receive it
-        cout << "rejected a message, was sent to self " << endl;
+        Logger::log(Formatter() << "rejected a message, was sent to self ");
         return false;
     }  
     
@@ -321,13 +321,13 @@ bool Node::receiveMessage(const Message &message) {
 	   uint64_t lastID = peers[msg.sourcenodeid()].first->messageid();
 	   if(msg.messageid() != lastID +1){
               //a message was missed. Take new info, but carry over confirmation and ID
-//cout << uuid << "'s received message id " << msg.messageid() << " confirm " << msg.lastreceivedmsg();
-//cout << " (from " << msg.sourcenodeid() << ")";
+//Logger::log(Formatter() << uuid << "'s received message id " << msg.messageid() << " confirm " << msg.lastreceivedmsg();
+//Logger::log(Formatter() << " (from " << msg.sourcenodeid() << ")";
               uint64_t temp = (peers[msg.sourcenodeid()].first->messageid());
 	      msg.set_messageid(temp);
 	      temp = (peers[msg.sourcenodeid()].first->lastreceivedmsg());
 	      msg.set_lastreceivedmsg(temp);
-//cout << " is now message id " << msg.messageid() << " confirm " << msg.lastreceivedmsg() << endl;
+//Logger::log(Formatter() << " is now message id " << msg.messageid() << " confirm " << msg.lastreceivedmsg());
 	   }
   	   Message *temp = new Message;
            *temp = msg;
@@ -338,7 +338,7 @@ bool Node::receiveMessage(const Message &message) {
 	}
     }
 
-//cout << uuid << " updated last message to " << msg.messageid() << " from " << msg.sourcenodeid() << endl; 
+//Logger::log(Formatter() << uuid << " updated last message to " << msg.messageid() << " from " << msg.sourcenodeid()); 
 
     //Find out if the conifrmation matches
    // Message* lastMessage = NULL;
@@ -346,20 +346,20 @@ bool Node::receiveMessage(const Message &message) {
 int loops = 0;
     //Remove all of the messages msg confirms. If a newer message is old enough and was not confimed, resend it
     
-    //cout << uuid << " confirmed message " << tempID << " from " <<  confirmMsg[tempID]->sourcenodeid() << endl;
+    //Logger::log(Formatter() << uuid << " confirmed message " << tempID << " from " <<  confirmMsg[tempID]->sourcenodeid());
       
      //remove all messages with ID's older than confirmed from the same peer
      for(auto iter = confirmMsg.begin() ; iter != confirmMsg.end() ; iter++){ 
         //if it was sent before the confirmed one and came from the peers that just confirmed it, delente it
         if(iter->second == nullptr){
             //this is a problem, and should not be possible
-	    cout << "ERROR: confirm message somehow got a null" << endl; 
-	    cout << "message was suposed to be id " << iter->first << endl;
-	    cout << "can find with id: " << (confirmMsg.find(iter->first) != confirmMsg.end()) << endl; 
+	    Logger::log(Formatter() << "ERROR: confirm message somehow got a null"); 
+	    Logger::log(Formatter() << "message was suposed to be id " << iter->first);
+	    Logger::log(Formatter() << "can find with id: " << (confirmMsg.find(iter->first) != confirmMsg.end())); 
            // break;  
 	   throw 1; //just give up... 
 	}else  if(confirmMsg.find(iter->first) == confirmMsg.end()){
-           cout << "The value " << iter->first <<  " is not in the map... " << endl;
+           Logger::log(Formatter() << "The value " << iter->first <<  " is not in the map... ");
            throw 1; //no point in going on...
 	}
 
@@ -368,7 +368,7 @@ int loops = 0;
            if(msg.lastreceivedmsg() >= iter->second->messageid()){
 	      //confirm the messae
 	      uint64_t tempID = iter->second->messageid();
-//cout << "confirming message " << tempID << endl; 
+//Logger::log(Formatter() << "confirming message " << tempID); 
 
               delete confirmMsg[tempID];
 
@@ -380,7 +380,7 @@ int loops = 0;
 	    } else {      
               //the message was meant for sender, but was not confirmed. See if it is old enough to resend
 	       if(currentTick - timeStamps[iter->first] >=  2*networkLatency){
-                  cout << "resending message " << iter->first << endl;
+                  Logger::log(Formatter() << "resending message " << iter->first);
                   sendQueue.push_back(*(iter->second));
 		  //update time stamp to prevent spamming resends 
 		  timeStamps[iter->first] = currentTick;  
@@ -394,12 +394,12 @@ int loops = 0;
 
 
     if(msg.messagetype() == Message_MessageType_KEYSPACE){
-//cout << "was a keyspace" << endl; 
+//Logger::log(Formatter() << "was a keyspace"); 
        // Receiving keyspace from a peer, generate new one for local store
        for (auto &&j =  0; j < msg.keyspace().keyspaces_size(); j++) {
            KeyspaceMessageContents::Keyspace peerSpace = msg.keyspace().keyspaces(j);
            Keyspace newSpace = Keyspace{peerSpace.startid(), peerSpace.endid(), peerSpace.suffixbits()};
-// cout << "collected keysapce" << endl;
+// Logger::log(Formatter() << "collected keysapce");
            //make sure keyspace is not a duplicate
            int size = keyspaces.size();
 	   bool isNew = true;
@@ -407,8 +407,8 @@ int loops = 0;
               if(keyspaces[i].getSuffix() == newSpace.getSuffix() && keyspaces[i].getStart() == 
 			   newSpace.getStart() && keyspaces[i].getEnd() == newSpace.getEnd()){
 	         isNew = false;
-                 cout << uuid << " found duplicate keyspace " << newSpace.getStart() << "/" << newSpace.getSuffix() << 
-	              ", " << newSpace.getEnd() << endl; 
+                 Logger::log(Formatter() << uuid << " found duplicate keyspace " << newSpace.getStart() << "/" << newSpace.getSuffix() << 
+	              ", " << newSpace.getEnd()); 
 	         break;  
 	      } 
 	   }
@@ -416,11 +416,11 @@ int loops = 0;
 	      keyspaces.emplace_back(newSpace);
               totalLocalKeyspaceSize+=newSpace.getSize(); //updating total after recievin
 	
-//cout << uuid << " recived keyspace " << keyspaces.back().getStart() << "/" << keyspaces.back().getSuffix()
-//       	<< " from " << msg.sourcenodeid() << endl; 
+//Logger::log(Formatter() << uuid << " recived keyspace " << keyspaces.back().getStart() << "/" << keyspaces.back().getSuffix()
+//       	<< " from " << msg.sourcenodeid()); 
 	   } else {
-              cout << "duplicate keyspace recived by " <<  uuid << " from " << msg.sourcenodeid()
-               << " in message " << msg.messageid() << endl;
+              Logger::log(Formatter() << "duplicate keyspace recived by " <<  uuid << " from " << msg.sourcenodeid()
+               << " in message " << msg.messageid());
 	   }
 
 	}
@@ -494,7 +494,7 @@ Message Node::getHeartbeatMessage(const UUID &peerID) {
     *temp = msg;
     confirmMsg[temp->messageid()] = temp;
  
-//cout << "Node " << uuid << " made a heartbeat message " << msg.messageid() << " for " << peerID << endl; 
+//Logger::log(Formatter() << "Node " << uuid << " made a heartbeat message " << msg.messageid() << " for " << peerID); 
     return msg;
 }
 
@@ -525,7 +525,7 @@ void Node::logInfoForHeartbeat(){
     }else{
         dataLine.push_back("0.0");
     }
-//cout << "Test\n"; 
+//Logger::log(Formatter() << "Test\n"; 
     Logger::logStats(dataLine);
     //maybe put if ran out of space here, and uuid
 }
@@ -534,7 +534,7 @@ void Node::logInfoForHeartbeat(){
 int Node::splitKeyspace(int keyspaceIndex){
     if(keyspaceIndex > keyspaces.size() - 1){
        //invalid index, cannot split
-       cout << "Invalid index for keyspace split" << endl; 
+       Logger::log(Formatter() << "Invalid index for keyspace split"); 
        return -1;
     } 
 
@@ -548,7 +548,7 @@ int Node::splitKeyspace(int keyspaceIndex){
 
     //Warn if splitting a sub block
     if(end != UINT_MAX){
-      cout << "warning: node " << uuid << " is splitting sub-block " << start1 << "/" << suffix << ", " << end << endl; 
+      Logger::log(Formatter() << "warning: node " << uuid << " is splitting sub-block " << start1 << "/" << suffix << ", " << end); 
     }
 
     Keyspace key1(start1, end, suffix);        
@@ -560,10 +560,10 @@ int Node::splitKeyspace(int keyspaceIndex){
     
     //check validity of pieces make
     if(!key1.isKeyAvailable()){
-       cout << "Made first half: " << key1.getStart() << "/" << key1.getSuffix() <<  ", " << key1.getEnd() << endl;
+       Logger::log(Formatter() << "Made first half: " << key1.getStart() << "/" << key1.getSuffix() <<  ", " << key1.getEnd());
        throw 1;
     } else if(!key2.isKeyAvailable()){
-       cout << "Made second half: " << key2.getStart() << "/" << key2.getSuffix() <<  ", " << key2.getEnd() << endl;
+       Logger::log(Formatter() << "Made second half: " << key2.getStart() << "/" << key2.getSuffix() <<  ", " << key2.getEnd());
        throw 2;
     }
 
@@ -591,7 +591,7 @@ void Node::sendCustKeyspace(UUID id, int keyInd){
      
     sendQueue.push_back(keyMsg);
  
-//cout << "node " << uuid << " sent " << start << "/" << suffix << " to " << id << endl; 
+//Logger::log(Formatter() << "node " << uuid << " sent " << start << "/" << suffix << " to " << id); 
     //add to confirmation list
     Message *temp = new Message;
     *temp = keyMsg;
@@ -635,7 +635,7 @@ void Node::sendCustKeyspace(UUID id, vector<int> keyInds){
 
        //make the message a keyspace message
        records.push_back(KeyspaceExchangeRecord{"share", start, end, (uint32_t) suffix});
-//cout << uuid << "sent keyspace batch to " << id << " with " << start << "/" << suffix << ", " << end << endl; 
+//Logger::log(Formatter() << uuid << "sent keyspace batch to " << id << " with " << start << "/" << suffix << ", " << end); 
     }
 
     toKeyspaceMessage(keyMsg, records);
@@ -647,7 +647,7 @@ void Node::sendCustKeyspace(UUID id, vector<int> keyInds){
     *temp = keyMsg;
     confirmMsg[temp->messageid()] = temp;
     
-//cout << uuid << " made multiple keyspace message  " << temp->messageid()  << " for " << id << endl;
+//Logger::log(Formatter() << uuid << " made multiple keyspace message  " << temp->messageid()  << " for " << id);
      timeStamps[keyMsg.messageid()] = currentTick; 
 
 }
@@ -665,8 +665,8 @@ vector<int> Node::makeSubBlock(int range){
       int mindex = minimumKeyspaceIndex(oldMin);
       if(mindex == -1){
           //the node does not have enough keyspace to finish...
-	  cout << "Node " << uuid << " does not have enough keyspace to make sub-block size " << range << endl;
-	  cout << "Number of keyspaces: " << keyspaces.size() << ", and old min: " << oldMin << endl; 
+	  Logger::log(Formatter() << "Node " << uuid << " does not have enough keyspace to make sub-block size " << range);
+	  Logger::log(Formatter() << "Number of keyspaces: " << keyspaces.size() << ", and old min: " << oldMin); 
 	  throw "Not enough keyspace to make sub-block";
 	  //TODO: make a node exception class and throw it here... 
       }
@@ -676,7 +676,7 @@ vector<int> Node::makeSubBlock(int range){
       //if it is too small use the whole block, otherwise just take what need
       if(temp.getSize() <= range){
           used += temp.getSize();
-//cout <<  uuid << "ussing sub block " << temp.getStart() << "/" << temp.getSuffix() << ", " << temp.getEnd() << endl;
+//Logger::log(Formatter() <<  uuid << "ussing sub block " << temp.getStart() << "/" << temp.getSuffix() << ", " << temp.getEnd());
 	  //add the new location
 	  indecies.push_back(mindex);
        }else{
@@ -688,10 +688,10 @@ vector<int> Node::makeSubBlock(int range){
 	  unsigned long end = temp.getEnd();
 	  unsigned long joint = start + remainder*pow(2, suffix);
           keyspaces.push_back(Keyspace(start, joint, suffix));
-//cout <<  uuid << "made sub block " << start << "/" << suffix << ", " << start  + remainder*pow(2,suffix) << endl;
+//Logger::log(Formatter() <<  uuid << "made sub block " << start << "/" << suffix << ", " << start  + remainder*pow(2,suffix));
 //Keyspace tempII = keyspaces[keyspaces.size() -1];
-//cout << uuid << " just make keyspace " << tempII.getStart() << "/" << tempII.getSuffix() << ", " << tempII.getEnd()
-//	<< ".   Validity: " << tempII.isKeyAvailable() << endl; 
+//Logger::log(Formatter() << uuid << " just make keyspace " << tempII.getStart() << "/" << tempII.getSuffix() << ", " << tempII.getEnd()
+//	<< ".   Validity: " << tempII.isKeyAvailable()); 
           //replace keyspace at mindex with one that does not include the keys used by the sub-block
 	  keyspaces[mindex] = Keyspace(joint, end, suffix);
           //for(int i = 0 ; i < remainder ; i ++){
@@ -699,8 +699,8 @@ vector<int> Node::makeSubBlock(int range){
           //}
 	  indecies.push_back(keyspaces.size() -1); //the deised keyspace is at the end of the vector
 	  if(keyspaces[mindex].getStart() != keyspaces.back().getEnd()){
-             cout << "Sub-Block creation error: full starts " << keyspaces[mindex].getStart() << ", sub ends " 
-		    << keyspaces.back().getEnd() << endl; 
+             Logger::log(Formatter() << "Sub-Block creation error: full starts " << keyspaces[mindex].getStart() << ", sub ends " 
+		    << keyspaces.back().getEnd()); 
 	     throw 3; 
 	  }
       }
@@ -720,7 +720,7 @@ double Node::calcLongAggregate(UUID target){
    result *= networkScale; 
    result += createdWeek;
    result /= numCounted; //# of peers + 1 for self - 1 for target
-cout << uuid << " calcing long agg/ Week: " << createdWeek << ", numCounted: " << numCounted << endl;;  
+Logger::log(Formatter() << uuid << " calcing long agg/ Week: " << createdWeek << ", numCounted: " << numCounted);;  
    return result; 
 }
 
@@ -736,7 +736,7 @@ double Node::calcShortAggregate(UUID target){
    result *= networkScale; 
    result += createdDay;
    result /= numCounted; //# of peers + self - target 
-//cout << uuid << " calultaed aggregate short term " << result << endl; 
+//Logger::log(Formatter() << uuid << " calultaed aggregate short term " << result); 
    return result; 
 }
 
@@ -745,7 +745,7 @@ uint64_t Node::getNextMsgId(UUID peerID){
    if(peers.find(peerID) != peers.end()){
       msgID = peers[peerID].second++; //assign the ID and then incriment next
    }else {
-      cout << uuid << " has no peer " << peerID << " so returning 0 for msg ID" << endl; 
+      Logger::log(Formatter() << uuid << " has no peer " << peerID << " so returning 0 for msg ID"); 
    }
    
    return msgID; 

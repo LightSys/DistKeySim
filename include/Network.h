@@ -1,5 +1,4 @@
-#ifndef ADAK_KEYING_NETWORK_H
-#define ADAK_KEYING_NETWORK_H
+#pragma once
 
 #include <cmath>
 #include <iostream>
@@ -199,19 +198,13 @@ public:
     std::map<UUID, std::shared_ptr<Node>> getNodes() { return this->nodes; }
     std::vector<Channel> getChannels() { return this->channels; }
 
-    // Output to cout
-    void printUUIDList();
-    void printChannels();
-    void printKeyspaces();
-
-    // Output to ostream, allowing for file output
-    void printUUIDList(std::ostream &out, char spacer = ',');
-    void printChannels(std::ostream &out, char spacer = ',');
-    void printKeyspaces(std::ostream &out, char spacer = ',');
+    // Output to Logger
+    void printUUIDList(char spacer = ',');
+    void printChannels(char spacer = ',');
+    void printKeyspaces(char spacer = ',');
 
     // Number of nodes
     inline size_t numNodes() const { return nodes.size(); }
     
     double checkAllKeyspace();
 };
-#endif // ADAK_KEYING_NETWORK_H

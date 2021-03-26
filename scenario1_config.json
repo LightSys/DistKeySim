@@ -17,6 +17,7 @@
     "simLength": 86400.0,
     "Custom_Connections": "[1, 2] [2, 3] [3, 4] [4, 1]",
     "Latency": 1,
+    "randomSeed": 25,
     "customLambda3": [
         60,
         60,

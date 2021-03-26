@@ -1,5 +1,4 @@
-#ifndef LIGHTSYS_ADAK_SIMULATION_H
-#define LIGHTSYS_ADAK_SIMULATION_H
+#pragma once
 
 #include <iostream>
 #include <ctime>
@@ -12,7 +11,6 @@
 #include "Logger.h"
 #include "UUID.h"
 #include "GeometricDisconnect.h"
-#include "Random.h"
 #include "SystemClock.h"
 
 
@@ -32,5 +30,3 @@ public:
     // Getters
     Network *getNetwork() { return &this->network; }
 };
-
-#endif //LIGHTSYS_ADAK_SIMULATION_H

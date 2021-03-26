@@ -1,9 +1,9 @@
-#ifndef LOGGER_H
-#define LOGGER_H
+#pragma once
 
 #include <filesystem>
 #include <iostream>
 #include <fstream>
+#include <sstream>
 #include <chrono>
 #include <ctime>
 #include <vector>
@@ -22,7 +22,7 @@ class Logger {
             ofstream myfile;
             myfile.open(filename,ofstream::app);
             time_t date = chrono::system_clock::to_time_t(chrono::system_clock::now());
-            myfile << message << " -- " << ctime(&date)<<endl; //log message and timestamp
+            myfile << message << " -- " << ctime(&date); //log message and timestamp
             myfile.close();
         }
         static void logStats (vector<string> stats){
@@ -114,5 +114,18 @@ class Logger {
 	     dest.close();
 
 	}
-    };
-#endif //LOGGER_H
+};
+
+// From https://stackoverflow.com/questions/5396790/concatenate-strings-in-function-call-c
+class Formatter
+{
+public:
+    template<class Val> Formatter& operator<<(const Val& val)
+    {
+        ss_ << val;
+        return * this;
+    }
+    operator string () const { return ss_.str().c_str(); }
+private:
+    std::stringstream ss_;
+};

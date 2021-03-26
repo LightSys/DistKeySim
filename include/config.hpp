@@ -1,9 +1,9 @@
-#ifndef ADAK_KEYING_CONFIG_HPP
-#define ADAK_KEYING_CONFIG_HPP
+#pragma once
 
 #include <iostream>
 #include <fstream>
 #include <string>
+#include <time.h>
 #include <utility>
 
 #include "json.hpp"
@@ -24,7 +24,7 @@ static const std::vector<float> DEFAULT_CUSTOM_LAMBDA2 = {};
 static const std::vector<float> DEFAULT_CUSTOM_LAMBDA3 = {}; //if it is empty, the lambda3 will be used
 static const bool DEFAULT_RUN_EVENTS = false; 
 static const double DEFAULT_UNITS_PER_DAY = 3600;
-
+static const unsigned DEFAULT_RANDOM_SEED = time(nullptr);
 
 //added for UI string inputs:
 static const unsigned int SIZEOF_SMALLEST_KEY_OPTIONS = 2;
@@ -53,7 +53,7 @@ static const unsigned int DEFAULT_LONG_PRECISION = 5;
 static const unsigned int DEFAULT_SIM_LENGTH = 50;
 
 struct Config {
-    //all of the data memebers, in no particular order. 
+    //all of the data members, in no particular order. 
     //See documentation for purpose of each
     u_int numNodes;
     std::string connModeStr;
@@ -63,6 +63,7 @@ struct Config {
     float networkScale;
     int latency; 
     bool runEvents;
+    unsigned int randomSeed;
 
     //added for the UI input: 
     float visiblePeers;//chance (from percent) in decimal 0-1
@@ -105,5 +106,3 @@ struct Config {
      */
     Config(std::ifstream jsonFile);
 };
-
-#endif //ADAK_KEYING_CONFIG_HPP

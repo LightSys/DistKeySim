@@ -26,7 +26,7 @@ Keyspace::Keyspace(const Keyspace &obj){
     } else{
        this->percent = 0;
     }
-//cout << "just created keyspace with suffix " << this->suffix << " and % " << this->percent << endl; 
+//Logger::log(Formatter() << "just created keyspace with suffix " << this->suffix << " and % " << this->percent); 
 }
 
 ADAK_Key_t Keyspace::getNextAvailableKey() {

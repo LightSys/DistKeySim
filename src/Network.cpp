@@ -1,5 +1,6 @@
 #include <iostream>
 
+#include "Logger.h"
 #include "Network.h"
 #include "Node.h"
 #include "UUID.h"
@@ -14,7 +15,7 @@ Network::Network(ConnectionType connectionType, float PERCENT_CONNECTED, double 
     this->connectionType = connectionType;
     //PERCENT_CONNECTED is a 5 digit int (99.999% = 99999)
     this->PERCENT_CONNECTED = (int)(PERCENT_CONNECTED*1000);
-    cout << "Network online" << endl;
+    Logger::log("Network online");
     custLambda3 = {};
     custLambda2 = {};
     custLambda1 = {};
@@ -27,7 +28,7 @@ Network::Network(ConnectionType connectionType, float PERCENT_CONNECTED, double 
     this->connectionType = connectionType;
     //PERCENT_CONNECTED is a 5 digit int (99.999% = 99999)
     this->PERCENT_CONNECTED = (int)(PERCENT_CONNECTED*1000);
-    cout << "Network online" << endl;
+    Logger::log("Network online");
     custLambda3 = lam3s;
     custLambda2 = lam2s;
     custLambda1 = lam1s;
@@ -76,14 +77,14 @@ void Network::doAllHeartbeat(int keysToSend) {
 
     	node.second->heartbeat();
 //auto end = std::chrono::high_resolution_clock::now();
-//cout << "sending a heartbeat took " << std::chrono::duration_cast<std::chrono::nanoseconds>(end - start).count()
-//      	<< " ns" << endl;
+//Logger::log("sending a heartbeat took " << std::chrono::duration_cast<std::chrono::nanoseconds>(end - start).count()
+//      	<< " ns");
 
 //start = std::chrono::high_resolution_clock::now();
       	ControlStrategy::adak(*(node.second), keysToSend); //have the node decide what to do 
 //end = std::chrono::high_resolution_clock::now();
-//cout << "chekcing control strat took " << std::chrono::duration_cast<std::chrono::nanoseconds>(end - start).count()
-//       	<< " ns" << endl;    
+//Logger::log("chekcing control strat took " << std::chrono::duration_cast<std::chrono::nanoseconds>(end - start).count()
+//       	<< " ns");    
     }
  
 }
@@ -135,8 +136,8 @@ void Network::checkAndSendAllNodesLatency(int latency) {
 //auto start = std::chrono::high_resolution_clock::now();
 		sendMsg(temp[i]);
 //auto end = std::chrono::high_resolution_clock::now();
-//cout << "sending a message took " << std::chrono::duration_cast<std::chrono::nanoseconds>(end - start).count()
-//       	<< " ms" << endl; 
+//Logger::log("sending a message took " << std::chrono::duration_cast<std::chrono::nanoseconds>(end - start).count()
+//       	<< " ms"); 
 	}
     }
 }
@@ -322,12 +323,12 @@ bool Network::customConnect(shared_ptr<Node> node) {
 	   string node2 = connections.substr(comma + 2, end - comma - 2); 
 	   //cut off current pair from connections
 	   connections = connections.substr(end +1); 
-           cout << "connecting Nodes " << node1 << " and " << node2 << endl; 
+       Logger::log(Formatter() << "connecting Nodes " << node1 << " and " << node2);
 	   //Assign nodes to connection values if needed
 	   if(strToID.find((node1)) == strToID.end()){
 	    if(nextNode == nodes.end()){
-	        cout << "Cannot have a node to represent connection with node " << node1 << endl;
-		continue; //cannot finish this iteration, nothing to connect
+	        Logger::log(Formatter() << "Cannot have a node to represent connection with node " << node1);
+		    continue; //cannot finish this iteration, nothing to connect
 	     }else{ 
                 strToID.insert(pair<string, UUID>(node1, nextNode->first));
 	        nextNode++;
@@ -336,7 +337,7 @@ bool Network::customConnect(shared_ptr<Node> node) {
 	   //and now the second item
 	   if(strToID.find(node2) == strToID.end()){
 	     if(nextNode == nodes.end()){
-	        cout << "Cannot have a node to represent connection with node " << node2 << endl;
+	        Logger::log(Formatter() << "Cannot have a node to represent connection with node " << node2);
 		continue; //cannot finish this loop; nothing to connect
 	     }else{
 	       strToID.insert(pair<string, UUID>(node2, nextNode->first));
@@ -428,58 +429,43 @@ UUID Network::getRandomNode() {
     return uuidList.at(randomNum);
 }
 
-void Network::printUUIDList() {
-    printUUIDList(cout, ' ');
-}
-
-void Network::printUUIDList(ostream &out, char spacer) {
+void Network::printUUIDList(char spacer) {
     int counter = 0;
-    out << "UUID List" << '\n'
-        << "COUNT" << spacer << "UUID (in hex)" << spacer << "# bits" << '\n';
+    Logger::log(Formatter() << "UUID List");
+    Logger::log(Formatter() << "COUNT" << spacer << "UUID (in hex)" << spacer << "# bits");
     for (UUID const uuid : generateUUIDList()) {
-        out << counter << spacer << uuid << spacer << (uuid.size() * 8) << spacer << '\n';
+        Logger::log(Formatter() << counter << spacer << uuid << spacer << (uuid.size() * 8) << spacer);
         counter++;
     }
-    out << flush;
 }
-void Network::printChannels() {
-    printChannels(cout, ' ');
-}
-
-void Network::printChannels(ostream &out, char spacer) {
-    out << "CHANNELS\n"
-        << "TO" << spacer << "FROM" << spacer << "ID" << "\n";
+void Network::printChannels(char spacer) {
+    Logger::log(Formatter() << "CHANNELS");
+    Logger::log(Formatter() << "TO" << spacer << "FROM" << spacer << "ID");
     for (const Channel &channel : channels) {
-        out << channel.getToNode() << spacer
+        Logger::log(Formatter() << channel.getToNode() << spacer
             << channel.getFromNode() << spacer
-            << channel.getChannelId()
-            << endl;
+            << channel.getChannelId());
         if(this->isOffline(channel.getToNode()) || this->isOffline(channel.getFromNode())){
-            out << "  OFFLINE!!" << endl;
+            Logger::log(Formatter() << "  OFFLINE!!");
         }
     }
-    out << flush;
 }
 
-void Network::printKeyspaces() {
-    printKeyspaces(cout, ' ');
-}
-void Network::printKeyspaces(ostream &out, char spacer) {
-    out << "KEYSPACES\n";
+void Network::printKeyspaces(char spacer) {
+    Logger::log(Formatter() << "KEYSPACES");
 
     int counter = 0;
     for (auto const& x : nodes) {
         for (const Keyspace &keyspace : x.second->getKeySpace()) {
-            out << "Node" << spacer << "UUID" << spacer << "Keyspace" << "Start" << spacer << "End" << spacer
+            Logger::log(Formatter() << "Node" << spacer << "UUID" << spacer << "Keyspace" << "Start" << spacer << "End" << spacer
                 << "Suffix Bits\n"
                 << counter << spacer << x.second->getUUID() << spacer
                 << keyspace.getStart() << spacer << keyspace.getEnd() << spacer
                 << keyspace.getSuffix()
-                << endl;
+            );
         }
         counter++;
     }
-    out << flush;
 }
 
 double Network::checkAllKeyspace(){
@@ -517,6 +503,6 @@ double Network::checkAllKeyspace(){
 	    } 
 	}
     }
-cout << "total keyspace is " << total * 100 << "% of the keyspace" << endl;
+    Logger::log(Formatter() << "total keyspace is " << total * 100 << "% of the keyspace");
     return total; 
 }
