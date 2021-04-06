@@ -108,20 +108,20 @@ public:
      * Adds the initial node to the Network with max keyspace
      * @return UUID of created node
      */
-    UUID addRootNode();
+    UUID addRootNode(unsigned seed);
 
     /**
      * Adds node to network without any keyspace
      * @return UUID of created node
      */
-    UUID addEmptyNode();
+    UUID addEmptyNode(unsigned seed);
 
     /**
      * The typical way to add a node to the network
      * @param keyspace Keyspace to give to node
      * @return UUID of created node
      */
-    UUID addNode(const Keyspace &keyspace);
+    UUID addNode(const Keyspace &keyspace, unsigned seed);
 
     /**
      * Make connections within network for new node

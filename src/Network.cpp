@@ -146,15 +146,15 @@ shared_ptr<Node> Network::getNodeFromUUID(const UUID &uuid) const {
     return nodes.find(uuid)->second;
 }
 
-UUID Network::addRootNode() {
-    UUID root = addNode(Keyspace(0, UINT_MAX, 0));
+UUID Network::addRootNode(unsigned seed) {
+    UUID root = addNode(Keyspace(0, UINT_MAX, 0), seed);
     nodeStatus[root] = true;
     return root;
 }
 
-UUID Network::addEmptyNode() {
+UUID Network::addEmptyNode(unsigned seed) {
     // Create a new new node with the no keyspace
-    // if consumtion rates (lambda3) are custom, use that. Otherwise, use the provided
+    // if consumption rates (lambda3) are custom, use that. Otherwise, use the provided
     
     double tempLam1, tempLam2, tempLam3;
     if(!custLambda1.empty()){
@@ -181,7 +181,7 @@ UUID Network::addEmptyNode() {
        tempLam3 = this->lambda3;
     }
 
-    shared_ptr<Node> newNode = make_shared<Node>(tempLam1, tempLam2, tempLam3, latency, networkScale);
+    shared_ptr<Node> newNode = make_shared<Node>(tempLam1, tempLam2, tempLam3, latency, networkScale, seed);
 
 
     UUID newUUID = newNode->getUUID();
@@ -197,7 +197,7 @@ UUID Network::addEmptyNode() {
     return newUUID;
 }
 
-UUID Network::addNode(const Keyspace &keyspace) {
+UUID Network::addNode(const Keyspace &keyspace, unsigned seed) {
     // Create a new new node with the given keyspace
         double tempLam1, tempLam2, tempLam3;
     if(!custLambda1.empty()){
@@ -224,7 +224,7 @@ UUID Network::addNode(const Keyspace &keyspace) {
        tempLam3 = this->lambda3;
     }
 
-    shared_ptr<Node> newNode = make_shared<Node>(keyspace, tempLam1, tempLam2, tempLam3, latency, networkScale); 
+    shared_ptr<Node> newNode = make_shared<Node>(keyspace, tempLam1, tempLam2, tempLam3, latency, networkScale, seed); 
     connectNodeToNetwork(newNode);
     UUID newUUID = newNode->getUUID();
 

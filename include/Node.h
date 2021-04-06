@@ -71,9 +71,9 @@ public:
     //static
     //handle ticking of simulation
     Node();     
-    Node(double lambda1, double lambda2, double lambda3, int latency, double netScl);
-    Node(const Keyspace &keyspace, double lambda1, double lambda2, double lambda3, int latency, double netScl);
-    static Node rootNode(double lambda1, double lambda2, double lambda3, int latency, double networkScale);
+    Node(double lambda1, double lambda2, double lambda3, int latency, double netScl, unsigned seed);
+    Node(const Keyspace &keyspace, double lambda1, double lambda2, double lambda3, int latency, double netScl, unsigned seed);
+    static Node rootNode(double lambda1, double lambda2, double lambda3, int latency, double networkScale, unsigned seed);
     ~Node(){
         delete d3;
 	delete d2;
@@ -138,7 +138,7 @@ public:
      * This generates the geometric distribution from which the consumption
      * rate is randomly generated with changeConsumptionRate
      */
-    void generateObjectCreationRateDistribution();
+    void generateObjectCreationRateDistribution(unsigned seed);
 
     //returns the smallest keyspace larger than newMin (with no input it returns the smallest overall)
     int minimumKeyspaceIndex(int newMin = -1);

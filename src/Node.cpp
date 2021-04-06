@@ -5,9 +5,9 @@
 
 using namespace std;
 
-Node::Node(double lambda1, double lambda2, double lambda3, int latency, double netScl) 
+Node::Node(double lambda1, double lambda2, double lambda3, int latency, double netScl, unsigned seed) 
 	: uuid(new_uuid()), lastDay(NodeData()), lambda1(lambda1), lambda2(lambda2), lambda3(lambda3) {
-    generateObjectCreationRateDistribution();
+    generateObjectCreationRateDistribution(seed);
     changeConsumptionRate();
     currentTick = 0;
     networkLatency = latency;
@@ -20,10 +20,10 @@ Node::Node(double lambda1, double lambda2, double lambda3, int latency, double n
 
 }
 
-Node::Node(const Keyspace &keySpace, double lambda1, double lambda2, double lambda3, int latency, double netScl) 
+Node::Node(const Keyspace &keySpace, double lambda1, double lambda2, double lambda3, int latency, double netScl, unsigned seed) 
 	: uuid(new_uuid()), lastDay(NodeData()), lambda1(lambda1), lambda2(lambda2), lambda3(lambda3) {
     keyspaces.push_back(keySpace);
-    generateObjectCreationRateDistribution();
+    generateObjectCreationRateDistribution(seed);
     changeConsumptionRate();
     currentTick = 0;
     networkLatency = latency; 
@@ -106,15 +106,16 @@ void Node::consumeObjects(){
     changeConsumptionRate(); 
 }
 
-void Node::generateObjectCreationRateDistribution(){
+void Node::generateObjectCreationRateDistribution(unsigned seed){
     d3 = new geometric_distribution<>(1/this->lambda3);
 
     // These are required for the geometric distribution function to operate
     // correctly
-    random_device rd;
+    // random_device rd;
     // Save the seed for debugging
-    unsigned int seed = rd();
+    // unsigned int seed = rd();
     gen = new mt19937(seed);
+    Logger::log(Formatter() << "generateObjectCreationRateDistribution: seed=" << seed);
 }
 
 
@@ -131,8 +132,8 @@ void Node::changeConsumptionRate(){
 }
 
 
-static Node rootNode(double lambda1, double lambda2, double lambda3, int latency, double networkScale) {
-    return Node(Keyspace(0, UINT_MAX, 0), lambda1, lambda2, lambda3, latency, networkScale);
+static Node rootNode(double lambda1, double lambda2, double lambda3, int latency, double networkScale, unsigned seed) {
+    return Node(Keyspace(0, UINT_MAX, 0), lambda1, lambda2, lambda3, latency, networkScale, seed);
 }
 
 void Node::addPeer(const UUID &peerUUID) {

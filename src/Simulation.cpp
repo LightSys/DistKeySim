@@ -27,13 +27,13 @@ void Simulation::run() {
     Logger::log(message);
 
     // Create root node that will have the max keyspace 0/0
-    network.addRootNode();
+    network.addRootNode(config.randomSeed);
 
     Logger::log(Formatter() << "Root UUID: " << network.getNodes().begin()->first);
 
     // Create new nodes and add them to the map
     for (int i = 1; i < numNodes; i++) {
-        UUID newNodeID = network.addEmptyNode();
+        UUID newNodeID = network.addEmptyNode(config.randomSeed);
         if(i % config.heartbeatFrequency == 0){  network.doAllHeartbeat(config.chunkiness);}
        	network.checkAndSendAllNodesLatency(config.latency);
 	network.doAllTicks();

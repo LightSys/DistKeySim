@@ -30,7 +30,7 @@ $(SRC)/$(MESSAGE).pb.cc $(INCLUDE)/$(MESSAGE).pb.h : $(SRC)/$(MESSAGE).proto
 $(BUILD)/$(SRC)/adak : $(SOURCES)
 	mkdir -p $(BUILD)
 	cd $(BUILD) && \
-		cmake -j$(USE_CORES) .. -DBUILD_TESTING=0 && \
+		cmake .. -DBUILD_TESTING=0 && \
 		make -j$(USE_CORES)
 
 .PHONY: src
@@ -57,6 +57,10 @@ show-vis :
 clean :
 	touch $(SRC)/$(MESSAGE).proto
 	rm -rf build
+
+.PHONY: clean-outputs
+clean-outputs :
+	rm -rf $(BUILD)/$(SRC)/outputs
 
 .PHONY: cores
 cores :

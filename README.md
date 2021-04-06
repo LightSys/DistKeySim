@@ -55,6 +55,8 @@ The simulation a has several tunables which can be used to affect how it will ru
 
 - *Latency*: The latency, in seconds, is how many ticks between the sending and receiving of a message. The minimum value is 1, which simulates sending a message and having it received the next timestep.
 
+- *randomSeed*: Set this to non-zero value for making runs repeatable that have same config file.
+
 - *Chunkiness*: this is how many keys will be sent in sub-blocks. This could be calculated by the algorithm based on need, but in its current state the simulation just uses the value specified here.
 
 - *Network Connection Modes*: There are 4 connection modes. To change the connection mode, alter connModeStr in the config file. The three options for the connection mode are: *full*, *partial*, *single*, and *custom*.
