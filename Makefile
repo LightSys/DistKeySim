@@ -39,7 +39,7 @@ src :
 
 .PHONY: run-scenario
 run-scenario :
-	cp -p scenario$(SCENARIO)_config.json $(BUILD)/$(SRC)/config.json
+	cp -p scenario$(SCENARIO)_repeatable_config.json $(BUILD)/$(SRC)/config.json
 	cd $(BUILD)/$(SRC) && ./adak
 
 .PHONY: run-scenario1
