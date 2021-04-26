@@ -1,5 +1,5 @@
 /**
- * implemetation of the geometric disconnect class
+ * implementation of the geometric disconnect class
  */
 
 #include "SystemClock.h"
@@ -45,7 +45,7 @@ void GeometricDisconnect::sendOffline(UUID nodeUUID, clock_unit_t timeToDisconne
         backOnlineTimer[nodeUUID] = nextTimerID;
         clock->setTimer(nextTimerID, timeToDisconnect + timeOffline);
         nextTimerID++;
-cout << "just prepped " << nodeUUID << " to go offline" << endl; 
+        Logger::log(Formatter() << "just prepped " << nodeUUID << " to go offline"); 
     }
 }
 
@@ -58,7 +58,7 @@ void GeometricDisconnect::checkOffline(Network* network){
             toClear.push_back(i.first);
             clock->clearTimer(i.second);
             network->disableNode(i.first);
-cout << "just send  " << i.first << " offline" << endl;
+            Logger::log(Formatter() << "just send  " << i.first << " offline");
         }
     }
 
@@ -74,7 +74,7 @@ cout << "just send  " << i.first << " offline" << endl;
             toClear.push_back(i.first);
             clock->clearTimer(i.second);
             network->enableNode(i.first);
-cout << "just woke up " << i.first << endl; 
+            Logger::log(Formatter() << "just woke up " << i.first); 
 	}
     }
 
@@ -103,10 +103,10 @@ void GeometricDisconnect::eventTick(Network* network) {
         clock_unit_t timeOffline = (clock_unit_t)(node->getTimeOnline());        //No instant timers; no 0 
 
         // CALL FUNCTION TO GIVE PERSCRIBED COMMAND TO node through network
-        //This function also garuntees a node cannot go offline more than once at
+        //This function also guarantees a node cannot go offline more than once at
         //  a time
-cout << "attempting to send node " << nodeUUID << " offline in " << timeToDisconnect << " for "
-	<< timeOffline << endl;
+        Logger::log(Formatter() << "attempting to send node " << nodeUUID
+            << " offline in " << timeToDisconnect << " for " << timeOffline);
         this->sendOffline(nodeUUID, timeToDisconnect, timeOffline);
     }
 

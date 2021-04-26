@@ -1,5 +1,4 @@
-
-
+#include "Logger.h"
 #include "ControlStrategy.h"
 #include "Node.h"
 using namespace std;
@@ -52,8 +51,8 @@ void ControlStrategy::adak(Node &node, int keysToShift){
          continue; //had no keys or target already recived some keysapce, cannot share 
      }
 
-     //cout << "Node " << node.getUUID() << " lookinng at " << i->first << ": " << endl;
-//cout << "Short: " << shortAlloc << ", long: " << longAlloc << ", day: " << prevDay << ", weel: " << prevWeek << endl;
+     //Logger::log(Formatter() << "Node " << node.getUUID() << " lookinng at " << i->first << ": ");
+//Logger::log(Formatter() << "Short: " << shortAlloc << ", long: " << longAlloc << ", day: " << prevDay << ", weel: " << prevWeek);
       //see of have no keysapce (these would both be aprox 1 if this is true)
       if(1 - shortAlloc < 0.000001 && 1 - longAlloc  < 0.000001 ){ 
          //give half of keyspace
@@ -72,8 +71,8 @@ void ControlStrategy::adak(Node &node, int keysToShift){
 
 	 //there is a chance it only has subblocks 
 	 if(largest == -1){
-             cout << "Node " << node.getUUID() << "has only sub-blocks, and cannot split with node " << 
-		    i->first << endl;
+             Logger::log(Formatter() << "Node " << node.getUUID() << "has only sub-blocks, and cannot split with node " << 
+		    i->first);
 	    continue; 
 	 }
 
@@ -100,13 +99,13 @@ void ControlStrategy::adak(Node &node, int keysToShift){
    double lngTrmAllc = nodeData->updateLongTermAllocationRatio(nodeKeyspaces);
    double lngAgg = node.calcLongAggregate(BROADCAST_UUID);
    double provRatio = lngTrmAllc/lngAgg;  
-cout << "long agg: " << lngAgg << endl; 
-cout << "Node " << node.getUUID() << " with percent of global " << node.getKeyspacePercent() << " and local avg prov "
-	<< avgProv << " has prov " << provRatio << endl;
-//cout << "^^^^long alloc " << nodeData->getLongTermAllocationRatio() << ", week: " << node.getCreatedWeek() << endl; 
-//cout<< node.getUUID() << " has " << node.getKeySpace().size() << " chuncks " << endl;
+Logger::log(Formatter() << "long agg: " << lngAgg); 
+Logger::log(Formatter() << "Node " << node.getUUID() << " with percent of global " << node.getKeyspacePercent() << " and local avg prov "
+	<< avgProv << " has prov " << provRatio);
+//Logger::log(Formatter() << "^^^^long alloc " << nodeData->getLongTermAllocationRatio() << ", week: " << node.getCreatedWeek()); 
+//Logger::log(Formatter()<< node.getUUID() << " has " << node.getKeySpace().size() << " chuncks ");
 //for(int n = 0 ; n < node.getKeySpace().size() ; n ++){
-//cout << "....... " << node.getKeySpace()[n].getStart() << "/" << node.getKeySpace()[n].getSuffix() << endl;  
+//Logger::log(Formatter() << "....... " << node.getKeySpace()[n].getStart() << "/" << node.getKeySpace()[n].getSuffix());  
 //}
 
    if(avgProv < provRatio){
@@ -118,12 +117,12 @@ cout << "Node " << node.getUUID() << " with percent of global " << node.getKeysp
       //never give away all of thier keyspace
       if(excessKeys/node.getKeyspacePercent() > 0.95){ 
          excessKeys = 0.95*node.getKeyspacePercent();
-	 cout << node.getUUID() << " is about to give away most of its keyspace... " << endl; 
+	 Logger::log(Formatter() << node.getUUID() << " is about to give away most of its keyspace... "); 
       }
       
       
-cout << "Node " << node.getUUID() << "Has determined excessKeys " << excessKeys << ", fraction of local " 
-	<< node.getKeyspacePercent() << endl;
+Logger::log(Formatter() << "Node " << node.getUUID() << "Has determined excessKeys " << excessKeys << ", fraction of local " 
+	<< node.getKeyspacePercent());
       
       //calculate the total deficit size for peers 
       for(i = nodePeers.begin() ; i != nodePeers.end() ; i++){
@@ -151,7 +150,7 @@ cout << "Node " << node.getUUID() << "Has determined excessKeys " << excessKeys 
 		 creationratedata().createdpreviousweek();
 	  if(defs[j].second/totalDef < 0.05){
 //FIXME: What about if the number of peers is 100? 1000? Defin in terms of accuracy (currently is 10...   
-//cout << "node " << defs[j].first << " was kicked for haaving too little def:  " << defs[j].second << endl;
+//Logger::log(Formatter() << "node " << defs[j].first << " was kicked for haaving too little def:  " << defs[j].second);
              defs.erase(defs.begin() + j);
 	     j--; 
 	     continue; 
@@ -161,11 +160,11 @@ cout << "Node " << node.getUUID() << "Has determined excessKeys " << excessKeys 
          long double fractOfDef = defs[j].second/totalDef; 
 	 long double fractOfGlobalGive = excessKeys*fractOfDef;
 
-cout << "Node " << node.getUUID() << "Decided node " << defs[j].first << "should get % of def" << fractOfDef
- 	<< ", which is percent of global " << fractOfGlobalGive << endl;
+Logger::log(Formatter() << "Node " << node.getUUID() << "Decided node " << defs[j].first << "should get % of def" << fractOfDef
+ 	<< ", which is percent of global " << fractOfGlobalGive);
          
          if(fractOfGlobalGive > node.getKeyspacePercent()){ 
-	    cout << "Giving away too much keyspace; percent to goive is greater than what have" << endl;
+	    Logger::log(Formatter() << "Giving away too much keyspace; percent to goive is greater than what have");
 	    throw 1; 
          }  
 	 //convert fraction to a sum of keyspaces via binary expansion
@@ -189,24 +188,24 @@ cout << "Node " << node.getUUID() << "Decided node " << defs[j].first << "should
              int numFound = 0;
 	     int totalNeed = pow(2, accuracy - suffix);
              //accuracy serves as the smallest suffix
-//cout << node.getUUID() << " looking to send suffix " << suffix << endl;;
+//Logger::log(Formatter() << node.getUUID() << " looking to send suffix " << suffix);;
 	     //see if a keyspace >= the desired can be found one can be found
 	     for(int l = 0 ; l < nodeKeyspaces.size() ; l++){
 		 Keyspace tempSpace = nodeKeyspaces[l];
 		 //skip if it is a sub-block
 		 if(tempSpace.getEnd() < UINT_MAX){
-//cout << "Skip block " << tempSpace.getStart() << "/" << tempSpace.getSuffix() << ", " << tempSpace.getEnd() << endl;	
+//Logger::log(Formatter() << "Skip block " << tempSpace.getStart() << "/" << tempSpace.getSuffix() << ", " << tempSpace.getEnd());	
 		    continue;
 		 }
 
 		 if(tempSpace.getSuffix() <= suffix){
-//cout << "..... Scratch it all, found one larger: " << tempSpace.getStart() << "/" << tempSpace.getSuffix() << endl;
+//Logger::log(Formatter() << "..... Scratch it all, found one larger: " << tempSpace.getStart() << "/" << tempSpace.getSuffix());
 		     //split until the suffix is correct 
 	             while(node.getKeySpace()[l].getSuffix() < suffix ){
                         l = node.splitKeyspace(l);
                      }
 //Keyspace bob = node.getKeySpace()[l];		     
-//cout << ".... .... Sent keyspace " << bob.getStart() << "/" << bob.getSuffix() << ", " << bob.getEnd() << endl; 
+//Logger::log(Formatter() << ".... .... Sent keyspace " << bob.getStart() << "/" << bob.getSuffix() << ", " << bob.getEnd()); 
                      //clear the indicies vector and store this index inside, and then exit the loop
 		     indices.clear();
 		     indices.push_back(l);
@@ -215,7 +214,7 @@ cout << "Node " << node.getUUID() << "Decided node " << defs[j].first << "should
 		  } else if(pow(2, accuracy - tempSpace.getSuffix()) > (totalNeed - numFound)){
 	             //is more than need, just finish it off and send
                      //take deficit, and turn it into a check list
-//cout << ".... can finish it off; found keyspace " << tempSpace.getStart() << "/"  << tempSpace.getSuffix()  << endl;
+//Logger::log(Formatter() << ".... can finish it off; found keyspace " << tempSpace.getStart() << "/"  << tempSpace.getSuffix() );
 	             int def = totalNeed - numFound; 
                      int index = l;
 
@@ -226,8 +225,8 @@ cout << "Node " << node.getUUID() << "Decided node " << defs[j].first << "should
                                index = node.splitKeyspace(index);
 			    } 
 			    indices.push_back(index);
-//cout << ".... .... sending keyspace " << node.getKeySpace()[index].getStart() << "/" << 
-//       	node.getKeySpace()[index].getSuffix() << endl;
+//Logger::log(Formatter() << ".... .... sending keyspace " << node.getKeySpace()[index].getStart() << "/" << 
+//       	node.getKeySpace()[index].getSuffix());
                             def	-= pow(2, accuracy - i);		    
 			 }
 
@@ -241,15 +240,15 @@ cout << "Node " << node.getUUID() << "Decided node " << defs[j].first << "should
                      //just tack it on and move forward
 		     indices.push_back(l); 
 		     numFound += pow(2, accuracy - tempSpace.getSuffix());
-//cout << ".... Just added keyspace " << node.getKeySpace()[l].getStart() << "/" << 
-//	node.getKeySpace()[l].getSuffix() << endl; 
+//Logger::log(Formatter() << ".... Just added keyspace " << node.getKeySpace()[l].getStart() << "/" << 
+//	node.getKeySpace()[l].getSuffix()); 
 		  }
 		  if(numFound == totalNeed){
                      break; //the else could trigger this, so check it
 		  }
 	      }
 	      node.sendCustKeyspace(defs[j].first, indices);
-//cout << ".... and just sent them off" << endl; 
+//Logger::log(Formatter() << ".... and just sent them off"); 
 /*
 	      //will only run if the above search failed. Know all are smaller
 	      //construct keyspace need out of the apropriate number of smaller keyspaces 
@@ -268,13 +267,13 @@ cout << "Node " << node.getUUID() << "Decided node " << defs[j].first << "should
                   }
 		  if(numFound == pow(2, l)){ //if this fails, another loop will occur...
 	             //send the keyspaces off and exit
-//cout << "Node " << node.getUUID() << "sent a keyspace with " << indices.size() << " fragments\n"; 
+//Logger::log(Formatter() << "Node " << node.getUUID() << "sent a keyspace with " << indices.size() << " fragments\n"; 
 	             node.sendCustKeyspace(defs[j].first, indices);
 	 	     sentKeyspace = true; 
 	   	  }else if(numFound > pow(2, l)){
                       //should be impossible, this needs fixed
 		      //FIXME: add a control stategy exception class
-		      cout << "too much keyspace; " << numFound << " out of " << pow(2, l) << endl;
+		      Logger::log(Formatter() << "too much keyspace; " << numFound << " out of " << pow(2, l));
 		      throw 1; 
 		  } 
          
@@ -284,7 +283,7 @@ cout << "Node " << node.getUUID() << "Decided node " << defs[j].first << "should
 	 }
       }
    } else {
-//cout << node.getUUID() << " is the poorer of the two" << endl; 
+//Logger::log(Formatter() << node.getUUID() << " is the poorer of the two"); 
    }
 
    //sub block passing: 
@@ -303,12 +302,12 @@ void ControlStrategy::subBlocks(Node &node, long double avgKeys, int keysToShift
    double totalDef = 0; //the deficit below the average
    vector<Keyspace> nodeKeyspaces = node.getKeySpace();
    double provRatio = nodeData->updateShortTermAllocationRatio(nodeKeyspaces);
-//cout << "Node " << node.getUUID() << " has says local average keys is  " << avgKeys << ", and prov is " 
+//Logger::log(Formatter() << "Node " << node.getUUID() << " has says local average keys is  " << avgKeys << ", and prov is " 
 //   << provRatio << "\n^^^^short alloc " << nodeData->getShortTermAllocationRatio() << ", day: " 
-//   << node.getCreatedDay() << endl; 
+//   << node.getCreatedDay()); 
 
    if(avgKeys > provRatio ){
-//cout << node.getUUID() << " wants to give keyspace...";
+//Logger::log(Formatter() << node.getUUID() << " wants to give keyspace...";
      //find the total deficit 
      for(i = nodePeers.begin(); i != nodePeers.end() ; i ++){
          if(i->second.first == nullptr){
@@ -324,7 +323,7 @@ void ControlStrategy::subBlocks(Node &node, long double avgKeys, int keysToShift
             defs.push_back(std::pair<UUID, long double>(i->second.first->sourcenodeid(), 0));
          } 
       }
-//cout << " defs size: " << defs.size() << "... " << endl;
+//Logger::log(Formatter() << " defs size: " << defs.size() << "... ");
       for(int j = 0 ; j < defs.size() ; j ++){
           //update each node with their relative need   
          /*long double shortAlloc = nodePeers[defs[j].first].first->info().
@@ -336,13 +335,13 @@ void ControlStrategy::subBlocks(Node &node, long double avgKeys, int keysToShift
             defs.erase(defs.begin() + j);
 	    j--; //account for the slot just deleted
 	    continue;
-//cout << " kicked a node for having too little" << endl; 
+//Logger::log(Formatter() << " kicked a node for having too little"); 
 	 }*/	 
 	  //send keysToShift size sub block
 	  //double localAlloc = nodeData->updateShortTermAllocationRatio(nodeKeyspaces);
 	  double totalKeyspace = node.getTotalKeyspaceBlockSize();
 	  if(totalKeyspace > keysToShift){
-//cout << "node " << node.getUUID() << " decided to grant a sublock to " << defs[j].first << endl; 
+//Logger::log(Formatter() << "node " << node.getUUID() << " decided to grant a sublock to " << defs[j].first); 
               node.sendCustKeyspace(defs[j].first, node.makeSubBlock(keysToShift));
 	  }
       } 

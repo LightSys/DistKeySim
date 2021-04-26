@@ -1,5 +1,4 @@
-#ifndef ADAK_KEYING_NETWORK_H
-#define ADAK_KEYING_NETWORK_H
+#pragma once
 
 #include <cmath>
 #include <iostream>
@@ -31,6 +30,10 @@ class Network{
 private:
     // Pairing UUID with Node instances
     std::map<UUID, std::shared_ptr<Node>> nodes;
+
+    // Use this to fetch nodes in order of insertion
+    // to enable repeatability of access vs "randomness" of map.
+    std::vector<UUID> uuids;
 
      // All known channel between nodes, this is basically representing the edges of the graph
     std::vector<Channel> channels;
@@ -109,20 +112,20 @@ public:
      * Adds the initial node to the Network with max keyspace
      * @return UUID of created node
      */
-    UUID addRootNode();
+    UUID addRootNode(unsigned seed);
 
     /**
      * Adds node to network without any keyspace
      * @return UUID of created node
      */
-    UUID addEmptyNode();
+    UUID addEmptyNode(unsigned seed);
 
     /**
      * The typical way to add a node to the network
      * @param keyspace Keyspace to give to node
      * @return UUID of created node
      */
-    UUID addNode(const Keyspace &keyspace);
+    UUID addNode(const Keyspace &keyspace, unsigned seed);
 
     /**
      * Make connections within network for new node
@@ -199,19 +202,13 @@ public:
     std::map<UUID, std::shared_ptr<Node>> getNodes() { return this->nodes; }
     std::vector<Channel> getChannels() { return this->channels; }
 
-    // Output to cout
-    void printUUIDList();
-    void printChannels();
-    void printKeyspaces();
-
-    // Output to ostream, allowing for file output
-    void printUUIDList(std::ostream &out, char spacer = ',');
-    void printChannels(std::ostream &out, char spacer = ',');
-    void printKeyspaces(std::ostream &out, char spacer = ',');
+    // Output to Logger
+    void printUUIDList(char spacer = ',');
+    void printChannels(char spacer = ',');
+    void printKeyspaces(char spacer = ',');
 
     // Number of nodes
     inline size_t numNodes() const { return nodes.size(); }
     
     double checkAllKeyspace();
 };
-#endif // ADAK_KEYING_NETWORK_H

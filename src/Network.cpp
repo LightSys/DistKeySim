@@ -1,5 +1,6 @@
 #include <iostream>
 
+#include "Logger.h"
 #include "Network.h"
 #include "Node.h"
 #include "UUID.h"
@@ -14,7 +15,7 @@ Network::Network(ConnectionType connectionType, float PERCENT_CONNECTED, double 
     this->connectionType = connectionType;
     //PERCENT_CONNECTED is a 5 digit int (99.999% = 99999)
     this->PERCENT_CONNECTED = (int)(PERCENT_CONNECTED*1000);
-    cout << "Network online" << endl;
+    Logger::log("Network online");
     custLambda3 = {};
     custLambda2 = {};
     custLambda1 = {};
@@ -27,7 +28,7 @@ Network::Network(ConnectionType connectionType, float PERCENT_CONNECTED, double 
     this->connectionType = connectionType;
     //PERCENT_CONNECTED is a 5 digit int (99.999% = 99999)
     this->PERCENT_CONNECTED = (int)(PERCENT_CONNECTED*1000);
-    cout << "Network online" << endl;
+    Logger::log("Network online");
     custLambda3 = lam3s;
     custLambda2 = lam2s;
     custLambda1 = lam1s;
@@ -71,26 +72,30 @@ bool Network::sendMsg(const Message &message) {
 void Network::doAllHeartbeat(int keysToSend) {
     // NOTE: Baylor will need to change this, right now we are sending heartbeat messages practically all the time
     // they will probably want to add time to Node to send it periodically
-    for (auto const& node : nodes) {
+    for (int i=0; i<uuids.size(); i++) {
+        auto uuid = uuids.at(i);
+        auto node = nodes.at(uuid);
 //auto start = std::chrono::high_resolution_clock::now();
 
-    	node.second->heartbeat();
+    	node->heartbeat();
 //auto end = std::chrono::high_resolution_clock::now();
-//cout << "sending a heartbeat took " << std::chrono::duration_cast<std::chrono::nanoseconds>(end - start).count()
-//      	<< " ns" << endl;
+//Logger::log("sending a heartbeat took " << std::chrono::duration_cast<std::chrono::nanoseconds>(end - start).count()
+//      	<< " ns");
 
 //start = std::chrono::high_resolution_clock::now();
-      	ControlStrategy::adak(*(node.second), keysToSend); //have the node decide what to do 
+      	ControlStrategy::adak(*(node), keysToSend); //have the node decide what to do 
 //end = std::chrono::high_resolution_clock::now();
-//cout << "chekcing control strat took " << std::chrono::duration_cast<std::chrono::nanoseconds>(end - start).count()
-//       	<< " ns" << endl;    
+//Logger::log("chekcing control strat took " << std::chrono::duration_cast<std::chrono::nanoseconds>(end - start).count()
+//       	<< " ns");    
     }
  
 }
 
 void Network::doAllTicks(){
-    for (auto const& node : nodes) {
-	node.second->tick();
+    for (int i=0; i<uuids.size(); i++) {
+        auto uuid = uuids.at(i);
+        auto node = nodes.at(uuid);
+    	node->tick();
     }
 }
 
@@ -135,8 +140,8 @@ void Network::checkAndSendAllNodesLatency(int latency) {
 //auto start = std::chrono::high_resolution_clock::now();
 		sendMsg(temp[i]);
 //auto end = std::chrono::high_resolution_clock::now();
-//cout << "sending a message took " << std::chrono::duration_cast<std::chrono::nanoseconds>(end - start).count()
-//       	<< " ms" << endl; 
+//Logger::log("sending a message took " << std::chrono::duration_cast<std::chrono::nanoseconds>(end - start).count()
+//       	<< " ms"); 
 	}
     }
 }
@@ -145,15 +150,15 @@ shared_ptr<Node> Network::getNodeFromUUID(const UUID &uuid) const {
     return nodes.find(uuid)->second;
 }
 
-UUID Network::addRootNode() {
-    UUID root = addNode(Keyspace(0, UINT_MAX, 0));
+UUID Network::addRootNode(unsigned seed) {
+    UUID root = addNode(Keyspace(0, UINT_MAX, 0), seed);
     nodeStatus[root] = true;
     return root;
 }
 
-UUID Network::addEmptyNode() {
+UUID Network::addEmptyNode(unsigned seed) {
     // Create a new new node with the no keyspace
-    // if consumtion rates (lambda3) are custom, use that. Otherwise, use the provided
+    // if consumption rates (lambda3) are custom, use that. Otherwise, use the provided
     
     double tempLam1, tempLam2, tempLam3;
     if(!custLambda1.empty()){
@@ -180,13 +185,14 @@ UUID Network::addEmptyNode() {
        tempLam3 = this->lambda3;
     }
 
-    shared_ptr<Node> newNode = make_shared<Node>(tempLam1, tempLam2, tempLam3, latency, networkScale);
+    shared_ptr<Node> newNode = make_shared<Node>(tempLam1, tempLam2, tempLam3, latency, networkScale, seed);
 
 
     UUID newUUID = newNode->getUUID();
 
     // Add the new node to the nodes map
     nodes.insert({newNode->getUUID(), newNode});
+    uuids.push_back(newUUID);
 
     // Make connection to peers
     connectNodeToNetwork(newNode);
@@ -196,7 +202,7 @@ UUID Network::addEmptyNode() {
     return newUUID;
 }
 
-UUID Network::addNode(const Keyspace &keyspace) {
+UUID Network::addNode(const Keyspace &keyspace, unsigned seed) {
     // Create a new new node with the given keyspace
         double tempLam1, tempLam2, tempLam3;
     if(!custLambda1.empty()){
@@ -223,13 +229,14 @@ UUID Network::addNode(const Keyspace &keyspace) {
        tempLam3 = this->lambda3;
     }
 
-    shared_ptr<Node> newNode = make_shared<Node>(keyspace, tempLam1, tempLam2, tempLam3, latency, networkScale); 
+    shared_ptr<Node> newNode = make_shared<Node>(keyspace, tempLam1, tempLam2, tempLam3, latency, networkScale, seed); 
     connectNodeToNetwork(newNode);
     UUID newUUID = newNode->getUUID();
 
     // Add the new node to the nodes map
     nodeStatus[newNode->getUUID()] = true;
     nodes.insert({newNode->getUUID(), move(newNode)});
+    uuids.push_back(newUUID);
 
     //log node created
     return newUUID;
@@ -322,12 +329,12 @@ bool Network::customConnect(shared_ptr<Node> node) {
 	   string node2 = connections.substr(comma + 2, end - comma - 2); 
 	   //cut off current pair from connections
 	   connections = connections.substr(end +1); 
-           cout << "connecting Nodes " << node1 << " and " << node2 << endl; 
+       Logger::log(Formatter() << "connecting Nodes " << node1 << " and " << node2);
 	   //Assign nodes to connection values if needed
 	   if(strToID.find((node1)) == strToID.end()){
 	    if(nextNode == nodes.end()){
-	        cout << "Cannot have a node to represent connection with node " << node1 << endl;
-		continue; //cannot finish this iteration, nothing to connect
+	        Logger::log(Formatter() << "Cannot have a node to represent connection with node " << node1);
+		    continue; //cannot finish this iteration, nothing to connect
 	     }else{ 
                 strToID.insert(pair<string, UUID>(node1, nextNode->first));
 	        nextNode++;
@@ -336,7 +343,7 @@ bool Network::customConnect(shared_ptr<Node> node) {
 	   //and now the second item
 	   if(strToID.find(node2) == strToID.end()){
 	     if(nextNode == nodes.end()){
-	        cout << "Cannot have a node to represent connection with node " << node2 << endl;
+	        Logger::log(Formatter() << "Cannot have a node to represent connection with node " << node2);
 		continue; //cannot finish this loop; nothing to connect
 	     }else{
 	       strToID.insert(pair<string, UUID>(node2, nextNode->first));
@@ -428,58 +435,43 @@ UUID Network::getRandomNode() {
     return uuidList.at(randomNum);
 }
 
-void Network::printUUIDList() {
-    printUUIDList(cout, ' ');
-}
-
-void Network::printUUIDList(ostream &out, char spacer) {
+void Network::printUUIDList(char spacer) {
     int counter = 0;
-    out << "UUID List" << '\n'
-        << "COUNT" << spacer << "UUID (in hex)" << spacer << "# bits" << '\n';
+    Logger::log(Formatter() << "UUID List");
+    Logger::log(Formatter() << "COUNT" << spacer << "UUID (in hex)" << spacer << "# bits");
     for (UUID const uuid : generateUUIDList()) {
-        out << counter << spacer << uuid << spacer << (uuid.size() * 8) << spacer << '\n';
+        Logger::log(Formatter() << counter << spacer << uuid << spacer << (uuid.size() * 8) << spacer);
         counter++;
     }
-    out << flush;
 }
-void Network::printChannels() {
-    printChannels(cout, ' ');
-}
-
-void Network::printChannels(ostream &out, char spacer) {
-    out << "CHANNELS\n"
-        << "TO" << spacer << "FROM" << spacer << "ID" << "\n";
+void Network::printChannels(char spacer) {
+    Logger::log(Formatter() << "CHANNELS");
+    Logger::log(Formatter() << "TO" << spacer << "FROM" << spacer << "ID");
     for (const Channel &channel : channels) {
-        out << channel.getToNode() << spacer
+        Logger::log(Formatter() << channel.getToNode() << spacer
             << channel.getFromNode() << spacer
-            << channel.getChannelId()
-            << endl;
+            << channel.getChannelId());
         if(this->isOffline(channel.getToNode()) || this->isOffline(channel.getFromNode())){
-            out << "  OFFLINE!!" << endl;
+            Logger::log(Formatter() << "  OFFLINE!!");
         }
     }
-    out << flush;
 }
 
-void Network::printKeyspaces() {
-    printKeyspaces(cout, ' ');
-}
-void Network::printKeyspaces(ostream &out, char spacer) {
-    out << "KEYSPACES\n";
+void Network::printKeyspaces(char spacer) {
+    Logger::log(Formatter() << "KEYSPACES");
 
     int counter = 0;
     for (auto const& x : nodes) {
         for (const Keyspace &keyspace : x.second->getKeySpace()) {
-            out << "Node" << spacer << "UUID" << spacer << "Keyspace" << "Start" << spacer << "End" << spacer
+            Logger::log(Formatter() << "Node" << spacer << "UUID" << spacer << "Keyspace" << "Start" << spacer << "End" << spacer
                 << "Suffix Bits\n"
                 << counter << spacer << x.second->getUUID() << spacer
                 << keyspace.getStart() << spacer << keyspace.getEnd() << spacer
                 << keyspace.getSuffix()
-                << endl;
+            );
         }
         counter++;
     }
-    out << flush;
 }
 
 double Network::checkAllKeyspace(){
@@ -517,6 +509,6 @@ double Network::checkAllKeyspace(){
 	    } 
 	}
     }
-cout << "total keyspace is " << total * 100 << "% of the keyspace" << endl;
+    Logger::log(Formatter() << "total keyspace is " << total * 100 << "% of the keyspace");
     return total; 
 }

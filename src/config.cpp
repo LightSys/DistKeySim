@@ -7,7 +7,7 @@ using namespace std;
 Config::Config(ifstream jsonFile) {
     // Check if the JSON file can be opened
     if (jsonFile.good()) {
-	cout << "Loading from JSON..." << endl;
+	    Logger::log(Formatter() << "Loading from JSON...");
         json jf = json::parse(jsonFile);
         
         // This checks for the existence of a key in the JSON file, setting the corresponding key in our Config instance
@@ -68,8 +68,13 @@ Config::Config(ifstream jsonFile) {
              runEvents = DEFAULT_RUN_EVENTS;
 	}
 
-        //added for the UI input: 
+        if (jf.contains("randomSeed")) {
+            jf.at("randomSeed").get_to(this->randomSeed);
+	    } else{
+            randomSeed = DEFAULT_RANDOM_SEED;
+	    }
 
+        //added for the UI input: 
         if (jf.contains("Visible_Peers_(connected_%)")) {
             jf.at("Visible_Peers_(connected_%)").get_to(this->visiblePeers);
             this->visiblePeers /= 100; // percent to decimal chance
@@ -185,7 +190,7 @@ Config::Config(ifstream jsonFile) {
         
         
     } else {
-	cout << "Unable to open JSON file, falling back to defaults..." << endl;
+	Logger::log(Formatter() << "Unable to open JSON file, falling back to defaults...");
         // Unable to open JSON file, fall back to all default values
         numNodes = DEFAULT_NUM_NODES;
         connModeStr = DEFAULT_CONN_MODE_STR;
@@ -193,5 +198,6 @@ Config::Config(ifstream jsonFile) {
         csvOutputPath = DEFAULT_CSV_OUTPUT_PATH;
         creationRate = DEFAULT_CREATION_RATE;
         networkScale = DEFAULT_NETWORK_SCALE;
+        randomSeed = DEFAULT_RANDOM_SEED;
     }
 }

@@ -2,15 +2,17 @@
 #include <string>
 #include "getopt.h"
 
-#include "Simulation.h"
 #include "json.hpp"
+#include "Logger.h"
+#include "Simulation.h"
+
 using json = nlohmann::json;
 
 using namespace std;
 
 int main(int argc, char** argv) {
     // Load config
-    cout << "Attempting to load config from config.json ..." << endl;
+    Logger::log(Formatter() << "Attempting to load config from config.json ...");
     Config config(ifstream("config.json")); 
     Simulation simulation(config);
     Logger::deleteOldLog();//clearing old log files

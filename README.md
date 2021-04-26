@@ -55,6 +55,8 @@ The simulation a has several tunables which can be used to affect how it will ru
 
 - *Latency*: The latency, in seconds, is how many ticks between the sending and receiving of a message. The minimum value is 1, which simulates sending a message and having it received the next timestep.
 
+- *randomSeed*: Set this to non-zero value for making runs repeatable that have same config file.
+
 - *Chunkiness*: this is how many keys will be sent in sub-blocks. This could be calculated by the algorithm based on need, but in its current state the simulation just uses the value specified here.
 
 - *Network Connection Modes*: There are 4 connection modes. To change the connection mode, alter connModeStr in the config file. The three options for the connection mode are: *full*, *partial*, *single*, and *custom*.
@@ -288,6 +290,52 @@ Different parameters in the simulation are controlled by inputs from the UI. Bel
 - *Heartbeat Frequency*: Time in seconds between two consecutive heartbeats. A heartbeat is a message that is broadcast to all connected nodes to indicate that a particular node is online and connected. A heartbeat is different from a time step in that a time step is a unit of time passage in the simulation. In this simulation a loop keeps track of the current tick, with each iteration representing a second of real time passing.
 
 - *Long Term Precision*: Sets the *Long_Term_Precision* parameter described [above](#general-simulation-tunables).
+
+## Repeatability
+
+Repeatability of simulations is useful mostly for debugging. ADAK allows you to run either repeatable or non-repeatable. To run repeatable, set the random seed to a fixed positive (non-zero) number. Your `config.json` file should contain a line such as the following:
+
+```
+"randomSeed": 25,
+```
+
+You can compare any two runs of a set of runs using the same seed. To compare the files, you must sanitize them first.
+
+The Makefile enables you to test for repeatability and non-repeatability.
+
+### Test for repeatability
+
+To test for repeatability for two nodes, run the following once:
+
+```
+make run-repeatable sanitize
+```
+
+Then run the following as many times as you feel necessary to test repeatability:
+
+```
+make run-repeatable sanitize compare
+```
+
+`make sanitize` replaces UUIDs in `logOutput.txt` and `statslog.csv` with node index thus making the files comparable.
+
+### Test non-repeatability
+
+To test non-repeatability with two nodes, run the following at least once:
+
+```
+make run-non-repeatable sanitize
+```
+
+Then run the following which should fail on the compare:
+
+```
+make run-non-repeatable sanitize compare
+```
+
+You can use diff, sdiff, or vimdiff to see the differences. When viewing the differences, be sure to sanitize and diff the *.clean.txt files so that you're not seeing just the UUID differences.
+
+Note that if you compare a repeatable run (fixed random seed) with a non-repeatable run, they will not compare equal. They will only coincidentally and rarely have the same seed.
 
 ## Visualizations
 

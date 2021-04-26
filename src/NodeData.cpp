@@ -75,7 +75,6 @@ ADAK_Key_t NodeData::findEndKey(double creationRate, vector<Keyspace> keyspaces)
             ///is more keys being made in a day than allocated in the keyspace. You should fix your algorithm to
             ///distrute keys faster
             string message = "ERROR from findEndKey: no more keys to distribute";
-            cout << message <<endl;
             Logger::log(message);
             ///Error that you are really out of keys
             endKey = -2;

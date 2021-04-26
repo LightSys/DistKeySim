@@ -12,7 +12,7 @@ Simulation::Simulation(const struct Config &config)
 			    config.lambda2, config.lambda3, config.networkScale, config.latency, 
 			    config.customLambda1, config.customLambda2, config.customLambda3)) {
     // Seed random number
-    srand(time(nullptr));
+    srand(config.randomSeed);
 }
 
 void Simulation::run() {
@@ -27,13 +27,13 @@ void Simulation::run() {
     Logger::log(message);
 
     // Create root node that will have the max keyspace 0/0
-    network.addRootNode();
+    network.addRootNode(config.randomSeed);
 
-    cout << "Root UUID: " << network.getNodes().begin()->first << endl;
+    Logger::log(Formatter() << "Root UUID: " << network.getNodes().begin()->first);
 
     // Create new nodes and add them to the map
     for (int i = 1; i < numNodes; i++) {
-        UUID newNodeID = network.addEmptyNode();
+        UUID newNodeID = network.addEmptyNode(config.randomSeed);
         if(i % config.heartbeatFrequency == 0){  network.doAllHeartbeat(config.chunkiness);}
        	network.checkAndSendAllNodesLatency(config.latency);
 	network.doAllTicks();
@@ -50,17 +50,18 @@ void Simulation::run() {
 
     network.printChannels();
 
-    cout << "Ticking network a bunch" << endl;
+    Logger::log(Formatter() << "Ticking network a bunch");
     for(int i=0; i<config.simLength; i++){
-        cout << "***********************************************Tick" << endl;
-	cout << "Time Step:" << numNodes + 1 + i <<  " ... " <<  endl; 
+        Logger::log(Formatter() << "***********************************************Tick");
+	    Logger::log(Formatter() << "Time Step:" << numNodes + 1 + i <<  " ... "); 
+	    std::cout << i * 100 / config.simLength << "%\r";
         //adding stuff to make the tics have event
-//All of these left-most staments are for debugging runtimes. Can help show the slowest sections of the code. 
+//All of these left-most statements are for debugging runtimes. Can help show the slowest sections of the code. 
 //auto start = std::chrono::high_resolution_clock::now();
 	network.checkAndSendAllNodesLatency(config.latency);
 //auto end = std::chrono::high_resolution_clock::now();
-//cout << "check and send took " << std::chrono::duration_cast<std::chrono::nanoseconds>(end - start).count()
-//  << " ns" << endl;	
+//Logger::log(Formatter() << "check and send took " << std::chrono::duration_cast<std::chrono::nanoseconds>(end - start).count()
+//  << " ns");	
        //making the aggregation creation rate into a heartbeat ratio
        //so we when its changed in the gui this changes it... 
 //start = std::chrono::high_resolution_clock::now();
@@ -69,8 +70,8 @@ void Simulation::run() {
           network.doAllHeartbeat(config.chunkiness); 
        }
 //end = std::chrono::high_resolution_clock::now();
-//cout << "do all heartbeats took " <<std::chrono::duration_cast<std::chrono::nanoseconds>(end - start).count()
-//  << " ns" << endl;
+//Logger::log(Formatter() << "do all heartbeats took " <<std::chrono::duration_cast<std::chrono::nanoseconds>(end - start).count()
+//  << " ns");
  
 //start = std::chrono::high_resolution_clock::now();
 
@@ -82,8 +83,8 @@ void Simulation::run() {
         network.tellAllNodesToConsumeObjects();
 
 //end = std::chrono::high_resolution_clock::now();
-//cout << "event tick took " << std::chrono::duration_cast<std::chrono::nanoseconds>(end - start).count()
-// << " ns" << endl;
+//Logger::log(Formatter() << "event tick took " << std::chrono::duration_cast<std::chrono::nanoseconds>(end - start).count()
+// << " ns");
 	network.printChannels();
 	network.doAllTicks();
 
