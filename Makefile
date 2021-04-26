@@ -109,7 +109,7 @@ compare-logOutput :
 # files so that you're not seeing just the UUID differences.
 
 .PHONY: run-non
-run-non-repeatable :
+run-non-repeatable run-scenario1 :
 	$(MAKE) run-repeatable NON=non
 
 # ------------------
