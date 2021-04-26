@@ -291,6 +291,52 @@ Different parameters in the simulation are controlled by inputs from the UI. Bel
 
 - *Long Term Precision*: Sets the *Long_Term_Precision* parameter described [above](#general-simulation-tunables).
 
+## Repeatability
+
+Repeatability of simulations is useful mostly for debugging. ADAK allows you to run either repeatable or non-repeatable. To run repeatable, set the random seed to a fixed positive (non-zero) number. Your `config.json` file should contain a line such as the following:
+
+```
+"randomSeed": 25,
+```
+
+You can compare any two runs of a set of runs using the same seed. To compare the files, you must sanitize them first.
+
+The Makefile enables you to test for repeatability and non-repeatability.
+
+### Test for repeatability
+
+To test for repeatability for two nodes, run the following once:
+
+```
+make run-repeatable sanitize
+```
+
+Then run the following as many times as you feel necessary to test repeatability:
+
+```
+make run-repeatable sanitize compare
+```
+
+`make sanitize` replaces UUIDs in `logOutput.txt` and `statslog.csv` with node index thus making the files comparable.
+
+### Test non-repeatability
+
+To test non-repeatability with two nodes, run the following at least once:
+
+```
+make run-non-repeatable sanitize
+```
+
+Then run the following which should fail on the compare:
+
+```
+make run-non-repeatable sanitize compare
+```
+
+You can use diff, sdiff, or vimdiff to see the differences. When viewing the differences, be sure to sanitize and diff the *.clean.txt files so that you're not seeing just the UUID differences.
+
+Note that if you compare a repeatable run (fixed random seed) with a non-repeatable run, they will not compare equal. They will only coincidentally and rarely have the same seed.
+
 ## Visualizations
 
 There were several different visualizations with which we experimented. These are run by two different python scripts (DataVis.py, DataVis2.py) in the project. Below, by file, are listed descriptions of the different visualizations. Both run on the provided data and can take up to several minutes to display.

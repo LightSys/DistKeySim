@@ -31,6 +31,10 @@ private:
     // Pairing UUID with Node instances
     std::map<UUID, std::shared_ptr<Node>> nodes;
 
+    // Use this to fetch nodes in order of insertion
+    // to enable repeatability of access vs "randomness" of map.
+    std::vector<UUID> uuids;
+
      // All known channel between nodes, this is basically representing the edges of the graph
     std::vector<Channel> channels;
     // std::map<UUID, std::shared_ptr<Node>> incoming, outgoing;

@@ -72,16 +72,18 @@ bool Network::sendMsg(const Message &message) {
 void Network::doAllHeartbeat(int keysToSend) {
     // NOTE: Baylor will need to change this, right now we are sending heartbeat messages practically all the time
     // they will probably want to add time to Node to send it periodically
-    for (auto const& node : nodes) {
+    for (int i=0; i<uuids.size(); i++) {
+        auto uuid = uuids.at(i);
+        auto node = nodes.at(uuid);
 //auto start = std::chrono::high_resolution_clock::now();
 
-    	node.second->heartbeat();
+    	node->heartbeat();
 //auto end = std::chrono::high_resolution_clock::now();
 //Logger::log("sending a heartbeat took " << std::chrono::duration_cast<std::chrono::nanoseconds>(end - start).count()
 //      	<< " ns");
 
 //start = std::chrono::high_resolution_clock::now();
-      	ControlStrategy::adak(*(node.second), keysToSend); //have the node decide what to do 
+      	ControlStrategy::adak(*(node), keysToSend); //have the node decide what to do 
 //end = std::chrono::high_resolution_clock::now();
 //Logger::log("chekcing control strat took " << std::chrono::duration_cast<std::chrono::nanoseconds>(end - start).count()
 //       	<< " ns");    
@@ -90,8 +92,10 @@ void Network::doAllHeartbeat(int keysToSend) {
 }
 
 void Network::doAllTicks(){
-    for (auto const& node : nodes) {
-	node.second->tick();
+    for (int i=0; i<uuids.size(); i++) {
+        auto uuid = uuids.at(i);
+        auto node = nodes.at(uuid);
+    	node->tick();
     }
 }
 
@@ -188,6 +192,7 @@ UUID Network::addEmptyNode(unsigned seed) {
 
     // Add the new node to the nodes map
     nodes.insert({newNode->getUUID(), newNode});
+    uuids.push_back(newUUID);
 
     // Make connection to peers
     connectNodeToNetwork(newNode);
@@ -231,6 +236,7 @@ UUID Network::addNode(const Keyspace &keyspace, unsigned seed) {
     // Add the new node to the nodes map
     nodeStatus[newNode->getUUID()] = true;
     nodes.insert({newNode->getUUID(), move(newNode)});
+    uuids.push_back(newUUID);
 
     //log node created
     return newUUID;

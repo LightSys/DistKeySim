@@ -6,6 +6,7 @@ outputs/
 /cmake-build-debug-centos-8/
 /cmake-build-release-centos-8/
 .vscode
+.clang-format
 logOutput.txt
 statslog.csv
 make.out
