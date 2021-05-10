@@ -65,7 +65,7 @@ class Logger {
             }
             return rate;
         }
-	static void copyFile(string path){
+	static std::string copyFile(string path){
         // create directory if last char of path is /
         if (path.size() > 0) {
             if (path.back() == '/') {
@@ -106,13 +106,14 @@ class Logger {
              
 	     //copy the config files
          src.open("config.json", std::ios::binary);
-	     dest.open(path + "config" + to_string(num) + ".json", std::ios::binary);   
+	     dest.open(path + "copy_of_config" + to_string(num) + ".json", std::ios::binary);   
 	     //move over the information
 	     dest << src.rdbuf();
 	     //close files
 	     src.close();
 	     dest.close();
 
+         return path + "full_config" + to_string(num) + ".json";
 	}
 };
 

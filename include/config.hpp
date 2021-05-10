@@ -105,4 +105,36 @@ struct Config {
      * @param jsonFile File stream to parse JSON from
      */
     Config(std::ifstream jsonFile);
+    
+    /**
+     * Writes Config object as JSON file
+     * @param jsonFile File name to which to write JSON file
+     */
+    void write(std::string jsonFile);
+
+private:
+    static const std::string ALGORITHM_STRATEGY_LABEL;
+    static const std::string CHUNKINESS_LABEL;
+    static const std::string CONNECTION_MODE_LABEL;
+    static const std::string CREATION_RATE_LABEL;
+    static const std::string CSV_OUTPUT_PATH_LABEL;
+    static const std::string CUSTOM_CONNECTIONS_LABEL;
+    static const std::string CUSTOM_LAMBDA_1_LABEL;
+    static const std::string CUSTOM_LAMBDA_2_LABEL;
+    static const std::string CUSTOM_LAMBDA_3_LABEL;
+    static const std::string HEARTBEAT_FREQUENCY_LABEL;
+    static const std::string LAMBDA_1_LABEL;
+    static const std::string LAMBDA_2_LABEL;
+    static const std::string LAMBDA_3_LABEL;
+    static const std::string LATENCY_LABEL;
+    static const std::string LONG_TERM_PRECISION_LABEL;
+    static const std::string MAX_KEYS_LABEL;
+    static const std::string NETWORK_SCALE_LABEL;
+    static const std::string NUM_NODES_LABEL;
+    static const std::string RANDOM_SEED_LABEL;
+    static const std::string RUN_EVENTS_LABEL;
+    static const std::string SIM_LENGTH_LABEL;
+    static const std::string SMALLEST_KEY_FOR_PRIORITY_LABEL;
+    static const std::string UNITS_PER_DAY_LABEL;
+    static const std::string VISIBLE_PEERS_LABEL;
 };

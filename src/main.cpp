@@ -18,5 +18,6 @@ int main(int argc, char** argv) {
     Logger::deleteOldLog();//clearing old log files
     Logger::setCSVHeaders();//setting the headers of the columns of the csv file
     simulation.run();
-    Logger::copyFile(config.csvOutputPath);
+    std::string fullJsonFileName = Logger::copyFile(config.csvOutputPath);
+    config.write(fullJsonFileName);
 }
