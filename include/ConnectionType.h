@@ -7,15 +7,14 @@
  *      Partial = randomly connected graph (dependent on Config.visiblePeer's percentage connected)
  *      Single = randomly connected MST (one connection only on creation)
  */
-enum class ConnectionType { Full, Partial, Single, Custom, Invalid };
+enum class ConnectionType { Full, Partial, Single, Custom };
 
 static std::string ConnectionType_toString(ConnectionType type) {
     switch (type) {
         case ConnectionType::Full: return "full";
         case ConnectionType::Partial: return "partial";
         case ConnectionType::Single: return "single";
-        case ConnectionType::Custom: return "custom";
-        case ConnectionType::Invalid: return "invalid";
+        default: return "custom";
     }
 }
 
@@ -26,9 +25,7 @@ static ConnectionType ConnectionType_fromString(std::string type) {
     return ConnectionType::Partial;
   } else if (type == "single") {
     return ConnectionType::Single;
-  } else if (type == "custom") {
-    return ConnectionType::Custom;
   } else {
-    return ConnectionType::Invalid;
+    return ConnectionType::Custom;
   }
 }

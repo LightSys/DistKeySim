@@ -25,6 +25,7 @@ static const std::vector<float> DEFAULT_CUSTOM_LAMBDA3 = {}; //if it is empty, t
 static const bool DEFAULT_RUN_EVENTS = false; 
 static const double DEFAULT_UNITS_PER_DAY = 3600;
 static const unsigned DEFAULT_RANDOM_SEED = time(nullptr);
+static const std::string DEFAULT_CUSTOM_CONNECTIONS = "";
 
 //added for UI string inputs:
 static const unsigned int SIZEOF_SMALLEST_KEY_OPTIONS = 2;
@@ -64,6 +65,7 @@ struct Config {
     int latency; 
     bool runEvents;
     unsigned int randomSeed;
+    std::string customConnections;
 
     //added for the UI input: 
     float visiblePeers;//chance (from percent) in decimal 0-1

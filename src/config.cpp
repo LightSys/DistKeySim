@@ -49,7 +49,7 @@ Config::Config(ifstream jsonFile) {
             
             // full, partial, and single are the only implemented connection modes
             this->connectionMode = ConnectionType_fromString(connModeStr);
-            if (this->connectionMode == ConnectionType::Invalid) {
+            if (this->connectionMode == ConnectionType::Custom) {
                 // Invalid connection mode
                 throw std::invalid_argument("connectionMode not one of 'full', 'partial', or 'single'");
             }
@@ -99,6 +99,12 @@ Config::Config(ifstream jsonFile) {
             randomSeed = DEFAULT_RANDOM_SEED;
 	    }
 
+        if (jf.contains(CUSTOM_CONNECTIONS_LABEL)) {
+            jf.at(CUSTOM_CONNECTIONS_LABEL).get_to(this->customConnections);
+        } else {
+            csvOutputPath = DEFAULT_CUSTOM_CONNECTIONS;
+        }
+        
         //added for the UI input: 
         if (jf.contains(VISIBLE_PEERS_LABEL)) {
             jf.at(VISIBLE_PEERS_LABEL).get_to(this->visiblePeers);
@@ -133,19 +139,19 @@ Config::Config(ifstream jsonFile) {
         
         if(jf.contains(CUSTOM_LAMBDA_1_LABEL)){
            jf.at(CUSTOM_LAMBDA_1_LABEL).get_to(this->customLambda1);
-	}else{
+    	}else{
            this->customLambda1 = DEFAULT_CUSTOM_LAMBDA1;
-	}
+	    }
         if(jf.contains(CUSTOM_LAMBDA_2_LABEL)){
            jf.at(CUSTOM_LAMBDA_2_LABEL).get_to(this->customLambda2);
-	}else{
+	    }else{
            this->customLambda2 = DEFAULT_CUSTOM_LAMBDA2;
-	}
+	    }
         if(jf.contains(CUSTOM_LAMBDA_3_LABEL)){
            jf.at(CUSTOM_LAMBDA_3_LABEL).get_to(this->customLambda3);
-	}else{
+	    }else{
            this->customLambda3 = DEFAULT_CUSTOM_LAMBDA3;
-	}
+	    }
 
         if (jf.contains(CHUNKINESS_LABEL)) {
             jf.at(CHUNKINESS_LABEL).get_to(this->chunkiness);
@@ -211,11 +217,8 @@ Config::Config(ifstream jsonFile) {
         } else {
             this->algorithmStrategyOption = INVALID_HARD_KNOB_OPTION;
         }
-        
-        
-        
     } else {
-	Logger::log(Formatter() << "Unable to open JSON file, falling back to defaults...");
+    	Logger::log(Formatter() << "Unable to open JSON file, falling back to defaults...");
         // Unable to open JSON file, fall back to all default values
         numNodes = DEFAULT_NUM_NODES;
         connModeStr = DEFAULT_CONN_MODE_STR;
@@ -224,6 +227,7 @@ Config::Config(ifstream jsonFile) {
         creationRate = DEFAULT_CREATION_RATE;
         networkScale = DEFAULT_NETWORK_SCALE;
         randomSeed = DEFAULT_RANDOM_SEED;
+        customConnections = DEFAULT_CUSTOM_CONNECTIONS;
     }
 }
 
@@ -235,6 +239,7 @@ void Config::write(std::string jsonFile) {
     j[CONNECTION_MODE_LABEL] = ConnectionType_toString(this->connectionMode);
     j[CREATION_RATE_LABEL] = this->creationRate;
     j[CSV_OUTPUT_PATH_LABEL] = this->csvOutputPath;
+    j[CUSTOM_CONNECTIONS_LABEL] = this->customConnections;
     if (this->customLambda1.size() > 0) {j[CUSTOM_LAMBDA_1_LABEL] = this->customLambda1;}
     if (this->customLambda2.size() > 0) {j[CUSTOM_LAMBDA_2_LABEL] = this->customLambda2;}
     if (this->customLambda3.size() > 0) {j[CUSTOM_LAMBDA_3_LABEL] = this->customLambda3;}
