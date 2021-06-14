@@ -112,15 +112,37 @@ compare-logOutput :
 run-non-repeatable run-scenario1 :
 	$(MAKE) run-repeatable NON=non
 
+# ------------------------
+# Test short repeatability
+# ------------------------
+#
+# Shorten the repeatability test to see if we can get showVis1 to finish.
+
+.PHONY: run-short-repeatable
+run-short-repeatable :
+	cp -p scenario1_$(NON)repeatable_config_short.json $(BUILD)/$(SRC)/config.json
+	cd $(BUILD)/$(SRC) && ./adak
+
+# ----------------
+# Test oscillation
+# ----------------
+# .PHONY: test-oscillation
+# test-oscillation :
+# 	cp -p test.json $(BUILD)/$(SRC)/config.json
+# 	cd $(BUILD)/$(SRC) && ./adak
+
 # ------------------
 # Show Visualization
 # ------------------
-STATS_LOG    = ./statslog.csv
-VIS_NUM      = 2
+STATS_LOG    = $(OUTPUTS)/statslog$(RUN).csv
 GRAPH_IS_LOG = True
-.PHONY: show-vis
-show-vis :
-	$(CLIENT)/showVis.py $(VIS_NUM) $(GRAPH_IS_LOG) $(STATS_LOG)
+.PHONY: show-vis1
+show-vis1 :
+	$(CLIENT)/showVis.py 1 $(GRAPH_IS_LOG) $(STATS_LOG)
+
+.PHONY: show-vis2
+show-vis2 :
+	$(CLIENT)/showVis.py 2 $(GRAPH_IS_LOG) $(STATS_LOG)
 
 # -----
 # Clean
@@ -133,6 +155,7 @@ clean :
 .PHONY: clean-outputs
 clean-outputs :
 	rm -rf $(BUILD)/$(SRC)/outputs
+	rm -f  $(BUILD)/$(SRC)/*.{csv,txt,json}
 
 # --------------------
 # Show number of cores
