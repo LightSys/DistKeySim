@@ -1,0 +1,83 @@
+@startuml
+
+
+
+
+
+/' Objects '/
+
+class Config {
+	+Config(u_int numNodes, std::string connectionMode, std::string csvPath, int creationRate, float networkScale)
+	+Config(std::ifstream jsonFile)
+	+connectionMode : ConnectionType
+	+runEvents : bool
+	+unitsPerDay : double
+	+lambda1 : float
+	+lambda2 : float
+	+lambda3 : float
+	+networkScale : float
+	+visiblePeers : float
+	+chunkiness : int
+	+creationRate : int
+	+heartbeatFrequency : int
+	+latency : int
+	+simLength : int
+	+algorithmStrategyOption : short
+	+smallestKeyOption : short
+	-{static} ALGORITHM_STRATEGY_LABEL : static const std::string
+	-{static} CHUNKINESS_LABEL : static const std::string
+	-{static} CONNECTION_MODE_LABEL : static const std::string
+	-{static} CREATION_RATE_LABEL : static const std::string
+	-{static} CSV_OUTPUT_PATH_LABEL : static const std::string
+	-{static} CUSTOM_CONNECTIONS_LABEL : static const std::string
+	-{static} CUSTOM_LAMBDA_1_LABEL : static const std::string
+	-{static} CUSTOM_LAMBDA_2_LABEL : static const std::string
+	-{static} CUSTOM_LAMBDA_3_LABEL : static const std::string
+	-{static} HEARTBEAT_FREQUENCY_LABEL : static const std::string
+	-{static} LAMBDA_1_LABEL : static const std::string
+	-{static} LAMBDA_2_LABEL : static const std::string
+	-{static} LAMBDA_3_LABEL : static const std::string
+	-{static} LATENCY_LABEL : static const std::string
+	-{static} LONG_TERM_PRECISION_LABEL : static const std::string
+	-{static} MAX_KEYS_LABEL : static const std::string
+	-{static} NETWORK_SCALE_LABEL : static const std::string
+	-{static} NUM_NODES_LABEL : static const std::string
+	-{static} RANDOM_SEED_LABEL : static const std::string
+	-{static} RUN_EVENTS_LABEL : static const std::string
+	-{static} SIM_LENGTH_LABEL : static const std::string
+	-{static} SMALLEST_KEY_FOR_PRIORITY_LABEL : static const std::string
+	-{static} UNITS_PER_DAY_LABEL : static const std::string
+	-{static} VISIBLE_PEERS_LABEL : static const std::string
+	+connModeStr : std::string
+	+csvOutputPath : std::string
+	+customConnections : std::string
+	+customLambda1 : std::vector<float>
+	+customLambda2 : std::vector<float>
+	+customLambda3 : std::vector<float>
+	+numNodes : u_int
+	+longTermPrecision : unsigned int
+	+maxKeysBits : unsigned int
+	+randomSeed : unsigned int
+	+write(std::string jsonFile) : void
+}
+
+
+
+
+
+/' Inheritance relationships '/
+
+
+
+
+/' Aggregation relationships '/
+
+
+
+
+
+/' Nested objects '/
+
+
+
+@enduml

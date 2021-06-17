@@ -438,7 +438,7 @@ The Python GUI code takes the input from the user, updates the config.json file,
 
 NOTE: There are numerous print statements which do not match the indentation of the text. These are used for debugging on the server. They were left in because of how frequently those sections of the code need debugging.
 
-### C++ Classes and Files:
+### C++ Classes and Files
 
 The C++ code consists of several classes spanning the include and src folders, composed of the .h/.hpp files and the .c/.cpp files, respectively.
 
@@ -446,13 +446,19 @@ The C++ code consists of several classes spanning the include and src folders, c
 
 This file is a virtual class which control strategies are meant to inherit from. Its outline is largely unused in the current set up; the ticking set up currently used is not the same as the nodeTick system outlined here. The ControlStategy class does inherit from this class, however.
 
+![Strategy](./images/Strategy.png)
+
 #### Channel (.h and .cpp)
 
 This class defines a channel, or a link between two nodes. It stores a toNode and a fromNode, but it is used as a bidirectional channel. It is largely just used to keep track of connections and the class is just a few private data members, getters, and a constructor.
 
+![Channel](./images/Channel.png)
+
 #### Config(.hpp and .cpp)
 
 The config class is used to retrieve the values from the config.json. The constructor takes the filename as a parameter and then stores the values into its own local data members. If an item is missing from the config the program will simply store the default value, as specified in config.h, for the missing value.
+
+![Config](./images/Config.png)
 
 #### ControlStrategy (.h and .cpp)
 
@@ -462,9 +468,13 @@ This class is an implementation of the ADAK strategy class. It primarily supplie
 
 This is a virtual class meant to provide a basis for a class that decides when nodes should sleep or wake up. Geometric disconnect implements this class.
 
+![EventGen](./images/EventGen.png)
+
 #### GeometricDisconnect (.h and .cpp)
 
 This class controls when nodes should sleep or wake up based on lambda1 and lambda2 as specified in the config class.
+
+![GeometricDisconnect](./images/GeometricDisconnect.png)
 
 #### Json (.hpp only)
 
@@ -480,9 +490,15 @@ The keyspace class defines the blocks of keyspace, both full blocks and sub-bloc
 
 - getNextAvailableKey, which returns the value of the start key and increments the start to the next key in the keyspace.
 
+![Keyspace](./images/Keyspace.png)
+
+ADAK_key_t is defined as ```typedef std::uint64_t ADAK_Key_t```.
+
 #### Logger (.h only)
 
 The logger class provides the functions which log to the statslog.csv and logOutput.txtx files. It keeps its own internal timings and statistics for the .csv, so be careful when changing where/how the functions are used. It also stores copies of the generated statslog.csv and logOutput.txt, as well as the config.json file, in the outputs folder. This prevents the data from being lost when the simulation is run again.
+
+![Logger](./images/Logger.png)
 
 #### Message (.hpp and .cpp)
 
@@ -508,9 +524,13 @@ This function provides the instructions needed to generate the .hp.h and .pb.cc 
 
 This class handles all of the nodes in a network and handles their connections, heartbeats, and message sending. It can create nodes and connect them to the network as specified by the connection type, can simulate latency in message sending as specified in the config, and uses the custom consumption rates found in the config. This class is generally where any Node functionality would be called directly.
 
+![Network](./images/Network.png)
+
 #### NodeData (.h and .cpp)
 
 This class defines a data member all nodes will hold. It is primarily used to track statistics about what the node does, though it also features functions to calculate several of them. This is used in the rotating history of node tracks, with NodeData items being stored for up to a week..
+
+![Node](./images/Node.png)
 
 #### Node (.h and .cpp)
 
@@ -519,6 +539,8 @@ This class defines the node data structure It defines functionality for how node
 #### picoSHA2 (.h only)
 
 This is an include file used under the MIT License. It is used in the UUID.h class
+
+![picoSHA2](./images/picoSHA2.png)
 
 #### Random (.h and .cpp)
 

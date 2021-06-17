@@ -1,0 +1,94 @@
+@startuml
+
+
+
+
+
+/' Objects '/
+
+class Network {
+	+Network(ConnectionType connectionType, float PERCENT_CONNECTED, double lambda1, double lambda2, double lambda3, double netScale, int latency)
+	+Network(ConnectionType connectionType, float PERCENT_CONNECTED, double lambda1, double lambda2, double lambda3, double netScale, int latency, vector<float> lam1s, vector<float> lam2s, vector<float> lam3s)
+	+~Network()
+	-connectionType : ConnectionType
+	+addEmptyNode(unsigned seed) : UUID
+	+addNode(const Keyspace& keyspace, unsigned seed) : UUID
+	+addRootNode(unsigned seed) : UUID
+	+getRandomNode() : UUID
+	+channelExists(const UUID& nodeOne, const UUID& nodeTwo) : bool
+	+customConnect(std::shared_ptr<Node> node) : bool
+	+isOffline(UUID nodeID) : bool
+	+sendMsg(const Message& message) : bool
+	+checkAllKeyspace() : double
+	-lambda1 : double
+	-lambda2 : double
+	-lambda3 : double
+	-networkScale : double
+	-PERCENT_CONNECTED : int
+	+getChannelIndex(const UUID& nodeOne, const UUID& nodeTwo) : int
+	-latency : int
+	-latencyStall : int
+	-nextTimerID : int
+	+numNodes() : size_t {query}
+	+getNodes() : std::map<UUID , std::shared_ptr<Node>>
+	-nodeStatus : std::map<UUID, bool>
+	-nodes : std::map<UUID, std::shared_ptr<Node>>
+	-toSend : std::queue<std::vector<Message>>
+	+getNodeFromUUID(const UUID& uuid) : std::shared_ptr<Node> {query}
+	-channels : std::vector<Channel>
+	+getChannels() : std::vector<Channel>
+	+generateUUIDList() : std::vector<UUID>
+	-uuids : std::vector<UUID>
+	-custLambda1 : std::vector<float>
+	-custLambda2 : std::vector<float>
+	-custLambda3 : std::vector<float>
+	+checkAndSendAllNodes() : void
+	+checkAndSendAllNodesLatency(int latency) : void
+	+connectNodeToNetwork(std::shared_ptr<Node> newNode) : void
+	+connectNodes(const UUID& nodeOne, const UUID& nodeTwo) : void
+	+disableNode(UUID nodeUUID) : void
+	+disconnectNodes(const UUID& nodeOne, const UUID& nodeTwo) : void
+	+doAllHeartbeat(int keysToShift) : void
+	+doAllTicks() : void
+	+enableNode(UUID nodeUUID) : void
+	+fullyConnect(std::shared_ptr<Node> node) : void
+	+printChannels(char spacer) : void
+	+printKeyspaces(char spacer) : void
+	+printUUIDList(char spacer) : void
+	+singleConnect(std::shared_ptr<Node> node) : void
+	+tellAllNodesToConsumeObjects() : void
+}
+
+
+class Simulation {
+	+Simulation(const struct Config& config)
+	+~Simulation()
+	-network : Network
+	+getNetwork() : Network*
+	-numNodes : u_int
+	+run() : void
+}
+
+
+
+
+
+/' Inheritance relationships '/
+
+
+
+
+/' Aggregation relationships '/
+
+.Simulation *-- .Network
+
+
+
+
+
+
+/' Nested objects '/
+
+
+
+@enduml

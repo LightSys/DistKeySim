@@ -144,6 +144,41 @@ show-vis1 :
 show-vis2 :
 	$(CLIENT)/showVis.py 2 $(GRAPH_IS_LOG) $(STATS_LOG)
 
+# -----------------------
+# Generate class diagrams
+# -----------------------
+images/%.puml : include/%.h
+	hpp2plantuml -i $<  -o $@
+
+images/Config.puml : include/Config.hpp
+	hpp2plantuml -i $<  -o $@
+
+images/%.png : images/%.puml
+	plantuml $<
+
+images/Strategy.puml : include/ADAKStrategy.h include/ControlStrategy.h
+	hpp2plantuml -i include/ADAKStrategy.h -i include/ControlStrategy.h -o $@
+
+images/GeometricDisconnect.puml : include/EventGen.h include/GeometricDisconnect.h include/Random.h
+	hpp2plantuml -i include/EventGen.h -i include/GeometricDisconnect.h -i include/Random.h -o $@
+
+images/Network.puml : include/Network.h include/Simulation.h
+	hpp2plantuml -i include/Network.h -i include/Simulation.h -o $@
+
+images/Node.puml : include/Node.h include/NodeData.h
+	hpp2plantuml -i include/Node.h -i include/NodeData.h -o $@
+
+all-images : images/Logger.png \
+	images/Strategy.png \
+	images/picoSHA2.png \
+	images/Channel.png \
+	images/Config.png \
+	images/EventGen.png \
+	images/GeometricDisconnect.png \
+	images/Keyspace.png \
+	images/Network.png \
+	images/Node.png
+
 # -----
 # Clean
 # -----

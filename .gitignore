@@ -12,3 +12,4 @@ statslog.csv
 make.out
 *.pyc
 *.zip
+clean-outputs
