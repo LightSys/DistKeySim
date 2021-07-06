@@ -5,6 +5,7 @@ CLIENT    = client
 MESSAGE   = message
 SOURCES   = $(INCLUDE)/*.h $(INCLUDE)/*.hpp $(SRC)/*.cc $(SRC)/*.cpp
 USE_CORES = 1
+CMP   = cmp
 
 # Figure out how many cores we can safely use
 UNAME := $(shell uname)
@@ -21,7 +22,7 @@ endif
 # Build
 # -----
 .PHONY: all
-all: $(BUILD)/$(SRC)/adak
+all: $(OUTPUTS)/adak
 
 # Update message protobuf sources when message.proto changes
 $(SRC)/$(MESSAGE).pb.cc $(INCLUDE)/$(MESSAGE).pb.h : $(SRC)/$(MESSAGE).proto 
@@ -30,7 +31,7 @@ $(SRC)/$(MESSAGE).pb.cc $(INCLUDE)/$(MESSAGE).pb.h : $(SRC)/$(MESSAGE).proto
 		mv  message.pb.h ../$(INCLUDE)
 
 # Build ADAK
-$(BUILD)/$(SRC)/adak : $(SOURCES)
+$(OUTPUTS)/adak : $(SOURCES)
 	mkdir -p $(BUILD)
 	cd $(BUILD) && \
 		cmake .. -DBUILD_TESTING=0 && \
@@ -58,8 +59,8 @@ NON =
 
 .PHONY: run-repeatable
 run-repeatable :
-	cp -p scenario1_$(NON)repeatable_config.json $(BUILD)/$(SRC)/config.json
-	cd $(BUILD)/$(SRC) && ./adak
+	cp -p scenario1_$(NON)repeatable_config.json $(OUTPUTS)/config.json
+	cd $(OUTPUTS) && ./adak
 
 NEXT_RUN = $(shell cat $(OUTPUTS)/num.txt)
 LAST_RUN = $(shell echo $(NEXT_RUN) - 1 | bc)
@@ -70,13 +71,13 @@ sanitize :
 
 .PHONY: sanitize-statsLog
 sanitize-statsLog :
-	client/sanitizeStatsLog.py $(BUILD)/$(SRC)/outputs/statslog$(RUN).csv > \
-		$(BUILD)/$(SRC)/outputs/statslog$(RUN).clean.txt
+	client/sanitizeStatsLog.py $(OUTPUTS)/statslog$(RUN).csv > \
+		$(OUTPUTS)/statslog$(RUN).clean.txt
 
 .PHONY: sanitize-logOutput
 sanitize-logOutput :
-	client/sanitizelogOutput.py $(BUILD)/$(SRC)/outputs/logOutput$(RUN).txt > \
-		$(BUILD)/$(SRC)/outputs/logOutput$(RUN).clean.txt
+	client/sanitizelogOutput.py $(OUTPUTS)/logOutput$(RUN).txt > \
+		$(OUTPUTS)/logOutput$(RUN).clean.txt
 
 .PHONY: compare
 compare :
@@ -86,13 +87,13 @@ compare :
 PREV_RUN = $(shell echo $(LAST_RUN) - 1 | bc)
 .PHONY: compare-statsLog
 compare-statsLog :
-	cmp $(BUILD)/$(SRC)/outputs/statslog$(PREV_RUN).clean.txt \
-		$(BUILD)/$(SRC)/outputs/statslog$(LAST_RUN).clean.txt
+	$(CMP) $(OUTPUTS)/statslog$(PREV_RUN).clean.txt \
+		       $(OUTPUTS)/statslog$(LAST_RUN).clean.txt
 
 .PHONY: compare-logOutput
 compare-logOutput :
-	cmp $(BUILD)/$(SRC)/outputs/logOutput$(PREV_RUN).clean.txt \
-		$(BUILD)/$(SRC)/outputs/logOutput$(LAST_RUN).clean.txt
+	$(CMP) $(OUTPUTS)/logOutput$(PREV_RUN).clean.txt \
+		       $(OUTPUTS)/logOutput$(LAST_RUN).clean.txt
 
 # ----------------------
 # Test non-repeatability
@@ -120,16 +121,16 @@ run-non-repeatable run-scenario1 :
 
 .PHONY: run-short-repeatable
 run-short-repeatable :
-	cp -p scenario1_$(NON)repeatable_config_short.json $(BUILD)/$(SRC)/config.json
-	cd $(BUILD)/$(SRC) && ./adak
+	cp -p scenario1_$(NON)repeatable_config_short.json $(OUTPUTS)/config.json
+	cd $(OUTPUTS) && ./adak
 
 # ----------------
 # Test oscillation
 # ----------------
 # .PHONY: test-oscillation
 # test-oscillation :
-# 	cp -p test.json $(BUILD)/$(SRC)/config.json
-# 	cd $(BUILD)/$(SRC) && ./adak
+# 	cp -p test.json $(OUTPUTS)/config.json
+# 	cd $(OUTPUTS) && ./adak
 
 # ------------------
 # Show Visualization
@@ -177,7 +178,9 @@ all-images : images/Logger.png \
 	images/GeometricDisconnect.png \
 	images/Keyspace.png \
 	images/Network.png \
-	images/Node.png
+	images/Node.png \
+	images/main-seq.png \
+	images/Simulation-seq.png
 
 # -----
 # Clean
@@ -189,8 +192,16 @@ clean :
 
 .PHONY: clean-outputs
 clean-outputs :
-	rm -rf $(BUILD)/$(SRC)/outputs
-	rm -f  $(BUILD)/$(SRC)/*.{csv,txt,json}
+	rm -rf $(OUTPUTS)
+	rm -f  $(OUTPUTS)/*.{csv,txt,json}
+
+.PHONY: clean-last-output
+clean-last-output :
+	rm -f $(OUTPUTS)/statslog$(LAST_RUN).* \
+		$(OUTPUTS)/logOutput$(LAST_RUN).* > \
+		$(OUTPUTS)/copy_of_config$(LAST_RUN).json \
+		$(OUTPUTS)/full_config$(LAST_RUN).json
+	echo $(LAST_RUN) > 	$(OUTPUTS)/num.txt
 
 # --------------------
 # Show number of cores

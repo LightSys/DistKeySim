@@ -550,6 +550,8 @@ This class implements the eventGen class and defines the eventTick function. It 
 
 As mentioned above, this class essentially serves as the "main," and as such handles network initialization and handles the flow of the simulation from tick to tick.
 
+![Simulation-seq](./images/Simulation-seq.png)
+
 #### SystemClock (.h and .cpp)
 
 The system clock is used primarily by the GeometricDisconnect class to keep track of when nodes should sleep and wake. Other parts of the code may reference it as well, but most sections just simply use an int to keep track of the timestep.
@@ -562,7 +564,10 @@ Handles the creation of UUID"s.
 
 This is the main class for the program. It largely just sets up and calls the Simulation class.
 
+![main-seq](./images/main-seq.png)
+
 #### CmakeList.txt
+
 This file is associated with protobuf generation.
 
 ### Scripts (folder)
@@ -570,6 +575,7 @@ This file is associated with protobuf generation.
 #### build.sh
 
 It erases and remakes the `build` directory each time it runs.
+
 ### Client (folder)
 
 These files are stored in the client folder, and should run locally on the users computer rather than on the server. It contains the following:
