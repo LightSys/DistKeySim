@@ -102,7 +102,7 @@ Config::Config(ifstream jsonFile) {
         if (jf.contains(CUSTOM_CONNECTIONS_LABEL)) {
             jf.at(CUSTOM_CONNECTIONS_LABEL).get_to(this->customConnections);
         } else {
-            csvOutputPath = DEFAULT_CUSTOM_CONNECTIONS;
+            customConnections = DEFAULT_CUSTOM_CONNECTIONS;
         }
         
         //added for the UI input: 
