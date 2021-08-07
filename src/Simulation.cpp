@@ -53,6 +53,7 @@ void Simulation::run() {
     EventGen* eventGen = new GeometricDisconnect(SIMULATION, config.lambda1, config.lambda2);
 
     network.printChannels();
+    network.printKeyspaces();
 
     Logger::log(Formatter() << "Ticking network a bunch");
     for (int i = 0; i < config.simLength; i++) {
@@ -93,6 +94,7 @@ void Simulation::run() {
         // std::chrono::duration_cast<std::chrono::nanoseconds>(end - start).count()
         // << " ns");
         network.printChannels();
+        network.printKeyspaces();
         network.doAllTicks();
 
         // update all of the logger stuff

@@ -721,7 +721,7 @@ double Node::calcLongAggregate(UUID target){
    result *= networkScale; 
    result += createdWeek;
    result /= numCounted; //# of peers + 1 for self - 1 for target
-Logger::log(Formatter() << uuid << " calcing long agg/ Week: " << createdWeek << ", numCounted: " << numCounted);;  
+   //Logger::log(Formatter() << uuid << " calcing long agg/ Week: " << createdWeek << ", numCounted: " << numCounted);;  
    return result; 
 }
 

@@ -5,7 +5,7 @@ CLIENT    = client
 MESSAGE   = message
 SOURCES   = $(INCLUDE)/*.h $(INCLUDE)/*.hpp $(SRC)/*.cc $(SRC)/*.cpp
 USE_CORES = 1
-CMP   = cmp
+CMP       = cmp
 
 # Figure out how many cores we can safely use
 UNAME := $(shell uname)
@@ -121,16 +121,39 @@ run-non-repeatable run-scenario1 :
 
 .PHONY: run-short-repeatable
 run-short-repeatable :
-	cp -p scenario1_$(NON)repeatable_config_short.json $(OUTPUTS)/config.json
-	cd $(OUTPUTS) && ./adak
+	cp -p scenario1_$(NON)repeatable_config_short.json $(BUILD)/$(SRC)/config.json
+	cd $(BUILD)/$(SRC) && ./adak
+
+# -------------------------
+# Test eventGen config file
+# -------------------------
+CONNECTION_MODE = single
+SIM_LENGTH = 50
+NUM_NODES = 10
+.PHONY: run-eventGen
+run-eventGen :
+	jq ".connectionMode |= \"$(CONNECTION_MODE)\"" < eventGen-config.json | \
+		jq ".simLength |= $(SIM_LENGTH)" | \
+		jq ".numNodes |= $(NUM_NODES)" > $(BUILD)/$(SRC)/config.json
+	cd $(BUILD)/$(SRC) && ./adak
 
 # ----------------
-# Test oscillation
+# Find oscillation
 # ----------------
-# .PHONY: test-oscillation
-# test-oscillation :
-# 	cp -p test.json $(OUTPUTS)/config.json
-# 	cd $(OUTPUTS) && ./adak
+.PHONY: run-oscillation
+run-oscillation :
+	$(MAKE) run-eventGen CONNECTION_MODE=full   SIM_LENGTH=50     NUM_NODES=2  sanitize
+	$(MAKE) run-eventGen CONNECTION_MODE=full   SIM_LENGTH=500    NUM_NODES=2  sanitize
+	$(MAKE) run-eventGen CONNECTION_MODE=full   SIM_LENGTH=5000   NUM_NODES=2  sanitize
+	$(MAKE) run-eventGen CONNECTION_MODE=full   SIM_LENGTH=50000  NUM_NODES=2  sanitize
+	$(MAKE) run-eventGen CONNECTION_MODE=single SIM_LENGTH=50     NUM_NODES=10 sanitize
+	$(MAKE) run-eventGen CONNECTION_MODE=single SIM_LENGTH=500    NUM_NODES=10 sanitize
+	$(MAKE) run-eventGen CONNECTION_MODE=single SIM_LENGTH=5000   NUM_NODES=10 sanitize
+	$(MAKE) run-eventGen CONNECTION_MODE=single SIM_LENGTH=50000  NUM_NODES=10 sanitize
+	$(MAKE) run-eventGen CONNECTION_MODE=full   SIM_LENGTH=50     NUM_NODES=10 sanitize
+	$(MAKE) run-eventGen CONNECTION_MODE=full   SIM_LENGTH=500    NUM_NODES=10 sanitize
+	$(MAKE) run-eventGen CONNECTION_MODE=full   SIM_LENGTH=5000   NUM_NODES=10 sanitize
+	$(MAKE) run-eventGen CONNECTION_MODE=full   SIM_LENGTH=50000  NUM_NODES=10 sanitize
 
 # ------------------
 # Show Visualization
@@ -193,7 +216,7 @@ clean :
 .PHONY: clean-outputs
 clean-outputs :
 	rm -rf $(OUTPUTS)
-	rm -f  $(OUTPUTS)/*.{csv,txt,json}
+	rm -f  $(BUILD)/$(SRC)/*.{csv,txt,json}
 
 .PHONY: clean-last-output
 clean-last-output :

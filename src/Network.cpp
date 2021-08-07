@@ -450,28 +450,40 @@ void Network::printChannels(char spacer) {
     for (const Channel &channel : channels) {
         Logger::log(Formatter() << channel.getToNode() << spacer
             << channel.getFromNode() << spacer
-            << channel.getChannelId());
-        if(this->isOffline(channel.getToNode()) || this->isOffline(channel.getFromNode())){
-            Logger::log(Formatter() << "  OFFLINE!!");
-        }
+            << channel.getChannelId()
+            << (this->isOffline(channel.getToNode()) || this->isOffline(channel.getFromNode())
+                ? "OFFLINE!!" : ""));
     }
+    Logger::log(Formatter() << "END CHANNELS");
 }
 
 void Network::printKeyspaces(char spacer) {
     Logger::log(Formatter() << "KEYSPACES");
+    Logger::log(Formatter()
+        << "Node" << spacer
+        << "UUID" << spacer
+        << "Keyspace" << spacer
+        << "Start" << spacer
+        << "End" << spacer
+        << "Suffix Bits" << spacer
+        << "Counter");
 
-    int counter = 0;
+    int nodeCounter = 0;
+    int keyspaceCounter = 0;
     for (auto const& x : nodes) {
         for (const Keyspace &keyspace : x.second->getKeySpace()) {
-            Logger::log(Formatter() << "Node" << spacer << "UUID" << spacer << "Keyspace" << "Start" << spacer << "End" << spacer
-                << "Suffix Bits\n"
-                << counter << spacer << x.second->getUUID() << spacer
-                << keyspace.getStart() << spacer << keyspace.getEnd() << spacer
-                << keyspace.getSuffix()
+            Logger::log(Formatter()
+                << nodeCounter << spacer
+                << x.second->getUUID() << spacer
+                << keyspace.getStart() << spacer
+                << keyspace.getEnd() << spacer
+                << keyspace.getSuffix() << spacer
+                << keyspaceCounter++
             );
         }
-        counter++;
+        nodeCounter++;
     }
+    Logger::log(Formatter() << "END KEYSPACES");
 }
 
 double Network::checkAllKeyspace(){
