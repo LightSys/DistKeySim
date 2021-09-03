@@ -60,7 +60,7 @@ NON =
 .PHONY: run-repeatable
 run-repeatable :
 	cp -p scenario1_$(NON)repeatable_config.json $(BUILD)/$(SRC)/config.json
-	cd $(BUILD)/$(SRC) && ./adak
+	cd $(BUILD)/$(SRC) && time ./adak
 
 NEXT_RUN = $(shell cat $(OUTPUTS)/num.txt)
 LAST_RUN = $(shell echo $(NEXT_RUN) - 1 | bc)
@@ -110,7 +110,7 @@ compare-logOutput :
 # files so that you're not seeing just the UUID differences.
 
 .PHONY: run-non
-run-non-repeatable run-scenario1 :
+run-non-repeatable :
 	$(MAKE) run-repeatable NON=non
 
 # ------------------------
@@ -122,7 +122,36 @@ run-non-repeatable run-scenario1 :
 .PHONY: run-short-repeatable
 run-short-repeatable :
 	cp -p scenario1_$(NON)repeatable_config_short.json $(BUILD)/$(SRC)/config.json
-	cd $(BUILD)/$(SRC) && ./adak
+	cd $(BUILD)/$(SRC) && time ./adak
+
+# --------------------------------------------
+# Test Scenario 1 (see "ADAK Scenarios 1.pdf")
+# --------------------------------------------
+#
+# Objective: Ensure the functionality of sharing keyspace blocks and
+# the stability of subblock sharing (there should be minimal,
+# if any, subblock sharing in this scenario)
+
+.PHONY: run-scenario1
+run-scenario1 :
+	cp -p scenario1-config.json $(BUILD)/$(SRC)/config.json
+	cd $(BUILD)/$(SRC) && time ./adak
+
+.PHONY: run-short-scenario1
+run-short-scenario1 :
+	jq ".simLength |= 10000" < scenario1-config.json > $(BUILD)/$(SRC)/config.json
+	cd $(BUILD)/$(SRC) && time ./adak
+
+.PHONY: keyspaces
+keyspaces :
+	awk '/KEYSPACES/,/END KEYSPACES/ {print} /Time Step:/ {print}' \
+		$(OUTPUTS)/logOutput$(RUN).clean.txt > \
+		$(OUTPUTS)/logOutput$(RUN).keyspaces.txt
+
+.PHONY: run-default-config
+run-default-config :
+	cp -p default-config.json $(BUILD)/$(SRC)/config.json
+	cd $(BUILD)/$(SRC) && time ./adak
 
 # -------------------------
 # Test eventGen config file
@@ -135,7 +164,7 @@ run-eventGen :
 	jq ".connectionMode |= \"$(CONNECTION_MODE)\"" < eventGen-config.json | \
 		jq ".simLength |= $(SIM_LENGTH)" | \
 		jq ".numNodes |= $(NUM_NODES)" > $(BUILD)/$(SRC)/config.json
-	cd $(BUILD)/$(SRC) && ./adak
+	cd $(BUILD)/$(SRC) && time ./adak
 
 # ----------------
 # Find oscillation

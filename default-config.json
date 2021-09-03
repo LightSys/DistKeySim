@@ -1,0 +1,5 @@
+{
+    "Algorithm_Strategy": "temperature based",
+    "csvOutputPath": "outputs/",
+    "numNodes": 2
+}

@@ -426,6 +426,28 @@ Each node will use this algorithm and it's repeated running will result in the w
 
 This algorithm is now in the code, although the current implementation fails to dampen oscillations. This will need to be improved.
 
+## Scenarios
+
+Test scenarios are described in [ADAK Scenarios 1](ADAK%20Scenarios%201.pdf). This section described results of running these scenarios.
+
+### Scenario 1
+The objective of Scenario 1 is to "ensure the functionality of sharing keyspace blocks and the stability of subblock sharing." The evidence of this is that "there should be minimal, if any, subblock sharing." The following config file was used for testing:
+
+```
+{
+    "Algorithm_Strategy": "temperature based",
+    "connectionMode": "full",
+    "csvOutputPath": "outputs/",
+    "Latency": 40,
+    "lambda_3_(time_between_creating_objects)": 1000,
+    "networkScale": 0.3,
+    "numNodes": 2,
+    "randomSeed": 25,
+    "simLength": 86400000,
+    "Units_Per_Second": 1000
+}
+```
+
 ## Code
 
 ### Overview
