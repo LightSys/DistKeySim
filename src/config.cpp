@@ -27,8 +27,14 @@ const std::string Config::RANDOM_SEED_LABEL = "randomSeed";
 const std::string Config::RUN_EVENTS_LABEL = "runEvents";
 const std::string Config::SIM_LENGTH_LABEL = "simLength";
 const std::string Config::SMALLEST_KEY_FOR_PRIORITY_LABEL = "Smallest_Key_for_Priority";
-const std::string Config::UNITS_PER_DAY_LABEL = "Units_Per_Day";
+const std::string Config::TIME_STEP_UNITS_PER_SECOND_LABEL = "Time_Step_Units_Per_Second";
 const std::string Config::VISIBLE_PEERS_LABEL = "Visible_Peers_(connected_%)";
+
+unsigned Config::timeStepUnitsPerSecond = 1;
+unsigned Config::timeStepUnitsPerMinute = Config::timeStepUnitsPerSecond * 60;
+unsigned Config::timeStepUnitsPerHour   = Config::timeStepUnitsPerMinute * 60;
+unsigned Config::timeStepUnitsPerDay    = Config::timeStepUnitsPerHour * 24;
+unsigned Config::timeStepUnitsPerWeek   = Config::timeStepUnitsPerDay * 7;  
 
 Config::Config(ifstream jsonFile) {
     // Check if the JSON file can be opened
@@ -165,18 +171,26 @@ Config::Config(ifstream jsonFile) {
             this->heartbeatFrequency = DEFAULT_HEARTBEAT;
         }
         
-        
         if (jf.contains(LONG_TERM_PRECISION_LABEL)){
             jf.at(LONG_TERM_PRECISION_LABEL).get_to(this->longTermPrecision);
         } else {
             this->longTermPrecision = DEFAULT_LONG_PRECISION;
         }
         
-        if (jf.contains(UNITS_PER_DAY_LABEL)){
-            jf.at(UNITS_PER_DAY_LABEL).get_to(this->unitsPerDay);
+        if (jf.contains(TIME_STEP_UNITS_PER_SECOND_LABEL)){
+            jf.at(TIME_STEP_UNITS_PER_SECOND_LABEL).get_to(timeStepUnitsPerDay);
         } else {
-            this->unitsPerDay = DEFAULT_UNITS_PER_DAY;
+            timeStepUnitsPerSecond = DEFAULT_TIME_STEP_UNITS_PER_SECOND;
         }
+        timeStepUnitsPerMinute = timeStepUnitsPerSecond * 60;
+        timeStepUnitsPerHour = timeStepUnitsPerMinute * 60;
+        timeStepUnitsPerDay = timeStepUnitsPerHour * 24;
+        timeStepUnitsPerWeek = timeStepUnitsPerDay * 7;
+    	Logger::log(Formatter() << "timeStepUnitsPerSecond is "<< timeStepUnitsPerSecond);
+    	Logger::log(Formatter() << "timeStepUnitsPerMinute is "<< timeStepUnitsPerMinute);
+    	Logger::log(Formatter() << "timeStepUnitsPerHour is "<< timeStepUnitsPerHour);
+    	Logger::log(Formatter() << "timeStepUnitsPerDay is "<< timeStepUnitsPerDay);
+    	Logger::log(Formatter() << "timeStepUnitsPerWeek is "<< timeStepUnitsPerWeek);
         
         //hard knobs: 
         

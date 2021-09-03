@@ -22,8 +22,6 @@ void Simulation::run() {
     // the file twice.
     Config config(ifstream("config.json"));
 
-    Node::setUnitsPerDay(config.unitsPerDay);
-
     ControlStrategy::setAccuracy(config.longTermPrecision);
 
     string message = "Started Simulation";

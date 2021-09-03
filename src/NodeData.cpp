@@ -6,7 +6,6 @@
 #include "NodeData.h"
 
 using namespace std;
-double Node::unitsPerDay = 60*60; //an hour in seconds
 
 int NodeData::getCurrentDay() {
     // current date/time based on current system
