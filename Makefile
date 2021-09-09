@@ -1,3 +1,4 @@
+SHELL     = /bin/bash
 BUILD     = build
 SRC       = src
 INCLUDE   = include
@@ -60,7 +61,7 @@ NON =
 .PHONY: run-repeatable
 run-repeatable :
 	cp -p scenario1_$(NON)repeatable_config.json $(BUILD)/$(SRC)/config.json
-	cd $(BUILD)/$(SRC) && time ./adak && cd ../..
+	pushd $(BUILD)/$(SRC) && time ./adak && popd
 
 NEXT_RUN = $(shell cat $(OUTPUTS)/num.txt)
 LAST_RUN = $(shell echo $(NEXT_RUN) - 1 | bc)
