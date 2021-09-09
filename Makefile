@@ -60,7 +60,7 @@ NON =
 .PHONY: run-repeatable
 run-repeatable :
 	cp -p scenario1_$(NON)repeatable_config.json $(BUILD)/$(SRC)/config.json
-	pushd $(BUILD)/$(SRC) && time ./adak && popd
+	cd $(BUILD)/$(SRC) && time ./adak && cd ../..
 
 NEXT_RUN = $(shell cat $(OUTPUTS)/num.txt)
 LAST_RUN = $(shell echo $(NEXT_RUN) - 1 | bc)
