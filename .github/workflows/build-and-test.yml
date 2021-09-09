@@ -27,10 +27,11 @@ jobs:
           cd protobuf
           sudo make install
           sudo ldconfig
-      - name: make
+      - name: Build
         run: make all USE_CORES=1
-      - name: test
-        run: make run-repeatable sanitize
+      - name: Test
+        run: |
+          make run-repeatable sanitize
           make run-repeatable sanitize
           make compare
       - name: Save outputs
