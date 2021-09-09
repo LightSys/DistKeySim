@@ -30,9 +30,11 @@ jobs:
       - name: make
         run: make all USE_CORES=1
       - name: test
-        run: make run-scenario1
-      - name: Save stats log
+        run: make run-repeatable sanitize
+          make run-repeatable sanitize
+          make compare
+      - name: Save outputs
         uses: actions/upload-artifact@v2
         with:
-          name: stats-log-csv
-          path: build/src/statslog.csv
+          name: outputs
+          path: build/src/outputs/

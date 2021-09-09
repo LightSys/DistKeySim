@@ -139,7 +139,7 @@ run-scenario1 :
 
 .PHONY: run-short-scenario1
 run-short-scenario1 :
-	jq ".simLength |= 10000" < scenario1-config.json > $(BUILD)/$(SRC)/config.json
+	jq ".simLength |= 100000" < scenario1-config.json > $(BUILD)/$(SRC)/config.json
 	cd $(BUILD)/$(SRC) && time ./adak
 
 .PHONY: keyspaces
