@@ -33,7 +33,7 @@ Notes:
 
 The build will be completed at this point, executable is in `src` directory.
 
-Build scripts:
+Automating the build:
 
 1. Use the `Makefile` in the top level directory to build: `make`
 
@@ -626,6 +626,12 @@ The configuration file that is copied to the server. See the section Configurati
 
 This stores all of the results from various simulations, organized by when they ran. Each time the GUI is closed and re-run it resents its count and starts overriding the folders again, starting from 0 and counting up.
 
+## Testing
+
+The majority of simulation and testing has been done on LightSys servers and on an M1 MacBook Air by GitHub user twestley. To assure that testing is reproducible and since the repo resides on GitHub, we've decided to build and test with GitHub Actions. The tests currently running on GitHub Actions are as follows.
+
+- Test repeatability via the run-repeatable target in the Makefile
+
 ## Future Improvements
 
 ### Overview
@@ -663,3 +669,34 @@ There are several useful features which could be added to improve the simulation
 - Individual Message Failure: Adding a percent change of any given message failing to send could simulate minor network errors weather than only being able to simulate complete network connections.
 
 - Use the `logOutput.txt`: Currently the only thing that is logged is the start of the simulation. At least an end time should probably be logged, and a few messages that print to `stdout` could be moved there. When the simulation is run with `run.sh`, `stdout` is written to `output.txt`.
+
+## Build and test development environment
+
+As previously mentioned, the majority of simulation and testing has been done on LightSys servers and on an M1 MacBook Air. To assure that testing is reproducible and since the repo resides on GitHub, we've decided to build and test with GitHub Actions. But although building and testing on GitHub Actions is good for preserving build and test reproducibility over time, it suffers from a long code-build-test cycle. You really want to build and test locally. You could use Docker and https://github.com/nektos/act to run the GitHub Actions locally. But this is still pretty slow. That's why the current build and test process uses make both locally and on GitHub Actions. Running Docker and `act` slow down local testing tremendously, but using `make` both locally and in GitHub Actions is satisfactory.
+
+Recommended solo development process:
+
+1. Using the `develop` branch, fix a bug or add a new feature using your favorite editor or IDE.
+
+1. Build and test:
+
+```
+make all clean-outputs
+make run-repeatable sanitize
+make run-repeatable sanitize
+make compare
+```
+
+1. Add your own tests to the `Makefile` as needed and run.
+
+1. Repeat steps 1-3 as needed until your code is perfect.
+
+1. Add your new test, if any, to GitHub Actions workflow file, `.github/workflows/build-and-test.yml`.
+
+1. Push `develop` branch to GitHub. This will trigger GitHub Actions to build and test.
+
+1. Repeat 1-4 as needed.
+
+1. When all is good, submit pull request to merge `develop` into `master`.
+
+If you are working in a team of developers, consider setting up a branch for each developer and merging your code using the `develop` branch. Then when your tests pass in `develop` branch, you can push to GitHub, triggering the GitHub Actions.
