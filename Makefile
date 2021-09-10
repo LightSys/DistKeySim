@@ -30,7 +30,7 @@ all: $(OUTPUTS)/adak
 $(SRC)/$(MESSAGE).pb.cc $(INCLUDE)/$(MESSAGE).pb.h : $(SRC)/$(MESSAGE).proto 
 	cd $(SRC) && \
 		protoc message.proto --cpp_out=. && \
-		mv  message.pb.h ../$(INCLUDE)
+		mv  message.pb.h $(INCLUDE)
 
 # Build ADAK
 $(OUTPUTS)/adak : $(SOURCES)
