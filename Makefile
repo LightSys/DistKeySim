@@ -77,10 +77,6 @@ sanitize-statsLog :
 
 .PHONY: sanitize-logOutput
 sanitize-logOutput :
-	ls -dltr $(ADAK_ROOT)
-	ls -dltr $(ADAK_ROOT)/client
-	ls -ltr $(ADAK_ROOT)/client/sanitizeLogOutput.py
-	ls -ltr $(OUTPUTS)
 	$(ADAK_ROOT)/client/sanitizeLogOutput.py $(OUTPUTS)/logOutput$(RUN).txt > \
 		$(OUTPUTS)/logOutput$(RUN).clean.txt
 
