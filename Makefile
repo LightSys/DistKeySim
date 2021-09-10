@@ -3,7 +3,6 @@ BUILD     = $(ADAK_ROOT)/build
 SRC       = $(ADAK_ROOT)/src
 INCLUDE   = $(ADAK_ROOT)/include
 CLIENT    = $(ADAK_ROOT)/client
-MESSAGE   = message
 SOURCES   = $(INCLUDE)/*.h $(INCLUDE)/*.hpp $(SRC)/*.cc $(SRC)/*.cpp
 OUTPUTS   = $(BUILD)/src/outputs
 USE_CORES = 1
@@ -27,7 +26,7 @@ endif
 all: $(OUTPUTS)/adak
 
 # Update message protobuf sources when message.proto changes
-$(SRC)/$(MESSAGE).pb.cc $(INCLUDE)/$(MESSAGE).pb.h : $(SRC)/$(MESSAGE).proto 
+$(SRC)/message.pb.cc $(INCLUDE)/message.pb.h : $(SRC)/message.proto 
 	cd $(SRC) && \
 		protoc message.proto --cpp_out=. && \
 		mv  message.pb.h $(INCLUDE)
@@ -61,7 +60,7 @@ NON =
 .PHONY: run-repeatable
 run-repeatable :
 	cp -p scenario1_$(NON)repeatable_config.json $(BUILD)/src/config.json
-	cd $(BUILD)/src && time ./adak
+	cd $(BUILD)/src && ./adak
 	cd $(ADAK_ROOT)
 
 NEXT_RUN = $(shell cat $(OUTPUTS)/num.txt)
@@ -78,6 +77,10 @@ sanitize-statsLog :
 
 .PHONY: sanitize-logOutput
 sanitize-logOutput :
+	ls -dltr $(ADAK_ROOT)
+	ls -dltr $(ADAK_ROOT)/client
+	ls -ltr $(ADAK_ROOT)/client/sanitizelogOutput.py
+	ls -ltr $(OUTPUTS)
 	$(ADAK_ROOT)/client/sanitizelogOutput.py $(OUTPUTS)/logOutput$(RUN).txt > \
 		$(OUTPUTS)/logOutput$(RUN).clean.txt
 
@@ -124,7 +127,7 @@ run-non-repeatable :
 .PHONY: run-short-repeatable
 run-short-repeatable :
 	cp -p scenario1_$(NON)repeatable_config_short.json $(BUILD)/src/config.json
-	cd $(BUILD)/src && time ./adak
+	cd $(BUILD)/src && ./adak
 	cd $(ADAK_ROOT)
 
 
@@ -139,13 +142,13 @@ run-short-repeatable :
 .PHONY: run-scenario1
 run-scenario1 :
 	cp -p scenario1-config.json $(BUILD)/src/config.json
-	cd $(BUILD)/src && time ./adak
+	cd $(BUILD)/src && ./adak
 	cd $(ADAK_ROOT)
 
 .PHONY: run-short-scenario1
 run-short-scenario1 :
 	jq ".simLength |= 10000" < scenario1-config.json > $(BUILD)/src/config.json
-	cd $(BUILD)/src && time ./adak
+	cd $(BUILD)/src && ./adak
 	cd $(ADAK_ROOT)
 
 .PHONY: keyspaces
@@ -157,7 +160,7 @@ keyspaces :
 .PHONY: run-default-config
 run-default-config :
 	cp -p default-config.json $(BUILD)/src/config.json
-	cd $(BUILD)/src && time ./adak
+	cd $(BUILD)/src && ./adak
 	cd $(ADAK_ROOT)
 
 # -------------------------
@@ -171,7 +174,7 @@ run-eventGen :
 	jq ".connectionMode |= \"$(CONNECTION_MODE)\"" < eventGen-config.json | \
 		jq ".simLength |= $(SIM_LENGTH)" | \
 		jq ".numNodes |= $(NUM_NODES)" > $(BUILD)/src/config.json
-	cd $(BUILD)/src && time ./adak
+	cd $(BUILD)/src && ./adak
 	cd $(ADAK_ROOT)
 
 # ----------------
@@ -247,7 +250,7 @@ all-images : images/Logger.png \
 # -----
 .PHONY: clean
 clean :
-	touch $(SRC)/$(MESSAGE).proto
+	touch $(SRC)/message.proto
 	rm -rf build
 
 .PHONY: clean-outputs
