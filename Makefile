@@ -1,4 +1,4 @@
-SHELL     = /bin/bash
+ADAK_ROOT = $(shell pwd)
 BUILD     = build
 SRC       = src
 INCLUDE   = include
@@ -61,7 +61,8 @@ NON =
 .PHONY: run-repeatable
 run-repeatable :
 	cp -p scenario1_$(NON)repeatable_config.json $(BUILD)/$(SRC)/config.json
-	pushd $(BUILD)/$(SRC) && time ./adak && popd
+	cd $(BUILD)/$(SRC) && time ./adak
+	cd $(ADAK_ROOT)
 
 NEXT_RUN = $(shell cat $(OUTPUTS)/num.txt)
 LAST_RUN = $(shell echo $(NEXT_RUN) - 1 | bc)
@@ -124,6 +125,8 @@ run-non-repeatable :
 run-short-repeatable :
 	cp -p scenario1_$(NON)repeatable_config_short.json $(BUILD)/$(SRC)/config.json
 	cd $(BUILD)/$(SRC) && time ./adak
+	cd $(ADAK_ROOT)
+
 
 # --------------------------------------------
 # Test Scenario 1 (see "ADAK Scenarios 1.pdf")
@@ -137,11 +140,13 @@ run-short-repeatable :
 run-scenario1 :
 	cp -p scenario1-config.json $(BUILD)/$(SRC)/config.json
 	cd $(BUILD)/$(SRC) && time ./adak
+	cd $(ADAK_ROOT)
 
 .PHONY: run-short-scenario1
 run-short-scenario1 :
 	jq ".simLength |= 100000" < scenario1-config.json > $(BUILD)/$(SRC)/config.json
 	cd $(BUILD)/$(SRC) && time ./adak
+	cd $(ADAK_ROOT)
 
 .PHONY: keyspaces
 keyspaces :
@@ -153,6 +158,7 @@ keyspaces :
 run-default-config :
 	cp -p default-config.json $(BUILD)/$(SRC)/config.json
 	cd $(BUILD)/$(SRC) && time ./adak
+	cd $(ADAK_ROOT)
 
 # -------------------------
 # Test eventGen config file
@@ -166,6 +172,7 @@ run-eventGen :
 		jq ".simLength |= $(SIM_LENGTH)" | \
 		jq ".numNodes |= $(NUM_NODES)" > $(BUILD)/$(SRC)/config.json
 	cd $(BUILD)/$(SRC) && time ./adak
+	cd $(ADAK_ROOT)
 
 # ----------------
 # Find oscillation
