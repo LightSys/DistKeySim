@@ -1,10 +1,11 @@
 ADAK_ROOT = $(shell pwd)
-BUILD     = build
-SRC       = src
-INCLUDE   = include
-CLIENT    = client
+BUILD     = $(ADAK_ROOT)/build
+SRC       = $(ADAK_ROOT)/src
+INCLUDE   = $(ADAK_ROOT)/include
+CLIENT    = $(ADAK_ROOT)/client
 MESSAGE   = message
 SOURCES   = $(INCLUDE)/*.h $(INCLUDE)/*.hpp $(SRC)/*.cc $(SRC)/*.cpp
+OUTPUTS   = $(BUILD)/src/outputs
 USE_CORES = 1
 CMP       = cmp
 
@@ -55,13 +56,12 @@ src :
 # Sanitize replaces UUIDs in logOutput.txt and statslog.csv with node index
 # thus making the files comparable.
 
-OUTPUTS = $(BUILD)/$(SRC)/outputs
 NON =
 
 .PHONY: run-repeatable
 run-repeatable :
-	cp -p scenario1_$(NON)repeatable_config.json $(BUILD)/$(SRC)/config.json
-	cd $(BUILD)/$(SRC) && time ./adak
+	cp -p scenario1_$(NON)repeatable_config.json $(BUILD)/src/config.json
+	cd $(BUILD)/src && time ./adak
 	cd $(ADAK_ROOT)
 
 NEXT_RUN = $(shell cat $(OUTPUTS)/num.txt)
@@ -73,12 +73,12 @@ sanitize :
 
 .PHONY: sanitize-statsLog
 sanitize-statsLog :
-	client/sanitizeStatsLog.py $(OUTPUTS)/statslog$(RUN).csv > \
+	$(ADAK_ROOT)/client/sanitizeStatsLog.py $(OUTPUTS)/statslog$(RUN).csv > \
 		$(OUTPUTS)/statslog$(RUN).clean.txt
 
 .PHONY: sanitize-logOutput
 sanitize-logOutput :
-	client/sanitizelogOutput.py $(OUTPUTS)/logOutput$(RUN).txt > \
+	$(ADAK_ROOT)/client/sanitizelogOutput.py $(OUTPUTS)/logOutput$(RUN).txt > \
 		$(OUTPUTS)/logOutput$(RUN).clean.txt
 
 .PHONY: compare
@@ -123,8 +123,8 @@ run-non-repeatable :
 
 .PHONY: run-short-repeatable
 run-short-repeatable :
-	cp -p scenario1_$(NON)repeatable_config_short.json $(BUILD)/$(SRC)/config.json
-	cd $(BUILD)/$(SRC) && time ./adak
+	cp -p scenario1_$(NON)repeatable_config_short.json $(BUILD)/src/config.json
+	cd $(BUILD)/src && time ./adak
 	cd $(ADAK_ROOT)
 
 
@@ -138,26 +138,26 @@ run-short-repeatable :
 
 .PHONY: run-scenario1
 run-scenario1 :
-	cp -p scenario1-config.json $(BUILD)/$(SRC)/config.json
-	cd $(BUILD)/$(SRC) && time ./adak
+	cp -p scenario1-config.json $(BUILD)/src/config.json
+	cd $(BUILD)/src && time ./adak
 	cd $(ADAK_ROOT)
 
 .PHONY: run-short-scenario1
 run-short-scenario1 :
-	jq ".simLength |= 100000" < scenario1-config.json > $(BUILD)/$(SRC)/config.json
-	cd $(BUILD)/$(SRC) && time ./adak
+	jq ".simLength |= 10000" < scenario1-config.json > $(BUILD)/src/config.json
+	cd $(BUILD)/src && time ./adak
 	cd $(ADAK_ROOT)
 
 .PHONY: keyspaces
 keyspaces :
 	awk '/KEYSPACES/,/END KEYSPACES/ {print} /Time Step:/ {print}' \
-		$(OUTPUTS)/logOutput$(RUN).clean.txt > \
-		$(OUTPUTS)/logOutput$(RUN).keyspaces.txt
+		$(OUTPUTS)/logOutput$(LAST_RUN).clean.txt > \
+		$(OUTPUTS)/logOutput$(LAST_RUN).keyspaces.txt
 
 .PHONY: run-default-config
 run-default-config :
-	cp -p default-config.json $(BUILD)/$(SRC)/config.json
-	cd $(BUILD)/$(SRC) && time ./adak
+	cp -p default-config.json $(BUILD)/src/config.json
+	cd $(BUILD)/src && time ./adak
 	cd $(ADAK_ROOT)
 
 # -------------------------
@@ -170,8 +170,8 @@ NUM_NODES = 10
 run-eventGen :
 	jq ".connectionMode |= \"$(CONNECTION_MODE)\"" < eventGen-config.json | \
 		jq ".simLength |= $(SIM_LENGTH)" | \
-		jq ".numNodes |= $(NUM_NODES)" > $(BUILD)/$(SRC)/config.json
-	cd $(BUILD)/$(SRC) && time ./adak
+		jq ".numNodes |= $(NUM_NODES)" > $(BUILD)/src/config.json
+	cd $(BUILD)/src && time ./adak
 	cd $(ADAK_ROOT)
 
 # ----------------
@@ -253,7 +253,7 @@ clean :
 .PHONY: clean-outputs
 clean-outputs :
 	rm -rf $(OUTPUTS)
-	rm -f  $(BUILD)/$(SRC)/*.{csv,txt,json}
+	rm -f  $(BUILD)/src/*.{csv,txt,json}
 
 .PHONY: clean-last-output
 clean-last-output :
