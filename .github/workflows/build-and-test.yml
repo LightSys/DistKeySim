@@ -34,13 +34,8 @@ jobs:
           make run-repeatable sanitize
           make run-repeatable sanitize
           make compare
-  save-outputs:
-    if: always()
-    needs: [build-and-test]
-    runs-on: ubuntu-latest
-    steps:
-      - name: Save Outputs
-        uses: actions/upload-artifact@v2
+      - uses: actions/upload-artifact@v2
+        if: always()
         with:
           name: outputs
           path: build/src/outputs/
