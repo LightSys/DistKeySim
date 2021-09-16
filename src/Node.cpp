@@ -71,7 +71,7 @@ void Node::consumeObjects(){
 //make sure can consume keys.
     if(keyspaces.size() == 0) return;
     if(amountOfOneKeyUsed >= 1.0){
-	Logger::log(Formatter() << this->uuid << " consuming a key!!"); 
+	    Logger::log(Formatter() << this->uuid << " consuming a key!!"); 
         this->getNextKey();
         amountOfOneKeyUsed--;
          	

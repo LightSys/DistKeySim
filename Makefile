@@ -96,6 +96,12 @@ compare-logOutput :
 	$(CMP) $(OUTPUTS)/logOutput$(PREV_RUN).clean.txt \
 		       $(OUTPUTS)/logOutput$(LAST_RUN).clean.txt
 
+.PHONY: run-test1-repeatability
+run-test1-repeatability :
+	$(MAKE) run-repeatable sanitize 
+	$(MAKE) run-repeatable sanitize 
+	$(MAKE) compare
+
 # ----------------------
 # Test non-repeatability
 # ----------------------

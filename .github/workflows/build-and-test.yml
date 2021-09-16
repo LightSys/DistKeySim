@@ -29,11 +29,8 @@ jobs:
           sudo ldconfig
       - name: Build
         run: make all USE_CORES=1
-      - name: Test
-        run: |
-          make run-repeatable sanitize
-          make run-repeatable sanitize
-          make compare
+      - name: Test1 Repeatability
+        run: make run-test1-repeatability
       - uses: actions/upload-artifact@v2
         if: always()
         with:

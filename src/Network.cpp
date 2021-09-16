@@ -37,8 +37,11 @@ Network::Network(ConnectionType connectionType, float PERCENT_CONNECTED, double 
 
 
 void Network::tellAllNodesToConsumeObjects(){
-    for(auto i : nodes){
-        i.second->consumeObjects();
+    // To make this repeatable, loop through nodes in order they were added
+    for (int i=0; i<uuids.size(); i++) {
+        auto uuid = uuids.at(i);
+        auto node = nodes.at(uuid);
+        node->consumeObjects();
     }
 }
 
@@ -72,6 +75,7 @@ bool Network::sendMsg(const Message &message) {
 void Network::doAllHeartbeat(int keysToSend) {
     // NOTE: Baylor will need to change this, right now we are sending heartbeat messages practically all the time
     // they will probably want to add time to Node to send it periodically
+    // To make this repeatable, loop through nodes in order they were added
     for (int i=0; i<uuids.size(); i++) {
         auto uuid = uuids.at(i);
         auto node = nodes.at(uuid);
@@ -92,6 +96,7 @@ void Network::doAllHeartbeat(int keysToSend) {
 }
 
 void Network::doAllTicks(){
+    // To make this repeatable, loop through nodes in order they were added
     for (int i=0; i<uuids.size(); i++) {
         auto uuid = uuids.at(i);
         auto node = nodes.at(uuid);
@@ -468,13 +473,16 @@ void Network::printKeyspaces(char spacer) {
         << "Suffix Bits" << spacer
         << "Counter");
 
+    // To make this repeatable, loop through nodes in order they were added
     int nodeCounter = 0;
     int keyspaceCounter = 0;
-    for (auto const& x : nodes) {
-        for (const Keyspace &keyspace : x.second->getKeySpace()) {
+    for (int i=0; i<uuids.size(); i++) {
+        auto uuid = uuids.at(i);
+        auto node = nodes.at(uuid);
+        for (const Keyspace &keyspace : node->getKeySpace()) {
             Logger::log(Formatter()
                 << nodeCounter << spacer
-                << x.second->getUUID() << spacer
+                << node->getUUID() << spacer
                 << keyspace.getStart() << spacer
                 << keyspace.getEnd() << spacer
                 << keyspace.getSuffix() << spacer
