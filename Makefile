@@ -2,7 +2,7 @@ ADAK_ROOT = $(shell pwd)
 BUILD     = $(ADAK_ROOT)/build
 SRC       = $(ADAK_ROOT)/src
 INCLUDE   = $(ADAK_ROOT)/include
-CLIENT    = $(ADAK_ROOT)/client
+BIN       = $(ADAK_ROOT)/bin
 SOURCES   = $(INCLUDE)/*.h $(INCLUDE)/*.hpp $(SRC)/*.cc $(SRC)/*.cpp
 OUTPUTS   = $(BUILD)/src/outputs
 USE_CORES = 1
@@ -59,7 +59,7 @@ NON =
 
 .PHONY: run-repeatable
 run-repeatable :
-	cp -p scenario1_$(NON)repeatable_config.json $(BUILD)/src/config.json
+	cp -p config/$(NON)repeatable-config.json $(BUILD)/src/config.json
 	cd $(BUILD)/src && ./adak
 	cd $(ADAK_ROOT)
 
@@ -72,12 +72,12 @@ sanitize :
 
 .PHONY: sanitize-statsLog
 sanitize-statsLog :
-	$(ADAK_ROOT)/client/sanitizeStatsLog.py $(OUTPUTS)/statslog$(RUN).csv > \
+	$(ADAK_ROOT)/bin/sanitizeStatsLog.py $(OUTPUTS)/statslog$(RUN).csv > \
 		$(OUTPUTS)/statslog$(RUN).clean.txt
 
 .PHONY: sanitize-logOutput
 sanitize-logOutput :
-	$(ADAK_ROOT)/client/sanitizeLogOutput.py $(OUTPUTS)/logOutput$(RUN).txt > \
+	$(ADAK_ROOT)/bin/sanitizeLogOutput.py $(OUTPUTS)/logOutput$(RUN).txt > \
 		$(OUTPUTS)/logOutput$(RUN).clean.txt
 
 .PHONY: compare
@@ -116,22 +116,15 @@ run-test1-repeatability :
 # When viewing the differences, be sure to diff the *.clean.txt
 # files so that you're not seeing just the UUID differences.
 
-.PHONY: run-non
+.PHONY: run-non-repeatable
 run-non-repeatable :
 	$(MAKE) run-repeatable NON=non
 
-# ------------------------
-# Test short repeatability
-# ------------------------
-#
-# Shorten the repeatability test to see if we can get showVis1 to finish.
-
-.PHONY: run-short-repeatable
-run-short-repeatable :
-	cp -p scenario1_$(NON)repeatable_config_short.json $(BUILD)/src/config.json
-	cd $(BUILD)/src && ./adak
-	cd $(ADAK_ROOT)
-
+.PHONY: run-non-repeatability
+run-test2-non-repeatability :
+	$(MAKE) run-non-repeatable sanitize 
+	$(MAKE) run-non-repeatable sanitize 
+	$(MAKE) compare
 
 # --------------------------------------------
 # Test Scenario 1 (see "ADAK Scenarios 1.pdf")
@@ -143,25 +136,20 @@ run-short-repeatable :
 
 .PHONY: run-scenario1
 run-scenario1 :
-	cp -p scenario1-config.json $(BUILD)/src/config.json
+	cp -p config/scenario1-config.json $(BUILD)/src/config.json
 	cd $(BUILD)/src && ./adak
 	cd $(ADAK_ROOT)
 
 .PHONY: run-short-scenario1
 run-short-scenario1 :
-	jq ".simLength |= 10000" < scenario1-config.json > $(BUILD)/src/config.json
+	jq ".simLength |= 10000" < config/scenario1-config.json > $(BUILD)/src/config.json
 	cd $(BUILD)/src && ./adak
 	cd $(ADAK_ROOT)
 
-.PHONY: keyspaces
-keyspaces :
-	awk '/KEYSPACES/,/END KEYSPACES/ {print} /Time Step:/ {print}' \
-		$(OUTPUTS)/logOutput$(LAST_RUN).clean.txt > \
-		$(OUTPUTS)/logOutput$(LAST_RUN).keyspaces.txt
-
+# The purpose of default config has been lost in time
 .PHONY: run-default-config
 run-default-config :
-	cp -p default-config.json $(BUILD)/src/config.json
+	cp -p config/default-config.json $(BUILD)/src/config.json
 	cd $(BUILD)/src && ./adak
 	cd $(ADAK_ROOT)
 
@@ -173,29 +161,18 @@ SIM_LENGTH = 50
 NUM_NODES = 10
 .PHONY: run-eventGen
 run-eventGen :
-	jq ".connectionMode |= \"$(CONNECTION_MODE)\"" < eventGen-config.json | \
+	jq ".connectionMode |= \"$(CONNECTION_MODE)\"" < config/eventGen-config.json | \
 		jq ".simLength |= $(SIM_LENGTH)" | \
 		jq ".numNodes |= $(NUM_NODES)" > $(BUILD)/src/config.json
 	cd $(BUILD)/src && ./adak
 	cd $(ADAK_ROOT)
 
-# ----------------
-# Find oscillation
-# ----------------
-.PHONY: run-oscillation
-run-oscillation :
-	$(MAKE) run-eventGen CONNECTION_MODE=full   SIM_LENGTH=50     NUM_NODES=2  sanitize
-	$(MAKE) run-eventGen CONNECTION_MODE=full   SIM_LENGTH=500    NUM_NODES=2  sanitize
-	$(MAKE) run-eventGen CONNECTION_MODE=full   SIM_LENGTH=5000   NUM_NODES=2  sanitize
-	$(MAKE) run-eventGen CONNECTION_MODE=full   SIM_LENGTH=50000  NUM_NODES=2  sanitize
-	$(MAKE) run-eventGen CONNECTION_MODE=single SIM_LENGTH=50     NUM_NODES=10 sanitize
-	$(MAKE) run-eventGen CONNECTION_MODE=single SIM_LENGTH=500    NUM_NODES=10 sanitize
-	$(MAKE) run-eventGen CONNECTION_MODE=single SIM_LENGTH=5000   NUM_NODES=10 sanitize
-	$(MAKE) run-eventGen CONNECTION_MODE=single SIM_LENGTH=50000  NUM_NODES=10 sanitize
-	$(MAKE) run-eventGen CONNECTION_MODE=full   SIM_LENGTH=50     NUM_NODES=10 sanitize
-	$(MAKE) run-eventGen CONNECTION_MODE=full   SIM_LENGTH=500    NUM_NODES=10 sanitize
-	$(MAKE) run-eventGen CONNECTION_MODE=full   SIM_LENGTH=5000   NUM_NODES=10 sanitize
-	$(MAKE) run-eventGen CONNECTION_MODE=full   SIM_LENGTH=50000  NUM_NODES=10 sanitize
+# -----------------------------
+# Assert absence of oscillation
+# -----------------------------
+.PHONY: run-test2-oscillation
+run-test2-oscillation :
+	$(BIN)/testOscillation.py
 
 # ------------------
 # Show Visualization
@@ -204,11 +181,11 @@ STATS_LOG    = $(OUTPUTS)/statslog$(RUN).csv
 GRAPH_IS_LOG = True
 .PHONY: show-vis1
 show-vis1 :
-	$(CLIENT)/showVis.py 1 $(GRAPH_IS_LOG) $(STATS_LOG)
+	$(BIN)/showVis.py 1 $(GRAPH_IS_LOG) $(STATS_LOG)
 
 .PHONY: show-vis2
 show-vis2 :
-	$(CLIENT)/showVis.py 2 $(GRAPH_IS_LOG) $(STATS_LOG)
+	$(BIN)/showVis.py 2 $(GRAPH_IS_LOG) $(STATS_LOG)
 
 # -----------------------
 # Generate class diagrams
@@ -254,6 +231,7 @@ all-images : images/Logger.png \
 clean :
 	touch $(SRC)/message.proto
 	rm -rf build
+	rm -f make.out
 
 .PHONY: clean-outputs
 clean-outputs :

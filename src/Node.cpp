@@ -525,6 +525,8 @@ void Node::logInfoForHeartbeat(){
     }else{
         dataLine.push_back("0.0");
     }
+    dataLine.push_back(to_string(getKeySpace().size()));
+
 //Logger::log(Formatter() << "Test\n"; 
     Logger::logStats(dataLine);
     //maybe put if ran out of space here, and uuid

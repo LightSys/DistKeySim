@@ -13,3 +13,4 @@ make.out
 *.pyc
 *.zip
 clean-outputs
+.*.icloud

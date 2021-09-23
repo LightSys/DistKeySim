@@ -31,6 +31,8 @@ jobs:
         run: make all USE_CORES=1
       - name: Test1 Repeatability
         run: make run-test1-repeatability
+      - name: Test2 Absence of Oscillation
+        run: make run-test2-oscillation
       - uses: actions/upload-artifact@v2
         if: always()
         with:
