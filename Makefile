@@ -120,8 +120,8 @@ run-test1-repeatability :
 run-non-repeatable :
 	$(MAKE) run-repeatable NON=non
 
-.PHONY: run-non-repeatability
-run-test2-non-repeatability :
+.PHONY: run-test3-non-repeatability
+run-test3-non-repeatability :
 	$(MAKE) run-non-repeatable sanitize 
 	$(MAKE) run-non-repeatable sanitize 
 	$(MAKE) compare

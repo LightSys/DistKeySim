@@ -32,7 +32,7 @@ jobs:
       - name: Test1 Repeatability
         run: make run-test1-repeatability
       - name: Test2 Absence of Oscillation
-        run: make run-test2-oscillation
+        run: make run-test2-oscillation | tee build/src/outputs/test2-oscillation.txt
       - uses: actions/upload-artifact@v2
         if: always()
         with:

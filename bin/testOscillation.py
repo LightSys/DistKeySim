@@ -6,9 +6,8 @@
 import csv
 import json
 import os
+import statistics
 import subprocess
-
-import numpy as np
 
 def runOneSim(configFileName, connectionMode, simLength, numNodes):
  
@@ -51,7 +50,7 @@ def runOneSim(configFileName, connectionMode, simLength, numNodes):
 
 if __name__ == '__main__':
 
-    cv = lambda x: np.std(x, ddof=1) / np.mean(x)
+    cv = lambda x: statistics.stdev(x) / statistics.mean(x)
 
     configFileName = "config/oscillation-config.json"
     numKeyspaces = []
@@ -59,7 +58,7 @@ if __name__ == '__main__':
     numKeyspaces.append(runOneSim(configFileName, "full",     500,  2))
     numKeyspaces.append(runOneSim(configFileName, "full",    5000,  2))
     numKeyspaces.append(runOneSim(configFileName, "full",   50000,  2))
-    print(numKeyspaces, "mean=", np.mean(numKeyspaces), "std=", np.std(numKeyspaces, ddof=1), "cv=", cv(numKeyspaces))
+    print(f"pop={numKeyspaces}, mean={statistics.mean(numKeyspaces)}, stdev={statistics.stdev(numKeyspaces)}, cv={cv(numKeyspaces)}, cv<1={cv(numKeyspaces) < 1}")
     assert(cv(numKeyspaces) < 1)
 
     numKeyspaces = []
@@ -67,7 +66,7 @@ if __name__ == '__main__':
     numKeyspaces.append(runOneSim(configFileName, "single",   500, 10))
     numKeyspaces.append(runOneSim(configFileName, "single",  5000, 10))
     numKeyspaces.append(runOneSim(configFileName, "single", 50000, 10))
-    print(numKeyspaces, "mean=", np.mean(numKeyspaces), "std=", np.std(numKeyspaces, ddof=1), "cv=", cv(numKeyspaces))
+    print(f"pop={numKeyspaces}, mean={statistics.mean(numKeyspaces)}, stdev={statistics.stdev(numKeyspaces)}, cv={cv(numKeyspaces)}, cv<1={cv(numKeyspaces) < 1}")
     assert(cv(numKeyspaces) < 1)
 
     numKeyspaces = []
@@ -75,5 +74,5 @@ if __name__ == '__main__':
     numKeyspaces.append(runOneSim(configFileName, "full",     500, 10))
     numKeyspaces.append(runOneSim(configFileName, "full",    5000, 10))
     numKeyspaces.append(runOneSim(configFileName, "full",   50000, 10))
-    print(numKeyspaces, "mean=", np.mean(numKeyspaces), "std=", np.std(numKeyspaces, ddof=1), "cv=", cv(numKeyspaces))
+    print(f"pop={numKeyspaces}, mean={statistics.mean(numKeyspaces)}, stdev={statistics.stdev(numKeyspaces)}, cv={cv(numKeyspaces)}, cv<1={cv(numKeyspaces) < 1}")
     assert(cv(numKeyspaces) < 1)
