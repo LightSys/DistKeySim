@@ -29,10 +29,12 @@ jobs:
           sudo ldconfig
       - name: Build
         run: make all USE_CORES=1
-      - name: Test1 Repeatability
+      - name: Test 1 Repeatability
         run: make run-test1-repeatability
-      - name: Test2 Absence of Oscillation
-        run: make run-test2-oscillation | tee build/src/outputs/test2-oscillation.txt
+      - name: Test 2 Absence of Oscillation
+        run: make run-test2-oscillation
+      - name: Test 3 Non-repeatability
+        run: make run-test3-non-repeatability
       - uses: actions/upload-artifact@v2
         if: always()
         with:

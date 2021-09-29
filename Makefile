@@ -101,6 +101,7 @@ run-test1-repeatability :
 	$(MAKE) run-repeatable sanitize 
 	$(MAKE) run-repeatable sanitize 
 	$(MAKE) compare
+	echo "Test 1 Passed"
 
 # ----------------------
 # Test non-repeatability
@@ -124,7 +125,14 @@ run-non-repeatable :
 run-test3-non-repeatability :
 	$(MAKE) run-non-repeatable sanitize 
 	$(MAKE) run-non-repeatable sanitize 
-	$(MAKE) compare
+	$(MAKE) compare; \
+	if [ $$? -eq 0 ]; \
+    then \
+        echo "Test 3 Failed"; \
+        exit 1; \
+	else \
+        echo "Test 3 Passed"; \
+    fi
 
 # --------------------------------------------
 # Test Scenario 1 (see "ADAK Scenarios 1.pdf")
@@ -173,6 +181,7 @@ run-eventGen :
 .PHONY: run-test2-oscillation
 run-test2-oscillation :
 	$(BIN)/testOscillation.py
+	echo "Test 2 Passed"
 
 # ------------------
 # Show Visualization
