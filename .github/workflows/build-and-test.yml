@@ -27,12 +27,16 @@ jobs:
           cd protobuf
           sudo make install
           sudo ldconfig
-      - name: make
+      - name: Build
         run: make all USE_CORES=1
-      - name: test
-        run: make run-scenario1
-      - name: Save stats log
-        uses: actions/upload-artifact@v2
+      - name: Test 1 Repeatability
+        run: make run-test1-repeatability
+      - name: Test 2 Absence of Oscillation
+        run: make run-test2-oscillation
+      - name: Test 3 Non-repeatability
+        run: make run-test3-non-repeatability
+      - uses: actions/upload-artifact@v2
+        if: always()
         with:
-          name: stats-log-csv
-          path: build/src/statslog.csv
+          name: outputs
+          path: build/src/outputs/

@@ -33,7 +33,7 @@ Notes:
 
 The build will be completed at this point, executable is in `src` directory.
 
-Build scripts:
+Automating the build:
 
 1. Use the `Makefile` in the top level directory to build: `make`
 
@@ -426,6 +426,28 @@ Each node will use this algorithm and it's repeated running will result in the w
 
 This algorithm is now in the code, although the current implementation fails to dampen oscillations. This will need to be improved.
 
+## Scenarios
+
+Test scenarios are described in [ADAK Scenarios 1](ADAK%20Scenarios%201.pdf). This section described results of running these scenarios.
+
+### Scenario 1
+The objective of Scenario 1 is to "ensure the functionality of sharing keyspace blocks and the stability of subblock sharing." The evidence of this is that "there should be minimal, if any, subblock sharing." The following config file was used for testing:
+
+```
+{
+    "Algorithm_Strategy": "temperature based",
+    "connectionMode": "full",
+    "csvOutputPath": "outputs/",
+    "Latency": 40,
+    "lambda_3_(time_between_creating_objects)": 1000,
+    "networkScale": 0.3,
+    "numNodes": 2,
+    "randomSeed": 25,
+    "simLength": 86400000,
+    "Units_Per_Second": 1000
+}
+```
+
 ## Code
 
 ### Overview
@@ -438,7 +460,7 @@ The Python GUI code takes the input from the user, updates the config.json file,
 
 NOTE: There are numerous print statements which do not match the indentation of the text. These are used for debugging on the server. They were left in because of how frequently those sections of the code need debugging.
 
-### C++ Classes and Files:
+### C++ Classes and Files
 
 The C++ code consists of several classes spanning the include and src folders, composed of the .h/.hpp files and the .c/.cpp files, respectively.
 
@@ -446,13 +468,19 @@ The C++ code consists of several classes spanning the include and src folders, c
 
 This file is a virtual class which control strategies are meant to inherit from. Its outline is largely unused in the current set up; the ticking set up currently used is not the same as the nodeTick system outlined here. The ControlStategy class does inherit from this class, however.
 
+![Strategy](./images/Strategy.png)
+
 #### Channel (.h and .cpp)
 
 This class defines a channel, or a link between two nodes. It stores a toNode and a fromNode, but it is used as a bidirectional channel. It is largely just used to keep track of connections and the class is just a few private data members, getters, and a constructor.
 
+![Channel](./images/Channel.png)
+
 #### Config(.hpp and .cpp)
 
 The config class is used to retrieve the values from the config.json. The constructor takes the filename as a parameter and then stores the values into its own local data members. If an item is missing from the config the program will simply store the default value, as specified in config.h, for the missing value.
+
+![Config](./images/Config.png)
 
 #### ControlStrategy (.h and .cpp)
 
@@ -462,9 +490,13 @@ This class is an implementation of the ADAK strategy class. It primarily supplie
 
 This is a virtual class meant to provide a basis for a class that decides when nodes should sleep or wake up. Geometric disconnect implements this class.
 
+![EventGen](./images/EventGen.png)
+
 #### GeometricDisconnect (.h and .cpp)
 
 This class controls when nodes should sleep or wake up based on lambda1 and lambda2 as specified in the config class.
+
+![GeometricDisconnect](./images/GeometricDisconnect.png)
 
 #### Json (.hpp only)
 
@@ -480,9 +512,15 @@ The keyspace class defines the blocks of keyspace, both full blocks and sub-bloc
 
 - getNextAvailableKey, which returns the value of the start key and increments the start to the next key in the keyspace.
 
+![Keyspace](./images/Keyspace.png)
+
+ADAK_key_t is defined as ```typedef std::uint64_t ADAK_Key_t```.
+
 #### Logger (.h only)
 
 The logger class provides the functions which log to the statslog.csv and logOutput.txtx files. It keeps its own internal timings and statistics for the .csv, so be careful when changing where/how the functions are used. It also stores copies of the generated statslog.csv and logOutput.txt, as well as the config.json file, in the outputs folder. This prevents the data from being lost when the simulation is run again.
+
+![Logger](./images/Logger.png)
 
 #### Message (.hpp and .cpp)
 
@@ -508,9 +546,13 @@ This function provides the instructions needed to generate the .hp.h and .pb.cc 
 
 This class handles all of the nodes in a network and handles their connections, heartbeats, and message sending. It can create nodes and connect them to the network as specified by the connection type, can simulate latency in message sending as specified in the config, and uses the custom consumption rates found in the config. This class is generally where any Node functionality would be called directly.
 
+![Network](./images/Network.png)
+
 #### NodeData (.h and .cpp)
 
 This class defines a data member all nodes will hold. It is primarily used to track statistics about what the node does, though it also features functions to calculate several of them. This is used in the rotating history of node tracks, with NodeData items being stored for up to a week..
+
+![Node](./images/Node.png)
 
 #### Node (.h and .cpp)
 
@@ -520,6 +562,8 @@ This class defines the node data structure It defines functionality for how node
 
 This is an include file used under the MIT License. It is used in the UUID.h class
 
+![picoSHA2](./images/picoSHA2.png)
+
 #### Random (.h and .cpp)
 
 This class implements the eventGen class and defines the eventTick function. It is unused in the current code base as the system for sleeping is not consistent with the lambda1 and 2 as found in the config file. It could be useful for testing, however.
@@ -527,6 +571,8 @@ This class implements the eventGen class and defines the eventTick function. It 
 #### Simulation (.h and .cpp)
 
 As mentioned above, this class essentially serves as the "main," and as such handles network initialization and handles the flow of the simulation from tick to tick.
+
+![Simulation-seq](./images/Simulation-seq.png)
 
 #### SystemClock (.h and .cpp)
 
@@ -540,7 +586,10 @@ Handles the creation of UUID"s.
 
 This is the main class for the program. It largely just sets up and calls the Simulation class.
 
+![main-seq](./images/main-seq.png)
+
 #### CmakeList.txt
+
 This file is associated with protobuf generation.
 
 ### Scripts (folder)
@@ -548,6 +597,7 @@ This file is associated with protobuf generation.
 #### build.sh
 
 It erases and remakes the `build` directory each time it runs.
+
 ### Client (folder)
 
 These files are stored in the client folder, and should run locally on the users computer rather than on the server. It contains the following:
@@ -575,6 +625,12 @@ The configuration file that is copied to the server. See the section Configurati
 ### Simulations (folder)
 
 This stores all of the results from various simulations, organized by when they ran. Each time the GUI is closed and re-run it resents its count and starts overriding the folders again, starting from 0 and counting up.
+
+## Testing
+
+The majority of simulation and testing has been done on LightSys servers and on an M1 MacBook Air by GitHub user twestley. To assure that testing is reproducible and since the repo resides on GitHub, we've decided to build and test with GitHub Actions. The tests currently running on GitHub Actions are as follows.
+
+- Test repeatability via the run-repeatable target in the Makefile
 
 ## Future Improvements
 
@@ -613,3 +669,34 @@ There are several useful features which could be added to improve the simulation
 - Individual Message Failure: Adding a percent change of any given message failing to send could simulate minor network errors weather than only being able to simulate complete network connections.
 
 - Use the `logOutput.txt`: Currently the only thing that is logged is the start of the simulation. At least an end time should probably be logged, and a few messages that print to `stdout` could be moved there. When the simulation is run with `run.sh`, `stdout` is written to `output.txt`.
+
+## Build and test development environment
+
+As previously mentioned, the majority of simulation and testing has been done on LightSys servers and on an M1 MacBook Air. To assure that testing is reproducible and since the repo resides on GitHub, we've decided to build and test with GitHub Actions. But although building and testing on GitHub Actions is good for preserving build and test reproducibility over time, it suffers from a long code-build-test cycle. You really want to build and test locally. You could use Docker and https://github.com/nektos/act to run the GitHub Actions locally. But this is still pretty slow. That's why the current build and test process uses make both locally and on GitHub Actions. Running Docker and `act` slow down local testing tremendously, but using `make` both locally and in GitHub Actions is satisfactory.
+
+Recommended solo development process:
+
+1. Using the `develop` branch, fix a bug or add a new feature using your favorite editor or IDE.
+
+1. Build and test:
+
+```
+make all clean-outputs
+make run-repeatable sanitize
+make run-repeatable sanitize
+make compare
+```
+
+1. Add your own tests to the `Makefile` as needed and run.
+
+1. Repeat steps 1-3 as needed until your code is perfect.
+
+1. Add your new test, if any, to GitHub Actions workflow file, `.github/workflows/build-and-test.yml`.
+
+1. Push `develop` branch to GitHub. This will trigger GitHub Actions to build and test.
+
+1. Repeat 1-4 as needed.
+
+1. When all is good, submit pull request to merge `develop` into `master`.
+
+If you are working in a team of developers, consider setting up a branch for each developer and merging your code using the `develop` branch. Then when your tests pass in `develop` branch, you can push to GitHub, triggering the GitHub Actions.

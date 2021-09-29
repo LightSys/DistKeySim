@@ -45,7 +45,7 @@ def runDataAnalytics(path):
         titleStr = 'Density distribution for Node with UUID ' + str(data)
         p1.set_title(titleStr)
         plt.xlim(0, max(max(aa['totalKeys']), max(aa['consumption'])))
-        plt.show(False)
+        plt.show()
         print("here? At last?")
 #Now with a log scale
 
@@ -89,5 +89,5 @@ def runDataAnalyticsLog(path):
         p1.set_title(titleStr)
         plt.xlim(0, max(max(aa['totalKeys']), max(aa['consumption'])))
         plt.yscale("log")
-        plt.show(False)
+        plt.show()
         print("here? At last?")

@@ -1,0 +1,71 @@
+@startuml
+
+
+
+
+
+/' Objects '/
+
+abstract class EventGen {
+	+EventGen()
+	+~EventGen()
+	+{abstract} eventTick(Network* network) : void
+}
+
+
+class GeometricDisconnect {
+	+GeometricDisconnect(ClockType clockType, double lambda1, double lambda2)
+	+~GeometricDisconnect()
+	-lambda1 : double
+	-lambda2 : double
+	-d1 : geometric_distribution<>*
+	-d2 : geometric_distribution<>*
+	-nextTimerID : int
+	-gen : mt19937*
+	-clock : shared_ptr<SystemClock>
+	-backOnlineTimer : std::map<UUID, int>
+	-goOfflineTimer : std::map<UUID, int>
+	+checkOffline(Network* network) : void
+	+eventTick(Network* network) : void
+	+sendOffline(UUID nodeUUID, clock_unit_t timeToDisconnect, clock_unit_t timeOffline) : void
+}
+
+
+class Random {
+	+Random()
+	+eventTick(Network* network) : void
+}
+
+
+enum EventGenerationType {
+	Random
+	Unused1
+	Unused2
+}
+
+
+
+
+
+/' Inheritance relationships '/
+
+.EventGen <|-- .GeometricDisconnect
+
+
+.EventGen <|-- .Random
+
+
+
+
+
+/' Aggregation relationships '/
+
+
+
+
+
+/' Nested objects '/
+
+
+
+@enduml

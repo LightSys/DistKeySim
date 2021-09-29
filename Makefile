@@ -1,10 +1,12 @@
-BUILD     = build
-SRC       = src
-INCLUDE   = include
-CLIENT    = client
-MESSAGE   = message
+ADAK_ROOT = $(shell pwd)
+BUILD     = $(ADAK_ROOT)/build
+SRC       = $(ADAK_ROOT)/src
+INCLUDE   = $(ADAK_ROOT)/include
+BIN       = $(ADAK_ROOT)/bin
 SOURCES   = $(INCLUDE)/*.h $(INCLUDE)/*.hpp $(SRC)/*.cc $(SRC)/*.cpp
+OUTPUTS   = $(BUILD)/src/outputs
 USE_CORES = 1
+CMP       = cmp
 
 # Figure out how many cores we can safely use
 UNAME := $(shell uname)
@@ -21,16 +23,16 @@ endif
 # Build
 # -----
 .PHONY: all
-all: $(BUILD)/$(SRC)/adak
+all: $(OUTPUTS)/adak
 
 # Update message protobuf sources when message.proto changes
-$(SRC)/$(MESSAGE).pb.cc $(INCLUDE)/$(MESSAGE).pb.h : $(SRC)/$(MESSAGE).proto 
+$(SRC)/message.pb.cc $(INCLUDE)/message.pb.h : $(SRC)/message.proto 
 	cd $(SRC) && \
 		protoc message.proto --cpp_out=. && \
-		mv  message.pb.h ../$(INCLUDE)
+		mv  message.pb.h $(INCLUDE)
 
 # Build ADAK
-$(BUILD)/$(SRC)/adak : $(SOURCES)
+$(OUTPUTS)/adak : $(SOURCES)
 	mkdir -p $(BUILD)
 	cd $(BUILD) && \
 		cmake .. -DBUILD_TESTING=0 && \
@@ -53,13 +55,13 @@ src :
 # Sanitize replaces UUIDs in logOutput.txt and statslog.csv with node index
 # thus making the files comparable.
 
-OUTPUTS = $(BUILD)/$(SRC)/outputs
 NON =
 
 .PHONY: run-repeatable
 run-repeatable :
-	cp -p scenario1_$(NON)repeatable_config.json $(BUILD)/$(SRC)/config.json
-	cd $(BUILD)/$(SRC) && ./adak
+	cp -p config/$(NON)repeatable-config.json $(BUILD)/src/config.json
+	cd $(BUILD)/src && ./adak
+	cd $(ADAK_ROOT)
 
 NEXT_RUN = $(shell cat $(OUTPUTS)/num.txt)
 LAST_RUN = $(shell echo $(NEXT_RUN) - 1 | bc)
@@ -70,13 +72,13 @@ sanitize :
 
 .PHONY: sanitize-statsLog
 sanitize-statsLog :
-	client/sanitizeStatsLog.py $(BUILD)/$(SRC)/outputs/statslog$(RUN).csv > \
-		$(BUILD)/$(SRC)/outputs/statslog$(RUN).clean.txt
+	$(ADAK_ROOT)/bin/sanitizeStatsLog.py $(OUTPUTS)/statslog$(RUN).csv > \
+		$(OUTPUTS)/statslog$(RUN).clean.txt
 
 .PHONY: sanitize-logOutput
 sanitize-logOutput :
-	client/sanitizelogOutput.py $(BUILD)/$(SRC)/outputs/logOutput$(RUN).txt > \
-		$(BUILD)/$(SRC)/outputs/logOutput$(RUN).clean.txt
+	$(ADAK_ROOT)/bin/sanitizeLogOutput.py $(OUTPUTS)/logOutput$(RUN).txt > \
+		$(OUTPUTS)/logOutput$(RUN).clean.txt
 
 .PHONY: compare
 compare :
@@ -86,13 +88,20 @@ compare :
 PREV_RUN = $(shell echo $(LAST_RUN) - 1 | bc)
 .PHONY: compare-statsLog
 compare-statsLog :
-	cmp $(BUILD)/$(SRC)/outputs/statslog$(PREV_RUN).clean.txt \
-		$(BUILD)/$(SRC)/outputs/statslog$(LAST_RUN).clean.txt
+	$(CMP) $(OUTPUTS)/statslog$(PREV_RUN).clean.txt \
+		       $(OUTPUTS)/statslog$(LAST_RUN).clean.txt
 
 .PHONY: compare-logOutput
 compare-logOutput :
-	cmp $(BUILD)/$(SRC)/outputs/logOutput$(PREV_RUN).clean.txt \
-		$(BUILD)/$(SRC)/outputs/logOutput$(LAST_RUN).clean.txt
+	$(CMP) $(OUTPUTS)/logOutput$(PREV_RUN).clean.txt \
+		       $(OUTPUTS)/logOutput$(LAST_RUN).clean.txt
+
+.PHONY: run-test1-repeatability
+run-test1-repeatability :
+	$(MAKE) run-repeatable sanitize 
+	$(MAKE) run-repeatable sanitize 
+	$(MAKE) compare
+	echo "Test 1 Passed"
 
 # ----------------------
 # Test non-repeatability
@@ -108,31 +117,143 @@ compare-logOutput :
 # When viewing the differences, be sure to diff the *.clean.txt
 # files so that you're not seeing just the UUID differences.
 
-.PHONY: run-non
-run-non-repeatable run-scenario1 :
+.PHONY: run-non-repeatable
+run-non-repeatable :
 	$(MAKE) run-repeatable NON=non
+
+.PHONY: run-test3-non-repeatability
+run-test3-non-repeatability :
+	$(MAKE) run-non-repeatable sanitize 
+	$(MAKE) run-non-repeatable sanitize 
+	$(MAKE) compare; \
+	if [ $$? -eq 0 ]; \
+    then \
+        echo "Test 3 Failed"; \
+        exit 1; \
+	else \
+        echo "Test 3 Passed"; \
+    fi
+
+# --------------------------------------------
+# Test Scenario 1 (see "ADAK Scenarios 1.pdf")
+# --------------------------------------------
+#
+# Objective: Ensure the functionality of sharing keyspace blocks and
+# the stability of subblock sharing (there should be minimal,
+# if any, subblock sharing in this scenario)
+
+.PHONY: run-scenario1
+run-scenario1 :
+	cp -p config/scenario1-config.json $(BUILD)/src/config.json
+	cd $(BUILD)/src && ./adak
+	cd $(ADAK_ROOT)
+
+.PHONY: run-short-scenario1
+run-short-scenario1 :
+	jq ".simLength |= 10000" < config/scenario1-config.json > $(BUILD)/src/config.json
+	cd $(BUILD)/src && ./adak
+	cd $(ADAK_ROOT)
+
+# The purpose of default config has been lost in time
+.PHONY: run-default-config
+run-default-config :
+	cp -p config/default-config.json $(BUILD)/src/config.json
+	cd $(BUILD)/src && ./adak
+	cd $(ADAK_ROOT)
+
+# -------------------------
+# Test eventGen config file
+# -------------------------
+CONNECTION_MODE = single
+SIM_LENGTH = 50
+NUM_NODES = 10
+.PHONY: run-eventGen
+run-eventGen :
+	jq ".connectionMode |= \"$(CONNECTION_MODE)\"" < config/eventGen-config.json | \
+		jq ".simLength |= $(SIM_LENGTH)" | \
+		jq ".numNodes |= $(NUM_NODES)" > $(BUILD)/src/config.json
+	cd $(BUILD)/src && ./adak
+	cd $(ADAK_ROOT)
+
+# -----------------------------
+# Assert absence of oscillation
+# -----------------------------
+.PHONY: run-test2-oscillation
+run-test2-oscillation :
+	$(BIN)/testOscillation.py
+	echo "Test 2 Passed"
 
 # ------------------
 # Show Visualization
 # ------------------
-STATS_LOG    = ./statslog.csv
-VIS_NUM      = 2
+STATS_LOG    = $(OUTPUTS)/statslog$(RUN).csv
 GRAPH_IS_LOG = True
-.PHONY: show-vis
-show-vis :
-	$(CLIENT)/showVis.py $(VIS_NUM) $(GRAPH_IS_LOG) $(STATS_LOG)
+.PHONY: show-vis1
+show-vis1 :
+	$(BIN)/showVis.py 1 $(GRAPH_IS_LOG) $(STATS_LOG)
+
+.PHONY: show-vis2
+show-vis2 :
+	$(BIN)/showVis.py 2 $(GRAPH_IS_LOG) $(STATS_LOG)
+
+# -----------------------
+# Generate class diagrams
+# -----------------------
+images/%.puml : include/%.h
+	hpp2plantuml -i $<  -o $@
+
+images/Config.puml : include/Config.hpp
+	hpp2plantuml -i $<  -o $@
+
+images/%.png : images/%.puml
+	plantuml $<
+
+images/Strategy.puml : include/ADAKStrategy.h include/ControlStrategy.h
+	hpp2plantuml -i include/ADAKStrategy.h -i include/ControlStrategy.h -o $@
+
+images/GeometricDisconnect.puml : include/EventGen.h include/GeometricDisconnect.h include/Random.h
+	hpp2plantuml -i include/EventGen.h -i include/GeometricDisconnect.h -i include/Random.h -o $@
+
+images/Network.puml : include/Network.h include/Simulation.h
+	hpp2plantuml -i include/Network.h -i include/Simulation.h -o $@
+
+images/Node.puml : include/Node.h include/NodeData.h
+	hpp2plantuml -i include/Node.h -i include/NodeData.h -o $@
+
+all-images : images/Logger.png \
+	images/Strategy.png \
+	images/picoSHA2.png \
+	images/Channel.png \
+	images/Config.png \
+	images/EventGen.png \
+	images/GeometricDisconnect.png \
+	images/Keyspace.png \
+	images/Network.png \
+	images/Node.png \
+	images/main-seq.png \
+	images/Simulation-seq.png
 
 # -----
 # Clean
 # -----
 .PHONY: clean
 clean :
-	touch $(SRC)/$(MESSAGE).proto
+	touch $(SRC)/message.proto
 	rm -rf build
+	rm -f make.out
 
 .PHONY: clean-outputs
 clean-outputs :
-	rm -rf $(BUILD)/$(SRC)/outputs
+	rm -rf $(OUTPUTS)
+	rm -f  $(BUILD)/src/*.{csv,txt,json}
+
+.PHONY: clean-last-output
+clean-last-output :
+	rm -f $(OUTPUTS)/statslog$(LAST_RUN).* \
+		$(OUTPUTS)/logOutput$(LAST_RUN).* > \
+		$(OUTPUTS)/copy_of_config$(LAST_RUN).json \
+		$(OUTPUTS)/full_config$(LAST_RUN).json
+	echo $(LAST_RUN) > 	$(OUTPUTS)/num.txt
 
 # --------------------
 # Show number of cores

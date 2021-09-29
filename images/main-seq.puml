@@ -1,0 +1,5 @@
+@startuml
+main -> Config: Load config file
+main -> Simulation: Run
+main -> Config: Save config file
+@enduml

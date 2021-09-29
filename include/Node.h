@@ -1,5 +1,4 @@
-#ifndef ADAK_KEYING_NODE_H
-#define ADAK_KEYING_NODE_H
+#pragma once
 
 #include <iostream>
 #include <vector>
@@ -64,9 +63,6 @@ private:
     uint64_t getNextMsgId(UUID peerId);
     
     
-    static double unitsPerDay;
-    
-
 public:
     //static
     //handle ticking of simulation
@@ -200,12 +196,5 @@ public:
     double getTimeOnline();
 
     //return the value from d1
-    double getTimeOffline();
-    
-    //set for all nodes how fine the history should be 
-    static void setUnitsPerDay(double units) {unitsPerDay = units;}
-
+    double getTimeOffline();    
 };
- 
-#endif //ADAK_KEYING_NODE_H
-

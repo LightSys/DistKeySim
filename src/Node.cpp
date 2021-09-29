@@ -1,5 +1,6 @@
 
 #include <algorithm>
+#include "config.hpp"
 #include "Node.h"
 #include <chrono> 
 
@@ -70,15 +71,14 @@ void Node::consumeObjects(){
 //make sure can consume keys.
     if(keyspaces.size() == 0) return;
     if(amountOfOneKeyUsed >= 1.0){
-	Logger::log(Formatter() << "consuming a key!! "); 
+	    Logger::log(Formatter() << this->uuid << " consuming a key!!"); 
         this->getNextKey();
         amountOfOneKeyUsed--;
          	
        	//update createdWeek to reflect the current history 
         
         createdDay = 0;
-        //note 86400 is seconds in a day
-	double max = 86400/unitsPerDay;
+	    unsigned max = 24;
 
         if(max > history.size()){
            max = history.size(); 
@@ -246,11 +246,10 @@ bool Node::isKeyAvailable(){
  */
 
 void Node::tick(){
-    if(lastDay.getTimeUnitsPast() >= unitsPerDay){
+    if(lastDay.getTimeUnitsPast() >= Config::timeStepUnitsPerMinute){
       history.push_back(lastDay);
-      //604800 is the seconds in a week
   
-      if (history.size() > (604800.0/unitsPerDay)) {
+      if (history.size() > (7 * Config::timeStepUnitsPerWeek)) {
             // Remove the first value from the vector, shifting the time, so we only store 1 week
             history.erase(history.begin());
         }
@@ -526,6 +525,8 @@ void Node::logInfoForHeartbeat(){
     }else{
         dataLine.push_back("0.0");
     }
+    dataLine.push_back(to_string(getKeySpace().size()));
+
 //Logger::log(Formatter() << "Test\n"; 
     Logger::logStats(dataLine);
     //maybe put if ran out of space here, and uuid
@@ -721,7 +722,7 @@ double Node::calcLongAggregate(UUID target){
    result *= networkScale; 
    result += createdWeek;
    result /= numCounted; //# of peers + 1 for self - 1 for target
-Logger::log(Formatter() << uuid << " calcing long agg/ Week: " << createdWeek << ", numCounted: " << numCounted);;  
+   //Logger::log(Formatter() << uuid << " calcing long agg/ Week: " << createdWeek << ", numCounted: " << numCounted);;  
    return result; 
 }
 

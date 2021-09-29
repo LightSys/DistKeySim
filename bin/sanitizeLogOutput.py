@@ -31,23 +31,46 @@ if __name__ == "__main__":
     for line in file:
         lineParts = line.strip().split(splitOn)
         log = lineParts[0]
+
+        # Find UUIDs
         if "Root UUID:" in log:
             uuidParts = log.split(": ")
             uuid = uuidParts[1]
+            if uuid not in uuids:
+                uuids.append(uuid)
+        if "UUID root " in log:
+            uuidParts = log.split(" ")
+            uuid = uuidParts[2]
+            if uuid not in uuids:
+                uuids.append(uuid)
+        if " sent to " in log:
+            uuidParts = log.split(" ")
+            uuid = uuidParts[0]
+            if uuid not in uuids:
+                uuids.append(uuid)
+            uuid = uuidParts[3]
+            if uuid not in uuids:
+                uuids.append(uuid)
+        if "calcing long" in log:
+            uuidParts = log.split(" ")
+            uuid = uuidParts[0]
             if uuid not in uuids:
                 uuids.append(uuid)
         foundChannels = foundChannels or "CHANNELS" in log
         foundToFrom = foundToFrom or "TO,FROM,ID" in log
         if foundChannels and foundToFrom and "TO,FROM,ID" not in log:
             uuidParts = log.split(",")
-            for uuid in uuidParts[0:1]:
-                if uuid not in uuids:
-                    uuids.append(uuid)
-            foundChannels = False
-            foundToFrom = False
+            if len(uuidParts) == 3 and uuidParts[2].isnumeric():
+                for uuid in uuidParts[0:1]:
+                    if uuid not in uuids:
+                        uuids.append(uuid)
+            else:
+                foundChannels = False
+                foundToFrom = False
+        
         # replace uuids with index into set array
         for index, value in enumerate(uuids):
-            log = log.replace(value, str(index))
+            log = log.replace(value, "uuid" + str(index))
         print(log)
     
     # Closing files

@@ -1,0 +1,62 @@
+@startuml
+
+
+
+
+
+/' Objects '/
+
+abstract class ADAKStrategy {
+	+ADAKStrategy()
+	+{abstract} nodeTick(shared_ptr<Node>& node) : void
+	+systemTick(Network* network) : void
+}
+
+
+class ControlStrategy {
+	+ControlStrategy(ClockType clockType, clock_unit_t heartbeatPeriod)
+	+~ControlStrategy()
+	-heartbeatPeriod : clock_unit_t
+	-nodeClock : shared_ptr<SystemClock>
+	-{static} accuracy : static double
+	+{static} fractToBin(long double fract, int accuracy) : string
+	+{static} adak(Node& node, int keysToShift) : void
+	+nodeTick(shared_ptr<Node>& node) : void
+	+{static} setAccuracy(double acc) : void
+	+{static} subBlocks(Node& node, long double avgKeys, int keysToShift) : void
+}
+
+
+enum ADAKStrategyType {
+	Control
+	LocalAverage
+}
+
+
+enum NodeTimer {
+	HEARTBEAT_TIMER
+}
+
+
+
+
+
+/' Inheritance relationships '/
+
+.ADAKStrategy <|-- .ControlStrategy
+
+
+
+
+
+/' Aggregation relationships '/
+
+
+
+
+
+/' Nested objects '/
+
+
+
+@enduml

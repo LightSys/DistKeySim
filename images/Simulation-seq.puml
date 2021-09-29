@@ -1,0 +1,44 @@
+@startuml Simulation-seq
+
+title Simulation::run()
+
+Simulation -> Config: Load default config file
+Simulation -> Network: Add root node
+
+note over Simulation, Config
+Create new nodes and add them to map
+end note
+
+loop int i = 1; i < numNodes; i++
+    Simulation -> Network: Add node
+    alt i % Config heartbeat frequency == 0
+        Simulation -> Network: Do all heartbeat
+    end
+    Simulation -> Network: Check and send all nodes latency
+    Simulation -> Network: Do all ticks
+    Simulation -> Logger: Increment timeslot
+    Simulation -> Logger: Reset shared
+    Simulation -> Logger: Reset consumption
+end
+
+Simulation -> GeometricDisconnect: Create new event gen
+
+Simulation -> Network: Print channels
+
+note over Simulation, Config: Tick the network
+loop int i = 0; i < config.simLength; i++
+    Simulation -> Network: Check and send all nodes latency
+    alt i % Config heartbeat frequency == 0
+        Simulation -> Network: Do all heartbeat
+    end
+    alt config.runEvents
+        Simulation -> GeometricDisconnect: Tick
+    end
+    Simulation -> Network: Print channels
+    Simulation -> Network: Do all ticks
+    Simulation -> Logger: Increment timeslot
+    Simulation -> Logger: Reset shared
+    Simulation -> Logger: Reset consumption
+end
+
+@enduml

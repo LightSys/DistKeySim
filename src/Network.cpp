@@ -37,8 +37,11 @@ Network::Network(ConnectionType connectionType, float PERCENT_CONNECTED, double 
 
 
 void Network::tellAllNodesToConsumeObjects(){
-    for(auto i : nodes){
-        i.second->consumeObjects();
+    // To make this repeatable, loop through nodes in order they were added
+    for (int i=0; i<uuids.size(); i++) {
+        auto uuid = uuids.at(i);
+        auto node = nodes.at(uuid);
+        node->consumeObjects();
     }
 }
 
@@ -72,6 +75,7 @@ bool Network::sendMsg(const Message &message) {
 void Network::doAllHeartbeat(int keysToSend) {
     // NOTE: Baylor will need to change this, right now we are sending heartbeat messages practically all the time
     // they will probably want to add time to Node to send it periodically
+    // To make this repeatable, loop through nodes in order they were added
     for (int i=0; i<uuids.size(); i++) {
         auto uuid = uuids.at(i);
         auto node = nodes.at(uuid);
@@ -92,6 +96,7 @@ void Network::doAllHeartbeat(int keysToSend) {
 }
 
 void Network::doAllTicks(){
+    // To make this repeatable, loop through nodes in order they were added
     for (int i=0; i<uuids.size(); i++) {
         auto uuid = uuids.at(i);
         auto node = nodes.at(uuid);
@@ -450,28 +455,43 @@ void Network::printChannels(char spacer) {
     for (const Channel &channel : channels) {
         Logger::log(Formatter() << channel.getToNode() << spacer
             << channel.getFromNode() << spacer
-            << channel.getChannelId());
-        if(this->isOffline(channel.getToNode()) || this->isOffline(channel.getFromNode())){
-            Logger::log(Formatter() << "  OFFLINE!!");
-        }
+            << channel.getChannelId()
+            << (this->isOffline(channel.getToNode()) || this->isOffline(channel.getFromNode())
+                ? "OFFLINE!!" : ""));
     }
+    Logger::log(Formatter() << "END CHANNELS");
 }
 
 void Network::printKeyspaces(char spacer) {
     Logger::log(Formatter() << "KEYSPACES");
+    Logger::log(Formatter()
+        << "Node" << spacer
+        << "UUID" << spacer
+        << "Keyspace" << spacer
+        << "Start" << spacer
+        << "End" << spacer
+        << "Suffix Bits" << spacer
+        << "Counter");
 
-    int counter = 0;
-    for (auto const& x : nodes) {
-        for (const Keyspace &keyspace : x.second->getKeySpace()) {
-            Logger::log(Formatter() << "Node" << spacer << "UUID" << spacer << "Keyspace" << "Start" << spacer << "End" << spacer
-                << "Suffix Bits\n"
-                << counter << spacer << x.second->getUUID() << spacer
-                << keyspace.getStart() << spacer << keyspace.getEnd() << spacer
-                << keyspace.getSuffix()
+    // To make this repeatable, loop through nodes in order they were added
+    int nodeCounter = 0;
+    int keyspaceCounter = 0;
+    for (int i=0; i<uuids.size(); i++) {
+        auto uuid = uuids.at(i);
+        auto node = nodes.at(uuid);
+        for (const Keyspace &keyspace : node->getKeySpace()) {
+            Logger::log(Formatter()
+                << nodeCounter << spacer
+                << node->getUUID() << spacer
+                << keyspace.getStart() << spacer
+                << keyspace.getEnd() << spacer
+                << keyspace.getSuffix() << spacer
+                << keyspaceCounter++
             );
         }
-        counter++;
+        nodeCounter++;
     }
+    Logger::log(Formatter() << "END KEYSPACES");
 }
 
 double Network::checkAllKeyspace(){

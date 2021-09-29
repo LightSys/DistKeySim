@@ -11,20 +11,12 @@
 #include "Node.h"
 #include "UUID.h"
 #include "Channel.h"
+#include "ConnectionType.h"
 #include "message.hpp"
 #include "SystemClock.h"
 #include "json.hpp"
 
 using json = nlohmann::json;
-
-/**
- * Types of connections that are possible when creating the initial network connection
- *    Each type has its own implementation function which is called by connectNodeToNetwork
- *      Full = fully connected graph
- *      Partial = randomly connected graph (dependent on Config.visiblePeer's percentage connected)
- *      Single = randomly connected MST (one connection only on creation)
- */
-enum class ConnectionType { Full, Partial, Single, Custom };
 
 class Network{
 private:

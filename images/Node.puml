@@ -1,0 +1,151 @@
+@startuml
+
+
+
+
+
+/' Objects '/
+
+class Node {
+	+Node()
+	+Node(double lambda1, double lambda2, double lambda3, int latency, double netScl, unsigned seed)
+	+Node(const Keyspace& keyspace, double lambda1, double lambda2, double lambda3, int latency, double netScl, unsigned seed)
+	+~Node()
+	+getNextKey() : ADAK_Key_t
+	+getTotalLocalKeyspaceSize() : ADAK_Key_t {query}
+	-totalLocalKeyspaceSize : ADAK_Key_t
+	-getHeartbeatMessage(const UUID& peerID) : Message
+	+{static} rootNode(double lambda1, double lambda2, double lambda3, int latency, double networkScale, unsigned seed) : Node
+	-lastDay : NodeData
+	+getUUID() : UUID {query}
+	-uuid : UUID
+	+canSendKeyspace(UUID id) : bool
+	+isKeyAvailable() : bool
+	+receiveMessage(const Message& message) : bool
+	-amountOfOneKeyUsed : double
+	+calcLongAggregate(UUID target) : double
+	+calcShortAggregate(UUID target) : double
+	+getCreatedDay() : double
+	+getCreatedWeek() : double
+	+getKeyspacePercent() : double
+	+getTimeOffline() : double
+	+getTimeOnline() : double
+	-lambda1 : double
+	-lambda2 : double
+	-lambda3 : double
+	-networkScale : double
+	-objectConsuptionRatePerSecond : double
+	-createdDay : float
+	-createdWeek : float
+	-d1 : geometric_distribution<>*
+	-d2 : geometric_distribution<>*
+	-d3 : geometric_distribution<>*
+	-currentTick : int
+	+minimumKeyspaceIndex(int newMin) : int
+	-networkLatency : int
+	+splitKeyspace(int keyspaceIndex) : int
+	-keysShared : long double
+	-gen : mt19937*
+	-{static} unitsPerDay : static double
+	+checkMessages() : std::deque<Message>
+	+getMessages() : std::deque<Message>
+	-sendQueue : std::deque<Message>
+	+getPeers() : std::map<UUID , pair<Message* , uint64_t>> {query}
+	-peers : std::map<UUID, std::pair<Message*, uint64_t>>
+	-confirmMsg : std::map<uint64_t, Message*>
+	-timeStamps : std::map<uint64_t, int>
+	+getNodeData() : std::shared_ptr<NodeData> {query}
+	+getKeySpace() : std::vector<Keyspace> {query}
+	-keyspaces : std::vector<Keyspace>
+	-history : std::vector<NodeData>
+	-messageID : u_int
+	-getNextMsgId(UUID peerId) : uint64_t
+	+getTotalKeyspaceBlockSize() : unsigned long long int
+	+makeSubBlock(int range) : vector<int>
+	+addPeer(std::shared_ptr<Node> peer) : void
+	+addPeer(const UUID& peerUUID) : void
+	+changeConsumptionRate() : void
+	+consumeObjects() : void
+	+generateObjectCreationRateDistribution(unsigned seed) : void
+	+heartbeat() : void
+	+logInfoForHeartbeat() : void
+	+removePeer(std::shared_ptr<Node> peer) : void
+	+removePeer(const UUID& peerUUID) : void
+	+sendCustKeyspace(UUID id, int keyInd) : void
+	+sendCustKeyspace(UUID id, vector<int> keyInds) : void
+	+setTotalLocalKeyspaceSize(ADAK_Key_t newSize) : void
+	+setUUID(UUID nid) : void
+	+{static} setUnitsPerDay(double units) : void
+	+tick() : void
+}
+
+
+class NodeData {
+	+NodeData()
+	+~NodeData()
+	+findEndKey(double creationRate, std::vector<Keyspace> keyspaces) : ADAK_Key_t
+	+{static} isNewDay(int currentDay) : bool
+	+getCreationRate() : constexpr double {query}
+	+getDay() : constexpr int {query}
+	+getKeysUsed() : constexpr int {query}
+	+getTimeUnitsPast() : constexpr int {query}
+	-aggregateAllocationRatio : double
+	-aggregateGenRate : double
+	-creationRate : double
+	+getAggregateAllocationRatio() : double {query}
+	+getAggregateGenRate() : double {query}
+	+getKeyGenRate() : double {query}
+	+getLongTermAllocationRatio() : double {query}
+	+getProvisioningRatio() : double {query}
+	+getShortTermAllocationRatio() : double {query}
+	-keyGenRate : double
+	-longTermAllocationRatio : double
+	-provisioningRatio : double
+	-shortTermAllocationRatio : double
+	+updateLongTermAllocationRatio(std::vector<Keyspace>& keyspace) : double
+	+updateProvisioningRatio(double creationRate, double shortTermRatio) : double
+	+updateShortTermAllocationRatio(const std::vector<Keyspace>& keyspace) : double
+	-day : int
+	+{static} getCurrentDay() : int
+	+getKeyShareRate() : int {query}
+	+getMinKeyIndex(const std::vector<Keyspace> keyspaces) : int {query}
+	-keyShareRate : int
+	-keysUsed : int
+	-timeUnitsPast : int
+	+incTimeUnitPast() : void
+	+setAggregateAllocationRatio(double aggregateAllocationRatio) : void
+	+setAggregateGenRate(double aggregateGenRate) : void
+	+setCreationRate(double creationRate) : void
+	+setDay(int day) : void
+	+setKeyGenRate(double keyGenRate) : void
+	+setKeyShareRate(int keyShareRate) : void
+	+setKeysUsed(int keysUsed) : void
+	+setLongTermAllocationRatio(double longTermAllocationRatio) : void
+	+setProvisioningRatio(double provisioningRatio) : void
+	+setShortTermAllocationRatio(double shortTermAllocationRatio) : void
+	+useKey() : void
+}
+
+
+
+
+
+/' Inheritance relationships '/
+
+
+
+
+/' Aggregation relationships '/
+
+.Node "2" *-- .NodeData
+
+
+
+
+
+
+/' Nested objects '/
+
+
+
+@enduml
