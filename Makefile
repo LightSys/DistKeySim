@@ -43,6 +43,17 @@ $(BUILD_SRC)/adak : $(SOURCES)
 src :
 	@echo $(SOURCES)
 
+# ----------------------------------------
+# Duplicate GitHub action test as closely
+# as we can in our local environment.
+# ----------------------------------------
+.PHONY: build-and-test
+build-and-test :
+	make all
+	make run-test1-repeatability
+	make run-test2-oscillation
+	make run-test3-non-repeatability
+
 # ------------------
 # Test repeatability
 # ------------------
@@ -102,7 +113,7 @@ run-test1-repeatability :
 	$(MAKE) run-repeatable sanitize 
 	$(MAKE) run-repeatable sanitize 
 	$(MAKE) compare
-	echo "Test 1 Passed"
+	@echo "Test 1 Passed"
 
 # ----------------------
 # Test non-repeatability
@@ -127,7 +138,7 @@ run-test3-non-repeatability :
 	$(MAKE) run-non-repeatable sanitize 
 	$(MAKE) run-non-repeatable sanitize 
 	$(MAKE) compare; \
-	if [ $$? -eq 0 ]; \
+	@if [ $$? -eq 0 ]; \
     then \
         echo "Test 3 Failed"; \
         exit 1; \
@@ -181,7 +192,7 @@ run-eventGen :
 .PHONY: run-test2-oscillation
 run-test2-oscillation :
 	$(BIN)/testOscillation.py
-	echo "Test 2 Passed"
+	@echo "Test 2 Passed"
 
 # ------------------
 # Show Visualization
