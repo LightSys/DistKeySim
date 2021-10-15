@@ -138,7 +138,7 @@ run-test3-non-repeatability :
 	$(MAKE) run-non-repeatable sanitize 
 	$(MAKE) run-non-repeatable sanitize 
 	$(MAKE) compare; \
-	@if [ $$? -eq 0 ]; \
+	if [ $$? -eq 0 ]; \
     then \
         echo "Test 3 Failed"; \
         exit 1; \
