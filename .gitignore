@@ -14,3 +14,4 @@ make.out
 *.zip
 clean-outputs
 .*.icloud
+.DS_Store
