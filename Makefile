@@ -53,7 +53,7 @@ build-and-test :
 	$(MAKE) run-test1-repeatability
 	$(MAKE) run-test2-oscillation
 	$(MAKE) run-test3-non-repeatability
-	$(MAKE) run-test4-scenario-1 DAYS=$(DAYS)
+	$(MAKE) run-test4-scenario-1
 
 # ------------------
 # Test repeatability
@@ -165,16 +165,16 @@ run-test3-non-repeatability :
 # Note: We make 40 milliseconds the length of a simulation "tick".
 # Therefore, there are 25 simulation ticks per second.
 #
-# To run a test shorter than 7 days, do something like this
+# To run a test shorter than 1 day, do something like this
 #
-#     make run-test4-scenario-1 DAYS=0.1
+#     make run-test4-scenario-1 SCEN_1_DAYS=0.1
 
 SIM_UNITS_PER_SECOND = 25
 SECONDS      = 60
 MINUTES      = 60
 HOURS        = 24
-DAYS         = 7
-ITERATIONS   = $(shell echo "$(SIM_UNITS_PER_SECOND)*$(SECONDS)*$(MINUTES)*$(HOURS)*$(DAYS)" | bc)
+SCEN_1_DAYS  = 1
+ITERATIONS   = $(shell echo "$(SIM_UNITS_PER_SECOND)*$(SECONDS)*$(MINUTES)*$(HOURS)*$(SCEN_1_DAYS)" | bc)
 .PHONY: run-scenario1
 run-scenario1 :
 	jq ".simLength |= $(ITERATIONS)" < config/scenario1-config.json > $(BUILD_SRC)/config.json
@@ -183,7 +183,7 @@ run-scenario1 :
 
 .PHONY: run-test4-scenario-1
 run-test4-scenario-1 :
-	$(BIN)/testScenario1.py --days $(DAYS)
+	$(BIN)/testScenario1.py --days $(SCEN_1_DAYS)
 	@echo "Test 4 Passed: Scenario 1"
 
 # ---------------------------------------------------
