@@ -37,7 +37,7 @@ $(BUILD_SRC)/adak : $(SOURCES)
 	mkdir -p $(BUILD)
 	cd $(BUILD) && \
 		cmake .. -DBUILD_TESTING=0 && \
-		make -j$(USE_CORES)
+		$(MAKE) -j$(USE_CORES)
 
 .PHONY: src
 src :
@@ -49,10 +49,11 @@ src :
 # ----------------------------------------
 .PHONY: build-and-test
 build-and-test :
-	make all
-	make run-test1-repeatability
-	make run-test2-oscillation
-	make run-test3-non-repeatability
+	$(MAKE) all
+	$(MAKE) run-test1-repeatability
+	$(MAKE) run-test2-oscillation
+	$(MAKE) run-test3-non-repeatability
+	$(MAKE) run-test4-scenario-1 DAYS=$(DAYS)
 
 # ------------------
 # Test repeatability
@@ -113,7 +114,15 @@ run-test1-repeatability :
 	$(MAKE) run-repeatable sanitize 
 	$(MAKE) run-repeatable sanitize 
 	$(MAKE) compare
-	@echo "Test 1 Passed"
+	@echo "Test 1 Passed: Repeatability"
+
+# -----------------------------
+# Assert absence of oscillation
+# -----------------------------
+.PHONY: run-test2-oscillation
+run-test2-oscillation :
+	$(BIN)/testOscillation.py
+	@echo "Test 2 Passed: Oscillation"
 
 # ----------------------
 # Test non-repeatability
@@ -137,13 +146,12 @@ run-non-repeatable :
 run-test3-non-repeatability :
 	$(MAKE) run-non-repeatable sanitize 
 	$(MAKE) run-non-repeatable sanitize 
-	$(MAKE) compare; \
-	if [ $$? -eq 0 ]; \
-    then \
-        echo "Test 3 Failed"; \
+	@$(MAKE) compare; \
+	if [ $$? -eq 0 ]; then \
+        echo "Test 3 Failed: Non Repeatability"; \
         exit 1; \
-	else \
-        echo "Test 3 Passed"; \
+    else \
+        echo "Test 3 Passed: Non Repeatability"; \
     fi
 
 # --------------------------------------------
@@ -153,19 +161,34 @@ run-test3-non-repeatability :
 # Objective: Ensure the functionality of sharing keyspace blocks and
 # the stability of subblock sharing (there should be minimal,
 # if any, subblock sharing in this scenario)
+#
+# Note: We make 40 milliseconds the length of a simulation "tick".
+# Therefore, there are 25 simulation ticks per second.
+#
+# To run a test shorter than 7 days, do something like this
+#
+#     make run-test4-scenario-1 DAYS=0.1
 
-MILLISECONDS = 1000
+SIM_UNITS_PER_SECOND = 25
 SECONDS      = 60
 MINUTES      = 60
 HOURS        = 24
-ITERATIONS   = $(shell echo "$(MILLISECONDS)*$(SECONDS)*$(MINUTES)*$(HOURS)" | bc)
+DAYS         = 7
+ITERATIONS   = $(shell echo "$(SIM_UNITS_PER_SECOND)*$(SECONDS)*$(MINUTES)*$(HOURS)*$(DAYS)" | bc)
 .PHONY: run-scenario1
 run-scenario1 :
 	jq ".simLength |= $(ITERATIONS)" < config/scenario1-config.json > $(BUILD_SRC)/config.json
-	cd $(BUILD_SRC) && time ./adak
+	cd $(BUILD_SRC) && ./adak
 	cd $(ADAK_ROOT)
 
+.PHONY: run-test4-scenario-1
+run-test4-scenario-1 :
+	$(BIN)/testScenario1.py --days $(DAYS)
+	@echo "Test 4 Passed: Scenario 1"
+
+# ---------------------------------------------------
 # The purpose of default config has been lost in time
+# ---------------------------------------------------
 .PHONY: run-default-config
 run-default-config :
 	cp -p config/default-config.json $(BUILD_SRC)/config.json
@@ -186,14 +209,6 @@ run-eventGen :
 	cd $(BUILD_SRC) && ./adak
 	cd $(ADAK_ROOT)
 
-# -----------------------------
-# Assert absence of oscillation
-# -----------------------------
-.PHONY: run-test2-oscillation
-run-test2-oscillation :
-	$(BIN)/testOscillation.py
-	@echo "Test 2 Passed"
-
 # ------------------
 # Show Visualization
 # ------------------
@@ -210,6 +225,8 @@ show-vis2 :
 # -----------------------
 # Generate class diagrams
 # -----------------------
+# Get hpp2plantuml with homebrew or pip install
+# ---------------------------------------------
 images/%.puml : include/%.h
 	hpp2plantuml -i $<  -o $@
 
