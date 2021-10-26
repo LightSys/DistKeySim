@@ -23,18 +23,14 @@ jobs:
           make
           make check
       - name: Install protobuf library
+        if: always()
         run: |
           cd protobuf
           sudo make install
           sudo ldconfig
-      - name: Build
-        run: make all USE_CORES=1
-      - name: Test 1 Repeatability
-        run: make run-test1-repeatability
-      - name: Test 2 Absence of Oscillation
-        run: make run-test2-oscillation
-      - name: Test 3 Non-repeatability
-        run: make run-test3-non-repeatability
+      - name: Build and test
+        if: always()
+        run: make all build-and-test USE_CORES=1
       - uses: actions/upload-artifact@v2
         if: always()
         with:
