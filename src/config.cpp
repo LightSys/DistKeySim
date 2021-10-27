@@ -178,7 +178,7 @@ Config::Config(ifstream jsonFile) {
         }
         
         if (jf.contains(TIME_STEP_UNITS_PER_SECOND_LABEL)){
-            jf.at(TIME_STEP_UNITS_PER_SECOND_LABEL).get_to(timeStepUnitsPerDay);
+            jf.at(TIME_STEP_UNITS_PER_SECOND_LABEL).get_to(timeStepUnitsPerSecond);
         } else {
             timeStepUnitsPerSecond = DEFAULT_TIME_STEP_UNITS_PER_SECOND;
         }

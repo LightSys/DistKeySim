@@ -23,7 +23,7 @@ static const std::vector<float> DEFAULT_CUSTOM_LAMBDA1 = {};
 static const std::vector<float> DEFAULT_CUSTOM_LAMBDA2 = {};
 static const std::vector<float> DEFAULT_CUSTOM_LAMBDA3 = {}; //if it is empty, the lambda3 will be used
 static const bool DEFAULT_RUN_EVENTS = false; 
-static const double DEFAULT_TIME_STEP_UNITS_PER_SECOND = 1000;
+static const double DEFAULT_TIME_STEP_UNITS_PER_SECOND = 1;
 static const unsigned DEFAULT_RANDOM_SEED = time(nullptr);
 static const std::string DEFAULT_CUSTOM_CONNECTIONS = "";
 

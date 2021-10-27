@@ -43,10 +43,10 @@ $(BUILD_SRC)/adak : $(SOURCES)
 src :
 	@echo $(SOURCES)
 
-# ----------------------------------------
-# Duplicate GitHub action test as closely
-# as we can in our local environment.
-# ----------------------------------------
+# ----------------------------------------------
+# This is the most comprehensive automated
+# test. It is the test we run in GitHub actions.
+# ----------------------------------------------
 .PHONY: build-and-test
 build-and-test :
 	$(MAKE) all
