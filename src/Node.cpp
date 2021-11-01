@@ -66,11 +66,14 @@ unsigned long long int Node::getTotalKeyspaceBlockSize(){
 
 void Node::consumeObjects(){
     amountOfOneKeyUsed += objectConsuptionRatePerSecond;
-//Logger::log(Formatter() << "#############" <<  this->uuid << "consumption per second: " << objectConsuptionRatePerSecond);
+    Logger::log(Formatter() << uuid
+        << " amountOfOneKeyUsed=" << amountOfOneKeyUsed
+        << " objectConsuptionRatePerSecond=" << objectConsuptionRatePerSecond
+        << " keyspaces.size()=" << keyspaces.size());
  
-//make sure can consume keys.
-    if(keyspaces.size() == 0) return;
-    if(amountOfOneKeyUsed >= 1.0){
+    //make sure can consume keys.
+    if (keyspaces.size() == 0) return;
+    if (amountOfOneKeyUsed >= 1.0) {
 	    Logger::log(Formatter() << this->uuid << " consuming a key!!"); 
         this->getNextKey();
         amountOfOneKeyUsed--;
@@ -129,8 +132,9 @@ double Node::getTimeOffline(){
 
 void Node::changeConsumptionRate(){
     objectConsuptionRatePerSecond = 1.0/(1 + (*d3)(*gen));
+    Logger::log(Formatter() << uuid
+        << " objectConsuptionRatePerSecond=" << objectConsuptionRatePerSecond);
 }
-
 
 static Node rootNode(double lambda1, double lambda2, double lambda3, int latency, double networkScale, unsigned seed) {
     return Node(Keyspace(0, UINT_MAX, 0), lambda1, lambda2, lambda3, latency, networkScale, seed);
