@@ -135,7 +135,6 @@ double Node::getTimeOffline(){
 
 void Node::changeConsumptionRate(){
     objectConsuptionRatePerSecond = 1.0/(1 + (*d3)(*gen));
-    objectConsuptionRatePerSecond = 0.002;
     Logger::log(Formatter() << uuid
         << " objectConsuptionRatePerSecond=" << objectConsuptionRatePerSecond);
 }
