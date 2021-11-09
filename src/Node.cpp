@@ -135,6 +135,7 @@ double Node::getTimeOffline(){
 
 void Node::changeConsumptionRate(){
     objectConsuptionRatePerSecond = 1.0/(1 + (*d3)(*gen));
+    objectConsuptionRatePerSecond = 0.002;
     Logger::log(Formatter() << uuid
         << " objectConsuptionRatePerSecond=" << objectConsuptionRatePerSecond);
 }
@@ -600,7 +601,9 @@ void Node::sendCustKeyspace(UUID id, int keyInd){
      
     sendQueue.push_back(keyMsg);
  
-//Logger::log(Formatter() << "node " << uuid << " sent " << start << "/" << suffix << " to " << id); 
+    Logger::log(Formatter() << uuid << " sent keyspace batch to " << id
+        << " with " << start << "/" << suffix << ", " << end); 
+
     //add to confirmation list
     Message *temp = new Message;
     *temp = keyMsg;
@@ -644,7 +647,8 @@ void Node::sendCustKeyspace(UUID id, vector<int> keyInds){
 
        //make the message a keyspace message
        records.push_back(KeyspaceExchangeRecord{"share", start, end, (uint32_t) suffix});
-//Logger::log(Formatter() << uuid << "sent keyspace batch to " << id << " with " << start << "/" << suffix << ", " << end); 
+       Logger::log(Formatter() << uuid << " sent keyspace batch to " << id
+          << " with " << start << "/" << suffix << ", " << end); 
     }
 
     toKeyspaceMessage(keyMsg, records);
