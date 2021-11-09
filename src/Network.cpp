@@ -1,4 +1,5 @@
 #include <iostream>
+#include <sstream>
 
 #include "Logger.h"
 #include "Network.h"
@@ -19,6 +20,7 @@ Network::Network(ConnectionType connectionType, float PERCENT_CONNECTED, double 
     custLambda3 = {};
     custLambda2 = {};
     custLambda1 = {};
+    Logger::log(Formatter() << "lambda3=" << lambda3);
 }
 
 Network::Network(ConnectionType connectionType, float PERCENT_CONNECTED, double lambda1, double lambda2, 
@@ -32,9 +34,17 @@ Network::Network(ConnectionType connectionType, float PERCENT_CONNECTED, double 
     custLambda3 = lam3s;
     custLambda2 = lam2s;
     custLambda1 = lam1s;
+    Logger::log(Formatter() << "lambda3=" << lambda3);
+    stringstream ss;
+    ss << "custLambda3=[";
+    for (auto const& lambda : custLambda3) {
+        ss << lambda << ",";
+    }
+    ss << "], size=" << custLambda3.size();
+    string message;
+    ss >> message;
+    Logger::log(Formatter() << message);
 }
-
-
 
 void Network::tellAllNodesToConsumeObjects(){
     // To make this repeatable, loop through nodes in order they were added
