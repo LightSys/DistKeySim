@@ -475,13 +475,12 @@ void Network::printChannels(char spacer) {
 void Network::printKeyspaces(char spacer) {
     Logger::log(Formatter() << "KEYSPACES");
     Logger::log(Formatter()
-        << "Node" << spacer
+        << "Node Count" << spacer
         << "UUID" << spacer
-        << "Keyspace" << spacer
         << "Start" << spacer
         << "End" << spacer
         << "Suffix Bits" << spacer
-        << "Counter");
+        << "Keyspace Count");
 
     // To make this repeatable, loop through nodes in order they were added
     int nodeCounter = 0;
