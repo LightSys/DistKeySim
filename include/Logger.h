@@ -27,6 +27,8 @@ class Logger {
         static int getShared(bool clear,int more);
         static int getConsumption(bool clear, int more);
     	static std::string copyFile(string path);
+
+        static std::string join(vector<int> ints);
 };
 
 // From https://stackoverflow.com/questions/5396790/concatenate-strings-in-function-call-c

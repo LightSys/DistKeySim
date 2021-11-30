@@ -98,8 +98,10 @@ void ControlStrategy::adak(Node &node, int keysToShift) {
             nodeKeyspaces = node.getKeySpace();
             node.sendCustKeyspace(i->first, toSend);
 
-            Logger::log(Formatter() << "Node " << node.getUUID()
-                                    << " shared half of keyspace, do not give any more continue");
+            Logger::log(Formatter() << "adak: " << node.getUUID()
+                                    << ".sendCustKeypace(" << i->first
+                                    << ", " << toSend
+                                    << ") shared half of keyspace, do not give any more");
             continue;  // shared half of keyspace, do not give any more
         }
         // Block sharing
@@ -295,6 +297,10 @@ void ControlStrategy::adak(Node &node, int keysToShift) {
                     }
                 }
                 node.sendCustKeyspace(defs[j].first, indices);
+                Logger::log(Formatter() << "adak: " << node.getUUID()
+                                        << ".sendCustKeypace(" << defs[j].first
+                                        << ", " << Logger::join(indices)
+                                        << ") ");
                 // Logger::log(Formatter() << ".... and just sent them off");
                 /*
                               //will only run if the above search failed. Know all are smaller
@@ -396,6 +402,10 @@ void ControlStrategy::subBlocks(Node &node, long double avgKeys, int keysToShift
                 // Logger::log(Formatter() << "node " << node.getUUID() << " decided to grant a
                 // sublock to " << defs[j].first);
                 node.sendCustKeyspace(defs[j].first, node.makeSubBlock(keysToShift));
+                Logger::log(Formatter() << "subBlocks: " << node.getUUID()
+                                        << ".sendCustKeypace(" << defs[j].first
+                                        << ", " << Logger::join(node.makeSubBlock(keysToShift))
+                                        << ")");
             }
         }
     }

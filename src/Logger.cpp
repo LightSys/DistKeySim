@@ -1,3 +1,5 @@
+#include <numeric>
+
 #include "Logger.h"
 
 static ofstream logOutputStream;
@@ -107,4 +109,11 @@ std::string Logger::copyFile(string path) {
     dest.close();
 
     return path + "full_config" + to_string(num) + ".json";
+}
+
+std::string Logger::join(vector<int> ints) {
+    return std::accumulate(ints.begin()+1, ints.end(), std::to_string(ints[0]),
+        [](const std::string& a, int b){
+            return a + ',' + std::to_string(b);
+        });
 }
