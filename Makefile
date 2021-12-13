@@ -53,7 +53,8 @@ build-and-test :
 	$(MAKE) run-test1-repeatability
 	$(MAKE) run-test2-oscillation
 	$(MAKE) run-test3-non-repeatability
-	$(MAKE) run-test4-scenario-1 SCEN_1_DAYS=$(SCEN_1_DAYS)
+	$(MAKE) run-test4-scenario-1 SCEN_1_DAYS=0.1
+	#$(MAKE) run-test4-scenario-1 SCEN_1_DAYS=$(SCEN_1_DAYS)
 
 # ------------------
 # Test repeatability
@@ -265,7 +266,7 @@ all-images : images/Logger.png \
 # Move run output to another directory.
 # Only needed if you're running out of disk space.
 # ------------------------------------
-ALTERNATE_OUTPUTS = /Volumes/320G/LightSys/outputs
+ALTERNATE_OUTPUTS = /Volumes/WD-1T-Data/LightSys/outputs
 .PHONY: move
 move :
 	mkdir -p $(ALTERNATE_OUTPUTS)

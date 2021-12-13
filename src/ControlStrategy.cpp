@@ -53,7 +53,7 @@ void ControlStrategy::adak(Node &node, int keysToShift) {
         avgProv += longAlloc / prevWeek;  // big is good, small is bad
         avgKey += shortAlloc;
         peersChecked++;
-        Logger::log(Formatter() << "Node " << node.getUUID() << " logAlloc=" << longAlloc
+        Logger::log(Formatter() << "Node " << node.getUUID() << " longAlloc=" << longAlloc
                                 << " prevWeek=" << prevWeek << " avgProv=" << avgProv
                                 << " shortAlloc=" << shortAlloc << " avgKey=" << avgKey
                                 << " peersChecked=" << peersChecked);
@@ -148,7 +148,7 @@ void ControlStrategy::adak(Node &node, int keysToShift) {
                         << node.getUUID() << " is about to give away most of its keyspace... ");
         }
 
-        Logger::log(Formatter() << "Node " << node.getUUID() << "Has determined excessKeys "
+        Logger::log(Formatter() << "Node " << node.getUUID() << " Has determined excessKeys "
                                 << excessKeys << ", fraction of local "
                                 << node.getKeyspacePercent());
 
@@ -199,8 +199,8 @@ void ControlStrategy::adak(Node &node, int keysToShift) {
             long double fractOfDef = defs[j].second / totalDef;
             long double fractOfGlobalGive = excessKeys * fractOfDef;
 
-            Logger::log(Formatter() << "Node " << node.getUUID() << "Decided node " << defs[j].first
-                                    << "should get % of def" << fractOfDef
+            Logger::log(Formatter() << "Node " << node.getUUID() << " Decided node " << defs[j].first
+                                    << " should get % of def " << fractOfDef
                                     << ", which is percent of global " << fractOfGlobalGive);
 
             if (fractOfGlobalGive > node.getKeyspacePercent()) {
