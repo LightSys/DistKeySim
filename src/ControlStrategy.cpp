@@ -30,14 +30,14 @@ void ControlStrategy::adak(Node &node, int keysToShift) {
 
         // get data from the nodes
         if (i->second.first == nullptr) {
-            Logger::log(Formatter()
-                        << "Node " << node.getUUID() << " i->second.first == nullptr continue");
+            Logger::log(Formatter() << "Node " << node.getUUID()
+                << " i->second.first is nullptr so not sharing keyspace with this node");
             continue;
         }
 
         if (node.getKeySpace().size() == 0) {
-            Logger::log(Formatter()
-                        << "Node " << node.getUUID() << " node.getKeySpace().size() == 0 return");
+            Logger::log(Formatter() << "Node " << node.getUUID()
+                << " node.getKeySpace().size() == 0 so stop evaluating sharing keyspace");
             return;
         }
 
@@ -62,16 +62,24 @@ void ControlStrategy::adak(Node &node, int keysToShift) {
         // make sure sharing keyspace is actaully possible
         if (!node.canSendKeyspace(i->first)) {
             Logger::log(Formatter() << "Node " << node.getUUID()
-                                    << " !node.canSendKeyspace(i->first) continue");
+                                    << " !node.canSendKeyspace(i->first) so not sharing keyspace");
             continue;  // had no keys or target already received some keyspace, cannot share
         }
 
-        // Logger::log(Formatter() << "Node " << node.getUUID() << " lookinng at " << i->first << ":
-        // "); Logger::log(Formatter() << "Short: " << shortAlloc << ", long: " << longAlloc << ",
-        // day: " << prevDay << ", weel: " << prevWeek); see of have no keysapce (these would both
-        // be aprox 1 if this is true)
+        Logger::log(Formatter() << "Node " << node.getUUID()
+            << " looking at " << i->first << ":");
+        Logger::log(Formatter() << "  short: " << shortAlloc
+            << ", long: " << longAlloc
+            << ", day: " << prevDay
+            << ", week: " << prevWeek);
+        Logger::log(Formatter() << "Node " << node.getUUID()
+            << " 1-short == zero: " << (1 - shortAlloc < 0.000001)
+            << " 1 - longAlloc == zero: " << (1 - longAlloc < 0.000001));
+
+        // see of have no keyspace (these would both be approx 1 if this is true)
         if (1 - shortAlloc < 0.000001 && 1 - longAlloc < 0.000001) {
-            // give half of keyspace
+            Logger::log(Formatter() << "Node " << node.getUUID()
+                << " give half of keyspace");
             vector<Keyspace> nodeKeyspaces = node.getKeySpace();
 
             // Find the largest keyspace
