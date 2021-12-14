@@ -3,8 +3,9 @@ BUILD     = $(ADAK_ROOT)/build
 SRC       = $(ADAK_ROOT)/src
 INCLUDE   = $(ADAK_ROOT)/include
 BIN       = $(ADAK_ROOT)/bin
+BUILD_SRC = $(BUILD)/src
 SOURCES   = $(INCLUDE)/*.h $(INCLUDE)/*.hpp $(SRC)/*.cc $(SRC)/*.cpp
-OUTPUTS   = $(BUILD)/src/outputs
+OUTPUTS   = $(BUILD_SRC)/outputs
 USE_CORES = 1
 CMP       = cmp
 
@@ -23,7 +24,7 @@ endif
 # Build
 # -----
 .PHONY: all
-all: $(OUTPUTS)/adak
+all: $(BUILD_SRC)/adak
 
 # Update message protobuf sources when message.proto changes
 $(SRC)/message.pb.cc $(INCLUDE)/message.pb.h : $(SRC)/message.proto 
@@ -32,15 +33,28 @@ $(SRC)/message.pb.cc $(INCLUDE)/message.pb.h : $(SRC)/message.proto
 		mv  message.pb.h $(INCLUDE)
 
 # Build ADAK
-$(OUTPUTS)/adak : $(SOURCES)
+$(BUILD_SRC)/adak : $(SOURCES)
 	mkdir -p $(BUILD)
 	cd $(BUILD) && \
 		cmake .. -DBUILD_TESTING=0 && \
-		make -j$(USE_CORES)
+		$(MAKE) -j$(USE_CORES)
 
 .PHONY: src
 src :
 	@echo $(SOURCES)
+
+# ----------------------------------------------
+# This is the most comprehensive automated
+# test. It is the test we run in GitHub actions.
+# ----------------------------------------------
+.PHONY: build-and-test
+build-and-test :
+	$(MAKE) all
+	$(MAKE) run-test1-repeatability
+	$(MAKE) run-test2-oscillation
+	$(MAKE) run-test3-non-repeatability
+	$(MAKE) run-test4-scenario-1 SCEN_1_DAYS=0.1
+	#$(MAKE) run-test4-scenario-1 SCEN_1_DAYS=$(SCEN_1_DAYS)
 
 # ------------------
 # Test repeatability
@@ -59,8 +73,8 @@ NON =
 
 .PHONY: run-repeatable
 run-repeatable :
-	cp -p config/$(NON)repeatable-config.json $(BUILD)/src/config.json
-	cd $(BUILD)/src && ./adak
+	cp -p config/$(NON)repeatable-config.json $(BUILD_SRC)/config.json
+	cd $(BUILD_SRC) && ./adak
 	cd $(ADAK_ROOT)
 
 NEXT_RUN = $(shell cat $(OUTPUTS)/num.txt)
@@ -68,10 +82,10 @@ LAST_RUN = $(shell echo $(NEXT_RUN) - 1 | bc)
 .PHONY: sanitize
 sanitize :
 	$(MAKE) sanitize-logOutput RUN=$(LAST_RUN)
-	$(MAKE) sanitize-statsLog  RUN=$(LAST_RUN)
+	$(MAKE) sanitize-statslog  RUN=$(LAST_RUN)
 
-.PHONY: sanitize-statsLog
-sanitize-statsLog :
+.PHONY: sanitize-statslog
+sanitize-statslog :
 	$(ADAK_ROOT)/bin/sanitizeStatsLog.py $(OUTPUTS)/statslog$(RUN).csv > \
 		$(OUTPUTS)/statslog$(RUN).clean.txt
 
@@ -83,11 +97,11 @@ sanitize-logOutput :
 .PHONY: compare
 compare :
 	$(MAKE) compare-logOutput
-	$(MAKE) compare-statsLog
+	$(MAKE) compare-statslog
 
 PREV_RUN = $(shell echo $(LAST_RUN) - 1 | bc)
-.PHONY: compare-statsLog
-compare-statsLog :
+.PHONY: compare-statslog
+compare-statslog :
 	$(CMP) $(OUTPUTS)/statslog$(PREV_RUN).clean.txt \
 		       $(OUTPUTS)/statslog$(LAST_RUN).clean.txt
 
@@ -101,7 +115,15 @@ run-test1-repeatability :
 	$(MAKE) run-repeatable sanitize 
 	$(MAKE) run-repeatable sanitize 
 	$(MAKE) compare
-	echo "Test 1 Passed"
+	@echo "Test 1 Passed: Repeatability"
+
+# -----------------------------
+# Assert absence of oscillation
+# -----------------------------
+.PHONY: run-test2-oscillation
+run-test2-oscillation :
+	$(BIN)/testOscillation.py
+	@echo "Test 2 Passed: Oscillation"
 
 # ----------------------
 # Test non-repeatability
@@ -125,13 +147,12 @@ run-non-repeatable :
 run-test3-non-repeatability :
 	$(MAKE) run-non-repeatable sanitize 
 	$(MAKE) run-non-repeatable sanitize 
-	$(MAKE) compare; \
-	if [ $$? -eq 0 ]; \
-    then \
-        echo "Test 3 Failed"; \
+	@$(MAKE) compare; \
+	if [ $$? -eq 0 ]; then \
+        echo "Test 3 Failed: Non Repeatability"; \
         exit 1; \
-	else \
-        echo "Test 3 Passed"; \
+    else \
+        echo "Test 3 Passed: Non Repeatability"; \
     fi
 
 # --------------------------------------------
@@ -141,24 +162,38 @@ run-test3-non-repeatability :
 # Objective: Ensure the functionality of sharing keyspace blocks and
 # the stability of subblock sharing (there should be minimal,
 # if any, subblock sharing in this scenario)
+#
+# Note: We make 40 milliseconds the length of a simulation "tick".
+# Therefore, there are 25 simulation ticks per second.
+#
+# To run a test shorter than 1 day, do something like this
+#
+#     make run-test4-scenario-1 SCEN_1_DAYS=0.1
 
+SIM_UNITS_PER_SECOND = 25
+SECONDS      = 60
+MINUTES      = 60
+HOURS        = 24
+SCEN_1_DAYS  = 1
+ITERATIONS   = $(shell echo "$(SIM_UNITS_PER_SECOND)*$(SECONDS)*$(MINUTES)*$(HOURS)*$(SCEN_1_DAYS)" | bc)
 .PHONY: run-scenario1
 run-scenario1 :
-	cp -p config/scenario1-config.json $(BUILD)/src/config.json
-	cd $(BUILD)/src && ./adak
+	jq ".simLength |= $(ITERATIONS)" < config/scenario1-config.json > $(BUILD_SRC)/config.json
+	cd $(BUILD_SRC) && ./adak
 	cd $(ADAK_ROOT)
 
-.PHONY: run-short-scenario1
-run-short-scenario1 :
-	jq ".simLength |= 10000" < config/scenario1-config.json > $(BUILD)/src/config.json
-	cd $(BUILD)/src && ./adak
-	cd $(ADAK_ROOT)
+.PHONY: run-test4-scenario-1
+run-test4-scenario-1 :
+	$(BIN)/testScenario1.py --days $(SCEN_1_DAYS)
+	@echo "Test 4 Passed: Scenario 1"
 
+# ---------------------------------------------------
 # The purpose of default config has been lost in time
+# ---------------------------------------------------
 .PHONY: run-default-config
 run-default-config :
-	cp -p config/default-config.json $(BUILD)/src/config.json
-	cd $(BUILD)/src && ./adak
+	cp -p config/default-config.json $(BUILD_SRC)/config.json
+	cd $(BUILD_SRC) && ./adak
 	cd $(ADAK_ROOT)
 
 # -------------------------
@@ -171,17 +206,9 @@ NUM_NODES = 10
 run-eventGen :
 	jq ".connectionMode |= \"$(CONNECTION_MODE)\"" < config/eventGen-config.json | \
 		jq ".simLength |= $(SIM_LENGTH)" | \
-		jq ".numNodes |= $(NUM_NODES)" > $(BUILD)/src/config.json
-	cd $(BUILD)/src && ./adak
+		jq ".numNodes |= $(NUM_NODES)" > $(BUILD_SRC)/config.json
+	cd $(BUILD_SRC) && ./adak
 	cd $(ADAK_ROOT)
-
-# -----------------------------
-# Assert absence of oscillation
-# -----------------------------
-.PHONY: run-test2-oscillation
-run-test2-oscillation :
-	$(BIN)/testOscillation.py
-	echo "Test 2 Passed"
 
 # ------------------
 # Show Visualization
@@ -199,6 +226,8 @@ show-vis2 :
 # -----------------------
 # Generate class diagrams
 # -----------------------
+# Get hpp2plantuml with homebrew or pip install
+# ---------------------------------------------
 images/%.puml : include/%.h
 	hpp2plantuml -i $<  -o $@
 
@@ -233,6 +262,26 @@ all-images : images/Logger.png \
 	images/main-seq.png \
 	images/Simulation-seq.png
 
+# ------------------------------------
+# Move run output to another directory.
+# Only needed if you're running out of disk space.
+# ------------------------------------
+ALTERNATE_OUTPUTS = /Volumes/WD-1T-Data/LightSys/outputs
+.PHONY: move
+move :
+	mkdir -p $(ALTERNATE_OUTPUTS)
+	if [ -d $(OUTPUTS) ] ; then \
+		rsync -a --progress --remove-source-files \
+			$(OUTPUTS)/logOutput* \
+		    $(OUTPUTS)/statslog* \
+			$(OUTPUTS)/copy_of_config* \
+			$(OUTPUTS)/full_config* $(ALTERNATE_OUTPUTS) ; \
+	fi
+
+.PHONY: ltr
+ltr :
+	ls -ltr $(ALTERNATE_OUTPUTS)
+
 # -----
 # Clean
 # -----
@@ -245,7 +294,12 @@ clean :
 .PHONY: clean-outputs
 clean-outputs :
 	rm -rf $(OUTPUTS)
-	rm -f  $(BUILD)/src/*.{csv,txt,json}
+	rm -f  $(BUILD_SRC)/*.{csv,txt,json}
+
+.PHONY: clean-alternate-outputs
+clean-alternate-outputs :
+	rm -r $(ALTERNATE_OUTPUTS)/*
+	rm -f $(BUILD_SRC)/*.{csv,txt,json}
 
 .PHONY: clean-last-output
 clean-last-output :

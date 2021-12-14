@@ -4,6 +4,8 @@
 
 import argparse
 import datetime
+import os
+import sys
 
 def parseCommandLineArgs():
     parser = argparse.ArgumentParser(
@@ -23,12 +25,23 @@ if __name__ == "__main__":
     args = parseCommandLineArgs()
     splitOn = " -- {} ".format(args.dayOfWeek)
 
+    fileSize = os.path.getsize(args.logOutput)
+    currentSize = 0
+    prevPercentComplete = -1
+
     file = open(args.logOutput, 'r')
     
     uuids = []
     foundChannels = False
     foundToFrom = False
     for line in file:
+        percentComplete = int(currentSize*100.0/fileSize)
+        # sys.stderr.write("%d%% c=%d f=%d\n" % (percentComplete, currentSize, fileSize))
+        if percentComplete > prevPercentComplete:
+            sys.stderr.write("%d%%\r" % percentComplete)
+            prevPercentComplete = percentComplete
+        currentSize += len(line)
+
         lineParts = line.strip().split(splitOn)
         log = lineParts[0]
 
@@ -56,6 +69,11 @@ if __name__ == "__main__":
             uuid = uuidParts[0]
             if uuid not in uuids:
                 uuids.append(uuid)
+        if "objectConsuptionRatePerSecond" in log:
+            uuidParts = log.split(" ")
+            uuid = uuidParts[0]
+            if uuid not in uuids:
+                uuids.append(uuid)
         foundChannels = foundChannels or "CHANNELS" in log
         foundToFrom = foundToFrom or "TO,FROM,ID" in log
         if foundChannels and foundToFrom and "TO,FROM,ID" not in log:
@@ -75,3 +93,4 @@ if __name__ == "__main__":
     
     # Closing files
     file.close()
+    sys.stderr.write("100%\n")

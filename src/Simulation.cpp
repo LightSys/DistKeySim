@@ -53,11 +53,20 @@ void Simulation::run() {
     network.printChannels();
     network.printKeyspaces();
 
-    Logger::log(Formatter() << "Ticking network a bunch");
-    for (int i = 0; i < config.simLength; i++) {
+    Logger::log(Formatter() << "Ticking network " << config.simLength << " iterations");
+    long prevPercentComplete = -1;
+    for (long i = 0; i < config.simLength; i++) {
         Logger::log(Formatter() << "***********************************************Tick");
-        Logger::log(Formatter() << "Time Step:" << numNodes + 1 + i << " ... ");
-        std::cout << i * 100 / config.simLength << "%\r";
+        Logger::log(Formatter() << "Time Step: " << numNodes + 1 + i << " ... ");
+        long percentComplete = long(i * 100) / long(config.simLength);
+        Logger::log(Formatter()
+            << "percentComplete ( " << percentComplete << ")"
+            << " = i (" << i << ")"
+            << " * 100 / config.simLength (" << config.simLength << ")");
+        if (percentComplete != prevPercentComplete) {
+            std::cout <<  percentComplete << "%\r" << std::flush;
+            prevPercentComplete = percentComplete;
+        }
         // adding stuff to make the tics have event
         // All of these left-most statements are for debugging runtimes. Can help show the slowest
         // sections of the code. auto start = std::chrono::high_resolution_clock::now();
