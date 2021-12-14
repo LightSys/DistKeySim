@@ -25,7 +25,8 @@ void ControlStrategy::adak(Node &node, int keysToShift) {
 
     // Check all peers and share keyspace if needed
     for (i = nodePeers.begin(); i != nodePeers.end(); i++) {
-        Logger::log(Formatter() << "Node " << node.getUUID() << " i=" << i->first);
+        Logger::log(Formatter() << "Node " << node.getUUID()
+            << " is evaluating node " << i->first << " for sharing keyspace");
 
         // get data from the nodes
         if (i->second.first == nullptr) {
