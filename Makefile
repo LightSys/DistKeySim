@@ -187,6 +187,19 @@ run-test4-scenario-1 :
 	$(BIN)/testScenario1.py --days $(SCEN_1_DAYS)
 	@echo "Test 4 Passed: Scenario 1"
 
+# ----------------------------------------------------
+# Display time step at which keys are consumed
+# ----------------------------------------------------
+LOGFILE = build/src/outputs/logOutput17.clean.txt
+
+.PHONY: show-consuming-keys
+show-consuming-keys :
+	awk '/Time Step/ {step=$$3} /consuming/ {print step, $$0}' $(LOGFILE)
+
+.PHONY: count-consuming-keys
+count-consuming-keys :
+	awk '/Time Step/ {step=$$3} /consuming/ {print step, $$0}' $(LOGFILE) | wc -l
+
 # ---------------------------------------------------
 # The purpose of default config has been lost in time
 # ---------------------------------------------------
@@ -281,6 +294,12 @@ move :
 .PHONY: ltr
 ltr :
 	ls -ltr $(ALTERNATE_OUTPUTS)
+
+.PHONY: move-from-vm
+move-from-vm :
+	zip $(OUTPUTS)/outputs.zip $(OUTPUTS)
+	CLIENT_IP=`pinky | awk '/devel/ { print $NF }' | tail -1` ; \
+	rsync -a --progress $(OUTPUTS)/outputs.zip $(USER)@$$CLIENT_IP$(ALTERNATE_OUTPUTS)
 
 # -----
 # Clean
