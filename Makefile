@@ -275,32 +275,6 @@ all-images : images/Logger.png \
 	images/main-seq.png \
 	images/Simulation-seq.png
 
-# ------------------------------------
-# Move run output to another directory.
-# Only needed if you're running out of disk space.
-# ------------------------------------
-ALTERNATE_OUTPUTS = /Volumes/WD-1T-Data/LightSys/outputs
-.PHONY: move
-move :
-	mkdir -p $(ALTERNATE_OUTPUTS)
-	if [ -d $(OUTPUTS) ] ; then \
-		rsync -a --progress --remove-source-files \
-			$(OUTPUTS)/logOutput* \
-		    $(OUTPUTS)/statslog* \
-			$(OUTPUTS)/copy_of_config* \
-			$(OUTPUTS)/full_config* $(ALTERNATE_OUTPUTS) ; \
-	fi
-
-.PHONY: ltr
-ltr :
-	ls -ltr $(ALTERNATE_OUTPUTS)
-
-.PHONY: move-from-vm
-move-from-vm :
-	zip $(OUTPUTS)/outputs.zip $(OUTPUTS)
-	CLIENT_IP=`pinky | awk '/devel/ { print $NF }' | tail -1` ; \
-	rsync -a --progress $(OUTPUTS)/outputs.zip $(USER)@$$CLIENT_IP$(ALTERNATE_OUTPUTS)
-
 # -----
 # Clean
 # -----
