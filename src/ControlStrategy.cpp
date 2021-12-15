@@ -187,6 +187,20 @@ void ControlStrategy::adak(Node &node, int keysToShift) {
                 i->second.first->info().records(0).creationratedata().shortallocationratio();
 
             // log defs for later portion here
+            Logger::log(Formatter() << node.getUUID()
+                << " longAlloc=" << longAlloc
+                << " shortAlloc=" << shortAlloc
+                << " prevWeek=" << prevWeek
+                << " avgProv=" << avgProv
+                << " provRatio=" << provRatio
+                << " longAlloc/prevWeek=" << longAlloc / prevWeek
+                << " longAlloc/prevWeek < avgProv="
+                << ((longAlloc / prevWeek < avgProv) ? "true" : "false")
+                << " (longAlloc / prevWeek) / provRatio < 0.75="
+                << (((longAlloc / prevWeek) / provRatio < 0.75) ? "true" : "false")
+                << " 1 - shortAlloc < 0.000001=" << ((1 - shortAlloc < 0.000001) ? "true" : "false")
+                << " 1 - longAlloc < 0.000001=" << ((1 - longAlloc < 0.000001) ? "true" : "false"));
+
             if (longAlloc / prevWeek < avgProv && (longAlloc / prevWeek) / provRatio < 0.75 &&
                 !(1 - shortAlloc < 0.000001 && 1 - longAlloc < 0.000001)) {
                 // FIXME: What about if the number of peers is 100? 1000? Defin in terms of accuracy
