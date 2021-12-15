@@ -73,8 +73,8 @@ void ControlStrategy::adak(Node &node, int keysToShift) {
             << ", day: " << prevDay
             << ", week: " << prevWeek);
         Logger::log(Formatter() << "Node " << node.getUUID()
-            << " 1-short == zero: " << (1 - shortAlloc < 0.000001)
-            << " 1 - longAlloc == zero: " << (1 - longAlloc < 0.000001));
+            << " 1-short == zero: " << ((1 - shortAlloc < 0.000001) ? "true" : "false")
+            << " 1 - longAlloc == zero: " << ((1 - longAlloc < 0.000001) ? "true" : "false"));
 
         // see of have no keyspace (these would both be approx 1 if this is true)
         if (1 - shortAlloc < 0.000001 && 1 - longAlloc < 0.000001) {
@@ -196,12 +196,19 @@ void ControlStrategy::adak(Node &node, int keysToShift) {
                                        .records(0)
                                        .creationratedata()
                                        .createdpreviousweek();
+            Logger::log(Formatter() << "Node " << node.getUUID()
+                << " j=" << j
+                << " defs[j].second=" << defs[j].second
+                << " totalDef=" << totalDef
+                << " defs[j].second / totalDef < 0.05="
+                << ((defs[j].second / totalDef < 0.05) ? "true" : "false"));
             if (defs[j].second / totalDef < 0.05) {
                 // FIXME: What about if the number of peers is 100? 1000? Defin in terms of accuracy
                 // (currently is 10... Logger::log(Formatter() << "node " << defs[j].first << " was
                 // kicked for haaving too little def:  " << defs[j].second);
                 defs.erase(defs.begin() + j);
                 j--;
+                Logger::log(Formatter() << "Node " << node.getUUID() << " continue");
                 continue;
             }
 

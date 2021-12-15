@@ -53,7 +53,7 @@ build-and-test :
 	$(MAKE) run-test1-repeatability
 	$(MAKE) run-test2-oscillation
 	$(MAKE) run-test3-non-repeatability
-	$(MAKE) run-test4-scenario-1 SCEN_1_DAYS=0.1
+	$(MAKE) run-test4-scenario-1 SCEN_1_DAYS=0.01
 	#$(MAKE) run-test4-scenario-1 SCEN_1_DAYS=$(SCEN_1_DAYS)
 
 # ------------------
@@ -282,7 +282,7 @@ all-images : images/Logger.png \
 clean :
 	touch $(SRC)/message.proto
 	rm -rf build
-	rm -f make.out
+	cp /dev/null make.out
 
 .PHONY: clean-outputs
 clean-outputs :
