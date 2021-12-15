@@ -23,21 +23,24 @@ void ControlStrategy::adak(Node &node, int keysToShift) {
     std::vector<std::pair<UUID, double>> defs;
     double totalDef = 0;  // the deficit below the average
 
+    Logger::log(Formatter() << "adak(node=" << node.getUUID()
+       << ", keysToShift=" << keysToShift << ")");
+
     // Check all peers and share keyspace if needed
     for (i = nodePeers.begin(); i != nodePeers.end(); i++) {
-        Logger::log(Formatter() << "Node " << node.getUUID()
-            << " is evaluating node " << i->first << " for sharing keyspace");
+        Logger::log(Formatter() << node.getUUID()
+           << " is evaluating " << i->first << " for sharing keyspace");
 
         // get data from the nodes
         if (i->second.first == nullptr) {
-            Logger::log(Formatter() << "Node " << node.getUUID()
-                << " i->second.first is nullptr so not sharing keyspace with this node");
+            Logger::log(Formatter() << node.getUUID()
+               << " i->second.first is nullptr so not sharing keyspace with that nonexistant node");
             continue;
         }
 
         if (node.getKeySpace().size() == 0) {
-            Logger::log(Formatter() << "Node " << node.getUUID()
-                << " node.getKeySpace().size() == 0 so stop evaluating sharing keyspace");
+            Logger::log(Formatter() << node.getUUID()
+               << " node.getKeySpace().size() == 0 so stop evaluating sharing keyspace");
             return;
         }
 
@@ -54,32 +57,36 @@ void ControlStrategy::adak(Node &node, int keysToShift) {
         avgProv += longAlloc / prevWeek;  // big is good, small is bad
         avgKey += shortAlloc;
         peersChecked++;
-        Logger::log(Formatter() << "Node " << node.getUUID() << " longAlloc=" << longAlloc
+        Logger::log(Formatter() << node.getUUID()
+                                << " longAlloc=" << longAlloc
                                 << " prevWeek=" << prevWeek << " avgProv=" << avgProv
                                 << " shortAlloc=" << shortAlloc << " avgKey=" << avgKey
                                 << " peersChecked=" << peersChecked);
 
         // make sure sharing keyspace is actaully possible
         if (!node.canSendKeyspace(i->first)) {
-            Logger::log(Formatter() << "Node " << node.getUUID()
-                                    << " !node.canSendKeyspace(i->first) so not sharing keyspace");
+            Logger::log(Formatter() << node.getUUID()
+               << " !node.canSendKeyspace(i->first) so not sharing keyspace");
             continue;  // had no keys or target already received some keyspace, cannot share
         }
 
-        Logger::log(Formatter() << "Node " << node.getUUID()
-            << " looking at " << i->first << ":");
-        Logger::log(Formatter() << "  short: " << shortAlloc
-            << ", long: " << longAlloc
-            << ", day: " << prevDay
-            << ", week: " << prevWeek);
-        Logger::log(Formatter() << "Node " << node.getUUID()
-            << " 1-short == zero: " << ((1 - shortAlloc < 0.000001) ? "true" : "false")
-            << " 1 - longAlloc == zero: " << ((1 - longAlloc < 0.000001) ? "true" : "false"));
+        Logger::log(Formatter() << node.getUUID() << " looking at " << i->first << ":");
+        Logger::log(Formatter() << node.getUUID()
+           << " short: " << shortAlloc
+           << ", long: " << longAlloc
+           << ", day: " << prevDay
+           << ", week: " << prevWeek);
+        Logger::log(Formatter() << node.getUUID()
+           << " 1-short == zero: "
+           << ((1 - shortAlloc < 0.000001) ? "true" : "false"));
+        Logger::log(Formatter() << node.getUUID()
+           << " 1 - longAlloc == zero: "
+           << ((1 - longAlloc < 0.000001) ? "true" : "false"));
 
         // see of have no keyspace (these would both be approx 1 if this is true)
         if (1 - shortAlloc < 0.000001 && 1 - longAlloc < 0.000001) {
-            Logger::log(Formatter() << "Node " << node.getUUID()
-                << " give half of keyspace");
+            Logger::log(Formatter() << node.getUUID()
+              << " give half of keyspace");
             vector<Keyspace> nodeKeyspaces = node.getKeySpace();
 
             // Find the largest keyspace
@@ -96,9 +103,8 @@ void ControlStrategy::adak(Node &node, int keysToShift) {
 
             // there is a chance it only has subblocks
             if (largest == -1) {
-                Logger::log(Formatter()
-                            << "Node " << node.getUUID()
-                            << " has only sub-blocks, and cannot split with node " << i->first);
+                Logger::log(Formatter() << node.getUUID()
+                  << " has only sub-blocks, and cannot split with " << i->first);
                 continue;
             }
 
@@ -107,20 +113,23 @@ void ControlStrategy::adak(Node &node, int keysToShift) {
             nodeKeyspaces = node.getKeySpace();
             node.sendCustKeyspace(i->first, toSend);
 
-            Logger::log(Formatter() << "adak: " << node.getUUID()
-                                    << ".sendCustKeypace(" << i->first
+            Logger::log(Formatter() << node.getUUID()
+                                    << " called sendCustKeypace(" << i->first
                                     << ", " << toSend
                                     << ") shared half of keyspace, do not give any more");
             continue;  // shared half of keyspace, do not give any more
         }
         // Block sharing
     }
+    Logger::log(Formatter() << node.getUUID() << " Done checking peers");
 
     // calculate averages
     avgProv /= peersChecked;
     avgKey /= peersChecked;
-    Logger::log(Formatter() << "Node " << node.getUUID() << " avgProv=" << avgProv
-                            << " avgKey=" << avgKey << " peersChecked=" << peersChecked);
+    Logger::log(Formatter() << node.getUUID()
+                            << " avgProv=" << avgProv
+                            << " avgKey=" << avgKey
+                            << " peersChecked=" << peersChecked);
 
     // determine block sharing
     std::shared_ptr<NodeData> nodeData = node.getNodeData();
@@ -130,8 +139,10 @@ void ControlStrategy::adak(Node &node, int keysToShift) {
     double lngTrmAllc = nodeData->updateLongTermAllocationRatio(nodeKeyspaces);
     double lngAgg = node.calcLongAggregate(BROADCAST_UUID);
     double provRatio = lngTrmAllc / lngAgg;
-    Logger::log(Formatter() << "long agg: " << lngAgg);
-    Logger::log(Formatter() << "Node " << node.getUUID() << " with percent of global "
+    Logger::log(Formatter() << node.getUUID()
+               << " long agg: " << lngAgg);
+    Logger::log(Formatter() << node.getUUID()
+                            << " with percent of global "
                             << node.getKeyspacePercent() << " and local avg prov " << avgProv
                             << " has prov " << provRatio << ", (avgProv < provRatio)="
                             << ((avgProv < provRatio) ? "true" : "false"));
@@ -153,17 +164,21 @@ void ControlStrategy::adak(Node &node, int keysToShift) {
         // never give away all of thier keyspace
         if (excessKeys / node.getKeyspacePercent() > 0.95) {
             excessKeys = 0.95 * node.getKeyspacePercent();
-            Logger::log(Formatter()
-                        << node.getUUID() << " is about to give away most of its keyspace... ");
+            Logger::log(Formatter() << node.getUUID()
+               << " is about to give away most of its keyspace... ");
         }
 
-        Logger::log(Formatter() << "Node " << node.getUUID() << " Has determined excessKeys "
+        Logger::log(Formatter() << node.getUUID()
+                                << " Has determined excessKeys "
                                 << excessKeys << ", fraction of local "
                                 << node.getKeyspacePercent());
 
         // calculate the total deficit size for peers
         for (i = nodePeers.begin(); i != nodePeers.end(); i++) {
             if (i->second.first == nullptr) continue;
+            Logger::log(Formatter() << node.getUUID()
+               << " Calculating total deficit for peer "
+               << i->second.first->sourcenodeid());
             long double longAlloc =
                 i->second.first->info().records(0).creationratedata().longallocationratio();
             long double prevWeek =
@@ -176,6 +191,10 @@ void ControlStrategy::adak(Node &node, int keysToShift) {
                 !(1 - shortAlloc < 0.000001 && 1 - longAlloc < 0.000001)) {
                 // FIXME: What about if the number of peers is 100? 1000? Defin in terms of accuracy
                 // (currently is 10...
+                Logger::log(Formatter() << node.getUUID()
+                    << " pushing (" << i->second.first->sourcenodeid()
+                    << ", " << avgProv - longAlloc / prevWeek
+                    << ") to defs");
                 defs.push_back(std::pair<UUID, long double>(i->second.first->sourcenodeid(),
                                                             (avgProv - longAlloc / prevWeek)));
                 // add to total deficit
@@ -183,6 +202,7 @@ void ControlStrategy::adak(Node &node, int keysToShift) {
             }
         }
 
+        Logger::log(Formatter() << node.getUUID() << " defs.size()=" << defs.size());
         // find out what percentage of the global keysapce will be given, and give accordingly
         for (int j = 0; j < defs.size(); j++) {
             // update each node with their relative need
@@ -196,33 +216,33 @@ void ControlStrategy::adak(Node &node, int keysToShift) {
                                        .records(0)
                                        .creationratedata()
                                        .createdpreviousweek();
-            Logger::log(Formatter() << "Node " << node.getUUID()
-                << " j=" << j
-                << " defs[j].second=" << defs[j].second
-                << " totalDef=" << totalDef
-                << " defs[j].second / totalDef < 0.05="
-                << ((defs[j].second / totalDef < 0.05) ? "true" : "false"));
+            Logger::log(Formatter() << node.getUUID()
+               << " j=" << j
+               << " defs[j].second=" << defs[j].second
+               << " totalDef=" << totalDef
+               << " defs[j].second / totalDef < 0.05="
+               << ((defs[j].second / totalDef < 0.05) ? "true" : "false"));
             if (defs[j].second / totalDef < 0.05) {
                 // FIXME: What about if the number of peers is 100? 1000? Defin in terms of accuracy
-                // (currently is 10... Logger::log(Formatter() << "node " << defs[j].first << " was
+                // (currently is 10... Logger::log(Formatter() << defs[j].first << " was
                 // kicked for haaving too little def:  " << defs[j].second);
                 defs.erase(defs.begin() + j);
                 j--;
-                Logger::log(Formatter() << "Node " << node.getUUID() << " continue");
+                Logger::log(Formatter() << node.getUUID() << " continue");
                 continue;
             }
 
             long double fractOfDef = defs[j].second / totalDef;
             long double fractOfGlobalGive = excessKeys * fractOfDef;
 
-            Logger::log(Formatter() << "Node " << node.getUUID() << " Decided node " << defs[j].first
+            Logger::log(Formatter() << node.getUUID() << " Decided " << defs[j].first
                                     << " should get % of def " << fractOfDef
                                     << ", which is percent of global " << fractOfGlobalGive);
 
             if (fractOfGlobalGive > node.getKeyspacePercent()) {
                 Logger::log(
                     Formatter()
-                    << "Giving away too much keyspace; percent to goive is greater than what have");
+                   << "Giving away too much keyspace; percent to goive is greater than what have");
                 throw 1;
             }
             // convert fraction to a sum of keyspaces via binary expansion
@@ -277,7 +297,7 @@ void ControlStrategy::adak(Node &node, int keysToShift) {
                         // is more than need, just finish it off and send
                         // take deficit, and turn it into a check list
                         // Logger::log(Formatter() << ".... can finish it off; found keyspace " <<
-                        // tempSpace.getStart() << "/"  << tempSpace.getSuffix() );
+                        // tempSpace.getStart() << "/" << tempSpace.getSuffix() );
                         int def = totalNeed - numFound;
                         int index = l;
 
@@ -336,14 +356,14 @@ void ControlStrategy::adak(Node &node, int keysToShift) {
                                   if(numFound == pow(2, l)){ //if this fails, another loop will
                 occur...
                                      //send the keyspaces off and exit
-                //Logger::log(Formatter() << "Node " << node.getUUID() << "sent a keyspace with " <<
+                //Logger::log(Formatter() << node.getUUID() << "sent a keyspace with " <<
                 indices.size() << " fragments\n"; node.sendCustKeyspace(defs[j].first, indices);
                                      sentKeyspace = true;
                                   }else if(numFound > pow(2, l)){
                                       //should be impossible, this needs fixed
                                       //FIXME: add a control stategy exception class
                                       Logger::log(Formatter() << "too much keyspace; " << numFound
-                << " out of " << pow(2, l)); throw 1;
+               << " out of " << pow(2, l)); throw 1;
                                   }
 
                                   l++;
@@ -370,11 +390,11 @@ void ControlStrategy::subBlocks(Node &node, long double avgKeys, int keysToShift
     double totalDef = 0;  // the deficit below the average
     vector<Keyspace> nodeKeyspaces = node.getKeySpace();
     double provRatio = nodeData->updateShortTermAllocationRatio(nodeKeyspaces);
-    // Logger::log(Formatter() << "Node " << node.getUUID() << " has says local average keys is  "
+    // Logger::log(Formatter() << node.getUUID() << " has says local average keys is  "
     // << avgKeys << ", and prov is "
-    //    << provRatio << "\n^^^^short alloc " << nodeData->getShortTermAllocationRatio() << ", day:
+    //   << provRatio << "\n^^^^short alloc " << nodeData->getShortTermAllocationRatio() << ", day:
     //    "
-    //    << node.getCreatedDay());
+    //   << node.getCreatedDay());
 
     if (avgKeys > provRatio) {
         // Logger::log(Formatter() << node.getUUID() << " wants to give keyspace...";
@@ -415,7 +435,7 @@ void ControlStrategy::subBlocks(Node &node, long double avgKeys, int keysToShift
             // double localAlloc = nodeData->updateShortTermAllocationRatio(nodeKeyspaces);
             double totalKeyspace = node.getTotalKeyspaceBlockSize();
             if (totalKeyspace > keysToShift) {
-                // Logger::log(Formatter() << "node " << node.getUUID() << " decided to grant a
+                // Logger::log(Formatter() << node.getUUID() << " decided to grant a
                 // sublock to " << defs[j].first);
                 node.sendCustKeyspace(defs[j].first, node.makeSubBlock(keysToShift));
                 Logger::log(Formatter() << "subBlocks: " << node.getUUID()
