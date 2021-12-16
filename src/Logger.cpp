@@ -117,6 +117,7 @@ std::string Logger::join(vector<int> ints) {
     for (int i=0; i < ints.size(); i++)
         std::cout << ints.at(i) << ' ' << std::flush;
     std::cout << std::endl << std::flush;
+    std::cout << "join: done" << std::endl << std::flush;
 
     return std::accumulate(ints.begin()+1, ints.end(), std::to_string(ints[0]),
         [](const std::string& a, int b){
