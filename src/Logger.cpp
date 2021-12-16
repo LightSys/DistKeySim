@@ -15,6 +15,7 @@ void Logger::deleteOldLog() {
 void Logger::log(string message) {
     time_t date = chrono::system_clock::to_time_t(chrono::system_clock::now());
     logOutputStream << message << " -- " << ctime(&date);  // log message and timestamp
+    logOutputStream.flush();
 }
 
 void Logger::logStats(vector<string> stats) {
@@ -112,6 +113,11 @@ std::string Logger::copyFile(string path) {
 }
 
 std::string Logger::join(vector<int> ints) {
+    std::cout << "join: " << std::flush;
+    for (int i=0; i < ints.size(); i++)
+        std::cout << ints.at(i) << ' ' << std::flush;
+    std::cout << std::endl << std::flush;
+
     return std::accumulate(ints.begin()+1, ints.end(), std::to_string(ints[0]),
         [](const std::string& a, int b){
             return a + ',' + std::to_string(b);
