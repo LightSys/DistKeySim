@@ -7,14 +7,13 @@ using namespace std;
 
 // default value for accuracy
 double ControlStrategy::accuracy = 0.0;
-double ControlStrategy::epsilon = 0.000001;
 
-bool isLessThan(double l, double r) {
-    return l - r < ControlStrategy::epsilon;
-}
+// bool isLessThan(double l, double r) {
+//     return l - r < ControlStrategy::epsilon;
+// }
 
-bool isEqual(double l, double r) {
-    return AlmostEqualRelative(l, r, ControlStrategy::epsilon);
+bool isEqual(double left, double right, int maxUlps = 10) {
+    return AlmostEqualUlpsFinal(left, right, maxUlps);
 }
 
 string toString(bool b) {
@@ -88,13 +87,10 @@ void ControlStrategy::adak(Node &node, int keysToShift) {
         Logger::log(Formatter() << node.getUUID() << " looking at " << i->first << ":");
         Logger::log(Formatter() << node.getUUID()
            << " shortAlloc=" << shortAlloc
+           << " (1-shortAlloc)=" << (1 - shortAlloc)
            << " longAlloc=" << longAlloc
-           << " prevDay=" << prevDay
-           << " prevWeek=" << prevWeek);
-        Logger::log(Formatter() << node.getUUID()
-           << " isEqual(1, shortAlloc)=" << toString(isEqual(1, shortAlloc)));
-        Logger::log(Formatter() << node.getUUID()
-           << " isEqual(1, longAlloc)=" << toString(isEqual(1, longAlloc)));
+           << " (1-longAlloc)=" << (1 - longAlloc));
+
         assert(1 - shortAlloc < 0.000001 == isEqual(1, shortAlloc));
         assert(1 - longAlloc < 0.000001 == isEqual(1, longAlloc));
 
@@ -204,8 +200,10 @@ void ControlStrategy::adak(Node &node, int keysToShift) {
 
             // log defs for later portion here
             Logger::log(Formatter() << node.getUUID()
-                << " longAlloc=" << longAlloc
                 << " shortAlloc=" << shortAlloc
+                << " (1-shortAlloc)=" << (1 - shortAlloc)
+                << " longAlloc=" << longAlloc
+                << " (1-longAlloc)=" << (1 - longAlloc)
                 << " prevWeek=" << prevWeek
                 << " avgProv=" << avgProv
                 << " provRatio=" << provRatio);
@@ -439,6 +437,15 @@ void ControlStrategy::subBlocks(Node &node, long double avgKeys, int keysToShift
                 i->second.first->info().records(0).creationratedata().longallocationratio();
             // long double prevDay   =
             // i->second.first->info().records(0).creationratedata().createdpreviousday();
+            Logger::log(Formatter() << node.getUUID()
+                << " shortAlloc=" << shortAlloc
+                << " (1-shortAlloc)=" << (1 - shortAlloc)
+                << " longAlloc=" << longAlloc
+                << " (1-longAlloc)=" << (1 - longAlloc));
+
+            assert(1 - shortAlloc < 0.000001 == isEqual(1, shortAlloc));
+            assert(1 - longAlloc < 0.000001 == isEqual(1, longAlloc));
+            
             if (shortAlloc > avgKeys && shortAlloc / provRatio > 1.05 &&
                 !(isEqual(1, shortAlloc) && isEqual(1, longAlloc))) {
                 totalDef += shortAlloc - avgKeys;

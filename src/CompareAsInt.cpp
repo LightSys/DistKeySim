@@ -31,8 +31,6 @@ functions to print out floating point numbers and their representation.
 bool AlmostEqualRelative(float A, float B, float maxRelativeError) {
   if (A == B)
     return true;
-  if (B == 0)
-    return false;
   float relativeError = fabsf((A - B) / B);
   if (relativeError <= maxRelativeError)
     return true;
