@@ -8,16 +8,35 @@ using namespace std;
 // default value for accuracy
 double ControlStrategy::accuracy = 0.0;
 
-// bool isLessThan(double l, double r) {
-//     return l - r < ControlStrategy::epsilon;
-// }
-
-bool isEqual(double left, double right, int maxUlps = 10) {
-    return AlmostEqualUlpsFinal(left, right, maxUlps);
-}
-
 string toString(bool b) {
     return b ? "true" : "false";
+}
+
+bool isLessThan(double left, double right) {
+    Logger::log(Formatter()
+        << "isLessThan: left=" << left
+        << " right=" << right
+        << " (left<right)=" << toString(left<right));
+    return left < right;
+}
+
+bool isGreaterThan(double left, double right) {
+    Logger::log(Formatter()
+        << "isGreaterThan: left=" << left
+        << " right=" << right
+        << " (left>right)=" << toString(left>right));
+    return left > right;
+}
+
+bool isEqual(double left, double right, int maxUlps = 10) {
+    Logger::log(Formatter()
+        << "isEqual: left=" << left
+        << " right=" << right
+        << " (left==right)=" << toString(left==right)
+        << " AlmostEqualUlpsFinal(left, right)="
+        << toString(AlmostEqualUlpsFinal(left, right, maxUlps)));
+    assert(left - right < 0.000001 == AlmostEqualUlpsFinal(left, right, maxUlps));
+    return AlmostEqualUlpsFinal(left, right, maxUlps);
 }
 
 ControlStrategy::ControlStrategy(ClockType type, clock_unit_t heartbeatPeriod) {
@@ -91,9 +110,6 @@ void ControlStrategy::adak(Node &node, int keysToShift) {
            << " longAlloc=" << longAlloc
            << " (1-longAlloc)=" << (1 - longAlloc));
 
-        assert(1 - shortAlloc < 0.000001 == isEqual(1, shortAlloc));
-        assert(1 - longAlloc < 0.000001 == isEqual(1, longAlloc));
-
         // see of have no keyspace (these would both be approx 1 if this is true)
         if (isEqual(1, shortAlloc) && isEqual(1, longAlloc)) {
             Logger::log(Formatter() << node.getUUID() << " give half of keyspace");
@@ -166,7 +182,7 @@ void ControlStrategy::adak(Node &node, int keysToShift) {
     //    node.getKeySpace()[n].getSuffix());
     // }
 
-    if (avgProv < provRatio) {
+    if (isLessThan(avgProv, provRatio)) {
         // find keysapce excess ... Provisioning = object creation/keyspace
         long double excessKeys =
             (provRatio - avgProv) / provRatio * (1.05) * node.getKeyspacePercent();
@@ -174,7 +190,7 @@ void ControlStrategy::adak(Node &node, int keysToShift) {
         excessKeys *= .5;
 
         // never give away all of thier keyspace
-        if (excessKeys / node.getKeyspacePercent() > 0.95) {
+        if (isGreaterThan(excessKeys / node.getKeyspacePercent(), 0.95)) {
             excessKeys = 0.95 * node.getKeyspacePercent();
             Logger::log(Formatter() << node.getUUID()
                << " is about to give away most of its keyspace... ");
@@ -212,10 +228,8 @@ void ControlStrategy::adak(Node &node, int keysToShift) {
                 << " longAlloc/prevWeek < avgProv="
                 << toString(longAlloc / prevWeek < avgProv));
 
-            assert(1 - shortAlloc < 0.000001 == isEqual(1, shortAlloc));
-            assert(1 - longAlloc < 0.000001 == isEqual(1, longAlloc));
-
-            if (longAlloc / prevWeek < avgProv && (longAlloc / prevWeek) / provRatio < 0.75 &&
+            if (isLessThan(longAlloc / prevWeek, avgProv) &&
+                isLessThan((longAlloc / prevWeek) / provRatio, 0.75) &&
                 !(isEqual(1, shortAlloc) && isEqual(1, longAlloc))) {
                 // FIXME: What about if the number of peers is 100? 1000? Defin in terms of accuracy
                 // (currently is 10...
@@ -250,7 +264,7 @@ void ControlStrategy::adak(Node &node, int keysToShift) {
                << " totalDef=" << totalDef
                << " defs[j].second / totalDef < 0.05="
                << toString(defs[j].second / totalDef < 0.05));
-            if (defs[j].second / totalDef < 0.05) {
+            if (isLessThan(defs[j].second / totalDef, 0.05)) {
                 // FIXME: What about if the number of peers is 100? 1000? Defin in terms of accuracy
                 // (currently is 10... Logger::log(Formatter() << defs[j].first << " was
                 // kicked for haaving too little def:  " << defs[j].second);
@@ -267,7 +281,7 @@ void ControlStrategy::adak(Node &node, int keysToShift) {
                                     << " should get % of def " << fractOfDef
                                     << ", which is percent of global " << fractOfGlobalGive);
 
-            if (fractOfGlobalGive > node.getKeyspacePercent()) {
+            if (isGreaterThan(fractOfGlobalGive, node.getKeyspacePercent())) {
                 Logger::log(
                     Formatter()
                    << "Giving away too much keyspace; percent to goive is greater than what have");
@@ -424,7 +438,7 @@ void ControlStrategy::subBlocks(Node &node, long double avgKeys, int keysToShift
     //    "
     //   << node.getCreatedDay());
 
-    if (avgKeys > provRatio) {
+    if (isGreaterThan(avgKeys, provRatio)) {
         // Logger::log(Formatter() << node.getUUID() << " wants to give keyspace...";
         // find the total deficit
         for (i = nodePeers.begin(); i != nodePeers.end(); i++) {
@@ -443,10 +457,8 @@ void ControlStrategy::subBlocks(Node &node, long double avgKeys, int keysToShift
                 << " longAlloc=" << longAlloc
                 << " (1-longAlloc)=" << (1 - longAlloc));
 
-            assert(1 - shortAlloc < 0.000001 == isEqual(1, shortAlloc));
-            assert(1 - longAlloc < 0.000001 == isEqual(1, longAlloc));
-            
-            if (shortAlloc > avgKeys && shortAlloc / provRatio > 1.05 &&
+            if (isGreaterThan(shortAlloc, avgKeys) &&
+                isGreaterThan(shortAlloc / provRatio, 1.05) &&
                 !(isEqual(1, shortAlloc) && isEqual(1, longAlloc))) {
                 totalDef += shortAlloc - avgKeys;
                 if (!node.canSendKeyspace(i->first))
