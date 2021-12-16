@@ -8,34 +8,53 @@ using namespace std;
 // default value for accuracy
 double ControlStrategy::accuracy = 0.0;
 
+/***********************************************
+ *
+ * Replace floating point test for equality.
+ * Don't replace < and > but bring them here so
+ * we can look at them more carefully.
+ * 
+ ***********************************************
+ */
+#define DEBUG_EQUAL
+#define ASSERT_EQUAL
+
 string toString(bool b) {
     return b ? "true" : "false";
 }
 
 bool isLessThan(double left, double right) {
+    #ifdef DEBUG_EQUAL
     Logger::log(Formatter()
         << "isLessThan: left=" << left
         << " right=" << right
         << " (left<right)=" << toString(left<right));
+    #endif
     return left < right;
 }
 
 bool isGreaterThan(double left, double right) {
+    #ifdef DEBUG_EQUAL
     Logger::log(Formatter()
         << "isGreaterThan: left=" << left
         << " right=" << right
         << " (left>right)=" << toString(left>right));
+    #endif
     return left > right;
 }
 
 bool isEqual(double left, double right, int maxUlps = 10) {
+    #ifdef DEBUG_EQUAL
     Logger::log(Formatter()
         << "isEqual: left=" << left
         << " right=" << right
         << " (left==right)=" << toString(left==right)
         << " AlmostEqualUlpsFinal(left, right)="
         << toString(AlmostEqualUlpsFinal(left, right, maxUlps)));
+    #endif
+    #ifdef ASSERT_EQUAL
     assert(left - right < 0.000001 == AlmostEqualUlpsFinal(left, right, maxUlps));
+    #endif
     return AlmostEqualUlpsFinal(left, right, maxUlps);
 }
 
@@ -106,9 +125,7 @@ void ControlStrategy::adak(Node &node, int keysToShift) {
         Logger::log(Formatter() << node.getUUID() << " looking at " << i->first << ":");
         Logger::log(Formatter() << node.getUUID()
            << " shortAlloc=" << shortAlloc
-           << " (1-shortAlloc)=" << (1 - shortAlloc)
-           << " longAlloc=" << longAlloc
-           << " (1-longAlloc)=" << (1 - longAlloc));
+           << " longAlloc=" << longAlloc);
 
         // see of have no keyspace (these would both be approx 1 if this is true)
         if (isEqual(1, shortAlloc) && isEqual(1, longAlloc)) {
@@ -217,16 +234,10 @@ void ControlStrategy::adak(Node &node, int keysToShift) {
             // log defs for later portion here
             Logger::log(Formatter() << node.getUUID()
                 << " shortAlloc=" << shortAlloc
-                << " (1-shortAlloc)=" << (1 - shortAlloc)
                 << " longAlloc=" << longAlloc
-                << " (1-longAlloc)=" << (1 - longAlloc)
                 << " prevWeek=" << prevWeek
                 << " avgProv=" << avgProv
                 << " provRatio=" << provRatio);
-            Logger::log(Formatter() << node.getUUID()
-                << " longAlloc / prevWeek < avgProv=" << toString(longAlloc / prevWeek < avgProv)
-                << " longAlloc/prevWeek < avgProv="
-                << toString(longAlloc / prevWeek < avgProv));
 
             if (isLessThan(longAlloc / prevWeek, avgProv) &&
                 isLessThan((longAlloc / prevWeek) / provRatio, 0.75) &&
@@ -258,12 +269,6 @@ void ControlStrategy::adak(Node &node, int keysToShift) {
                                        .records(0)
                                        .creationratedata()
                                        .createdpreviousweek();
-            Logger::log(Formatter() << node.getUUID()
-               << " j=" << j
-               << " defs[j].second=" << defs[j].second
-               << " totalDef=" << totalDef
-               << " defs[j].second / totalDef < 0.05="
-               << toString(defs[j].second / totalDef < 0.05));
             if (isLessThan(defs[j].second / totalDef, 0.05)) {
                 // FIXME: What about if the number of peers is 100? 1000? Defin in terms of accuracy
                 // (currently is 10... Logger::log(Formatter() << defs[j].first << " was
@@ -453,9 +458,7 @@ void ControlStrategy::subBlocks(Node &node, long double avgKeys, int keysToShift
             // i->second.first->info().records(0).creationratedata().createdpreviousday();
             Logger::log(Formatter() << node.getUUID()
                 << " shortAlloc=" << shortAlloc
-                << " (1-shortAlloc)=" << (1 - shortAlloc)
-                << " longAlloc=" << longAlloc
-                << " (1-longAlloc)=" << (1 - longAlloc));
+                << " longAlloc=" << longAlloc);
 
             if (isGreaterThan(shortAlloc, avgKeys) &&
                 isGreaterThan(shortAlloc / provRatio, 1.05) &&
