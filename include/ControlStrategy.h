@@ -19,6 +19,8 @@ private:
 
 public:
 
+    static double epsilon;
+
     ControlStrategy(ClockType clockType, clock_unit_t heartbeatPeriod);
 
     ~ControlStrategy();
