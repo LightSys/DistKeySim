@@ -203,7 +203,10 @@ void ControlStrategy::adak(Node &node, int keysToShift) {
                 << " longAlloc=" << longAlloc
                 << " prevWeek=" << prevWeek
                 << " avgProv=" << avgProv
-                << " provRatio=" << provRatio);
+                << " provRatio=" << provRatio
+                << " longAlloc / prevWeek < avgProv=" << toString(longAlloc / prevWeek < avgProv)
+                << " (longAlloc / prevWeek) / provRatio < 0.75="
+                << toString((longAlloc / prevWeek) / provRatio < 0.75));
 
             if (longAlloc / prevWeek < avgProv && (longAlloc / prevWeek) / provRatio < 0.75 &&
                 !(isCloseEnough(1, shortAlloc) && isCloseEnough(1, longAlloc))) {
