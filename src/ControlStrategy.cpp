@@ -25,7 +25,7 @@ bool isCloseEnough(double a, double b, double relativeTolerance=1e-9, double abs
 }
 
 bool isLessThan (double a, double b) {
-    return isCloseEnough(fabs(a-b), 0.0);
+    return isCloseEnough(a - b, 0.0);
 }
 
 ControlStrategy::ControlStrategy(ClockType type, clock_unit_t heartbeatPeriod) {
@@ -157,10 +157,9 @@ void ControlStrategy::adak(Node &node, int keysToShift) {
     Logger::log(Formatter() << node.getUUID()
                             << " with percent of global " << node.getKeyspacePercent()
                             << " and local avgProv " << avgProv
-                            << " has provRatio " << provRatio << ", avgProv < provRatio="
-                            << toString(avgProv < provRatio));
-    Logger::log(Formatter() << node.getUUID()
-        << " avgProv<provRatio=" << toString(avgProv < provRatio));
+                            << " has provRatio " << provRatio
+                            << ", isLessThan(avgProv, provRatio)="
+                            << toString(isLessThan(avgProv, provRatio)));
     // Logger::log(Formatter() << "^^^^long alloc " << nodeData->getLongTermAllocationRatio() << ",
     // week: " << node.getCreatedWeek()); Logger::log(Formatter()<< node.getUUID() << " has " <<
     // node.getKeySpace().size() << " chuncks "); for(int n = 0 ; n < node.getKeySpace().size() ; n
@@ -169,7 +168,7 @@ void ControlStrategy::adak(Node &node, int keysToShift) {
     //    node.getKeySpace()[n].getSuffix());
     // }
 
-    if (avgProv < provRatio) {
+    if (isLessThan(avgProv, provRatio)) {
         // find keysapce excess ... Provisioning = object creation/keyspace
         long double excessKeys =
             (provRatio - avgProv) / provRatio * (1.05) * node.getKeyspacePercent();
@@ -243,7 +242,7 @@ void ControlStrategy::adak(Node &node, int keysToShift) {
                                        .records(0)
                                        .creationratedata()
                                        .createdpreviousweek();
-            if (defs[j].second / totalDef < 0.05) {
+            if (isLessThan(defs[j].second / totalDef, 0.05)) {
                 // FIXME: What about if the number of peers is 100? 1000? Defin in terms of accuracy
                 // (currently is 10... Logger::log(Formatter() << defs[j].first << " was
                 // kicked for haaving too little def:  " << defs[j].second);
