@@ -14,6 +14,13 @@ string toString(bool b) {
 // Inspired by Python PEP 0485
 // https://www.python.org/dev/peps/pep-0485/#proposed-implementation
 bool isCloseEnough(double a, double b, double relativeTolerance=1e-9, double absoluteTolerance=0.0) {
+    bool isClose = fabs(a-b) <= max(relativeTolerance * max(fabs(a), fabs(b)), absoluteTolerance);
+    Logger::log(Formatter()
+        << "isClose: " << toString(isClose)
+        << " a=" << a << " b=" << b
+        << " fabs(a-b)=" << fabs(a-b)
+        << " max(relativeTolerance * max(fabs(a), fabs(b)), absoluteTolerance)="
+        << max(relativeTolerance * max(fabs(a), fabs(b)), absoluteTolerance));
     return fabs(a-b) <= max(relativeTolerance * max(fabs(a), fabs(b)), absoluteTolerance);
 }
 
@@ -199,7 +206,7 @@ void ControlStrategy::adak(Node &node, int keysToShift) {
                 << " provRatio=" << provRatio);
 
             if (longAlloc / prevWeek < avgProv && (longAlloc / prevWeek) / provRatio < 0.75 &&
-                !(1 - shortAlloc < 0.000001 && 1 - longAlloc < 0.000001)) {
+                !(isCloseEnough(1, shortAlloc) && isCloseEnough(1, longAlloc))) {
                 // FIXME: What about if the number of peers is 100? 1000? Defin in terms of accuracy
                 // (currently is 10...
                 Logger::log(Formatter() << node.getUUID()
