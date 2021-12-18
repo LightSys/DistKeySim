@@ -24,6 +24,10 @@ bool isCloseEnough(double a, double b, double relativeTolerance=1e-9, double abs
     return fabs(a-b) <= max(relativeTolerance * max(fabs(a), fabs(b)), absoluteTolerance);
 }
 
+bool isLessThan (double a, double b) {
+    return isCloseEnough(fabs(a-b), 0.0);
+}
+
 ControlStrategy::ControlStrategy(ClockType type, clock_unit_t heartbeatPeriod) {
     nodeClock = shared_ptr<SystemClock>(SystemClock::makeClock(type));
 }
@@ -204,11 +208,13 @@ void ControlStrategy::adak(Node &node, int keysToShift) {
                 << " prevWeek=" << prevWeek
                 << " avgProv=" << avgProv
                 << " provRatio=" << provRatio
-                << " longAlloc / prevWeek < avgProv=" << toString(longAlloc / prevWeek < avgProv)
-                << " (longAlloc / prevWeek) / provRatio < 0.75="
-                << toString((longAlloc / prevWeek) / provRatio < 0.75));
+                << " isLessThan(longAlloc / prevWeek, avgProv)="
+                << toString(isLessThan(longAlloc / prevWeek, avgProv))
+                << " isLessThan((longAlloc / prevWeek) / provRatio, 0.75)="
+                << toString(isLessThan((longAlloc / prevWeek) / provRatio, 0.75)));
 
-            if (longAlloc / prevWeek < avgProv && (longAlloc / prevWeek) / provRatio < 0.75 &&
+            if (isLessThan(longAlloc / prevWeek, avgProv) &&
+                isLessThan((longAlloc / prevWeek) / provRatio, 0.75) &&
                 !(isCloseEnough(1, shortAlloc) && isCloseEnough(1, longAlloc))) {
                 // FIXME: What about if the number of peers is 100? 1000? Defin in terms of accuracy
                 // (currently is 10...
