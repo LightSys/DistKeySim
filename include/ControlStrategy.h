@@ -30,10 +30,10 @@ public:
     static void adak(Node & node, int keysToShift);
     
     //previously used to change a double to a binary expansion. It was replaced with binary operators, so this is unused
-    static string fractToBin(long double fract, int accuracy);
+    static string fractToBin(double fract, int accuracy);
 
     //the second half of the control, slpit in half fro readability
-    static void subBlocks(Node &node, long double avgKeys, int keysToShift);
+    static void subBlocks(Node &node, double avgKeys, int keysToShift);
     
     //update the static accuracy variable
     static void setAccuracy(double acc){accuracy = acc;}
