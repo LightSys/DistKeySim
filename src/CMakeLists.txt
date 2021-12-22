@@ -14,5 +14,17 @@ target_include_directories(adakCore PUBLIC ${PROJECT_SOURCE_DIR}/include)
 
 add_executable(adak main.cpp ../include/config.hpp)
 target_include_directories(adak PRIVATE ${PROJECT_SOURCE_DIR}/include)
-target_link_libraries(adak adakCore messages)
+
+# Determine whether we need to add stdc++fs.
+# Inspired by https://stackoverflow.com/questions/54290254/problem-adding-stdfilesystem-to-cmake-project
+try_compile(HAS_FS "${CMAKE_BINARY_DIR}/temp" 
+"${CMAKE_SOURCE_DIR}/has_fs/has_filesystem.cpp" 
+            CMAKE_FLAGS -DCMAKE_CXX_STANDARD=17 -DCMAKE_CXX_STANDARD_REQUIRED=ON
+            LINK_LIBRARIES stdc++fs)
+if(HAS_FS)
+    target_link_libraries(adak adakCore messages stdc++fs)
+else()
+    target_link_libraries(adak adakCore messages)
+endif(HAS_FS)
+
 install(TARGETS adak DESTINATION ${PROJECT_BINARY_DIR})
