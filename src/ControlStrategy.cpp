@@ -52,24 +52,15 @@ void ControlStrategy::adak(Node &node, int keysToShift) {
     std::vector<std::pair<UUID, double>> defs;
     double totalDef = 0;  // the deficit below the average
 
-    Logger::log(Formatter() << "adak(node=" << node.getUUID()
-       << ", keysToShift=" << keysToShift << ")");
-
     // Check all peers and share keyspace if needed
     for (i = nodePeers.begin(); i != nodePeers.end(); i++) {
-        Logger::log(Formatter() << node.getUUID()
-           << " is evaluating " << i->first << " for sharing keyspace");
 
         // get data from the nodes
         if (i->second.first == nullptr) {
-            Logger::log(Formatter() << node.getUUID()
-               << " i->second.first is nullptr so not sharing keyspace with that nonexistant node");
             continue;
         }
 
         if (node.getKeySpace().size() == 0) {
-            Logger::log(Formatter() << node.getUUID()
-               << " node.getKeySpace().size() == 0 so stop evaluating sharing keyspace");
             return;
         }
 
@@ -86,26 +77,14 @@ void ControlStrategy::adak(Node &node, int keysToShift) {
         avgProv += longAlloc / prevWeek;  // big is good, small is bad
         avgKey += shortAlloc;
         peersChecked++;
-        Logger::log(Formatter() << node.getUUID()
-                                << " longAlloc=" << std::setprecision(23) << longAlloc
-                                << " prevWeek=" << std::setprecision(23) << prevWeek
-                                << " avgProv=" << std::setprecision(23) << avgProv
-                                << " shortAlloc=" << std::setprecision(23) << shortAlloc
-                                << " avgKey=" << std::setprecision(23) << avgKey
-                                << " peersChecked=" << peersChecked);
 
         // make sure sharing keyspace is actaully possible
         if (!node.canSendKeyspace(i->first)) {
-            Logger::log(Formatter() << node.getUUID()
-               << " !node.canSendKeyspace(i->first) so not sharing keyspace");
             continue;  // had no keys or target already received some keyspace, cannot share
         }
 
-        Logger::log(Formatter() << node.getUUID() << " looking at " << i->first << ":");
-        Logger::log(Formatter() << node.getUUID()
-           << " shortAlloc=" << shortAlloc
-           << " longAlloc=" << longAlloc);
-
+     //Logger::log(Formatter() << "Node " << node.getUUID() << " lookinng at " << i->first << ": ");
+//Logger::log(Formatter() << "Short: " << shortAlloc << ", long: " << longAlloc << ", day: " << prevDay << ", weel: " << prevWeek);
         // see of have no keyspace (these would both be approx 1 if this is true)
         if (areCloseEnough(1, shortAlloc) && areCloseEnough(1, longAlloc)) {
             Logger::log(Formatter() << node.getUUID() << " give half of keyspace");
@@ -135,23 +114,14 @@ void ControlStrategy::adak(Node &node, int keysToShift) {
             nodeKeyspaces = node.getKeySpace();
             node.sendCustKeyspace(i->first, toSend);
 
-            Logger::log(Formatter() << node.getUUID()
-                                    << " called sendCustKeypace(" << i->first
-                                    << ", " << toSend
-                                    << ") shared half of keyspace, do not give any more");
             continue;  // shared half of keyspace, do not give any more
         }
         // Block sharing
     }
-    Logger::log(Formatter() << node.getUUID() << " Done checking peers");
 
     // calculate averages
     avgProv /= peersChecked;
     avgKey /= peersChecked;
-    Logger::log(Formatter() << node.getUUID()
-                            << " avgProv=" << std::setprecision(23) << avgProv
-                            << " avgKey=" << std::setprecision(23) << avgKey
-                            << " peersChecked=" << peersChecked);
 
     // determine block sharing
     std::shared_ptr<NodeData> nodeData = node.getNodeData();
@@ -177,12 +147,6 @@ void ControlStrategy::adak(Node &node, int keysToShift) {
     //    node.getKeySpace()[n].getSuffix());
     // }
 
-    Logger::log(Formatter() << node.getUUID());
-    Logger::log(Formatter() << "...if (isLessThan(avgProv, provRatio)) {");
-    Logger::log(Formatter() << "...if (isLessThan(" << std::setprecision(23) << avgProv << ", "
-        << std::setprecision(23) << provRatio << ")) {");
-    Logger::log(Formatter() << "...if ( " << toString(isLessThan(avgProv, provRatio)) << ") {");
-
     if (isLessThan(avgProv, provRatio)) {
         // find keysapce excess ... Provisioning = object creation/keyspace
         long double excessKeys =
@@ -205,9 +169,6 @@ void ControlStrategy::adak(Node &node, int keysToShift) {
         // calculate the total deficit size for peers
         for (i = nodePeers.begin(); i != nodePeers.end(); i++) {
             if (i->second.first == nullptr) continue;
-            Logger::log(Formatter() << node.getUUID()
-               << " Calculating total deficit for peer "
-               << i->second.first->sourcenodeid());
             long double longAlloc =
                 i->second.first->info().records(0).creationratedata().longallocationratio();
             long double prevWeek =
@@ -215,47 +176,12 @@ void ControlStrategy::adak(Node &node, int keysToShift) {
             long double shortAlloc =
                 i->second.first->info().records(0).creationratedata().shortallocationratio();
 
-            Logger::log(Formatter() << node.getUUID());
-            Logger::log(Formatter() << "...if (isLessThan(longAlloc / prevWeek, avgProv) && "
-                << "isLessThan((longAlloc / prevWeek) / provRatio, 0.75) && "
-                << "!(areCloseEnough(1, shortAlloc) && areCloseEnough(1, longAlloc)))");
-            Logger::log(Formatter() << "...if (" << std::setprecision(23) << longAlloc << " / "
-                << std::setprecision(23) << prevWeek << " < " << std::setprecision(23) << avgProv << " && ("
-                << std::setprecision(23) << longAlloc << " / " << std::setprecision(23) << prevWeek << ") / " << std::setprecision(23) << provRatio << " < " << 0.75 << " && "
-                << "!(" << toString(areCloseEnough(1, shortAlloc)) << " && "
-                << toString(areCloseEnough(1, longAlloc)) << "))");
-            Logger::log(Formatter() << "...if (" << std::setprecision(23) << (longAlloc / prevWeek) << " < "
-                << std::setprecision(23) << avgProv << " && ("
-                << std::setprecision(23) << (longAlloc / prevWeek) << ") / "
-                << std::setprecision(23) << provRatio << " < " << 0.75 << " && "
-                << "!(" << toString(areCloseEnough(1, shortAlloc)) << " && "
-                << toString(areCloseEnough(1, longAlloc)) << "))");
-            
-            Logger::log(Formatter() << "...if (" << std::setprecision(23) << (longAlloc / prevWeek) << " < "
-                << std::setprecision(23) << avgProv << " && ("
-                << std::setprecision(23) << ((longAlloc / prevWeek) / provRatio) << " < " << 0.75 << " && "
-                << "!(" << toString(areCloseEnough(1, shortAlloc)) << " && "
-                << toString(areCloseEnough(1, longAlloc)) << "))");
-            
-            Logger::log(Formatter() << "...if (" << toString(isLessThan(longAlloc / prevWeek, avgProv)) << " && "
-                << toString(isLessThan((longAlloc / prevWeek) / provRatio, 0.75)) << " && "
-                << "!(" << toString(areCloseEnough(1, shortAlloc)) << " && "
-                << toString(areCloseEnough(1, longAlloc)) << "))");
-
-            Logger::log(Formatter() << "...if ("
-                << toString(isLessThan(longAlloc / prevWeek, avgProv) && isLessThan((longAlloc / prevWeek) / provRatio, 0.75) &&
-                !(areCloseEnough(1, shortAlloc) && areCloseEnough(1, longAlloc))) << ")");
-
             // log defs for later portion here
             if (isLessThan(longAlloc / prevWeek, avgProv) &&
                 isLessThan((longAlloc / prevWeek) / provRatio, 0.75) &&
                 !(areCloseEnough(1, shortAlloc) && areCloseEnough(1, longAlloc))) {
                 // FIXME: What about if the number of peers is 100? 1000? Defin in terms of accuracy
                 // (currently is 10...
-                Logger::log(Formatter() << node.getUUID()
-                    << " pushing (" << i->second.first->sourcenodeid()
-                    << ", " << avgProv - longAlloc / prevWeek
-                    << ") to defs");
                 defs.push_back(std::pair<UUID, long double>(i->second.first->sourcenodeid(),
                                                             (avgProv - longAlloc / prevWeek)));
                 // add to total deficit
@@ -263,7 +189,6 @@ void ControlStrategy::adak(Node &node, int keysToShift) {
             }
         }
 
-        Logger::log(Formatter() << node.getUUID() << " defs.size()=" << defs.size());
         // find out what percentage of the global keysapce will be given, and give accordingly
         for (int j = 0; j < defs.size(); j++) {
             // update each node with their relative need
@@ -283,7 +208,6 @@ void ControlStrategy::adak(Node &node, int keysToShift) {
                 // kicked for haaving too little def:  " << defs[j].second);
                 defs.erase(defs.begin() + j);
                 j--;
-                Logger::log(Formatter() << node.getUUID() << " continue");
                 continue;
             }
 
@@ -388,10 +312,6 @@ void ControlStrategy::adak(Node &node, int keysToShift) {
                     }
                 }
                 node.sendCustKeyspace(defs[j].first, indices);
-                Logger::log(Formatter() << "adak: " << node.getUUID()
-                                        << ".sendCustKeypace(" << defs[j].first
-                                        << ", " << Logger::join(indices)
-                                        << ") ");
                 // Logger::log(Formatter() << ".... and just sent them off");
                 /*
                               //will only run if the above search failed. Know all are smaller
@@ -445,12 +365,9 @@ void ControlStrategy::subBlocks(Node &node, long double avgKeys, int keysToShift
     double totalDef = 0;  // the deficit below the average
     vector<Keyspace> nodeKeyspaces = node.getKeySpace();
     double provRatio = nodeData->updateShortTermAllocationRatio(nodeKeyspaces);
-
-    Logger::log(Formatter() << node.getUUID());
-    Logger::log(Formatter() << "...if (isGreaterThan(avgKeys, provRatio)) {");
-    Logger::log(Formatter() << "...if (isGreaterThan(" << std::setprecision(23) << avgKeys << ", "
-        << std::setprecision(23) << provRatio << ")) {");
-    Logger::log(Formatter() << "...if ( " << toString(isGreaterThan(avgKeys, provRatio)) << ") {");
+//Logger::log(Formatter() << "Node " << node.getUUID() << " has says local average keys is  " << avgKeys << ", and prov is " 
+//   << provRatio << "\n^^^^short alloc " << nodeData->getShortTermAllocationRatio() << ", day: " 
+//   << node.getCreatedDay()); 
 
     if (isGreaterThan(avgKeys, provRatio)) {
         // Logger::log(Formatter() << node.getUUID() << " wants to give keyspace...";
@@ -465,29 +382,6 @@ void ControlStrategy::subBlocks(Node &node, long double avgKeys, int keysToShift
                 i->second.first->info().records(0).creationratedata().longallocationratio();
             // long double prevDay   =
             // i->second.first->info().records(0).creationratedata().createdpreviousday();
-
-            Logger::log(Formatter() << node.getUUID());
-            Logger::log(Formatter() << "...if (isGreaterThan(shortAlloc, avgKeys) && isGreaterThan(shortAlloc / provRatio, 1.05) &&");
-            Logger::log(Formatter() << "......!(areCloseEnough(1, shortAlloc) && areCloseEnough(1, longAlloc)))");
-
-            Logger::log(Formatter() << "...if (isGreaterThan(" << std::setprecision(23) << shortAlloc
-                << ", " << std::setprecision(23) << avgKeys << ")) && isGreaterThan("
-                << std::setprecision(23) << shortAlloc << " / "
-                << std::setprecision(23) << provRatio << ", " << 1.05 << ") &&");
-            Logger::log(Formatter() << "......!(" << toString(areCloseEnough(1, shortAlloc)) << " && " << toString(areCloseEnough(1, longAlloc)) << ")");
-
-            Logger::log(Formatter() << "...if (" << toString(isGreaterThan(shortAlloc, avgKeys))
-                << " && isGreatherThan(" << shortAlloc / provRatio << ", " << 1.05 << ") &&");
-            Logger::log(Formatter() << "......!(" << toString(areCloseEnough(1, shortAlloc)) << " && "
-                << toString(areCloseEnough(1, longAlloc)) << ")");
-
-            Logger::log(Formatter() << "...if (" << toString(isGreaterThan(shortAlloc, avgKeys))
-                << " && " << toString(isGreaterThan(shortAlloc / provRatio, 1.05)) << " && "
-                "!(" << toString(areCloseEnough(1, shortAlloc)) << " && "
-                << toString(areCloseEnough(1, longAlloc)) << ")");
-
-            Logger::log(Formatter() << "...if (" << toString(isGreaterThan(shortAlloc, avgKeys) && isGreaterThan(shortAlloc / provRatio, 1.05) &&
-                !(areCloseEnough(1, shortAlloc) && areCloseEnough(1, longAlloc))) << ")");
 
             if (isGreaterThan(shortAlloc, avgKeys) && isGreaterThan(shortAlloc / provRatio, 1.05) &&
                 !(areCloseEnough(1, shortAlloc) && areCloseEnough(1, longAlloc))) {
@@ -518,10 +412,6 @@ void ControlStrategy::subBlocks(Node &node, long double avgKeys, int keysToShift
                 // Logger::log(Formatter() << node.getUUID() << " decided to grant a
                 // sublock to " << defs[j].first);
                 node.sendCustKeyspace(defs[j].first, node.makeSubBlock(keysToShift));
-                Logger::log(Formatter() << "subBlocks=" << node.getUUID()
-                                        << ".sendCustKeypace(" << defs[j].first
-                                        << ", " << Logger::join(node.makeSubBlock(keysToShift))
-                                        << ")");
             }
         }
     }
