@@ -68,9 +68,9 @@ void Node::consumeObjects(){
     amountOfOneKeyUsed += objectConsuptionRatePerSecond;
 //Logger::log(Formatter() << "#############" <<  this->uuid << "consumption per second: " << objectConsuptionRatePerSecond);
  
-//make sure can consume keys.
-    if(keyspaces.size() == 0) return;
-    if(amountOfOneKeyUsed >= 1.0){
+    //make sure can consume keys.
+    if (keyspaces.size() == 0) return;
+    if (amountOfOneKeyUsed >= 1.0) {
 	    Logger::log(Formatter() << this->uuid << " consuming a key!!"); 
         this->getNextKey();
         amountOfOneKeyUsed--;

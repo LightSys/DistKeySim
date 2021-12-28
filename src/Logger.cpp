@@ -1,3 +1,5 @@
+#include <numeric>
+
 #include "Logger.h"
 
 static ofstream logOutputStream;
@@ -13,6 +15,7 @@ void Logger::deleteOldLog() {
 void Logger::log(string message) {
     time_t date = chrono::system_clock::to_time_t(chrono::system_clock::now());
     logOutputStream << message << " -- " << ctime(&date);  // log message and timestamp
+    logOutputStream.flush();
 }
 
 void Logger::logStats(vector<string> stats) {
@@ -107,4 +110,15 @@ std::string Logger::copyFile(string path) {
     dest.close();
 
     return path + "full_config" + to_string(num) + ".json";
+}
+
+std::string Logger::join(vector<int> ints) {
+    // Without the test for empty, we crash on Linux (but not MacOS)
+    if (ints.empty()) {
+        return std::string();
+    }
+    return std::accumulate(ints.begin()+1, ints.end(), std::to_string(ints[0]),
+        [](const std::string& a, int b){
+            return a + ',' + std::to_string(b);
+        });
 }

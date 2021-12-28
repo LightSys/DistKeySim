@@ -17,6 +17,7 @@ static std::string ConnectionType_toString(ConnectionType type) {
         case ConnectionType::Custom: return "custom";
         case ConnectionType::Invalid: return "invalid";
     }
+    return "invalid";
 }
 
 static ConnectionType ConnectionType_fromString(std::string type) {
