@@ -8,7 +8,6 @@ using namespace std;
 
 Node::Node(double lambda1, double lambda2, double lambda3, int latency, double netScl, unsigned seed) 
 	: uuid(new_uuid()), lastDay(NodeData()), lambda1(lambda1), lambda2(lambda2), lambda3(lambda3) {
-    Logger::log(Formatter() << "Node: lambda3=" << lambda3);
     generateObjectCreationRateDistribution(seed);
     changeConsumptionRate();
     currentTick = 0;
@@ -24,7 +23,6 @@ Node::Node(double lambda1, double lambda2, double lambda3, int latency, double n
 
 Node::Node(const Keyspace &keySpace, double lambda1, double lambda2, double lambda3, int latency, double netScl, unsigned seed) 
 	: uuid(new_uuid()), lastDay(NodeData()), lambda1(lambda1), lambda2(lambda2), lambda3(lambda3) {
-    Logger::log(Formatter() << "Node: lambda3=" << lambda3);
     keyspaces.push_back(keySpace);
     generateObjectCreationRateDistribution(seed);
     changeConsumptionRate();
@@ -68,10 +66,7 @@ unsigned long long int Node::getTotalKeyspaceBlockSize(){
 
 void Node::consumeObjects(){
     amountOfOneKeyUsed += objectConsuptionRatePerSecond;
-    Logger::log(Formatter() << uuid
-        << " amountOfOneKeyUsed=" << amountOfOneKeyUsed
-        << " objectConsuptionRatePerSecond=" << objectConsuptionRatePerSecond
-        << " keyspaces.size()=" << keyspaces.size());
+//Logger::log(Formatter() << "#############" <<  this->uuid << "consumption per second: " << objectConsuptionRatePerSecond);
  
     //make sure can consume keys.
     if (keyspaces.size() == 0) return;
@@ -112,7 +107,6 @@ void Node::consumeObjects(){
 }
 
 void Node::generateObjectCreationRateDistribution(unsigned seed){
-    Logger::log(Formatter() << "Node::generateObjectCreationRateDistribution: lambda3=" << lambda3);
     d3 = new geometric_distribution<>(1/this->lambda3);
 
     // These are required for the geometric distribution function to operate
@@ -135,9 +129,8 @@ double Node::getTimeOffline(){
 
 void Node::changeConsumptionRate(){
     objectConsuptionRatePerSecond = 1.0/(1 + (*d3)(*gen));
-    Logger::log(Formatter() << uuid
-        << " objectConsuptionRatePerSecond=" << objectConsuptionRatePerSecond);
 }
+
 
 static Node rootNode(double lambda1, double lambda2, double lambda3, int latency, double networkScale, unsigned seed) {
     return Node(Keyspace(0, UINT_MAX, 0), lambda1, lambda2, lambda3, latency, networkScale, seed);
@@ -600,9 +593,7 @@ void Node::sendCustKeyspace(UUID id, int keyInd){
      
     sendQueue.push_back(keyMsg);
  
-    Logger::log(Formatter() << uuid << " sent keyspace batch to " << id
-        << " with " << start << "/" << suffix << ", " << end); 
-
+//Logger::log(Formatter() << "node " << uuid << " sent " << start << "/" << suffix << " to " << id); 
     //add to confirmation list
     Message *temp = new Message;
     *temp = keyMsg;
@@ -646,8 +637,7 @@ void Node::sendCustKeyspace(UUID id, vector<int> keyInds){
 
        //make the message a keyspace message
        records.push_back(KeyspaceExchangeRecord{"share", start, end, (uint32_t) suffix});
-       Logger::log(Formatter() << uuid << " sent keyspace batch to " << id
-          << " with " << start << "/" << suffix << ", " << end); 
+//Logger::log(Formatter() << uuid << "sent keyspace batch to " << id << " with " << start << "/" << suffix << ", " << end); 
     }
 
     toKeyspaceMessage(keyMsg, records);
