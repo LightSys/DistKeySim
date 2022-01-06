@@ -199,14 +199,17 @@ show-consuming-keys :
 count-consuming-keys :
 	awk '/Time Step/ {step=$$3} /consuming/ {print step, $$0}' $(LOGFILE) | wc -l
 
-# ---------------------------------------------------
-# The purpose of default config has been lost in time
-# ---------------------------------------------------
-.PHONY: run-default-config
-run-default-config :
-	cp -p config/default-config.json $(BUILD_SRC)/config.json
-	cd $(BUILD_SRC) && ./adak
-	cd $(ADAK_ROOT)
+# ----------------------------------------------------
+# Find what config files are actually used
+# ----------------------------------------------------
+.PHONY: find-config-files
+find-config-files :
+	@for file in config/*.json ; do \
+    	basename=`basename $$file` ; \
+    	echo --------------------------- $$basename ---------------------- ; \
+    	grep -RI $$basename --exclude src/build/output . ; \
+    	find . -name $$basename | grep -v config/ ; \
+	done
 
 # -------------------------
 # Test eventGen config file
