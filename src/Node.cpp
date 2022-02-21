@@ -431,7 +431,8 @@ int loops = 0;
 
 deque<Message> Node::getMessages() {
     deque<Message> toSend = move(sendQueue);
-    sendQueue.empty();
+    // Cast empty() to satisfy some compilers
+    (void) sendQueue.empty();
     return toSend;
 }
 
