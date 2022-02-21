@@ -1,16 +1,22 @@
-import pandas as pd
-import plotly.graph_objects as go
-import plotly.express as px
 import numpy as np
+import os
+import pandas as pd
+import plotly.express as px
+import plotly.graph_objects as go
+import sys
 
-def runDataAnalytics(path):
+def runDataAnalytics(path, imageFormat):
     # Be sure to replace this path with whatever is appropriate
     df = pd.read_csv(path)
-    # print(df)
+    lenData = len(df)
 
-    # First figure produced
+    print("First Figure: Node consumption and keyspace over time")
     fig = go.Figure()
+    i = 0
     for data in df['UUID']:
+        percentComplete = i * 100 / lenData
+        if i % 100 == 0:
+            print('{:d}%'.format(int(percentComplete)), end='\r', flush=True)
         d = df['UUID'] == data
         a = df[d]
         if max(a['totalKeys']) == 0:
@@ -31,13 +37,22 @@ def runDataAnalytics(path):
             hoveron='points',
             marker=dict(size=sizeVal)
             ))
+        i = i + 1
     fig.update_layout(title="Node consumption and keyspace size over time",xaxis_title="Time", yaxis_title="Consumption (objects created since last time step)")
     fig.update_layout(template="plotly")
-    fig.show()
+    if imageFormat.upper().startswith("HTM"):
+        fig.show()
+    else:
+        imageFilename = os.path.join(os.path.dirname(path), 'NodeConsumptionAndKeyspace') + "." + imageFormat
+        fig.write_image(imageFilename, imageFormat)
+        print("  %s image file: %s" %(imageFormat, imageFilename))
 
-    #Second figure produced
+    print("Second Figure: Node consumption and sharing over time")
     fig1 = go.Figure()
+    i = 0
     for data in df['UUID']:
+        if i % 100 == 0:
+            print('{:d}%'.format(int(percentComplete)), end='\r', flush=True)
         d = df['UUID'] == data
         a = df[d]
         if max(a['sharing']) == 0:
@@ -58,13 +73,22 @@ def runDataAnalytics(path):
             hoveron='points',
             marker=dict(size=sizeVal)
             ))
+        i = i + 1
     fig1.update_layout(title="Node consumption and sharing over time",xaxis_title="Time", yaxis_title="Consumption (objects created since last time step)")
     fig1.update_layout(template="ggplot2")
-    fig1.show()
+    if imageFormat.upper().startswith("HTM"):
+        fig1.show()
+    else:
+        imageFilename = os.path.join(os.path.dirname(path), 'NodeConsumptionAndSharing') + "." + imageFormat
+        fig1.write_image(imageFilename, imageFormat)
+        print("  %s image file: %s" %(imageFormat, imageFilename))
 
-    # Third figure produced
+    print("Third Figure: Local keyspace remaining over time")
     fig2 = go.Figure()
+    i = 0
     for data in df['UUID']:
+        if i % 100 == 0:
+            print('{:d}%'.format(int(percentComplete)), end='\r', flush=True)
         d = df['UUID'] == data
         a = df[d]
         fig2.add_trace(go.Scatter(
@@ -80,6 +104,12 @@ def runDataAnalytics(path):
             hovertemplate = "Time step: %{x}<br>Keyspace Remaining: %{y:.2f}%",
             hoveron='points'
             ))
+        i = i + 1
     fig2.update_layout(title="Local keyspace remaining over time",xaxis_title="Time", yaxis_title="% Total keyspace remaining")
     fig2.update_layout(template="simple_white")
-    fig2.show()
+    if imageFormat.upper().startswith("HTM"):
+        fig2.show()
+    else:
+        imageFilename = os.path.join(os.path.dirname(path), 'LocalKeyspace') + "." + imageFormat
+        fig2.write_image(imageFilename, imageFormat)
+        print("  %s image file: %s" %(imageFormat, imageFilename))

@@ -7,7 +7,7 @@ import os
 from plotly import io as pio
 
 
-def runDataAnalytics(path):
+def runDataAnalytics(path, imageFormat):
 
     # Be sure to replace this path with whatever is appropriate
     df = pd.read_csv(path)
@@ -30,7 +30,12 @@ def runDataAnalytics(path):
         fig.update_layout(barmode='overlay', title = titleStr)
         # Reduce opacity to see both histograms
         fig.update_traces(opacity=0.75)
-        fig.show()
+        if imageFormat.upper().startswith("HTM"):
+            fig.show()
+        else:
+            imageFilename = os.path.join(os.path.dirname(path), 'Histogram%d' % (myint)) + "." + imageFormat
+            fig.write_image(imageFilename, imageFormat)
+            print("  %s image file: %s" %(imageFormat, imageFilename))
         myint = myint + 1
 
     # Produces all histogams
@@ -45,11 +50,15 @@ def runDataAnalytics(path):
         titleStr = 'Density distribution for Node with UUID ' + str(data)
         p1.set_title(titleStr)
         plt.xlim(0, max(max(aa['totalKeys']), max(aa['consumption'])))
-        plt.show()
-        print("here? At last?")
-#Now with a log scale
+        if imageFormat.upper().startswith("HTM"):
+            plt.show()
+        else:
+            imageFilename = os.path.join(os.path.dirname(path), 'Density') + "." + imageFormat
+            plt.savefig(imageFilename, format=imageFormat)
+            print("  %s image file: %s" %(imageFormat, imageFilename))
 
-def runDataAnalyticsLog(path):
+#Now with a log scale
+def runDataAnalyticsLog(path, imageFormat):
 
     # Be sure to replace this path with whatever is appropriate
     df = pd.read_csv(path)
@@ -73,7 +82,12 @@ def runDataAnalyticsLog(path):
         # Reduce opacity to see both histograms
         fig.update_traces(opacity=0.75)
         fig.update_yaxes(type="log")
-        fig.show()
+        if imageFormat.upper().startswith("HTM"):
+            fig.show()
+        else:
+            imageFilename = os.path.join(os.path.dirname(path), 'Histogram%d' % (myint)) + "." + imageFormat
+            fig.write_image(imageFilename, imageFormat)
+            print("  %s image file: %s" %(imageFormat, imageFilename))
         myint = myint + 1
 
     # Produces all histogams
@@ -89,5 +103,9 @@ def runDataAnalyticsLog(path):
         p1.set_title(titleStr)
         plt.xlim(0, max(max(aa['totalKeys']), max(aa['consumption'])))
         plt.yscale("log")
-        plt.show()
-        print("here? At last?")
+        if imageFormat.upper().startswith("HTM"):
+            plt.show()
+        else:
+            imageFilename = os.path.join(os.path.dirname(path), 'Density') + "." + imageFormat
+            plt.savefig(imageFilename, format=imageFormat)
+            print("  %s image file: %s" %(imageFormat, imageFilename))
