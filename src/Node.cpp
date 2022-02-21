@@ -18,7 +18,6 @@ Node::Node(double lambda1, double lambda2, double lambda3, int latency, double n
     keysShared = 0;
     d1 = new geometric_distribution<>(1/this->lambda1);
     d2 = new geometric_distribution<>(1/this->lambda2);
-
 }
 
 Node::Node(const Keyspace &keySpace, double lambda1, double lambda2, double lambda3, int latency, double netScl, unsigned seed) 
@@ -65,14 +64,15 @@ unsigned long long int Node::getTotalKeyspaceBlockSize(){
 
 
 void Node::consumeObjects(){
-    amountOfOneKeyUsed += objectConsuptionRatePerSecond;
-//Logger::log(Formatter() << "#############" <<  this->uuid << "consumption per second: " << objectConsuptionRatePerSecond);
+    amountOfOneKeyUsed += objectConsumptionRatePerSecond;
+    // Logger::log(Formatter() << this->uuid
+    //     << " objectConsumptionRatePerSecond=" << objectConsumptionRatePerSecond
+    //     << " amountOfOneKeyUsed=" << amountOfOneKeyUsed);
  
     //make sure can consume keys.
     if (keyspaces.size() == 0) return;
     if (amountOfOneKeyUsed >= 1.0) {
-	    Logger::log(Formatter() << this->uuid << " consuming a key!!"); 
-        this->getNextKey();
+	    Logger::log(Formatter() << this->uuid << " consuming a key: " << this->getNextKey());
         amountOfOneKeyUsed--;
          	
        	//update createdWeek to reflect the current history 
@@ -118,7 +118,6 @@ void Node::generateObjectCreationRateDistribution(unsigned seed){
     Logger::log(Formatter() << "generateObjectCreationRateDistribution: seed=" << seed);
 }
 
-
 double Node::getTimeOnline(){
     return (1 + (*d2)(*gen));
 }
@@ -128,9 +127,10 @@ double Node::getTimeOffline(){
 }
 
 void Node::changeConsumptionRate(){
-    objectConsuptionRatePerSecond = 1.0/(1 + (*d3)(*gen));
+    objectConsumptionRatePerSecond = 1.0/(1 + (*d3)(*gen));
+    // Logger::log(Formatter() << this->uuid
+    //     << " objectConsumptionRatePerSecond=" << objectConsumptionRatePerSecond);
 }
-
 
 static Node rootNode(double lambda1, double lambda2, double lambda3, int latency, double networkScale, unsigned seed) {
     return Node(Keyspace(0, UINT_MAX, 0), lambda1, lambda2, lambda3, latency, networkScale, seed);
@@ -290,7 +290,7 @@ bool Node::receiveMessage(const Message &message) {
 
     if (msg.sourcenodeid() == uuid) {
         // Destination node is this node, don't receive it
-        Logger::log(Formatter() << "rejected a message, was sent to self ");
+        // Logger::log(Formatter() << "rejected a message, was sent to self ");
         return false;
     }  
     
@@ -475,13 +475,14 @@ Message Node::getHeartbeatMessage(const UUID &peerID) {
 
     }else{
 
-    toInformationalMessage(
+        toInformationalMessage(
            msg, 
            {
-	       //use the update keyspace functions so that what is being recived is the most up to date possible
+	           //use the update keyspace functions so that what is being recived is the most up to date possible
                CollectionInfoRecord{"test", calcLongAggregate(peerID), 
-	       calcShortAggregate(peerID), lastDay.getLongTermAllocationRatio(), 
-	       lastDay.getShortTermAllocationRatio()},
+	                                        calcShortAggregate(peerID),
+                                            lastDay.getLongTermAllocationRatio(), 
+	                                        lastDay.getShortTermAllocationRatio()},
            }
        );
     }
@@ -515,7 +516,7 @@ void Node::logInfoForHeartbeat(){
     //reset keys shared 
     keysShared = 0; 
 
-    dataLine.push_back(to_string(objectConsuptionRatePerSecond));
+    dataLine.push_back(to_string(objectConsumptionRatePerSecond));
     //dataLine.push_back(to_string(Logger::getShared(false,0)));
     //dataLine.push_back(to_string(Logger::getConsumption(false,0)));
     if(getTotalLocalKeyspaceSize() >0){

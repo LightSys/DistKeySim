@@ -186,18 +186,59 @@ run-test4-scenario-1 :
 	$(BIN)/testScenario1.py --days $(SCEN_1_DAYS)
 	@echo "Test 4 Passed: Scenario 1"
 
-# ----------------------------------------------------
-# Display time step at which keys are consumed
-# ----------------------------------------------------
-LOGFILE = build/src/outputs/logOutput17.clean.txt
+# --------------------------------------------
+# Test Scenario 2 (see "ADAK Scenarios 1.pdf")
+# --------------------------------------------
+#
+# Objective: There initially should be a lot of subblock sharing to fill in “holes”,
+# but eventually block sharing should happen, reducing the volume of subblock sharing.
+# Block sharing should eventually result in the higher-rate node having 7x the keyspace
+# as the lower rate node. (these values were chosen so that the keyspace blocks will
+# end up being divided up into eighths, with one node having 1/8 of the keyspace and
+# the other having 7/8 of the keyspace)
+#
+# Note: We make 40 milliseconds the length of a simulation "tick".
+# Therefore, there are 25 simulation ticks per second.
+#
+# To run a test shorter than 7 days, do something like this
+#
+#     make run-test5-scenario-2 SCEN_2_DAYS=0.1
 
-.PHONY: show-consuming-keys
-show-consuming-keys :
-	awk '/Time Step/ {step=$$3} /consuming/ {print step, $$0}' $(LOGFILE)
+SIM_UNITS_PER_SECOND = 25
+SECONDS      = 60
+MINUTES      = 60
+HOURS        = 24
+SCEN_2_DAYS  = 7
+ITERATIONS   = $(shell echo "$(SIM_UNITS_PER_SECOND)*$(SECONDS)*$(MINUTES)*$(HOURS)*$(SCEN_2_DAYS)" | bc)
+SCEN_2_CONFIG  = "config/scenario2-config.json"
+
+.PHONY: run-scenario2
+run-scenario2 :
+	jq ".simLength |= $(ITERATIONS)" < $(SCEN_2_CONFIG) > $(BUILD_SRC)/config.json
+	cd $(BUILD_SRC) && ./adak
+	cd $(ADAK_ROOT)
+
+.PHONY: run-test5-scenario-2
+run-test5-scenario-2 :
+	time $(BIN)/testScenario2.py --days $(SCEN_2_DAYS) --config $(SCEN_2_CONFIG)
+	@echo "Test 5 Passed: Scenario 2"
+
+.PHONY: run-test5-scenario-2a
+run-test5-scenario-2a :
+	$(MAKE) run-test5-scenario-2 SCEN_2_DAYS=0.3 \
+		SCEN_2_CONFIG="config/scenario2a-config.json"
+
+# ----------------------------------------------------
+# Display stuff from log output files
+# ----------------------------------------------------
+LOGFILE = $(shell ls -tr $(OUTPUTS)/logOutput*.txt | tail -1)
 
 .PHONY: count-consuming-keys
 count-consuming-keys :
-	awk '/Time Step/ {step=$$3} /consuming/ {print step, $$0}' $(LOGFILE) | wc -l
+	awk '/consuming/ {counts[$$1] = counts[$$1] + 1} END {for (i in counts) {print i, counts[i]}}' $(LOGFILE)
+
+short-allocation-ratio :
+	@awk '/sourceNodeID/ {sourceNodeID = $$3} /shortAllocationRatio/ {print sourceNodeID, $$2}' $(LOGFILE)
 
 # ----------------------------------------------------
 # Find what config files are actually used

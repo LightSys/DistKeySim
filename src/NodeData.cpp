@@ -39,6 +39,7 @@ double NodeData::updateShortTermAllocationRatio(const vector<Keyspace> &keyspace
     ///-2 means you ran out of keyspace thus set the ratio to one saying we need more keyspace right away.
     ///Baylor you may want to change this if you want a different value saying I need help right away.
     if(endKey == -2) {
+        Logger::log("updateShortTermAllocationRatio: shortTermAllocationRatio = 1");
         shortTermAllocationRatio = 1;
     }
 
@@ -47,6 +48,11 @@ double NodeData::updateShortTermAllocationRatio(const vector<Keyspace> &keyspace
         //In theory you could get a ratio larger than one but you would need trillions of keys created by
         //one node in a day to make this happen therefore we did not deal with it
         shortTermAllocationRatio =  (double) tempKeys /  (endKey - startKey);
+        Logger::log(Formatter() << "updateShortTermAllocationRatio:"
+            << " tempKeys=" << tempKeys
+            << " endKey=" << endKey
+            << " startKey=" << startKey
+            << " shortTermAllocationRatio=" << shortTermAllocationRatio);
     }
     return shortTermAllocationRatio;
 }

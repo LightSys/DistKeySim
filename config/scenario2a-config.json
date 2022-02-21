@@ -1,0 +1,12 @@
+{
+  "Algorithm_Strategy": "temperature based",
+  "connectionMode": "full",
+  "csvOutputPath": "outputs/",
+  "Latency": 1,
+  "customLambda3": [1500000, 1500],
+  "networkScale": 0.3,
+  "numNodes": 2,
+  "randomSeed": 25,
+  "simLength": 15120000,
+  "Time_Step_Units_Per_Second": 25
+}

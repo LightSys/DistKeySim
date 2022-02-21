@@ -10,18 +10,18 @@ class Node;
 
 class NodeData {
 private:
-    int keyShareRate;
-    double keyGenRate;
-    double aggregateGenRate;
-    double shortTermAllocationRatio;
-    double longTermAllocationRatio;
-    double aggregateAllocationRatio;
-    double provisioningRatio;
+    int keyShareRate = 0;
+    double keyGenRate = 0;
+    double aggregateGenRate = 0;
+    double shortTermAllocationRatio = 0;
+    double longTermAllocationRatio = 0;
+    double aggregateAllocationRatio = 0;
+    double provisioningRatio = 0;
 
-    double creationRate;
+    double creationRate = 0;
 
     int keysUsed = 0;
-    int day;
+    int day = 0;
     
     int timeUnitsPast = 0;
     

@@ -62,9 +62,11 @@ bool Network::isOffline(UUID nodeID){
 }
 
 bool Network::sendMsg(const Message &message) {
+    //Logger::logBackTrace();
     UUID destID = message.destnodeid(), srcID = message.sourcenodeid();
 
-    if(!isOffline(destID) && !isOffline(srcID)){
+    if (!isOffline(destID) && !isOffline(srcID)) {
+        Logger::logMsg("sendMsg", message);
         shared_ptr<Node> destNode = getNodeFromUUID(destID);
         return destNode->receiveMessage(message);
     } else {
