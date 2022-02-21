@@ -7,6 +7,7 @@
 #include <utility>
 
 #include "json.hpp"
+#include "ConnectionType.h"
 #include "Simulation.h"
 
 using json = nlohmann::json;
@@ -25,6 +26,7 @@ static const std::vector<float> DEFAULT_CUSTOM_LAMBDA3 = {}; //if it is empty, t
 static const bool DEFAULT_RUN_EVENTS = false; 
 static const double DEFAULT_TIME_STEP_UNITS_PER_SECOND = 1;
 static const unsigned DEFAULT_RANDOM_SEED = time(nullptr);
+static const bool DEFAULT_ENABLE_SENDMSG_LOG = false;
 static const std::string DEFAULT_CUSTOM_CONNECTIONS = "";
 
 //added for UI string inputs:
@@ -65,6 +67,7 @@ struct Config {
     int latency; 
     bool runEvents;
     unsigned int randomSeed;
+    bool enableSendMsgLog;
     std::string customConnections;
 
     //added for the UI input: 
@@ -139,6 +142,7 @@ private:
     static const std::string NETWORK_SCALE_LABEL;
     static const std::string NUM_NODES_LABEL;
     static const std::string RANDOM_SEED_LABEL;
+    static const std::string ENABLE_SENDMSG_LOG_LABEL;
     static const std::string RUN_EVENTS_LABEL;
     static const std::string SIM_LENGTH_LABEL;
     static const std::string SMALLEST_KEY_FOR_PRIORITY_LABEL;

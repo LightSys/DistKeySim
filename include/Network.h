@@ -56,13 +56,14 @@ private:
  
     double networkScale;
     int latency;
+    bool enableSendMsgLog;
 public:
     Network(ConnectionType connectionType, float PERCENT_CONNECTED, double lambda1, double lambda2, 
-		double lambda3, double netScale, int latency);
+		double lambda3, double netScale, int latency, bool enableSendMsgLog);
 
     Network(ConnectionType connectionType, float PERCENT_CONNECTED, double lambda1, double lambda2, 
 		double lambda3, double netScale,
-	       	int latency, vector<float>lam1s, vector<float>lam2s, vector<float>lam3s);
+	       	int latency, vector<float>lam1s, vector<float>lam2s, vector<float>lam3s, bool enableSendMsgLog);
 
     ~Network() = default;
 

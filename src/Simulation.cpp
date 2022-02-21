@@ -12,7 +12,7 @@ Simulation::Simulation(const struct Config& config)
     : numNodes(config.numNodes),
       network(Network(config.connectionMode, config.visiblePeers, config.lambda1, config.lambda2,
                       config.lambda3, config.networkScale, config.latency, config.customLambda1,
-                      config.customLambda2, config.customLambda3)) {
+                      config.customLambda2, config.customLambda3, config.enableSendMsgLog)) {
     // Seed random number
     srand(config.randomSeed);
 }

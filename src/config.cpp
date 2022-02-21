@@ -24,6 +24,7 @@ const std::string Config::MAX_KEYS_LABEL = "Max_Keys_(2^n,_give_n)";
 const std::string Config::NETWORK_SCALE_LABEL = "networkScale";
 const std::string Config::NUM_NODES_LABEL = "numNodes";
 const std::string Config::RANDOM_SEED_LABEL = "randomSeed";
+const std::string Config::ENABLE_SENDMSG_LOG_LABEL = "enableSendMsgLog";
 const std::string Config::RUN_EVENTS_LABEL = "runEvents";
 const std::string Config::SIM_LENGTH_LABEL = "simLength";
 const std::string Config::SMALLEST_KEY_FOR_PRIORITY_LABEL = "Smallest_Key_for_Priority";
@@ -104,6 +105,12 @@ Config::Config(ifstream jsonFile) {
 	    } else{
             randomSeed = DEFAULT_RANDOM_SEED;
 	    }
+
+        if(jf.contains(ENABLE_SENDMSG_LOG_LABEL)){
+            jf.at(ENABLE_SENDMSG_LOG_LABEL).get_to(this->enableSendMsgLog);
+        } else{
+            enableSendMsgLog = DEFAULT_ENABLE_SENDMSG_LOG;
+        }
 
         if (jf.contains(CUSTOM_CONNECTIONS_LABEL)) {
             jf.at(CUSTOM_CONNECTIONS_LABEL).get_to(this->customConnections);

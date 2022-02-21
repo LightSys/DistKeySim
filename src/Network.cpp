@@ -10,8 +10,9 @@
 
 using namespace std;
 
-Network::Network(ConnectionType connectionType, float PERCENT_CONNECTED, double lambda1, double lambda2, double lambda3, double netScale, int latency)
-	: lambda1(lambda1), lambda2(lambda2), lambda3(lambda3), networkScale(netScale), latency(latency) {
+Network::Network(ConnectionType connectionType, float PERCENT_CONNECTED, double lambda1, double lambda2, double lambda3, double netScale, int latency, bool enableSendMsgLog)
+	: lambda1(lambda1), lambda2(lambda2), lambda3(lambda3), networkScale(netScale), latency(latency),
+      enableSendMsgLog(enableSendMsgLog) {
     this->connectionType = connectionType;
     //PERCENT_CONNECTED is a 5 digit int (99.999% = 99999)
     this->PERCENT_CONNECTED = (int)(PERCENT_CONNECTED*1000);
@@ -23,8 +24,9 @@ Network::Network(ConnectionType connectionType, float PERCENT_CONNECTED, double 
 
 Network::Network(ConnectionType connectionType, float PERCENT_CONNECTED, double lambda1, double lambda2, 
 		double lambda3, double netScale,
-	       	int latency, vector<float>lam1s, vector<float>lam2s, vector<float>lam3s)
-	:  lambda1(lambda1), lambda2(lambda2), lambda3(lambda3), networkScale(netScale), latency(latency) {
+	       	int latency, vector<float>lam1s, vector<float>lam2s, vector<float>lam3s, bool enableSendMsgLog)
+	:  lambda1(lambda1), lambda2(lambda2), lambda3(lambda3), networkScale(netScale), latency(latency),
+       enableSendMsgLog(enableSendMsgLog) {
     this->connectionType = connectionType;
     //PERCENT_CONNECTED is a 5 digit int (99.999% = 99999)
     this->PERCENT_CONNECTED = (int)(PERCENT_CONNECTED*1000);
@@ -66,7 +68,9 @@ bool Network::sendMsg(const Message &message) {
     UUID destID = message.destnodeid(), srcID = message.sourcenodeid();
 
     if (!isOffline(destID) && !isOffline(srcID)) {
-        Logger::logMsg("sendMsg", message);
+        if (enableSendMsgLog) {
+            Logger::logMsg("sendMsg", message);
+        }
         shared_ptr<Node> destNode = getNodeFromUUID(destID);
         return destNode->receiveMessage(message);
     } else {
