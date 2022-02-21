@@ -35,7 +35,9 @@ class Logger {
         static std::string join(vector<int> ints);
         static std::string join(vector<string> stats, string separator);
 
-        static void logBackTrace();
+        // Removed 2/21/2022 because libunwind.h went missing in GitHub Actions
+        // some time between 12/28/2021 and now.
+        // static void logBackTrace();
 
     private:
         static int timeslot;

@@ -1,6 +1,6 @@
 #include <numeric>
 #include <regex>
-#include <libunwind.h>
+// #include <libunwind.h>
 
 #include <google/protobuf/text_format.h>
 
@@ -149,6 +149,9 @@ std::string Logger::join(vector<string> strings, string separator) {
         });
 }
 
+// Removed 2/21/2022 because libunwind.h went missing in GitHub Actions
+// some time between 12/28/2021 and now.
+/*
 void Logger::logBackTrace() {
   unw_cursor_t cursor;
   unw_context_t context;
@@ -179,3 +182,4 @@ void Logger::logBackTrace() {
     }
   }
 }
+*/
