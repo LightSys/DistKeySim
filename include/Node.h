@@ -38,7 +38,7 @@ private:
     float createdDay;
     float createdWeek;
     ADAK_Key_t totalLocalKeyspaceSize=0;
-    double objectConsuptionRatePerSecond = 0;
+    double objectConsumptionRatePerSecond = 0;
     double amountOfOneKeyUsed = 0;
     double lambda3;
     double lambda2;
