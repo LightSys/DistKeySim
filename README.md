@@ -323,7 +323,7 @@ Then run the following as many times as you feel necessary to test repeatability
 make run-repeatable sanitize compare
 ```
 
-`make sanitize` replaces UUIDs in `logOutput.txt` and `statslog.csv` with node index thus making the files comparable.
+`make sanitize` replaces UUIDs in `logOutput.txt` and `statsLog.csv` with node index thus making the files comparable.
 
 ### Test non-repeatability
 
@@ -460,9 +460,9 @@ The objective of Scenario 1 is to "ensure the functionality of sharing keyspace 
 
 The algorithm is spread across several documents, and is divided up into two key segments: the algorithm, which is written in C++, and the GUI, which is primarily in python but also has a bash script.
 
-The C++ simulation uses a config file as an input, and creates the statslog.csv and logOutput.txt files. The statslog.csv stores the data produced by the simulation, namely the UUID of the node who"s data is being displayed (UUID), the timestep it was taken on (timeSlot), the total percentage of the keyspace the node is holding in terms of full blocks (totalKeys), the amount of keyspace shared in terms of the total keyspace (sharing), the rate at which a node is consuming keyspace at a given tick (consumption) and the total number of keys the node still has (remainder). The logOutput file just contains statements that would typically be printed to cout that were worth logging.
+The C++ simulation uses a config file as an input, and creates the statsLog.csv and logOutput.txt files. The statsLog.csv stores the data produced by the simulation, namely the UUID of the node who"s data is being displayed (UUID), the timestep it was taken on (timeSlot), the total percentage of the keyspace the node is holding in terms of full blocks (totalKeys), the amount of keyspace shared in terms of the total keyspace (sharing), the rate at which a node is consuming keyspace at a given tick (consumption) and the total number of keys the node still has (remainder). The logOutput file just contains statements that would typically be printed to cout that were worth logging.
 
-The Python GUI code takes the input from the user, updates the config.json file, and uses ssh to move the config.json file to the server, build the project, run it, and then copies the statslog and logOutput files back to the client computer. The GUI then runs data analytics on the .csv file and produces the graphs.
+The Python GUI code takes the input from the user, updates the config.json file, and uses ssh to move the config.json file to the server, build the project, run it, and then copies the statsLog and logOutput files back to the client computer. The GUI then runs data analytics on the .csv file and produces the graphs.
 
 NOTE: There are numerous print statements which do not match the indentation of the text. These are used for debugging on the server. They were left in because of how frequently those sections of the code need debugging.
 
@@ -524,7 +524,7 @@ ADAK_key_t is defined as ```typedef std::uint64_t ADAK_Key_t```.
 
 #### Logger (.h only)
 
-The logger class provides the functions which log to the statslog.csv and logOutput.txtx files. It keeps its own internal timings and statistics for the .csv, so be careful when changing where/how the functions are used. It also stores copies of the generated statslog.csv and logOutput.txt, as well as the config.json file, in the outputs folder. This prevents the data from being lost when the simulation is run again.
+The logger class provides the functions which log to the statsLog.csv and logOutput.txtx files. It keeps its own internal timings and statistics for the .csv, so be careful when changing where/how the functions are used. It also stores copies of the generated statsLog.csv and logOutput.txt, as well as the config.json file, in the outputs folder. This prevents the data from being lost when the simulation is run again.
 
 ![Logger](./images/Logger.png)
 

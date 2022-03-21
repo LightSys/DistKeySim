@@ -115,7 +115,7 @@ void Node::generateObjectCreationRateDistribution(unsigned seed){
     // Save the seed for debugging
     // unsigned int seed = rd();
     gen = new mt19937(seed);
-    Logger::log(Formatter() << "generateObjectCreationRateDistribution: seed=" << seed);
+    //Logger::log(Formatter() << "generateObjectCreationRateDistribution: seed=" << seed);
 }
 
 double Node::getTimeOnline(){
@@ -419,7 +419,7 @@ int loops = 0;
 //Logger::log(Formatter() << uuid << " recived keyspace " << keyspaces.back().getStart() << "/" << keyspaces.back().getSuffix()
 //       	<< " from " << msg.sourcenodeid()); 
 	   } else {
-              Logger::log(Formatter() << "duplicate keyspace recived by " <<  uuid << " from " << msg.sourcenodeid()
+              Logger::log(Formatter() << "duplicate keyspace received by " <<  uuid << " from " << msg.sourcenodeid()
                << " in message " << msg.messageid());
 	   }
 

@@ -10,13 +10,12 @@
 #include "message.hpp"
 using namespace std;
 
-const char filename[] = "logOutput.txt";  // general log file
-const char statslog[] = "statslog.csv";   // log file for stats output
-const char infoMsg[] = "infoMsg.txt";  // Info Msg log file
-const char keyMsg[] = "keyMsg.txt";  // Keyspace Msg log file
-
-const vector<string> csvHeaders {
+const vector<string> csvHeadersStatsLog {
     "UUID", "timeSlot", "totalKeys","sharing", "consumption", "remainder", "numKeyspaces"
+}; //column headers
+
+const vector<string> csvHeadersKeySharing {
+    "UUID", "shortAlloc", "shortAllocIsOne", "longAlloc","longAllocIsOne", "prevDay", "prevWeek", "avgProv", "avgKey", "peersChecked"
 }; //column headers
 
 class Logger {
@@ -24,9 +23,11 @@ class Logger {
         static void deleteOldLog ();
         static void log (string message);
         static void logStats (vector<string> stats);
+        static void logKeySharing (vector<string> keyspace);
         static void logMsg (const string procName, const Message &message);
 
-        static void setCSVHeaders();
+        static void setCSVHeadersLogStats();
+        static void setCSVHeadersKeySharing();
         static int getTimeslot(bool increment);
         static int getShared(bool clear,int more);
         static int getConsumption(bool clear, int more);

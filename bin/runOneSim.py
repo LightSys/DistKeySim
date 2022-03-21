@@ -26,8 +26,8 @@ def runOneSim(configFileName, connectionMode, simLength, numNodes):
 
     # Compute total number of keyspaces
     uuids = {}
-    open('statslog.csv')
-    with open('statslog.csv') as statsFile:
+    open('statsLog.csv')
+    with open('statsLog.csv') as statsFile:
         reader = csv.DictReader(statsFile)
         for row in reader:
             uuid = row['UUID']

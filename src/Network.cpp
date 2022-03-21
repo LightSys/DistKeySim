@@ -93,6 +93,7 @@ void Network::doAllHeartbeat(int keysToSend) {
 //      	<< " ns");
 
 //start = std::chrono::high_resolution_clock::now();
+        Logger::log(Formatter() << "doAllHeartbeat: uuid=" << uuid);
       	ControlStrategy::adak(*(node), keysToSend); //have the node decide what to do 
 //end = std::chrono::high_resolution_clock::now();
 //Logger::log("chekcing control strat took " << std::chrono::duration_cast<std::chrono::nanoseconds>(end - start).count()
@@ -340,11 +341,11 @@ bool Network::customConnect(shared_ptr<Node> node) {
 	   string node2 = connections.substr(comma + 2, end - comma - 2); 
 	   //cut off current pair from connections
 	   connections = connections.substr(end +1); 
-       Logger::log(Formatter() << "connecting Nodes " << node1 << " and " << node2);
+       //Logger::log(Formatter() << "connecting Nodes " << node1 << " and " << node2);
 	   //Assign nodes to connection values if needed
 	   if(strToID.find((node1)) == strToID.end()){
 	    if(nextNode == nodes.end()){
-	        Logger::log(Formatter() << "Cannot have a node to represent connection with node " << node1);
+	        //Logger::log(Formatter() << "Cannot have a node to represent connection with node " << node1);
 		    continue; //cannot finish this iteration, nothing to connect
 	     }else{ 
                 strToID.insert(pair<string, UUID>(node1, nextNode->first));
@@ -354,8 +355,8 @@ bool Network::customConnect(shared_ptr<Node> node) {
 	   //and now the second item
 	   if(strToID.find(node2) == strToID.end()){
 	     if(nextNode == nodes.end()){
-	        Logger::log(Formatter() << "Cannot have a node to represent connection with node " << node2);
-		continue; //cannot finish this loop; nothing to connect
+	        //Logger::log(Formatter() << "Cannot have a node to represent connection with node " << node2);
+		    continue; //cannot finish this loop; nothing to connect
 	     }else{
 	       strToID.insert(pair<string, UUID>(node2, nextNode->first));
 	       nextNode++;

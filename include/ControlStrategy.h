@@ -23,6 +23,9 @@ public:
 
     ~ControlStrategy();
     
+    static void logKeySpacing(UUID uuid, double shortAlloc, bool shortAllocIsOne, double longAlloc, bool longAllocIsOne,
+        double prevDay, double prevWeek, long double avgProv, long double avgKey, int peersChecked);
+
     //unused function, based on outdated ticking system
     void nodeTick(shared_ptr<Node>& node);
 

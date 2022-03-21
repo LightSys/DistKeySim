@@ -65,7 +65,7 @@ build-and-test :
 # Then run the following as many times as you feel necessary to test repeatability:
 #	make run-repeatable sanitize compare
 #
-# Sanitize replaces UUIDs in logOutput.txt and statslog.csv with node index
+# Sanitize replaces UUIDs in logOutput.txt and statsLog.csv with node index
 # thus making the files comparable.
 
 NON =
@@ -81,12 +81,12 @@ LAST_RUN = $(shell echo $(NEXT_RUN) - 1 | bc)
 .PHONY: sanitize
 sanitize :
 	$(MAKE) sanitize-logOutput RUN=$(LAST_RUN)
-	$(MAKE) sanitize-statslog  RUN=$(LAST_RUN)
+	$(MAKE) sanitize-statsLog  RUN=$(LAST_RUN)
 
-.PHONY: sanitize-statslog
-sanitize-statslog :
-	$(ADAK_ROOT)/bin/sanitizeStatsLog.py $(OUTPUTS)/statslog$(RUN).csv > \
-		$(OUTPUTS)/statslog$(RUN).clean.txt
+.PHONY: sanitize-statsLog
+sanitize-statsLog :
+	$(ADAK_ROOT)/bin/sanitizeStatsLog.py $(OUTPUTS)/statsLog$(RUN).csv > \
+		$(OUTPUTS)/statsLog$(RUN).clean.txt
 
 .PHONY: sanitize-logOutput
 sanitize-logOutput :
@@ -96,13 +96,13 @@ sanitize-logOutput :
 .PHONY: compare
 compare :
 	$(MAKE) compare-logOutput
-	$(MAKE) compare-statslog
+	$(MAKE) compare-statsLog
 
 PREV_RUN = $(shell echo $(LAST_RUN) - 1 | bc)
-.PHONY: compare-statslog
-compare-statslog :
-	$(CMP) $(OUTPUTS)/statslog$(PREV_RUN).clean.txt \
-		       $(OUTPUTS)/statslog$(LAST_RUN).clean.txt
+.PHONY: compare-statsLog
+compare-statsLog :
+	$(CMP) $(OUTPUTS)/statsLog$(PREV_RUN).clean.txt \
+		       $(OUTPUTS)/statsLog$(LAST_RUN).clean.txt
 
 .PHONY: compare-logOutput
 compare-logOutput :
@@ -209,12 +209,12 @@ SECONDS      = 60
 MINUTES      = 60
 HOURS        = 24
 SCEN_2_DAYS  = 7
-ITERATIONS   = $(shell echo "$(SIM_UNITS_PER_SECOND)*$(SECONDS)*$(MINUTES)*$(HOURS)*$(SCEN_2_DAYS)" | bc)
+SCEN_2_ITERATIONS = $(shell echo "$(SIM_UNITS_PER_SECOND)*$(SECONDS)*$(MINUTES)*$(HOURS)*$(SCEN_2_DAYS)" | bc)
 SCEN_2_CONFIG  = "config/scenario2-config.json"
 
 .PHONY: run-scenario2
 run-scenario2 :
-	jq ".simLength |= $(ITERATIONS)" < $(SCEN_2_CONFIG) > $(BUILD_SRC)/config.json
+	jq ".simLength |= $(SCEN_2_ITERATIONS)" < $(SCEN_2_CONFIG) > $(BUILD_SRC)/config.json
 	cd $(BUILD_SRC) && ./adak
 	cd $(ADAK_ROOT)
 
@@ -225,8 +225,43 @@ run-test5-scenario-2 :
 
 .PHONY: run-test5-scenario-2a
 run-test5-scenario-2a :
-	$(MAKE) run-test5-scenario-2 SCEN_2_DAYS=0.3 \
-		SCEN_2_CONFIG="config/scenario2a-config.json"
+	$(MAKE) run-test5-scenario-2 SCEN_2_DAYS=0.1 SCEN_2_CONFIG="config/scenario2a-config.json"
+	$(MAKE) sanitize
+
+.PHONY: run-test5-scenario-2b
+run-test5-scenario-2b :
+	$(MAKE) run-test5-scenario-2 SCEN_2_DAYS=0.1 SCEN_2_CONFIG="config/scenario2b-config.json"
+	$(MAKE) sanitize
+
+# --------------------------------------------
+# Test Scenario 3 (see "ADAK Scenarios 1.pdf")
+# --------------------------------------------
+#
+# Objective: Ensure block sharing eventually stabilizes, and determine what resolution
+# the keyspace is broken up into (eighths, 16ths, 32nds) by ADAK in an attempt to distribute
+# the keyspace according to object creation rate.
+#
+# Note: We make 40 milliseconds the length of a simulation "tick".
+# Therefore, there are 25 simulation ticks per second.
+#
+# To run a test shorter than 7 days, do something like this
+#
+#     make run-test6-scenario-3 SCEN_2_DAYS=0.1
+
+SCEN_3_DAYS  = 7
+SCEN_3_ITERATIONS = $(shell echo "$(SIM_UNITS_PER_SECOND)*$(SECONDS)*$(MINUTES)*$(HOURS)*$(SCEN_2_DAYS)" | bc)
+SCEN_3_CONFIG  = "config/scenario3-config.json"
+
+.PHONY: run-scenario3
+run-scenario3 :
+	jq ".simLength |= $(SCEN_3_ITERATIONS)" < $(SCEN_3_CONFIG) > $(BUILD_SRC)/config.json
+	cd $(BUILD_SRC) && ./adak
+	cd $(ADAK_ROOT)
+
+.PHONY: run-test6-scenario-3
+run-test6-scenario-3 :
+	time $(BIN)/testScenario3.py --days $(SCEN_3_DAYS) --config $(SCEN_3_CONFIG)
+	@echo "Test 6 Passed: Scenario 3"
 
 # ----------------------------------------------------
 # Display stuff from log output files
@@ -239,6 +274,10 @@ count-consuming-keys :
 
 short-allocation-ratio :
 	@awk '/sourceNodeID/ {sourceNodeID = $$3} /shortAllocationRatio/ {print sourceNodeID, $$2}' $(LOGFILE)
+
+alloc-csv :
+	@tr -s ' ' < $(LOGFILE) | sed -e 's/ /=/g' | \
+		awk -F= 'BEGIN {print "shortAlloc,shortAllocIsOne,longAlloc,longAllocIsOne"} /shortAlloc/ {printf "%g,%s,%g,%s\n", $$3, $$19, $$5, $$23}'
 
 # ----------------------------------------------------
 # Find what config files are actually used
@@ -269,7 +308,7 @@ run-eventGen :
 # ------------------
 # Show Visualization
 # ------------------
-STATS_LOG    = $(OUTPUTS)/statslog$(RUN).csv
+STATS_LOG    = $(OUTPUTS)/statsLog$(RUN).csv
 GRAPH_IS_LOG = True
 .PHONY: show-vis1
 show-vis1 :
@@ -332,14 +371,9 @@ clean-outputs :
 	rm -rf $(OUTPUTS)
 	rm -f  $(BUILD_SRC)/*.{csv,txt,json}
 
-.PHONY: clean-alternate-outputs
-clean-alternate-outputs :
-	rm -r $(ALTERNATE_OUTPUTS)/*
-	rm -f $(BUILD_SRC)/*.{csv,txt,json}
-
 .PHONY: clean-last-output
 clean-last-output :
-	rm -f $(OUTPUTS)/statslog$(LAST_RUN).* \
+	rm -f $(OUTPUTS)/statsLog$(LAST_RUN).* \
 		$(OUTPUTS)/logOutput$(LAST_RUN).* > \
 		$(OUTPUTS)/copy_of_config$(LAST_RUN).json \
 		$(OUTPUTS)/full_config$(LAST_RUN).json

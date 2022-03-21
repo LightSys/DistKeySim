@@ -6,20 +6,34 @@
 
 #include "Logger.h"
 
+const std::string logOutput = "logOutput";  // general log file
+const std::string logOutputTxt = logOutput + ".txt";
+const std::string statsLog = "statsLog";   // log file for stats output
+const std::string statsLogCsv = statsLog + ".csv";
+const std::string keySharing = "keySharing";   // log file for keyspace sharing output
+const std::string keySharingCsv = keySharing + ".csv";
+const std::string infoMsg = "infoMsg";  // Info Msg log file
+const std::string infoMsgTxt = infoMsg + ".txt";
+const std::string keyMsg = "keyMsg";  // Keyspace Msg log file
+const std::string keyMsgTxt = keyMsg + ".txt";
+
 static ofstream logOutputStream;
 static ofstream logStatsStream;
+static ofstream keySharingStream;
 
 int Logger::timeslot = 0;
 int Logger::shared = 0;
 int Logger::rate = 0;
 
 void Logger::deleteOldLog() {
-    remove(filename);
-    remove(statslog);
-    remove(infoMsg);
-    remove(keyMsg);
-    logOutputStream.open(filename, ofstream::app);
-    logStatsStream.open(statslog, ofstream::app);
+    remove(logOutputTxt.c_str());
+    remove(statsLogCsv.c_str());
+    remove(keySharingCsv.c_str());
+    remove(infoMsgTxt.c_str());
+    remove(keyMsgTxt.c_str());
+    logOutputStream.open(logOutputTxt, ofstream::app);
+    logStatsStream.open(statsLogCsv, ofstream::app);
+    keySharingStream.open(keySharingCsv, ofstream::app);
 }
 
 void Logger::log(string message) {
@@ -29,13 +43,23 @@ void Logger::log(string message) {
 }
 
 void Logger::logStats(vector<string> stats) {
-    if (stats.size() == csvHeaders.size()) {
+    if (stats.size() == csvHeadersStatsLog.size()) {
         logStatsStream << join(stats, ",");
         logStatsStream << "\n";
     } else {  // don't log if array isn't accurate size
         log("Stats array was incorrect length");
     }
 }
+
+void Logger::logKeySharing(vector<string> stats) {
+    if (stats.size() == csvHeadersKeySharing.size()) {
+        keySharingStream << join(stats, ",");
+        keySharingStream << "\n";
+    } else {  // don't log if array isn't accurate size
+        log("Key sharing array was incorrect length");
+    }
+}
+
 
 void Logger::logMsg (const string procName, const Message &message) {
     std::string prototextOutput;
@@ -48,8 +72,12 @@ void Logger::logMsg (const string procName, const Message &message) {
     Logger::log(Formatter() << procName << ": {" << squeezeWhitespace << "}");
 }
 
-void Logger::setCSVHeaders() {
-    logStats(csvHeaders);  // first line should be column titles
+void Logger::setCSVHeadersLogStats() {
+    logStats(csvHeadersStatsLog);  // first line should be column titles
+}
+
+void Logger::setCSVHeadersKeySharing() {
+    logKeySharing(csvHeadersKeySharing);  // first line should be column titles
 }
 
 int Logger::getTimeslot(bool increment) {
@@ -86,21 +114,32 @@ std::string Logger::copyFile(string path) {
     }
 
     int num = 1;
+    std::string numTxt = "num.txt";
+
     // look for the num.txt at the path
-    ifstream numFile(path + "num.txt");
+    ifstream numFile(path + numTxt);
     if (numFile.is_open()) {
         numFile >> num;
         numFile.close();
     }
 
     // increment num.txt file
-    ofstream numFileII(path + "num.txt", std::ofstream::out | std::ofstream::trunc);
+    ofstream numFileII(path + numTxt, std::ofstream::out | std::ofstream::trunc);
     numFileII << to_string(num + 1);  // replace and increment
     numFileII.close();
 
-    // copy the statslog
-    ifstream src("./statslog.csv", std::ios::binary);
-    ofstream dest(path + "statslog" + to_string(num) + ".csv", std::ios::binary);
+    // copy the statsLog
+    ifstream src("./" + statsLogCsv, std::ios::binary);
+    ofstream dest(path + statsLog + to_string(num) + ".csv", std::ios::binary);
+    // move over the information
+    dest << src.rdbuf();
+    // close files
+    src.close();
+    dest.close();
+
+    // copy the key sharing csv
+    src.open("./" + keySharingCsv, std::ios::binary);
+    dest.open(path + keySharing + to_string(num) + ".csv", std::ios::binary);
     // move over the information
     dest << src.rdbuf();
     // close files
@@ -108,8 +147,8 @@ std::string Logger::copyFile(string path) {
     dest.close();
 
     // copy the logoutput.txt
-    src.open("./logOutput.txt", std::ios::binary);
-    dest.open(path + "logOutput" + to_string(num) + ".txt", std::ios::binary);
+    src.open("./" + logOutputTxt, std::ios::binary);
+    dest.open(path + logOutput + to_string(num) + ".txt", std::ios::binary);
     // move over the information
     dest << src.rdbuf();
     // close files, and the open next

@@ -15,7 +15,7 @@ def parseCommandLineArgs():
     parser.add_argument("-v", "--visNum", help="Visualization (1|2)", type=int, default=1)
     parser.add_argument("-l", "--graphIsLog", help="Graph axis is logarithmic (True|False)", default="False")
     parser.add_argument("-f", "--imageFormat", help="Image format (html|plotly write image format)", type=str, default="html")
-    parser.add_argument("statsLog", help="statslog.csv file path")
+    parser.add_argument("statsLog", help="statsLog.csv file path")
     
     return parser.parse_args()
 
