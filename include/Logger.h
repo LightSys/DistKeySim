@@ -15,7 +15,7 @@ const vector<string> csvHeadersStatsLog {
 }; //column headers
 
 const vector<string> csvHeadersKeySharing {
-    "UUID", "shortAlloc", "shortAllocIsOne", "longAlloc","longAllocIsOne", "prevDay", "prevWeek", "avgProv", "avgKey", "peersChecked"
+    "UUID", "timeSlot", "shortAlloc", "shortAllocIsOne", "longAlloc","longAllocIsOne", "prevDay", "prevWeek", "avgProv", "avgKey", "peersChecked"
 }; //column headers
 
 class Logger {

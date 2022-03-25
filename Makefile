@@ -216,22 +216,23 @@ SCEN_2_CONFIG  = "config/scenario2-config.json"
 run-scenario2 :
 	jq ".simLength |= $(SCEN_2_ITERATIONS)" < $(SCEN_2_CONFIG) > $(BUILD_SRC)/config.json
 	cd $(BUILD_SRC) && ./adak
-	cd $(ADAK_ROOT)
 
 .PHONY: run-test5-scenario-2
 run-test5-scenario-2 :
-	time $(BIN)/testScenario2.py --days $(SCEN_2_DAYS) --config $(SCEN_2_CONFIG)
+	$(MAKE) run-scenario2 SCEN_2_CONFIG="config/scenario2-config.json"
 	@echo "Test 5 Passed: Scenario 2"
+
+.PHONY: run-test5-scenario-2-short
+run-test5-scenario-2-short :
+	$(MAKE) run-scenario2 SCEN_2_DAYS=0.1 SCEN_2_CONFIG="config/scenario2-config.json"
 
 .PHONY: run-test5-scenario-2a
 run-test5-scenario-2a :
-	$(MAKE) run-test5-scenario-2 SCEN_2_DAYS=0.1 SCEN_2_CONFIG="config/scenario2a-config.json"
-	$(MAKE) sanitize
+	$(MAKE) run-scenario2 SCEN_2_DAYS=0.1 SCEN_2_CONFIG="config/scenario2a-config.json"
 
 .PHONY: run-test5-scenario-2b
 run-test5-scenario-2b :
-	$(MAKE) run-test5-scenario-2 SCEN_2_DAYS=0.1 SCEN_2_CONFIG="config/scenario2b-config.json"
-	$(MAKE) sanitize
+	$(MAKE) run-scenario2 SCEN_2_DAYS=0.1 SCEN_2_CONFIG="config/scenario2b-config.json"
 
 # --------------------------------------------
 # Test Scenario 3 (see "ADAK Scenarios 1.pdf")
@@ -266,18 +267,15 @@ run-test6-scenario-3 :
 # ----------------------------------------------------
 # Display stuff from log output files
 # ----------------------------------------------------
-LOGFILE = $(shell ls -tr $(OUTPUTS)/logOutput*.txt | tail -1)
+LOGFILE = $(shell ls -tr $(OUTPUTS)/logOutput$(LAST_RUN).txt | tail -1)
+CONSUMING = $(OUTPUTS)/logOutput$(LAST_RUN).consuming.txt
 
 .PHONY: count-consuming-keys
 count-consuming-keys :
 	awk '/consuming/ {counts[$$1] = counts[$$1] + 1} END {for (i in counts) {print i, counts[i]}}' $(LOGFILE)
 
-short-allocation-ratio :
-	@awk '/sourceNodeID/ {sourceNodeID = $$3} /shortAllocationRatio/ {print sourceNodeID, $$2}' $(LOGFILE)
-
-alloc-csv :
-	@tr -s ' ' < $(LOGFILE) | sed -e 's/ /=/g' | \
-		awk -F= 'BEGIN {print "shortAlloc,shortAllocIsOne,longAlloc,longAllocIsOne"} /shortAlloc/ {printf "%g,%s,%g,%s\n", $$3, $$19, $$5, $$23}'
+compare-consuming-keys :
+	egrep '(CS::adak|  keyspace=|  peer=|will not share|  percent of global|consuming a key)' $(LOGFILE) > $(CONSUMING)
 
 # ----------------------------------------------------
 # Find what config files are actually used

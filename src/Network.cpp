@@ -147,14 +147,13 @@ void Network::checkAndSendAllNodesLatency(int latency) {
        latencyStall++; //essetially, do nothing
     }else{
         vector<Message> temp = toSend.front();
-	toSend.pop(); //get rid of timestep
-	for(int i = 0  ; i < temp.size() ; i ++){
-//auto start = std::chrono::high_resolution_clock::now();
-		sendMsg(temp[i]);
-//auto end = std::chrono::high_resolution_clock::now();
-//Logger::log("sending a message took " << std::chrono::duration_cast<std::chrono::nanoseconds>(end - start).count()
-//       	<< " ms"); 
-	}
+	    toSend.pop(); //get rid of timestep
+	    for(int i = 0  ; i < temp.size() ; i ++){
+            //auto start = std::chrono::high_resolution_clock::now();
+		    sendMsg(temp[i]);
+            //auto end = std::chrono::high_resolution_clock::now();
+            //Logger::log("sending a message took " << std::chrono::duration_cast<std::chrono::nanoseconds>(end - start).count() << " ms"); 
+	    }
     }
 }
 
