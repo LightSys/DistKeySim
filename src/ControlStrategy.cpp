@@ -229,7 +229,7 @@ void ControlStrategy::adak(Node &node, int keysToShift) {
                    !(areCloseEnough(1, shortAlloc) && areCloseEnough(1, longAlloc))));
 
             // log defs for later portion here
-            if ((isLessThan(longAlloc / prevWeek, avgProv) || areCloseEnough(longAlloc / prevWeek, avgProv)) &&
+            if (isLessThan(longAlloc / prevWeek, avgProv) &&
                 isLessThan((longAlloc / prevWeek) / provRatio, 0.75) &&
                 !(areCloseEnough(1, shortAlloc) && areCloseEnough(1, longAlloc))) {
                 Logger::log("  that mess was true");
