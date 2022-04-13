@@ -1,7 +1,10 @@
 
-#include "Simulation.h"
-
 #include "ControlStrategy.h"
+#include "EventGen.h"
+#include "GeometricDisconnect.h"
+#include "Logger.h"
+#include "Simulation.h"
+#include "UUID.h"
 
 using json = nlohmann::json;
 
@@ -22,10 +25,10 @@ void Simulation::run() {
     // the file twice.
     Config config(ifstream("config.json"));
 
-    ControlStrategy::setAccuracy(config.longTermPrecision);
+    adakStrategy = new ControlStrategy();
+    adakStrategy->setAccuracy(config.longTermPrecision);
 
-    string message = "Started Simulation";
-    Logger::log(message);
+    Logger::log("Started Simulation");
 
     // Create root node that will have the max keyspace 0/0
     network.addRootNode(config.randomSeed);
@@ -36,7 +39,7 @@ void Simulation::run() {
     for (int i = 1; i < numNodes; i++) {
         UUID newNodeID = network.addEmptyNode(config.randomSeed);
         if (i % config.heartbeatFrequency == 0) {
-            network.doAllHeartbeat(config.chunkiness);
+            network.doAllHeartbeat(adakStrategy, config.chunkiness);
         }
         network.checkAndSendAllNodesLatency(config.latency);
         network.doAllTicks();
@@ -80,7 +83,7 @@ void Simulation::run() {
         // start = std::chrono::high_resolution_clock::now();
 
         if (i % config.heartbeatFrequency == 0) {
-            network.doAllHeartbeat(config.chunkiness);
+            network.doAllHeartbeat(adakStrategy, config.chunkiness);
         }
         // end = std::chrono::high_resolution_clock::now();
         // Logger::log(Formatter() << "do all heartbeats took "

@@ -10,6 +10,7 @@ const std::string Config::CHUNKINESS_LABEL = "Chunkiness_(#_of_keys_to_shift)";
 const std::string Config::CONNECTION_MODE_LABEL = "connectionMode";
 const std::string Config::CREATION_RATE_LABEL = "Creation_Rate(%_of_keyspace)";
 const std::string Config::CSV_OUTPUT_PATH_LABEL = "csvOutputPath";
+const std::string Config::ADAK_STRATEGY_LABEL = "adakStrategy";
 const std::string Config::CUSTOM_CONNECTIONS_LABEL = "Custom_Connections";
 const std::string Config::CUSTOM_LAMBDA_1_LABEL = "customLambda1";
 const std::string Config::CUSTOM_LAMBDA_2_LABEL = "customLambda2";
@@ -68,6 +69,12 @@ Config::Config(ifstream jsonFile) {
             jf.at(CSV_OUTPUT_PATH_LABEL).get_to(this->csvOutputPath);
         } else {
             csvOutputPath = DEFAULT_CSV_OUTPUT_PATH;
+        }
+        
+        if (jf.contains(ADAK_STRATEGY_LABEL)) {
+            jf.at(ADAK_STRATEGY_LABEL).get_to(this->adakStrategy);
+        } else {
+            adakStrategy = DEFAULT_ADAK_STRATEGY;
         }
         
         if (jf.contains(CREATION_RATE_LABEL)) {
@@ -245,6 +252,7 @@ Config::Config(ifstream jsonFile) {
         connModeStr = DEFAULT_CONN_MODE_STR;
         connectionMode = DEFAULT_CONNECTION_MODE;
         csvOutputPath = DEFAULT_CSV_OUTPUT_PATH;
+        adakStrategy = DEFAULT_ADAK_STRATEGY;
         creationRate = DEFAULT_CREATION_RATE;
         networkScale = DEFAULT_NETWORK_SCALE;
         randomSeed = DEFAULT_RANDOM_SEED;
@@ -260,6 +268,7 @@ void Config::write(std::string jsonFile) {
     j[CONNECTION_MODE_LABEL] = ConnectionType_toString(this->connectionMode);
     j[CREATION_RATE_LABEL] = this->creationRate;
     j[CSV_OUTPUT_PATH_LABEL] = this->csvOutputPath;
+    j[ADAK_STRATEGY_LABEL] = this->adakStrategy;
     j[CUSTOM_CONNECTIONS_LABEL] = this->customConnections;
     if (this->customLambda1.size() > 0) {j[CUSTOM_LAMBDA_1_LABEL] = this->customLambda1;}
     if (this->customLambda2.size() > 0) {j[CUSTOM_LAMBDA_2_LABEL] = this->customLambda2;}

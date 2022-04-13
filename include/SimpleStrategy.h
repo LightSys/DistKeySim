@@ -10,19 +10,16 @@
 
 using namespace std;
 
-enum NodeTimer { HEARTBEAT_TIMER };
-
-class ControlStrategy: public AbstractStrategy {
+class SimpleStrategy: public AbstractStrategy {
 private:
     shared_ptr<SystemClock> nodeClock;
     clock_unit_t heartbeatPeriod;
 
 public:
 
-    ControlStrategy(ClockType clockType, clock_unit_t heartbeatPeriod);    
-    ControlStrategy() { }
+    SimpleStrategy(ClockType clockType, clock_unit_t heartbeatPeriod);
 
-    ~ControlStrategy();
+    ~SimpleStrategy();
     
     void logKeySharing(UUID uuid, double shortAlloc, bool shortAllocIsOne, double longAlloc, bool longAllocIsOne,
         double prevDay, double prevWeek, long double avgProv, long double avgKey, int peersChecked);

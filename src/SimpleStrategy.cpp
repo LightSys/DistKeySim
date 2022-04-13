@@ -1,14 +1,14 @@
-#include "ControlStrategy.h"
+#include "SimpleStrategy.h"
 #include "Logger.h"
 #include "Node.h"
 
 using namespace std;
 
-ControlStrategy::ControlStrategy(ClockType type, clock_unit_t heartbeatPeriod) {
+SimpleStrategy::SimpleStrategy(ClockType type, clock_unit_t heartbeatPeriod) {
     nodeClock = shared_ptr<SystemClock>(SystemClock::makeClock(type));
 }
 
-void ControlStrategy::logKeySharing(UUID uuid, double shortAlloc, bool shortAllocIsOne,
+void SimpleStrategy::logKeySharing(UUID uuid, double shortAlloc, bool shortAllocIsOne,
         double longAlloc, bool longAllocIsOne, double prevDay, double prevWeek,
         long double avgProv, long double avgKey, int peersChecked) {
 
@@ -27,11 +27,11 @@ void ControlStrategy::logKeySharing(UUID uuid, double shortAlloc, bool shortAllo
     Logger::logKeySharing(dataLine);
 }
 
-void ControlStrategy::nodeTick(shared_ptr<Node> &node) {
+void SimpleStrategy::nodeTick(shared_ptr<Node> &node) {
     // TODO: implement heartbeats here
 }
 
-void ControlStrategy::adak(Node &node, int keysToShift) {
+void SimpleStrategy::adak(Node &node, int keysToShift) {
     std::map<UUID, pair<Message *, uint64_t>> nodePeers = node.getPeers();
     std::map<UUID, pair<Message *, uint64_t>>::iterator i;
     long double avgProv = 0;
@@ -83,7 +83,7 @@ void ControlStrategy::adak(Node &node, int keysToShift) {
         avgKey += shortAlloc;
         peersChecked++;
 
-        ControlStrategy::logKeySharing(node.getUUID(), shortAlloc, areCloseEnough(1, shortAlloc),
+        SimpleStrategy::logKeySharing(node.getUUID(), shortAlloc, areCloseEnough(1, shortAlloc),
             longAlloc, areCloseEnough(1, longAlloc), NAN, NAN,
             avgProv, avgKey, peersChecked);
 
@@ -145,7 +145,7 @@ void ControlStrategy::adak(Node &node, int keysToShift) {
         << " (avgProv < provRatio)="
         << toString(isLessThan(avgProv, provRatio)));
 
-    ControlStrategy::logKeySharing(node.getUUID(), NAN, areCloseEnough(1, NAN),
+    SimpleStrategy::logKeySharing(node.getUUID(), NAN, areCloseEnough(1, NAN),
         NAN, areCloseEnough(1, NAN), NAN, NAN,
         avgProv, avgKey, peersChecked);
 
@@ -177,7 +177,7 @@ void ControlStrategy::adak(Node &node, int keysToShift) {
             long double shortAlloc =
                 i->second.first->info().records(0).creationratedata().shortallocationratio();
 
-            ControlStrategy::logKeySharing(node.getUUID(), shortAlloc, areCloseEnough(1, shortAlloc),
+            SimpleStrategy::logKeySharing(node.getUUID(), shortAlloc, areCloseEnough(1, shortAlloc),
                 longAlloc, areCloseEnough(1, longAlloc), NAN, prevWeek,
                 avgProv, avgKey, peersChecked);
             
@@ -383,7 +383,7 @@ void ControlStrategy::adak(Node &node, int keysToShift) {
     subBlocks(node, avgKey, keysToShift);
 }
 
-void ControlStrategy::subBlocks(Node &node, long double avgKeys, int keysToShift) {
+void SimpleStrategy::subBlocks(Node &node, long double avgKeys, int keysToShift) {
     // need keyspace to do anything
     if (node.getKeySpace().size() == 0) return;
 
@@ -463,7 +463,7 @@ void ControlStrategy::subBlocks(Node &node, long double avgKeys, int keysToShift
 }
 
 // comvert a fractional number to binary
-string ControlStrategy::fractToBin(long double fract, int accuracy) {
+string SimpleStrategy::fractToBin(long double fract, int accuracy) {
     std::string bin = "";
     int temp;
     for (int i = 0; i < accuracy; i++) {

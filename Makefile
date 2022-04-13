@@ -48,8 +48,7 @@ src :
 # test. It is the test we run in GitHub actions.
 # ----------------------------------------------
 .PHONY: build-and-test
-build-and-test :
-	$(MAKE) all
+build-and-test : all
 	$(MAKE) run-test1-repeatability
 	$(MAKE) run-test2-oscillation
 	$(MAKE) run-test3-non-repeatability
@@ -169,20 +168,10 @@ run-test3-non-repeatability :
 #
 #     make run-test4-scenario-1 SCEN_1_DAYS=0.1
 
-SIM_UNITS_PER_SECOND = 25
-SECONDS      = 60
-MINUTES      = 60
-HOURS        = 24
 SCEN_1_DAYS  = 1
-ITERATIONS   = $(shell echo "$(SIM_UNITS_PER_SECOND)*$(SECONDS)*$(MINUTES)*$(HOURS)*$(SCEN_1_DAYS)" | bc)
-.PHONY: run-scenario1
-run-scenario1 :
-	jq ".simLength |= $(ITERATIONS)" < config/scenario1-config.json > $(BUILD_SRC)/config.json
-	cd $(BUILD_SRC) && ./adak
-	cd $(ADAK_ROOT)
 
 .PHONY: run-test4-scenario-1
-run-test4-scenario-1 :
+run-test4-scenario-1 : all
 	$(BIN)/testScenario1.py --days $(SCEN_1_DAYS)
 	@echo "Test 4 Passed: Scenario 1"
 
@@ -204,35 +193,25 @@ run-test4-scenario-1 :
 #
 #     make run-test5-scenario-2 SCEN_2_DAYS=0.1
 
-SIM_UNITS_PER_SECOND = 25
-SECONDS      = 60
-MINUTES      = 60
-HOURS        = 24
-SCEN_2_DAYS  = 7
-SCEN_2_ITERATIONS = $(shell echo "$(SIM_UNITS_PER_SECOND)*$(SECONDS)*$(MINUTES)*$(HOURS)*$(SCEN_2_DAYS)" | bc)
-SCEN_2_CONFIG  = "config/scenario2-config.json"
-
-.PHONY: run-scenario2
-run-scenario2 :
-	jq ".simLength |= $(SCEN_2_ITERATIONS)" < $(SCEN_2_CONFIG) > $(BUILD_SRC)/config.json
-	cd $(BUILD_SRC) && ./adak
+SCEN_2_DAYS   = 7
+SCEN_2_CONFIG = "config/scenario2-config.json"
 
 .PHONY: run-test5-scenario-2
-run-test5-scenario-2 :
-	$(MAKE) run-scenario2 SCEN_2_CONFIG="config/scenario2-config.json"
+run-test5-scenario-2 : all
+	$(BIN)/testScenario2.py --days $(SCEN_2_DAYS) --config $(SCEN_2_CONFIG)
 	@echo "Test 5 Passed: Scenario 2"
 
 .PHONY: run-test5-scenario-2-short
-run-test5-scenario-2-short :
-	$(MAKE) run-scenario2 SCEN_2_DAYS=0.1 SCEN_2_CONFIG="config/scenario2-config.json"
+run-test5-scenario-2-short : all
+	$(MAKE) run-test5-scenario-2 SCEN_2_DAYS=0.1 SCEN_2_CONFIG="config/scenario2-config.json"
 
 .PHONY: run-test5-scenario-2a
-run-test5-scenario-2a :
-	$(MAKE) run-scenario2 SCEN_2_DAYS=0.1 SCEN_2_CONFIG="config/scenario2a-config.json"
+run-test5-scenario-2a : all
+	$(MAKE) run-test5-scenario-2 SCEN_2_DAYS=0.1 SCEN_2_CONFIG="config/scenario2a-config.json"
 
 .PHONY: run-test5-scenario-2b
-run-test5-scenario-2b :
-	$(MAKE) run-scenario2 SCEN_2_DAYS=0.1 SCEN_2_CONFIG="config/scenario2b-config.json"
+run-test5-scenario-2b : all
+	$(MAKE) run-test5-scenario-2 SCEN_2_DAYS=0.1 SCEN_2_CONFIG="config/scenario2b-config.json"
 
 # --------------------------------------------
 # Test Scenario 3 (see "ADAK Scenarios 1.pdf")
@@ -376,6 +355,9 @@ clean-last-output :
 		$(OUTPUTS)/copy_of_config$(LAST_RUN).json \
 		$(OUTPUTS)/full_config$(LAST_RUN).json
 	echo $(LAST_RUN) > 	$(OUTPUTS)/num.txt
+
+.PHONY: clean-all
+clean-all : clean clean-outputs
 
 # --------------------
 # Show number of cores

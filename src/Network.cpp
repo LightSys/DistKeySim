@@ -78,7 +78,7 @@ bool Network::sendMsg(const Message &message) {
     }
 }
 
-void Network::doAllHeartbeat(int keysToSend) {
+void Network::doAllHeartbeat(AbstractStrategy *adakStrategy, int keysToSend) {
     // NOTE: Baylor will need to change this, right now we are sending heartbeat messages practically all the time
     // they will probably want to add time to Node to send it periodically
     // To make this repeatable, loop through nodes in order they were added
@@ -94,7 +94,7 @@ void Network::doAllHeartbeat(int keysToSend) {
 
 //start = std::chrono::high_resolution_clock::now();
         Logger::log(Formatter() << "doAllHeartbeat: uuid=" << uuid);
-      	ControlStrategy::adak(*(node), keysToSend); //have the node decide what to do 
+        adakStrategy->adak(*(node), keysToSend); //have the node decide what to do 
 //end = std::chrono::high_resolution_clock::now();
 //Logger::log("chekcing control strat took " << std::chrono::duration_cast<std::chrono::nanoseconds>(end - start).count()
 //       	<< " ns");    

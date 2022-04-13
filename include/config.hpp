@@ -7,6 +7,7 @@
 #include <utility>
 
 #include "json.hpp"
+#include "AbstractStrategy.h"
 #include "ConnectionType.h"
 #include "Simulation.h"
 
@@ -17,6 +18,7 @@ static const u_int DEFAULT_NUM_NODES = 100;
 static ConnectionType DEFAULT_CONNECTION_MODE = ConnectionType::Full;
 static const char* DEFAULT_CONN_MODE_STR = "full";
 static const char* DEFAULT_CSV_OUTPUT_PATH = "../../outputs/";
+static const char* DEFAULT_ADAK_STRATEGY = "ControlStrategry";
 static const int DEFAULT_CREATION_RATE = 1;
 static const float DEFAULT_NETWORK_SCALE = 0.3;
 static const int DEFAULT_LATENCY = 1; //this is the minmum in the current structure right now
@@ -62,6 +64,7 @@ struct Config {
     std::string connModeStr;
     ConnectionType connectionMode;
     std::string csvOutputPath;
+    std::string adakStrategy;
     int creationRate;
     float networkScale;
     int latency; 
@@ -94,16 +97,23 @@ struct Config {
     
     //a minimalist intialization of sorts
     explicit Config(
-        u_int numNodes = DEFAULT_NUM_NODES, std::string connectionMode = DEFAULT_CONN_MODE_STR,
-        std::string csvPath = DEFAULT_CSV_OUTPUT_PATH, int creationRate = DEFAULT_CREATION_RATE,
+        u_int numNodes = DEFAULT_NUM_NODES,
+        std::string connectionMode = DEFAULT_CONN_MODE_STR,
+        std::string csvPath = DEFAULT_CSV_OUTPUT_PATH,
+        std::string adakStrategy = DEFAULT_ADAK_STRATEGY,
+        int creationRate = DEFAULT_CREATION_RATE,
         float networkScale = DEFAULT_NETWORK_SCALE)
-           : numNodes(numNodes), csvOutputPath(std::move(csvPath)), connModeStr(connectionMode),
-             creationRate(creationRate), networkScale(networkScale)
+    : numNodes(numNodes),
+        csvOutputPath(std::move(csvPath)),
+        adakStrategy(std::move(adakStrategy)),
+        connModeStr(connectionMode),
+        creationRate(creationRate),
+        networkScale(networkScale)
     {
         if (connectionMode == "full") this->connectionMode = ConnectionType::Full;
         else if (connectionMode == "partial") this->connectionMode = ConnectionType::Partial;
         else if (connectionMode == "single") this->connectionMode = ConnectionType::Single;
-	else if (connectionMode == "custom") this->connectionMode = ConnectionType::Custom;
+	    else if (connectionMode == "custom") this->connectionMode = ConnectionType::Custom;
         else {
             // Invalid connection mode
             throw std::invalid_argument("connectionMode not one of 'full', 'partial', or 'single'");
@@ -128,6 +138,7 @@ private:
     static const std::string CONNECTION_MODE_LABEL;
     static const std::string CREATION_RATE_LABEL;
     static const std::string CSV_OUTPUT_PATH_LABEL;
+    static const std::string ADAK_STRATEGY_LABEL;
     static const std::string CUSTOM_CONNECTIONS_LABEL;
     static const std::string CUSTOM_LAMBDA_1_LABEL;
     static const std::string CUSTOM_LAMBDA_2_LABEL;

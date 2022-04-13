@@ -8,13 +8,14 @@
 #include <fstream> 
 #include <queue>
 
-#include "Node.h"
-#include "UUID.h"
+#include "AbstractStrategy.h"
 #include "Channel.h"
 #include "ConnectionType.h"
-#include "message.hpp"
-#include "SystemClock.h"
 #include "json.hpp"
+#include "message.hpp"
+#include "Node.h"
+#include "SystemClock.h"
+#include "UUID.h"
 
 using json = nlohmann::json;
 
@@ -169,7 +170,7 @@ public:
     void checkAndSendAllNodesLatency(int latency); 
 
     // Sends heartbeat for all nodes
-    void doAllHeartbeat(int keysToShift);
+    void doAllHeartbeat(AbstractStrategy *adakStrategy, int keysToShift);
     
     //ticks all of the nodes
     void doAllTicks();
