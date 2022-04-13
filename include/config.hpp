@@ -7,9 +7,7 @@
 #include <utility>
 
 #include "json.hpp"
-#include "AbstractStrategy.h"
 #include "ConnectionType.h"
-#include "Simulation.h"
 
 using json = nlohmann::json;
 
@@ -59,7 +57,7 @@ static const unsigned int DEFAULT_SIM_LENGTH = 50;
 
 struct Config {
 
-    enum ADAKStrategy { Control, Simplest };
+    enum ADAKStrategy { Control, DoNothing };
 
     //all of the data members, in no particular order. 
     //See documentation for purpose of each
@@ -135,31 +133,9 @@ struct Config {
      */
     void write(std::string jsonFile);
 
-    static std::string toUpper(std::string s) {
-        std::transform(s.begin(), s.end(), s.begin(),
-                [](unsigned char c){ return std::toupper(c); });
-        return s;
-    }
-
-    static ADAKStrategy toAdakStrategy(std::string str) {
-        std::string upperStr = toUpper(str);
-        if (upperStr == "CONTROL") {
-            return ADAKStrategy::Control;
-        } else if (upperStr == "SIMPLEST") {
-            return ADAKStrategy::Simplest;
-        } else {
-            throw "Error: " + str + " is not a valid ADAKStrategy";
-        }
-    }
-
-    static::std::string toString(ADAKStrategy strategy) {
-        switch (strategy) {
-            case Control:
-                return "Control";
-            case Simplest:
-                return "Simplest";
-        }
-    }
+    static std::string toUpper(std::string s);
+    static ADAKStrategy toAdakStrategy(std::string str);
+    static::std::string toString(ADAKStrategy strategy);
 
 private:
     static const std::string ALGORITHM_STRATEGY_LABEL;

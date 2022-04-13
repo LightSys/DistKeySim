@@ -1,6 +1,8 @@
 
 #include "ControlStrategy.h"
+#include "DoNothingStrategy.h"
 #include "EventGen.h"
+#include "Factory.h"
 #include "GeometricDisconnect.h"
 #include "Logger.h"
 #include "Simulation.h"
@@ -25,7 +27,7 @@ void Simulation::run() {
     // the file twice.
     Config config(ifstream("config.json"));
 
-    adakStrategy = new ControlStrategy();
+    adakStrategy = Factory::makeAdakStrategy(config);
     adakStrategy->setAccuracy(config.longTermPrecision);
 
     Logger::log("Started Simulation");

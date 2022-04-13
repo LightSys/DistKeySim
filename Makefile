@@ -53,6 +53,7 @@ build-and-test : all
 	$(MAKE) run-test2-oscillation
 	$(MAKE) run-test3-non-repeatability
 	$(MAKE) run-test4-scenario-1 SCEN_1_DAYS=$(SCEN_1_DAYS)
+	$(MAKE) run-test5-doNothing
 
 # ------------------
 # Test repeatability
@@ -175,6 +176,13 @@ run-test4-scenario-1 : all
 	$(BIN)/testScenario1.py --days $(SCEN_1_DAYS)
 	@echo "Test 4 Passed: Scenario 1"
 
+# We put this test here because it uses Scenario 1 config
+
+.PHONY: run-test5-doNothing
+run-test5-doNothing : all
+	$(BIN)/test5doNothing.py --days 0.1 --config "config/doNothing-config.json"
+    @echo "Test 5 Passed: Do Nothing Strategy"
+
 # --------------------------------------------
 # Test Scenario 2 (see "ADAK Scenarios 1.pdf")
 # --------------------------------------------
@@ -191,27 +199,27 @@ run-test4-scenario-1 : all
 #
 # To run a test shorter than 7 days, do something like this
 #
-#     make run-test5-scenario-2 SCEN_2_DAYS=0.1
+#     make run-test6-scenario-2 SCEN_2_DAYS=0.1
 
 SCEN_2_DAYS   = 7
 SCEN_2_CONFIG = "config/scenario2-config.json"
 
-.PHONY: run-test5-scenario-2
-run-test5-scenario-2 : all
+.PHONY: run-test6-scenario-2
+run-test6-scenario-2 : all
 	$(BIN)/testScenario2.py --days $(SCEN_2_DAYS) --config $(SCEN_2_CONFIG)
 	@echo "Test 5 Passed: Scenario 2"
 
-.PHONY: run-test5-scenario-2-short
-run-test5-scenario-2-short : all
-	$(MAKE) run-test5-scenario-2 SCEN_2_DAYS=0.1 SCEN_2_CONFIG="config/scenario2-config.json"
+.PHONY: run-test6-scenario-2-short
+run-test6-scenario-2-short : all
+	$(MAKE) run-test6-scenario-2 SCEN_2_DAYS=0.1 SCEN_2_CONFIG="config/scenario2-config.json"
 
-.PHONY: run-test5-scenario-2a
-run-test5-scenario-2a : all
-	$(MAKE) run-test5-scenario-2 SCEN_2_DAYS=0.1 SCEN_2_CONFIG="config/scenario2a-config.json"
+.PHONY: run-test6-scenario-2a
+run-test6-scenario-2a : all
+	$(MAKE) run-test6-scenario-2 SCEN_2_DAYS=0.1 SCEN_2_CONFIG="config/scenario2a-config.json"
 
-.PHONY: run-test5-scenario-2b
-run-test5-scenario-2b : all
-	$(MAKE) run-test5-scenario-2 SCEN_2_DAYS=0.1 SCEN_2_CONFIG="config/scenario2b-config.json"
+.PHONY: run-test6-scenario-2b
+run-test6-scenario-2b : all
+	$(MAKE) run-test6-scenario-2 SCEN_2_DAYS=0.1 SCEN_2_CONFIG="config/scenario2b-config.json"
 
 # --------------------------------------------
 # Test Scenario 3 (see "ADAK Scenarios 1.pdf")

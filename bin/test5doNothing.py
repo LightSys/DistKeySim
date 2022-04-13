@@ -1,12 +1,8 @@
 #!/usr/bin/env python3
 
 # --------------------------------------------
-# Test Scenario 1 (see "ADAK Scenarios 1.pdf")
+# Objective: Test Do Nothing ADAK Strategy
 # --------------------------------------------
-#
-# Objective: Ensure the functionality of sharing keyspace blocks and
-# the stability of subblock sharing (there should be minimal,
-# if any, subblock sharing in this scenario)
 
 import argparse
 from runOneSim import runOneSim
@@ -21,9 +17,9 @@ if __name__ == '__main__':
     minutes           = 60
     hours             = 24
 
-    parser = argparse.ArgumentParser(description='Test Scenario 1')
+    parser = argparse.ArgumentParser(description='Test Do Nothing ADAK Strategy')
     parser.add_argument('--days', '-d', type=float, default=0.1, help='Number of simulated days')
-    parser.add_argument('--config', '-c', default="config/scenario1-config.json", help='Config file name and path')
+    parser.add_argument('--config', '-c', default="config/doNothing-config.json", help='Config file name and path')
     args = parser.parse_args()
     days = args.days
     configFileName = args.config
@@ -33,5 +29,5 @@ if __name__ == '__main__':
     print("Testing Scenario 1 with %s iterations (%g days) ..." % (iterations, days))
 
     numKeyspaces = runOneSim(configFileName, "full", iterations,  2)
-    assert numKeyspaces == 2, "Test Scenario 1 failed: numKeyspaces=%d" % numKeyspaces
-    print("Test Scenario 1 passed")
+    assert numKeyspaces == 1, "Test Do Nothing ADAK Strategy failed: numKeyspaces=%d" % numKeyspaces
+    print("Test Do Nothing ADAK Strategy passed")

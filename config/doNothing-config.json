@@ -1,0 +1,13 @@
+{
+    "Algorithm_Strategy": "temperature based",
+    "AdakStrategy": "DoNothing",
+    "connectionMode": "full",
+    "csvOutputPath": "outputs/",
+    "Latency": 1,
+    "lambda_3_(time_between_creating_objects)": 1500,
+    "networkScale": 0.3,
+    "numNodes": 2,
+    "randomSeed": 25,
+    "simLength": 2160000,
+    "Time_Step_Units_Per_Second": 25
+}

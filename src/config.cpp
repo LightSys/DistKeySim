@@ -2,6 +2,7 @@
 
 #include "config.hpp"
 #include "ConnectionType.h"
+#include "Logger.h"
 
 using namespace std;
 
@@ -10,7 +11,7 @@ const std::string Config::CHUNKINESS_LABEL = "Chunkiness_(#_of_keys_to_shift)";
 const std::string Config::CONNECTION_MODE_LABEL = "connectionMode";
 const std::string Config::CREATION_RATE_LABEL = "Creation_Rate(%_of_keyspace)";
 const std::string Config::CSV_OUTPUT_PATH_LABEL = "csvOutputPath";
-const std::string Config::ADAK_STRATEGY_LABEL = "adakStrategy";
+const std::string Config::ADAK_STRATEGY_LABEL = "AdakStrategy";
 const std::string Config::CUSTOM_CONNECTIONS_LABEL = "Custom_Connections";
 const std::string Config::CUSTOM_LAMBDA_1_LABEL = "customLambda1";
 const std::string Config::CUSTOM_LAMBDA_2_LABEL = "customLambda2";
@@ -293,4 +294,30 @@ void Config::write(std::string jsonFile) {
     
     std::ofstream o(jsonFile);
     o << std::setw(4) << j << std::endl;
+}
+
+std::string Config::toUpper(std::string s) {
+    std::transform(s.begin(), s.end(), s.begin(),
+            [](unsigned char c){ return std::toupper(c); });
+    return s;
+}
+
+Config::ADAKStrategy Config::toAdakStrategy(std::string str) {
+    std::string upperStr = toUpper(str);
+    if (upperStr == "CONTROL") {
+        return ADAKStrategy::Control;
+    } else if (upperStr == "DONOTHING") {
+        return ADAKStrategy::DoNothing;
+    } else {
+        throw "Error: " + str + " is not a valid ADAKStrategy";
+    }
+}
+
+std::string Config::toString(Config::ADAKStrategy strategy) {
+    switch (strategy) {
+        case Control:
+            return "Control";
+        case DoNothing:
+            return "DoNothing";
+    }
 }

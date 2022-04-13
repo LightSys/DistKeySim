@@ -20,7 +20,7 @@ add_library(adakCore
     NodeData.cpp
     config.cpp
     ControlStrategy.cpp
-    SimpleStrategy.cpp
+    Factory.cpp
     GeometricDisconnect.cpp
     SystemClock.cpp)
 

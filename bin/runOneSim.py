@@ -5,6 +5,8 @@ import subprocess
 import sys
 
 def runOneSim(configFileName, connectionMode, simLength, numNodes):
+
+    print("runOneSim(configFileName=%s, connectionMode=%s, simLength=%d, numNodes=%d)" % (configFileName, connectionMode, simLength, numNodes))
  
     # Read and edit config file
     with open(configFileName, 'r') as configFile:
