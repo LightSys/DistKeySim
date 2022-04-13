@@ -72,10 +72,14 @@ Config::Config(ifstream jsonFile) {
         }
         
         if (jf.contains(ADAK_STRATEGY_LABEL)) {
-            jf.at(ADAK_STRATEGY_LABEL).get_to(this->adakStrategy);
+            std::string adakStrategy;
+            jf.at(ADAK_STRATEGY_LABEL).get_to(adakStrategy);
+            Logger::log(Formatter() << "adakStrategy=" << adakStrategy);
+            this->adakStrategy = toAdakStrategy(adakStrategy);
         } else {
-            adakStrategy = DEFAULT_ADAK_STRATEGY;
+            this->adakStrategy = toAdakStrategy(DEFAULT_ADAK_STRATEGY);
         }
+        Logger::log(Formatter() << "adakStrategy=" << Config::toString(this->adakStrategy));
         
         if (jf.contains(CREATION_RATE_LABEL)) {
             jf.at(CREATION_RATE_LABEL).get_to(this->creationRate);
@@ -252,7 +256,7 @@ Config::Config(ifstream jsonFile) {
         connModeStr = DEFAULT_CONN_MODE_STR;
         connectionMode = DEFAULT_CONNECTION_MODE;
         csvOutputPath = DEFAULT_CSV_OUTPUT_PATH;
-        adakStrategy = DEFAULT_ADAK_STRATEGY;
+        adakStrategy = toAdakStrategy(DEFAULT_ADAK_STRATEGY);
         creationRate = DEFAULT_CREATION_RATE;
         networkScale = DEFAULT_NETWORK_SCALE;
         randomSeed = DEFAULT_RANDOM_SEED;

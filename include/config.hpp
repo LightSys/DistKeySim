@@ -18,7 +18,7 @@ static const u_int DEFAULT_NUM_NODES = 100;
 static ConnectionType DEFAULT_CONNECTION_MODE = ConnectionType::Full;
 static const char* DEFAULT_CONN_MODE_STR = "full";
 static const char* DEFAULT_CSV_OUTPUT_PATH = "../../outputs/";
-static const char* DEFAULT_ADAK_STRATEGY = "ControlStrategry";
+static const char* DEFAULT_ADAK_STRATEGY = "Control";
 static const int DEFAULT_CREATION_RATE = 1;
 static const float DEFAULT_NETWORK_SCALE = 0.3;
 static const int DEFAULT_LATENCY = 1; //this is the minmum in the current structure right now
@@ -58,13 +58,16 @@ static const unsigned int DEFAULT_LONG_PRECISION = 5;
 static const unsigned int DEFAULT_SIM_LENGTH = 50;
 
 struct Config {
+
+    enum ADAKStrategy { Control, Simplest };
+
     //all of the data members, in no particular order. 
     //See documentation for purpose of each
     u_int numNodes;
     std::string connModeStr;
     ConnectionType connectionMode;
     std::string csvOutputPath;
-    std::string adakStrategy;
+    ADAKStrategy adakStrategy;
     int creationRate;
     float networkScale;
     int latency; 
@@ -105,7 +108,7 @@ struct Config {
         float networkScale = DEFAULT_NETWORK_SCALE)
     : numNodes(numNodes),
         csvOutputPath(std::move(csvPath)),
-        adakStrategy(std::move(adakStrategy)),
+        adakStrategy(toAdakStrategy(adakStrategy)),
         connModeStr(connectionMode),
         creationRate(creationRate),
         networkScale(networkScale)
@@ -131,6 +134,32 @@ struct Config {
      * @param jsonFile File name to which to write JSON file
      */
     void write(std::string jsonFile);
+
+    static std::string toUpper(std::string s) {
+        std::transform(s.begin(), s.end(), s.begin(),
+                [](unsigned char c){ return std::toupper(c); });
+        return s;
+    }
+
+    static ADAKStrategy toAdakStrategy(std::string str) {
+        std::string upperStr = toUpper(str);
+        if (upperStr == "CONTROL") {
+            return ADAKStrategy::Control;
+        } else if (upperStr == "SIMPLEST") {
+            return ADAKStrategy::Simplest;
+        } else {
+            throw "Error: " + str + " is not a valid ADAKStrategy";
+        }
+    }
+
+    static::std::string toString(ADAKStrategy strategy) {
+        switch (strategy) {
+            case Control:
+                return "Control";
+            case Simplest:
+                return "Simplest";
+        }
+    }
 
 private:
     static const std::string ALGORITHM_STRATEGY_LABEL;

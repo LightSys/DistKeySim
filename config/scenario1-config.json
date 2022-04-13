@@ -1,5 +1,6 @@
 {
     "Algorithm_Strategy": "temperature based",
+    "AdakStrategy": "Control",
     "connectionMode": "full",
     "csvOutputPath": "outputs/",
     "Latency": 1,
