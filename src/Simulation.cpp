@@ -27,6 +27,7 @@ void Simulation::run() {
     // the file twice.
     Config config(ifstream("config.json"));
 
+    Logger::log(Formatter() << "Making " << config.adakStrategy << " strategy");
     adakStrategy = Factory::makeAdakStrategy(config);
     adakStrategy->setAccuracy(config.longTermPrecision);
 

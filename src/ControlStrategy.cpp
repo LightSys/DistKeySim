@@ -8,17 +8,17 @@ ControlStrategy::ControlStrategy(ClockType type, clock_unit_t heartbeatPeriod) {
     nodeClock = shared_ptr<SystemClock>(SystemClock::makeClock(type));
 }
 
-void ControlStrategy::logKeySharing(UUID uuid, double shortAlloc, bool shortAllocIsOne,
-        double longAlloc, bool longAllocIsOne, double prevDay, double prevWeek,
+void ControlStrategy::logKeySharing(UUID uuid, double shortAlloc,
+        double longAlloc, double prevDay, double prevWeek,
         long double avgProv, long double avgKey, int peersChecked) {
 
     vector<string> dataLine; //line in the csv
     dataLine.push_back(uuid);
     dataLine.push_back(to_string((Logger::getTimeslot(false))));
     dataLine.push_back(to_string(shortAlloc));
-    dataLine.push_back(shortAllocIsOne ? "true" : "false");
+    dataLine.push_back(to_string(areCloseEnough(shortAlloc, 1)));
     dataLine.push_back(to_string(longAlloc));
-    dataLine.push_back(longAllocIsOne ? "true" : "false");
+    dataLine.push_back(to_string(areCloseEnough(longAlloc, 1)));
     dataLine.push_back(to_string(prevDay));
     dataLine.push_back(to_string(prevWeek));
     dataLine.push_back(to_string(avgProv));
@@ -62,10 +62,12 @@ void ControlStrategy::adak(Node &node, int keysToShift) {
 
         // get data from the nodes
         if (i->second.first == nullptr) {
+            Logger::log("  No data; continue");
             continue;
         }
 
         if (node.getKeySpace().size() == 0) {
+            Logger::log("  My keyspace size is 0; continue");
             return;
         }
 
@@ -83,15 +85,17 @@ void ControlStrategy::adak(Node &node, int keysToShift) {
         avgKey += shortAlloc;
         peersChecked++;
 
-        ControlStrategy::logKeySharing(node.getUUID(), shortAlloc, areCloseEnough(1, shortAlloc),
-            longAlloc, areCloseEnough(1, longAlloc), NAN, NAN,
-            avgProv, avgKey, peersChecked);
+        ControlStrategy::logKeySharing(i->first, shortAlloc,
+            longAlloc, prevDay, prevWeek, avgProv, avgKey, peersChecked);
 
         // make sure sharing keyspace is actually possible
         if (!node.canSendKeyspace(i->first)) {
+            Logger::log("  Can't send keyspace; continue");
             continue;  // had no keys or target already received some keyspace, cannot share
         }
 
+        Logger::log(Formatter() << "  longAlloc=" << longAlloc << " shortAlloc=" << shortAlloc);
+        
         // see if have no keyspace (these would both be approx 1 if this is true)
         if (areCloseEnough(1, shortAlloc) && areCloseEnough(1, longAlloc)) {
             Logger::log(Formatter() << "  " << node.getUUID() << " give half of keyspace to " << i->first);
@@ -139,15 +143,15 @@ void ControlStrategy::adak(Node &node, int keysToShift) {
     double lngAgg = node.calcLongAggregate(BROADCAST_UUID);
     double provRatio = lngTrmAllc / lngAgg;
 
-    Logger::log(Formatter() << "  percent of global=" << std::setprecision(23) << node.getKeyspacePercent()*100.0
-        << "% avgProv=" << std::setprecision(23) << avgProv
-        << " provRatio=" << std::setprecision(23) << provRatio
+    Logger::log(Formatter() << "  percent of global=" << node.getKeyspacePercent()*100.0
+        << "% avgProv="  << avgProv
+        << " provRatio="  << provRatio
         << " (avgProv < provRatio)="
         << toString(isLessThan(avgProv, provRatio)));
 
-    ControlStrategy::logKeySharing(node.getUUID(), NAN, areCloseEnough(1, NAN),
-        NAN, areCloseEnough(1, NAN), NAN, NAN,
-        avgProv, avgKey, peersChecked);
+    ControlStrategy::logKeySharing(node.getUUID(),
+        nodeData->updateShortTermAllocationRatio(nodeKeyspaces),
+        lngTrmAllc, NAN, NAN, avgProv, avgKey, peersChecked);
 
     if (isLessThan(avgProv, provRatio)) {
         // find keyspace excess ... Provisioning = object creation/keyspace
@@ -176,13 +180,14 @@ void ControlStrategy::adak(Node &node, int keysToShift) {
                 i->second.first->info().records(0).creationratedata().createdpreviousweek();
             long double shortAlloc =
                 i->second.first->info().records(0).creationratedata().shortallocationratio();
-
-            ControlStrategy::logKeySharing(node.getUUID(), shortAlloc, areCloseEnough(1, shortAlloc),
-                longAlloc, areCloseEnough(1, longAlloc), NAN, prevWeek,
-                avgProv, avgKey, peersChecked);
+            double prevDay =
+                i->second.first->info().records(0).creationratedata().createdpreviousday();
+ 
+            ControlStrategy::logKeySharing(i->first, shortAlloc,
+                longAlloc, prevDay, prevWeek, avgProv, avgKey, peersChecked);
             
             Logger::log(Formatter() << "  longAlloc=" << longAlloc << " shortAlloc=" << shortAlloc
-                << " prevWeek=" << prevWeek << " agvProv=" << avgProv << " provRatio=" << provRatio);
+                << " prevWeek=" << prevWeek << " avgProv=" << avgProv << " provRatio=" << provRatio);
             Logger::log(Formatter() << "  longAlloc/prevWeek=" << longAlloc/prevWeek);
             Logger::log(Formatter() << "  1. (isLessThan(longAlloc / prevWeek, avgProv) || areCloseEnough(longAlloc / prevWeek, avgProv))="
                 << toString((isLessThan(longAlloc / prevWeek, avgProv) || areCloseEnough(longAlloc / prevWeek, avgProv))));

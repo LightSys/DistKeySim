@@ -162,9 +162,6 @@ run-test3-non-repeatability :
 # the stability of subblock sharing (there should be minimal,
 # if any, subblock sharing in this scenario)
 #
-# Note: We make 40 milliseconds the length of a simulation "tick".
-# Therefore, there are 25 simulation ticks per second.
-#
 # To run a test shorter than 1 day, do something like this
 #
 #     make run-test4-scenario-1 SCEN_1_DAYS=0.1
@@ -183,6 +180,38 @@ run-test5-doNothing : all
 	$(BIN)/test5doNothing.py --days 0.1 --config "config/doNothing-config.json"
     @echo "Test 5 Passed: Do Nothing Strategy"
 
+# ---------------------------------------------------------------
+# Test Simple Strategy on Scenario 2 (see "ADAK Scenarios 1.pdf")
+# ---------------------------------------------------------------
+#
+# Objective: There initially should be a lot of subblock sharing to fill in “holes”,
+# but eventually block sharing should happen, reducing the volume of subblock sharing.
+# Block sharing should eventually result in the higher-rate node having 7x the keyspace
+# as the lower rate node. (these values were chosen so that the keyspace blocks will
+# end up being divided up into eighths, with one node having 1/8 of the keyspace and
+# the other having 7/8 of the keyspace)
+#
+# To run a test shorter than 7 days, do something like this
+#
+#     make run-test6-simple-strategy SIMPLE_STRATEGY_DAYS=0.1
+
+#SIMPLE_STRATEGY_DAYS   = 7
+SIMPLE_STRATEGY_DAYS   = 0.1
+SIMPLE_STRATEGY_CONFIG = "config/SimpleStrategy-config.json"
+
+.PHONY: run-test6-simple-strategy
+run-test6-simple-strategy : all
+	$(BIN)/test6simpleStrategy.py --days $(SIMPLE_STRATEGY_DAYS) --config $(SIMPLE_STRATEGY_CONFIG)
+	@echo "Test 6 Passed: Simple Strategy"
+
+.PHONY: compare-strategies
+compare-strategies : all
+	$(MAKE) clean-outputs
+	-$(MAKE) run-test6-simple-strategy SIMPLE_STRATEGY_DAYS=0.1
+	-$(MAKE) sanitize
+	-$(MAKE) run-test7-scenario-2a SCEN_2_DAYS=0.1
+	-$(MAKE) sanitize
+
 # --------------------------------------------
 # Test Scenario 2 (see "ADAK Scenarios 1.pdf")
 # --------------------------------------------
@@ -194,9 +223,6 @@ run-test5-doNothing : all
 # end up being divided up into eighths, with one node having 1/8 of the keyspace and
 # the other having 7/8 of the keyspace)
 #
-# Note: We make 40 milliseconds the length of a simulation "tick".
-# Therefore, there are 25 simulation ticks per second.
-#
 # To run a test shorter than 7 days, do something like this
 #
 #     make run-test6-scenario-2 SCEN_2_DAYS=0.1
@@ -204,22 +230,22 @@ run-test5-doNothing : all
 SCEN_2_DAYS   = 7
 SCEN_2_CONFIG = "config/scenario2-config.json"
 
-.PHONY: run-test6-scenario-2
-run-test6-scenario-2 : all
+.PHONY: run-test7-scenario-2
+run-test7-scenario-2 : all
 	$(BIN)/testScenario2.py --days $(SCEN_2_DAYS) --config $(SCEN_2_CONFIG)
-	@echo "Test 5 Passed: Scenario 2"
+	@echo "Test 7 Passed: Scenario 2"
 
-.PHONY: run-test6-scenario-2-short
-run-test6-scenario-2-short : all
-	$(MAKE) run-test6-scenario-2 SCEN_2_DAYS=0.1 SCEN_2_CONFIG="config/scenario2-config.json"
+.PHONY: run-test7-scenario-2-short
+run-test7-scenario-2-short : all
+	$(MAKE) run-test7-scenario-2 SCEN_2_DAYS=0.1 SCEN_2_CONFIG="config/scenario2-config.json"
 
-.PHONY: run-test6-scenario-2a
-run-test6-scenario-2a : all
-	$(MAKE) run-test6-scenario-2 SCEN_2_DAYS=0.1 SCEN_2_CONFIG="config/scenario2a-config.json"
+.PHONY: run-test7-scenario-2a
+run-test7-scenario-2a : all
+	$(MAKE) run-test7-scenario-2 SCEN_2_DAYS=0.1 SCEN_2_CONFIG="config/scenario2a-config.json"
 
-.PHONY: run-test6-scenario-2b
-run-test6-scenario-2b : all
-	$(MAKE) run-test6-scenario-2 SCEN_2_DAYS=0.1 SCEN_2_CONFIG="config/scenario2b-config.json"
+.PHONY: run-test7-scenario-2b
+run-test7-scenario-2b : all
+	$(MAKE) run-test7-scenario-2 SCEN_2_DAYS=0.1 SCEN_2_CONFIG="config/scenario2b-config.json"
 
 # --------------------------------------------
 # Test Scenario 3 (see "ADAK Scenarios 1.pdf")
@@ -228,9 +254,6 @@ run-test6-scenario-2b : all
 # Objective: Ensure block sharing eventually stabilizes, and determine what resolution
 # the keyspace is broken up into (eighths, 16ths, 32nds) by ADAK in an attempt to distribute
 # the keyspace according to object creation rate.
-#
-# Note: We make 40 milliseconds the length of a simulation "tick".
-# Therefore, there are 25 simulation ticks per second.
 #
 # To run a test shorter than 7 days, do something like this
 #

@@ -24,7 +24,7 @@ public:
 
     ~ControlStrategy();
     
-    void logKeySharing(UUID uuid, double shortAlloc, bool shortAllocIsOne, double longAlloc, bool longAllocIsOne,
+    void logKeySharing(UUID uuid, double shortAlloc, double longAlloc,
         double prevDay, double prevWeek, long double avgProv, long double avgKey, int peersChecked);
 
     void systemTick(Network* network) {

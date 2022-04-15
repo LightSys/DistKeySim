@@ -57,7 +57,7 @@ static const unsigned int DEFAULT_SIM_LENGTH = 50;
 
 struct Config {
 
-    enum ADAKStrategy { Control, DoNothing };
+    enum ADAKStrategy { DoNothing, Simple, Control };
 
     //all of the data members, in no particular order. 
     //See documentation for purpose of each

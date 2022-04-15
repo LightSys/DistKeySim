@@ -65,9 +65,9 @@ unsigned long long int Node::getTotalKeyspaceBlockSize(){
 
 void Node::consumeObjects(){
     amountOfOneKeyUsed += objectConsumptionRatePerSecond;
-    // Logger::log(Formatter() << this->uuid
-    //     << " objectConsumptionRatePerSecond=" << objectConsumptionRatePerSecond
-    //     << " amountOfOneKeyUsed=" << amountOfOneKeyUsed);
+    Logger::log(Formatter() << this->uuid
+        << " objectConsumptionRatePerSecond=" << objectConsumptionRatePerSecond
+        << " amountOfOneKeyUsed=" << amountOfOneKeyUsed);
  
     //make sure can consume keys.
     if (keyspaces.size() == 0) return;
@@ -102,6 +102,9 @@ void Node::consumeObjects(){
         createdDay += lastDay.getKeysUsed();
         createdWeek += lastDay.getKeysUsed(); 
     }
+    Logger::log(Formatter() << this->uuid
+        << " amountOfOneKeyUsed=" << amountOfOneKeyUsed
+        << " createdDay=" << createdDay << " createdWeek=" << createdWeek);
     //set new somsumption rate: (should make it match  its lambda3 better
     changeConsumptionRate(); 
 }
@@ -128,8 +131,8 @@ double Node::getTimeOffline(){
 
 void Node::changeConsumptionRate(){
     objectConsumptionRatePerSecond = 1.0/(1 + (*d3)(*gen));
-    // Logger::log(Formatter() << this->uuid
-    //     << " objectConsumptionRatePerSecond=" << objectConsumptionRatePerSecond);
+    Logger::log(Formatter() << this->uuid
+        << " objectConsumptionRatePerSecond=" << objectConsumptionRatePerSecond);
 }
 
 static Node rootNode(double lambda1, double lambda2, double lambda3, int latency, double networkScale, unsigned seed) {
@@ -724,7 +727,8 @@ double Node::calcLongAggregate(UUID target){
    result *= networkScale; 
    result += createdWeek;
    result /= numCounted; //# of peers + 1 for self - 1 for target
-   //Logger::log(Formatter() << uuid << " calcing long agg/ Week: " << createdWeek << ", numCounted: " << numCounted);;  
+   Logger::log(Formatter() << uuid << " calcing long agg/ Week: "
+        << createdWeek << ", numCounted: " << numCounted << ", result:" << result);  
    return result; 
 }
 

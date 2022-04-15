@@ -18,6 +18,9 @@ public:
     */
     virtual void nodeTick(shared_ptr<Node>& node) = 0;
 
+    void logKeySharing(UUID uuid, double shortAlloc, bool shortAllocIsOne, double longAlloc, bool longAllocIsOne,
+        double prevDay, double prevWeek, long double avgProv, long double avgKey, int peersChecked);
+
     //update the accuracy variable
     void setAccuracy(double acc) { accuracy = acc; }
 

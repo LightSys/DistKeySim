@@ -304,10 +304,12 @@ std::string Config::toUpper(std::string s) {
 
 Config::ADAKStrategy Config::toAdakStrategy(std::string str) {
     std::string upperStr = toUpper(str);
-    if (upperStr == "CONTROL") {
-        return ADAKStrategy::Control;
-    } else if (upperStr == "DONOTHING") {
+    if (upperStr == "DONOTHING") {
         return ADAKStrategy::DoNothing;
+    } else if (upperStr == "SIMPLE") {
+        return ADAKStrategy::Simple;
+    } else if (upperStr == "CONTROL") {
+        return ADAKStrategy::Control;
     } else {
         throw "Error: " + str + " is not a valid ADAKStrategy";
     }
@@ -315,9 +317,11 @@ Config::ADAKStrategy Config::toAdakStrategy(std::string str) {
 
 std::string Config::toString(Config::ADAKStrategy strategy) {
     switch (strategy) {
-        case Control:
-            return "Control";
         case DoNothing:
             return "DoNothing";
+        case Simple:
+            return "Simple";
+        case Control:
+            return "Control";
     }
 }
