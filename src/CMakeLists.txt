@@ -21,7 +21,6 @@ add_library(adakCore
     config.cpp
     AbstractStrategy.cpp
     ControlStrategy.cpp
-    SimpleStrategy.cpp
     Factory.cpp
     GeometricDisconnect.cpp
     SystemClock.cpp)

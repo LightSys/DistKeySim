@@ -69,7 +69,7 @@ if __name__ == "__main__":
             uuid = uuidParts[0]
             if uuid not in uuids:
                 uuids.append(uuid)
-        if "objectConsuptionRatePerSecond" in log:
+        if "objectConsumptionRatePerSecond" in log:
             uuidParts = log.split(" ")
             uuid = uuidParts[0]
             if uuid not in uuids:

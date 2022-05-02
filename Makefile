@@ -178,39 +178,7 @@ run-test4-scenario-1 : all
 .PHONY: run-test5-doNothing
 run-test5-doNothing : all
 	$(BIN)/test5doNothing.py --days 0.1 --config "config/doNothing-config.json"
-    @echo "Test 5 Passed: Do Nothing Strategy"
-
-# ---------------------------------------------------------------
-# Test Simple Strategy on Scenario 2 (see "ADAK Scenarios 1.pdf")
-# ---------------------------------------------------------------
-#
-# Objective: There initially should be a lot of subblock sharing to fill in “holes”,
-# but eventually block sharing should happen, reducing the volume of subblock sharing.
-# Block sharing should eventually result in the higher-rate node having 7x the keyspace
-# as the lower rate node. (these values were chosen so that the keyspace blocks will
-# end up being divided up into eighths, with one node having 1/8 of the keyspace and
-# the other having 7/8 of the keyspace)
-#
-# To run a test shorter than 7 days, do something like this
-#
-#     make run-test6-simple-strategy SIMPLE_STRATEGY_DAYS=0.1
-
-#SIMPLE_STRATEGY_DAYS   = 7
-SIMPLE_STRATEGY_DAYS   = 0.1
-SIMPLE_STRATEGY_CONFIG = "config/SimpleStrategy-config.json"
-
-.PHONY: run-test6-simple-strategy
-run-test6-simple-strategy : all
-	$(BIN)/test6simpleStrategy.py --days $(SIMPLE_STRATEGY_DAYS) --config $(SIMPLE_STRATEGY_CONFIG)
-	@echo "Test 6 Passed: Simple Strategy"
-
-.PHONY: compare-strategies
-compare-strategies : all
-	$(MAKE) clean-outputs
-	-$(MAKE) run-test6-simple-strategy SIMPLE_STRATEGY_DAYS=0.1
-	-$(MAKE) sanitize
-	-$(MAKE) run-test7-scenario-2a SCEN_2_DAYS=0.1
-	-$(MAKE) sanitize
+	@echo "Test 5 Passed: Do Nothing Strategy"
 
 # --------------------------------------------
 # Test Scenario 2 (see "ADAK Scenarios 1.pdf")

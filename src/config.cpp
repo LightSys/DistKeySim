@@ -306,8 +306,6 @@ Config::ADAKStrategy Config::toAdakStrategy(std::string str) {
     std::string upperStr = toUpper(str);
     if (upperStr == "DONOTHING") {
         return ADAKStrategy::DoNothing;
-    } else if (upperStr == "SIMPLE") {
-        return ADAKStrategy::Simple;
     } else if (upperStr == "CONTROL") {
         return ADAKStrategy::Control;
     } else {
@@ -319,8 +317,6 @@ std::string Config::toString(Config::ADAKStrategy strategy) {
     switch (strategy) {
         case DoNothing:
             return "DoNothing";
-        case Simple:
-            return "Simple";
         case Control:
             return "Control";
     }
