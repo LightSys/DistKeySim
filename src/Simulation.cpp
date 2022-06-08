@@ -63,7 +63,9 @@ void Simulation::run() {
     long prevPercentComplete = -1;
     for (long i = 0; i < config.simLength; i++) {
         Logger::log(Formatter() << "***********************************************Tick");
-        Logger::log(Formatter() << "Time Step: " << numNodes + 1 + i << " ... ");
+        int step = numNodes + 1 + i;
+        Logger::log(Formatter() << "Time Step " << step
+            << ", SimTime " << double(i)/double(config.timeStepUnitsPerSecond) << "s ... ");
         long percentComplete = long(i * 100) / long(config.simLength);
         Logger::log(Formatter()
             << "percentComplete ( " << percentComplete << ")"

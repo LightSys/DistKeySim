@@ -33,5 +33,5 @@ if __name__ == '__main__':
     print("Testing Scenario 3 with %s iterations (%g days) ..." % (iterations, days))
 
     numKeyspaces = runOneSim(configFileName, "full", iterations,  3)
-    # assert numKeyspaces > 3, "Test Scenario 3 failed: numKeyspaces=%d" % numKeyspaces
-    print("Test Scenario 3 passed")
+    assert numKeyspaces > 3, "Test Scenario 3 failed: numKeyspaces=%d" % numKeyspaces
+    print("Test Scenario 3 passed, numKeyspaces=%d" % numKeyspaces)

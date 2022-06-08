@@ -1,5 +1,6 @@
 
 #include <algorithm>
+#include "areCloseEnough.h"
 #include "config.hpp"
 #include "Node.h"
 #include <chrono> 
@@ -66,14 +67,19 @@ unsigned long long int Node::getTotalKeyspaceBlockSize(){
 void Node::consumeObjects(){
     amountOfOneKeyUsed += objectConsumptionRatePerSecond;
     Logger::log(Formatter() << this->uuid
-        << " objectConsumptionRatePerSecond=" << objectConsumptionRatePerSecond
-        << " amountOfOneKeyUsed=" << amountOfOneKeyUsed);
+        << " consumes " << objectConsumptionRatePerSecond
+        << " objects per second, amountOfOneKeyUsed=" << amountOfOneKeyUsed);
  
     //make sure can consume keys.
-    if (keyspaces.size() == 0) return;
+    if (keyspaces.size() == 0) {
+        Logger::log("+-No keys available");
+        return;
+    }
+
     if (amountOfOneKeyUsed >= 1.0) {
-	    Logger::log(Formatter() << this->uuid << " consuming a key: " << this->getNextKey());
         amountOfOneKeyUsed--;
+	    Logger::log(Formatter() << "+-consuming next key: " << this->getNextKey()
+            << ", amountOfOneKeyUsed=" << amountOfOneKeyUsed);
          	
        	//update createdWeek to reflect the current history 
         
@@ -82,29 +88,33 @@ void Node::consumeObjects(){
 
         if(max > history.size()){
            max = history.size(); 
-	}
+	    }
         
-	//add up the number of logs to get a day
-	//newest are at the rear of history
-	for(int i = max - 1; i > 0 ; i--){
-          createdDay +=  history[i].getKeysUsed();
+        //add up the number of logs to get a day
+        //newest are at the rear of history
+        for(int i = max - 1; i > 0 ; i--){
+            createdDay +=  history[i].getKeysUsed();
         }
+        Logger::log(Formatter() << "+-createdDay from history: " << createdDay);
 
         createdWeek = 0;
     	int size = history.size();
         
-	//add up teh full history, which loggs up to a week
+    	//add up teh full history, which loggs up to a week
         for(int i = 0 ; i < size ; i ++){
            createdWeek += history[i].getKeysUsed();
         }
+        Logger::log(Formatter() << "+-createdWeek from history: " << createdWeek);
 
-	//add in the current progress this timestep (name lastDay is from older structure) 
+	    //add in the current progress this timestep (name lastDay is from older structure) 
         createdDay += lastDay.getKeysUsed();
         createdWeek += lastDay.getKeysUsed(); 
+        Logger::log(Formatter() << "+-createdDay from lastday.getKeysUsed: " << createdDay);
+        Logger::log(Formatter() << "+-createdWeek from lastday.getKeysUsed: " << createdWeek);
     }
-    Logger::log(Formatter() << this->uuid
-        << " amountOfOneKeyUsed=" << amountOfOneKeyUsed
+    Logger::log(Formatter() << "+-amountOfOneKeyUsed=" << amountOfOneKeyUsed
         << " createdDay=" << createdDay << " createdWeek=" << createdWeek);
+
     //set new somsumption rate: (should make it match  its lambda3 better
     changeConsumptionRate(); 
 }
@@ -132,7 +142,7 @@ double Node::getTimeOffline(){
 void Node::changeConsumptionRate(){
     objectConsumptionRatePerSecond = 1.0/(1 + (*d3)(*gen));
     Logger::log(Formatter() << this->uuid
-        << " objectConsumptionRatePerSecond=" << objectConsumptionRatePerSecond);
+        << " changed consumption rate to " << objectConsumptionRatePerSecond);
 }
 
 static Node rootNode(double lambda1, double lambda2, double lambda3, int latency, double networkScale, unsigned seed) {
@@ -470,21 +480,28 @@ Message Node::getHeartbeatMessage(const UUID &peerID) {
     /// NOTE, this is basically fixed in the develop branch, it is only here right now to tell other nodes,
     /// "If I don't have a keyspace, then give me a keyspace", this is because 1.0 is above the treshold ALLOCATION_BEFORE_GIVING_KEYSPACE
     if (keyspaces.empty()) {
+        Logger::log(Formatter() << getUUID() << " keyspace is empty: setting long and short term alloc ratio to 1");
         toInformationalMessage(
            msg,
            {
-               CollectionInfoRecord{"test", calcLongAggregate(peerID), calcShortAggregate(peerID), 1, 1},
+               CollectionInfoRecord{"test", calcShortAggregate(peerID), // createdDay
+                                            calcLongAggregate(peerID),  // createdWeek
+                                            1,
+                                            1},
            }
        );
 
     }else{
 
+        Logger::log(Formatter() << getUUID() << " keyspace is not empty:"
+            << " longAlloc=" << lastDay.getLongTermAllocationRatio()
+            << " shortAlloc=" << lastDay.getShortTermAllocationRatio());
         toInformationalMessage(
            msg, 
            {
 	           //use the update keyspace functions so that what is being recived is the most up to date possible
-               CollectionInfoRecord{"test", calcLongAggregate(peerID), 
-	                                        calcShortAggregate(peerID),
+               CollectionInfoRecord{"test", calcShortAggregate(peerID), // createdDay
+	                                        calcLongAggregate(peerID),  // createdWeek
                                             lastDay.getLongTermAllocationRatio(), 
 	                                        lastDay.getShortTermAllocationRatio()},
            }
@@ -717,34 +734,45 @@ vector<int> Node::makeSubBlock(int range){
 
 double Node::calcLongAggregate(UUID target){
    //sum all of the long term calculations, but not the the one for target
+   Logger::log(Formatter() << "+-calcLongAggregate for " << uuid);
    double result = 0;
    int numCounted = 1; 
    for(auto & peer: peers){
        if(peer.first == target || peer.second.first == nullptr){continue;}
+       Logger::log(Formatter() << " +-peer: " << peer.first
+            << " createdPreviousWeek:" << peer.second.first->info().records(0).creationratedata().createdpreviousweek());
        result += peer.second.first->info().records(0).creationratedata().createdpreviousweek();
        numCounted++;
    }
+   Logger::log(Formatter() << " +-sum created prev week: " << result);
    result *= networkScale; 
+   Logger::log(Formatter() << " +-result after *networkScale (" << networkScale << "): " << result);
    result += createdWeek;
+   Logger::log(Formatter() << " +-result after +createdWeek (" << createdWeek << "): " << result);
    result /= numCounted; //# of peers + 1 for self - 1 for target
-   Logger::log(Formatter() << uuid << " calcing long agg/ Week: "
-        << createdWeek << ", numCounted: " << numCounted << ", result:" << result);  
+   Logger::log(Formatter() << " +-result after /numCounted (" << numCounted << "): " << result);
    return result; 
 }
 
 double Node::calcShortAggregate(UUID target){
    //sum all of the short term calculations, but not the the one for target
+   Logger::log(Formatter() << "+-calcShortAggregate for " << uuid);
    double result = 0;
    int numCounted = 1;
    for(auto & peer: peers){
        if(peer.first == target || peer.second.first == nullptr){continue;}
+       Logger::log(Formatter() << " +-peer: " << peer.first
+            << " createdPreviousDay:" << peer.second.first->info().records(0).creationratedata().createdpreviousday());
        result += peer.second.first->info().records(0).creationratedata().createdpreviousday();
        numCounted++;
    }
+   Logger::log(Formatter() << " +-sum created prev day: " << result);
    result *= networkScale; 
+   Logger::log(Formatter() << " +-result after *networkScale (" << networkScale << "): " << result);
    result += createdDay;
+   Logger::log(Formatter() << " +-result after +createdDay (" << createdDay << "): " << result);
    result /= numCounted; //# of peers + self - target 
-//Logger::log(Formatter() << uuid << " calultaed aggregate short term " << result); 
+   Logger::log(Formatter() << " +-result after /numCounted (" << numCounted << "): " << result);
    return result; 
 }
 

@@ -9,5 +9,6 @@
     "randomSeed": 25,
     "simLength": 2160000,
     "Time_Step_Units_Per_Second": 25,
-    "Custom_Connections": "[1, 2] [2, 3]"
+    "Custom_Connections": "[1, 2] [2, 3]",
+    "enableSendMsgLog": true
 }

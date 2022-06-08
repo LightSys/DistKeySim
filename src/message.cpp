@@ -1,12 +1,23 @@
 #include "message.hpp"
 
+#include "areCloseEnough.h"
+#include "Logger.h"
+
 void addCollectionInfoRecord(InformationalMessageContents::CollectionInformationRecord *collection,
-                             float createdDay, float createdWeek, float longAlloc, float shortAlloc) {
+                             double createdDay, double createdWeek, double longAlloc, double shortAlloc) {
     auto *creationRateData = new InformationalMessageContents::CollectionInformationRecord::CreationRateData();
     creationRateData->set_createdpreviousday(createdDay);
     creationRateData->set_createdpreviousweek(createdWeek);
     creationRateData->set_longallocationratio(longAlloc);
-    creationRateData->set_shortallocationratio(shortAlloc);
+
+    // In section "Information Statistics", subpoint 4.2,
+    // "If CS is zero (or rounds to zero), then a value of 1 is substituted for CS."
+    // if (ACE::areCloseEnough(shortAlloc, 0)) {
+    //     Logger::log(Formatter() << "addCollectionInfoRecord: shortAlloc (" << shortAlloc << ") is close to zero, setting it to 1");
+    //     creationRateData->set_shortallocationratio(1);
+    // } else {
+        creationRateData->set_shortallocationratio(shortAlloc);
+    // }
     collection->set_allocated_creationratedata(creationRateData);
 }
 

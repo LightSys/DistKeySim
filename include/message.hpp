@@ -55,7 +55,7 @@ Message newBaseMessage(uint64_t messageID, const HexDigest &sendingUUID, const H
  * @param shortAlloc float indicating Short-term keyspace allocation ratio: AS
  */
 void addCollectionInfoRecord(InformationalMessageContents::CollectionInformationRecord *collection,
-                             float createdDay, float createdWeek, float longAlloc, float shortAlloc);
+                             double createdDay, double createdWeek, double longAlloc, double shortAlloc);
 
 /** Add data to message instance to change it to valid informational message
  *

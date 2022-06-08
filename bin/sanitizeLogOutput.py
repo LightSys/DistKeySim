@@ -36,13 +36,12 @@ if __name__ == "__main__":
     foundToFrom = False
     for line in file:
         percentComplete = int(currentSize*100.0/fileSize)
-        # sys.stderr.write("%d%% c=%d f=%d\n" % (percentComplete, currentSize, fileSize))
         if percentComplete > prevPercentComplete:
             sys.stderr.write("%d%%\r" % percentComplete)
             prevPercentComplete = percentComplete
         currentSize += len(line)
 
-        lineParts = line.strip().split(splitOn)
+        lineParts = line.rstrip().split(splitOn)
         log = lineParts[0]
 
         # Find UUIDs
@@ -70,6 +69,16 @@ if __name__ == "__main__":
             if uuid not in uuids:
                 uuids.append(uuid)
         if "objectConsumptionRatePerSecond" in log:
+            uuidParts = log.split(" ")
+            uuid = uuidParts[0]
+            if uuid not in uuids:
+                uuids.append(uuid)
+        if "+-peer: " in log:
+            uuidParts = log.split(" ")
+            uuid = uuidParts[2]
+            if uuid not in uuids:
+                uuids.append(uuid)
+        if "changed consumption rate" in log:
             uuidParts = log.split(" ")
             uuid = uuidParts[0]
             if uuid not in uuids:

@@ -25,7 +25,8 @@ public:
     ~ControlStrategy();
     
     void logKeySharing(UUID uuid, double shortAlloc, double longAlloc,
-        double prevDay, double prevWeek, long double avgProv, long double avgKey, int peersChecked);
+        double prevDay, double prevWeek, double avgProv, double avgKey,
+        double provShortRatio, double provLongRatio, int peersChecked);
 
     void systemTick(Network* network) {
         for(auto &[_, n] : network->getNodes()){ nodeTick(n); }

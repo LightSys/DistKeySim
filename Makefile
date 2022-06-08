@@ -37,7 +37,7 @@ $(BUILD_SRC)/adak : $(SOURCES)
 	mkdir -p $(BUILD)
 	cd $(BUILD) && \
 		cmake .. -DBUILD_TESTING=0 && \
-		$(MAKE) -j$(USE_CORES)
+		make -j$(USE_CORES)
 
 .PHONY: src
 src :
@@ -47,13 +47,74 @@ src :
 # This is the most comprehensive automated
 # test. It is the test we run in GitHub actions.
 # ----------------------------------------------
+#
+# Notes on Test 6 (Scenario 2)
+#    - Full 7 day run of scenario 2 takes 70GB so let's not do that on GitHub Actions
+#    - We know that this test expands to three keyspaces very early and gets no more
+#      than that even at the end of 7 day test.
+#    - QED: 7 days is not needed to verify success
+
 .PHONY: build-and-test
 build-and-test : all
-	$(MAKE) run-test1-repeatability
-	$(MAKE) run-test2-oscillation
-	$(MAKE) run-test3-non-repeatability
-	$(MAKE) run-test4-scenario-1 SCEN_1_DAYS=$(SCEN_1_DAYS)
-	$(MAKE) run-test5-doNothing
+	make run-test1-repeatability
+	make run-test2-oscillation
+	make run-test3-non-repeatability
+	-make run-test4-scenario-1 SCEN_1_DAYS=0.1
+	-make sanitize jsonify
+	-make run-test5-doNothing
+	-make run-test6-scenario-2 SCEN_2_DAYS=0.1
+	-make sanitize jsonify
+	-make run-test7-scenario-3 SCEN_3_DAYS=0.1
+	-make sanitize jsonify
+
+NEXT_RUN = $(shell cat $(OUTPUTS)/num.txt)
+LAST_RUN = $(shell echo $(NEXT_RUN) - 1 | bc)
+.PHONY: sanitize
+sanitize :
+	make sanitize-logOutput RUN=$(LAST_RUN)
+	make sanitize-statsLog  RUN=$(LAST_RUN)
+
+.PHONY: sanitize-statsLog
+sanitize-statsLog :
+	$(ADAK_ROOT)/bin/sanitizeStatsLog.py $(OUTPUTS)/statsLog$(RUN).csv > \
+		$(OUTPUTS)/statsLog$(RUN).clean.txt
+
+.PHONY: sanitize-logOutput
+sanitize-logOutput :
+	$(ADAK_ROOT)/bin/sanitizeLogOutput.py $(OUTPUTS)/logOutput$(RUN).txt > \
+		$(OUTPUTS)/logOutput$(RUN).clean.txt
+$(OUTPUTS)/logOutput$(RUN).clean.txt : sanitize-logOutput
+
+.PHONY: compare
+compare :
+	make compare-logOutput
+	make compare-statsLog
+
+PREV_RUN = $(shell echo $(LAST_RUN) - 1 | bc)
+.PHONY: compare-statsLog
+compare-statsLog :
+	$(CMP) $(OUTPUTS)/statsLog$(PREV_RUN).clean.txt \
+		       $(OUTPUTS)/statsLog$(LAST_RUN).clean.txt
+
+.PHONY: compare-logOutput
+compare-logOutput :
+	$(CMP) $(OUTPUTS)/logOutput$(PREV_RUN).clean.txt \
+		       $(OUTPUTS)/logOutput$(LAST_RUN).clean.txt
+
+.PHONY: jsonify
+jsonify : $(OUTPUTS)/logOutput$(LAST_RUN).clean.txt
+	$(ADAK_ROOT)/bin/getJsonMsgs.py < $(OUTPUTS)/logOutput$(LAST_RUN).clean.txt > \
+		$(OUTPUTS)/logOutput$(LAST_RUN).jsonify.txt
+
+.PHONY: jsonify-all
+jsonify-all :
+	for file in `ls $(OUTPUTS)/logOutput*.txt | egrep -v '(clean|jsonify).txt'` ; do \
+		num=`echo $$file | sed -e s/[^0-9]//g` ; \
+		clean="$(OUTPUTS)/logOutput$$num.clean.txt" ; \
+		[ ! -f "$$clean" ] && make sanitize-logOutput RUN=$$num ; \
+		jsonify="$(OUTPUTS)/logOutput$$num.jsonify.txt" ; \
+		[ ! -f "$$jsonify" ] && make jsonify LAST_RUN=$$num ; \
+	done
 
 # ------------------
 # Test repeatability
@@ -76,44 +137,11 @@ run-repeatable :
 	cd $(BUILD_SRC) && ./adak
 	cd $(ADAK_ROOT)
 
-NEXT_RUN = $(shell cat $(OUTPUTS)/num.txt)
-LAST_RUN = $(shell echo $(NEXT_RUN) - 1 | bc)
-.PHONY: sanitize
-sanitize :
-	$(MAKE) sanitize-logOutput RUN=$(LAST_RUN)
-	$(MAKE) sanitize-statsLog  RUN=$(LAST_RUN)
-
-.PHONY: sanitize-statsLog
-sanitize-statsLog :
-	$(ADAK_ROOT)/bin/sanitizeStatsLog.py $(OUTPUTS)/statsLog$(RUN).csv > \
-		$(OUTPUTS)/statsLog$(RUN).clean.txt
-
-.PHONY: sanitize-logOutput
-sanitize-logOutput :
-	$(ADAK_ROOT)/bin/sanitizeLogOutput.py $(OUTPUTS)/logOutput$(RUN).txt > \
-		$(OUTPUTS)/logOutput$(RUN).clean.txt
-
-.PHONY: compare
-compare :
-	$(MAKE) compare-logOutput
-	$(MAKE) compare-statsLog
-
-PREV_RUN = $(shell echo $(LAST_RUN) - 1 | bc)
-.PHONY: compare-statsLog
-compare-statsLog :
-	$(CMP) $(OUTPUTS)/statsLog$(PREV_RUN).clean.txt \
-		       $(OUTPUTS)/statsLog$(LAST_RUN).clean.txt
-
-.PHONY: compare-logOutput
-compare-logOutput :
-	$(CMP) $(OUTPUTS)/logOutput$(PREV_RUN).clean.txt \
-		       $(OUTPUTS)/logOutput$(LAST_RUN).clean.txt
-
 .PHONY: run-test1-repeatability
 run-test1-repeatability :
-	$(MAKE) run-repeatable sanitize 
-	$(MAKE) run-repeatable sanitize 
-	$(MAKE) compare
+	make run-repeatable sanitize
+	make run-repeatable sanitize
+	make compare
 	@echo "Test 1 Passed: Repeatability"
 
 # -----------------------------
@@ -140,13 +168,13 @@ run-test2-oscillation :
 
 .PHONY: run-non-repeatable
 run-non-repeatable :
-	$(MAKE) run-repeatable NON=non
+	make run-repeatable NON=non
 
 .PHONY: run-test3-non-repeatability
 run-test3-non-repeatability :
-	$(MAKE) run-non-repeatable sanitize 
-	$(MAKE) run-non-repeatable sanitize 
-	@$(MAKE) compare; \
+	make run-non-repeatable sanitize
+	make run-non-repeatable sanitize
+	@make compare; \
 	if [ $$? -eq 0 ]; then \
         echo "Test 3 Failed: Non Repeatability"; \
         exit 1; \
@@ -198,34 +226,35 @@ run-test5-doNothing : all
 SCEN_2_DAYS   = 7
 SCEN_2_CONFIG = "config/scenario2-config.json"
 
-.PHONY: run-test7-scenario-2
-run-test7-scenario-2 : all
+.PHONY: run-test6-scenario-2
+run-test6-scenario-2 : all
 	$(BIN)/testScenario2.py --days $(SCEN_2_DAYS) --config $(SCEN_2_CONFIG)
-	@echo "Test 7 Passed: Scenario 2"
+	@echo "Test 6 Passed: Scenario 2"
 
-.PHONY: run-test7-scenario-2-short
-run-test7-scenario-2-short : all
-	$(MAKE) run-test7-scenario-2 SCEN_2_DAYS=0.1 SCEN_2_CONFIG="config/scenario2-config.json"
+.PHONY: run-test6-scenario-2-short
+run-test6-scenario-2-short : all
+	make run-test6-scenario-2 SCEN_2_DAYS=0.1 SCEN_2_CONFIG="config/scenario2-config.json"
 
-.PHONY: run-test7-scenario-2a
-run-test7-scenario-2a : all
-	$(MAKE) run-test7-scenario-2 SCEN_2_DAYS=0.1 SCEN_2_CONFIG="config/scenario2a-config.json"
+.PHONY: run-test6-scenario-2a
+run-test6-scenario-2a : all
+	make run-test6-scenario-2 SCEN_2_DAYS=0.1 SCEN_2_CONFIG="config/scenario2a-config.json"
+	#make jsonify-logOutput
 
-.PHONY: run-test7-scenario-2b
-run-test7-scenario-2b : all
-	$(MAKE) run-test7-scenario-2 SCEN_2_DAYS=0.1 SCEN_2_CONFIG="config/scenario2b-config.json"
+.PHONY: run-test6-scenario-2b
+run-test6-scenario-2b : all
+	make run-test6-scenario-2 SCEN_2_DAYS=0.1 SCEN_2_CONFIG="config/scenario2b-config.json"
 
 # --------------------------------------------
 # Test Scenario 3 (see "ADAK Scenarios 1.pdf")
 # --------------------------------------------
 #
 # Objective: Ensure block sharing eventually stabilizes, and determine what resolution
-# the keyspace is broken up into (eighths, 16ths, 32nds) by ADAK in an attempt to distribute
+# the keyspace is broken up into (eighths, 17ths, 32nds) by ADAK in an attempt to distribute
 # the keyspace according to object creation rate.
 #
 # To run a test shorter than 7 days, do something like this
 #
-#     make run-test6-scenario-3 SCEN_2_DAYS=0.1
+#     make run-test7-scenario-3 SCEN_2_DAYS=0.1
 
 SCEN_3_DAYS  = 7
 SCEN_3_ITERATIONS = $(shell echo "$(SIM_UNITS_PER_SECOND)*$(SECONDS)*$(MINUTES)*$(HOURS)*$(SCEN_2_DAYS)" | bc)
@@ -237,10 +266,22 @@ run-scenario3 :
 	cd $(BUILD_SRC) && ./adak
 	cd $(ADAK_ROOT)
 
-.PHONY: run-test6-scenario-3
-run-test6-scenario-3 :
+.PHONY: run-test7-scenario-3
+run-test7-scenario-3 : all
 	time $(BIN)/testScenario3.py --days $(SCEN_3_DAYS) --config $(SCEN_3_CONFIG)
-	@echo "Test 6 Passed: Scenario 3"
+	@echo "Test 7 Passed: Scenario 3"
+
+# ---------------------------------------------------------------------------------
+# Test Scenarios 1, 2, and 3 for short days to figure out how provRatio is computed
+# ---------------------------------------------------------------------------------
+#
+run-scenarios : all
+	-make run-test4-scenario-1 SCEN_1_DAYS=0.05
+	-make sanitize jsonify
+	-make run-test6-scenario-2 SCEN_2_DAYS=0.05
+	-make sanitize jsonify
+	-make run-test7-scenario-3 SCEN_3_DAYS=0.05
+	-make sanitize jsonify
 
 # ----------------------------------------------------
 # Display stuff from log output files
