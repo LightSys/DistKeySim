@@ -20,12 +20,10 @@ int NodeData::getCurrentDay() {
 double NodeData::updateLongTermAllocationRatio(vector<Keyspace> &keyspace) {
     double longTermRatio = 0.0;
     for (const auto &keyspace : keyspace) {
-        Logger::log(Formatter() << "    updateLongTermAllocationRatio: keyspace.getPercent=" << keyspace.getPercent());
         longTermRatio +=  keyspace.getPercent();
     }
 
     longTermAllocationRatio = longTermRatio;
-    Logger::log(Formatter() << "    updateLongTermAllocationRatio: sum=" << longTermRatio);
     return longTermRatio;
 }
 

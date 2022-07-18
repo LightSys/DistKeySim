@@ -59,13 +59,17 @@ build-and-test : all
 	make run-test1-repeatability
 	make run-test2-oscillation
 	make run-test3-non-repeatability
-	-make run-test4-scenario-1 SCEN_1_DAYS=0.1
-	-make sanitize jsonify
-	-make run-test5-doNothing
-	-make run-test6-scenario-2 SCEN_2_DAYS=0.1
-	-make sanitize jsonify
-	-make run-test7-scenario-3 SCEN_3_DAYS=0.1
-	-make sanitize jsonify
+subtest : all
+	make run-test4-scenario-1 SCEN_1_DAYS=0.001
+	make sanitize jsonify
+	make run-test5-doNothing SCEN_1_DAYS=0.001
+	make sanitize jsonify
+	make run-test6-scenario-2 SCEN_2_DAYS=0.001
+	make sanitize jsonify
+	make run-test7-scenario-3 SCEN_3_DAYS=0.001
+	make sanitize jsonify
+	make run-test8-scenario-4 SCEN_4_DAYS=0.001
+	make sanitize jsonify
 
 NEXT_RUN = $(shell cat $(OUTPUTS)/num.txt)
 LAST_RUN = $(shell echo $(NEXT_RUN) - 1 | bc)
@@ -194,18 +198,21 @@ run-test3-non-repeatability :
 #
 #     make run-test4-scenario-1 SCEN_1_DAYS=0.1
 
-SCEN_1_DAYS  = 1
+SCEN_1_DAYS   = 1
+SCEN_1_CONFIG = "config/scenario1-config.json"
 
 .PHONY: run-test4-scenario-1
 run-test4-scenario-1 : all
-	$(BIN)/testScenario1.py --days $(SCEN_1_DAYS)
+	time $(BIN)/testScenario.py --num 1 --days $(SCEN_1_DAYS) --config $(SCEN_1_CONFIG) \
+		-a 'assert numKeyspaces == 2, "Test Scenario 1 failed: numKeyspaces=%d" % numKeyspaces'
 	@echo "Test 4 Passed: Scenario 1"
 
 # We put this test here because it uses Scenario 1 config
 
 .PHONY: run-test5-doNothing
 run-test5-doNothing : all
-	$(BIN)/test5doNothing.py --days 0.1 --config "config/doNothing-config.json"
+	time $(BIN)/testScenario.py --num 1 --days $(SCEN_1_DAYS) --config "config/doNothing-config.json" \
+		-a 'assert numKeyspaces == 1, "Test Do Nothing failed: numKeyspaces=%d" % numKeyspaces'
 	@echo "Test 5 Passed: Do Nothing Strategy"
 
 # --------------------------------------------
@@ -228,12 +235,9 @@ SCEN_2_CONFIG = "config/scenario2-config.json"
 
 .PHONY: run-test6-scenario-2
 run-test6-scenario-2 : all
-	$(BIN)/testScenario2.py --days $(SCEN_2_DAYS) --config $(SCEN_2_CONFIG)
+	time $(BIN)/testScenario.py --num 2 --days $(SCEN_2_DAYS) --config $(SCEN_2_CONFIG) \
+		-a 'assert numKeyspaces == 3, "Test Scenario 2 failed: numKeyspaces=%d" % numKeyspaces'
 	@echo "Test 6 Passed: Scenario 2"
-
-.PHONY: run-test6-scenario-2-short
-run-test6-scenario-2-short : all
-	make run-test6-scenario-2 SCEN_2_DAYS=0.1 SCEN_2_CONFIG="config/scenario2-config.json"
 
 .PHONY: run-test6-scenario-2a
 run-test6-scenario-2a : all
@@ -254,34 +258,37 @@ run-test6-scenario-2b : all
 #
 # To run a test shorter than 7 days, do something like this
 #
-#     make run-test7-scenario-3 SCEN_2_DAYS=0.1
+#     make run-test7-scenario-3 SCEN_3_DAYS=0.1
 
-SCEN_3_DAYS  = 7
-SCEN_3_ITERATIONS = $(shell echo "$(SIM_UNITS_PER_SECOND)*$(SECONDS)*$(MINUTES)*$(HOURS)*$(SCEN_2_DAYS)" | bc)
-SCEN_3_CONFIG  = "config/scenario3-config.json"
-
-.PHONY: run-scenario3
-run-scenario3 :
-	jq ".simLength |= $(SCEN_3_ITERATIONS)" < $(SCEN_3_CONFIG) > $(BUILD_SRC)/config.json
-	cd $(BUILD_SRC) && ./adak
-	cd $(ADAK_ROOT)
+SCEN_3_DAYS   = 7
+SCEN_3_CONFIG = "config/scenario3-config.json"
 
 .PHONY: run-test7-scenario-3
 run-test7-scenario-3 : all
-	time $(BIN)/testScenario3.py --days $(SCEN_3_DAYS) --config $(SCEN_3_CONFIG)
+	time $(BIN)/testScenario.py --num 3 --days $(SCEN_3_DAYS) --config $(SCEN_3_CONFIG) \
+		-a 'assert numKeyspaces == 32, "Test Scenario 3 failed: numKeyspaces=%d" % numKeyspaces'
 	@echo "Test 7 Passed: Scenario 3"
 
-# ---------------------------------------------------------------------------------
-# Test Scenarios 1, 2, and 3 for short days to figure out how provRatio is computed
-# ---------------------------------------------------------------------------------
+# ---------------
+# Test Scenario 4
+# ---------------
 #
-run-scenarios : all
-	-make run-test4-scenario-1 SCEN_1_DAYS=0.05
-	-make sanitize jsonify
-	-make run-test6-scenario-2 SCEN_2_DAYS=0.05
-	-make sanitize jsonify
-	-make run-test7-scenario-3 SCEN_3_DAYS=0.05
-	-make sanitize jsonify
+# Objective: Ensure block sharing eventually stabilizes, and determine what resolution
+# the keyspace is broken up into (eighths, 17ths, 32nds) by ADAK in an attempt to distribute
+# the keyspace according to object creation rate.
+#
+# To run a test shorter than 7 days, do something like this
+#
+#     make run-test7-scenario-4 SCEN_4_DAYS=0.1
+
+SCEN_4_DAYS  = 7
+SCEN_4_CONFIG  = "config/scenario4-config.json"
+
+.PHONY: run-test8-scenario-4
+run-test8-scenario-4 : all
+	time $(BIN)/testScenario.py --num 4 --days $(SCEN_4_DAYS) --config $(SCEN_4_CONFIG) \
+		-a 'assert numKeyspaces == 32, "Test Scenario 4 failed: numKeyspaces=%d" % numKeyspaces'
+	@echo "Test 7 Passed: Scenario 4"
 
 # ----------------------------------------------------
 # Display stuff from log output files

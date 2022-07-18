@@ -84,10 +84,10 @@ void ControlStrategy::adak(Node &node, int keysToShift) {
 
         // In section "Information Statistics", subpoint 4.2,
         // "If CS is zero (or rounds to zero), then a value of 1 is substituted for CS."
-        // if (ACE::areCloseEnough(shortAlloc, 0)) {
-        //     Logger::log(Formatter() << "+-shortAlloc(" << shortAlloc << ") is close to zero, setting it to 1");
-        //     shortAlloc = 1;
-        // }
+        if (ACE::areCloseEnough(shortAlloc, 0)) {
+            Logger::log(Formatter() << "+-shortAlloc(" << shortAlloc << ") is close to zero, setting it to 1");
+            shortAlloc = 1;
+        }
 
         // store provisioning rate for block sharing, and keysace size for sub-block sharing
         avgProv += longAlloc / prevWeek;  // big is good, small is bad
@@ -333,7 +333,8 @@ void ControlStrategy::adak(Node &node, int keysToShift) {
                         }
                         Keyspace bob = node.getKeySpace()[l];
                         Logger::log(Formatter() << ".... .... Sent keyspace " << bob.getStart()
-                            << "/" << bob.getSuffix() << ", " << bob.getEnd());
+                            << "-" << bob.getEnd() << "/" << bob.getSuffix()
+                            << " (" << bob.getPercent()*100.0 << "%)");
                         // clear the indicies vector and store this index inside, and then exit the loop
                         indices.clear();
                         indices.push_back(l);
