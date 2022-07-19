@@ -81,6 +81,8 @@ void ControlStrategy::adak(Node &node, int keysToShift) {
         double prevDay = i->second.first->info().records(0).creationratedata().createdpreviousday();
         double prevWeek =
             i->second.first->info().records(0).creationratedata().createdpreviousweek();
+        bool keyspaceIsEmpty =
+            i->second.first->info().records(0).creationratedata().keyspaceisempty();
 
         // store provisioning rate for block sharing, and keysace size for sub-block sharing
         avgProv += longAlloc / prevWeek;  // big is good, small is bad
@@ -98,8 +100,8 @@ void ControlStrategy::adak(Node &node, int keysToShift) {
 
         Logger::log(Formatter() << "+-longAlloc=" << longAlloc << " shortAlloc=" << shortAlloc);
         
-        // see if have no keyspace (these would both be approx 1 if this is true)
-        if (ACE::areCloseEnough(1, shortAlloc) && ACE::areCloseEnough(1, longAlloc)) {
+        // see if have no keyspace
+        if (keyspaceIsEmpty) {
             Logger::log(Formatter() << "+-give half of keyspace to " << i->first
                 << " because it appears to have none");
 

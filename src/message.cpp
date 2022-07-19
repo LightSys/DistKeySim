@@ -4,17 +4,19 @@
 #include "Logger.h"
 
 void addCollectionInfoRecord(InformationalMessageContents::CollectionInformationRecord *collection,
-                             double createdDay, double createdWeek, double longAlloc, double shortAlloc) {
+                             double createdDay, double createdWeek, double longAlloc, double shortAlloc,
+                             bool keyspaceIsEmpty) {
     auto *creationRateData = new InformationalMessageContents::CollectionInformationRecord::CreationRateData();
     creationRateData->set_createdpreviousday(createdDay);
     creationRateData->set_createdpreviousweek(createdWeek);
     creationRateData->set_longallocationratio(longAlloc);
-
     if (ACE::areCloseEnough(shortAlloc, 0)) {
         creationRateData->set_shortallocationratio(0);
     } else {
         creationRateData->set_shortallocationratio(shortAlloc);
     }
+    creationRateData->set_keyspaceisempty(keyspaceIsEmpty);
+
     collection->set_allocated_creationratedata(creationRateData);
 }
 
@@ -57,7 +59,7 @@ void toInformationalMessage(Message &msg, std::initializer_list<CollectionInfoRe
         auto *collection = infoContents->add_records();
         collection->set_collectionname(record.name);
         addCollectionInfoRecord(collection, record.createdDay, record.createdWeek, record.longTermAllocation,
-                                record.shortTermAllocation);
+                                record.shortTermAllocation, record.keyspaceIsEmpty);
     }
     
     msg.set_allocated_info(infoContents);

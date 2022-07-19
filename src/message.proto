@@ -11,6 +11,7 @@ message InformationalMessageContents {
       double longAllocationRatio = 2;
       double createdPreviousDay = 3;
       double createdPreviousWeek = 4;
+      bool keyspaceIsEmpty = 5;
     }
 
     CreationRateData creationRateData = 2;

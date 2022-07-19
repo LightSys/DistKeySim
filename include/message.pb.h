@@ -262,6 +262,7 @@ class InformationalMessageContents_CollectionInformationRecord_CreationRateData 
     kLongAllocationRatioFieldNumber = 2,
     kCreatedPreviousDayFieldNumber = 3,
     kCreatedPreviousWeekFieldNumber = 4,
+    kKeyspaceIsEmptyFieldNumber = 5,
   };
   // double shortAllocationRatio = 1;
   void clear_shortallocationratio();
@@ -299,6 +300,15 @@ class InformationalMessageContents_CollectionInformationRecord_CreationRateData 
   void _internal_set_createdpreviousweek(double value);
   public:
 
+  // bool keyspaceIsEmpty = 5;
+  void clear_keyspaceisempty();
+  bool keyspaceisempty() const;
+  void set_keyspaceisempty(bool value);
+  private:
+  bool _internal_keyspaceisempty() const;
+  void _internal_set_keyspaceisempty(bool value);
+  public:
+
   // @@protoc_insertion_point(class_scope:InformationalMessageContents.CollectionInformationRecord.CreationRateData)
  private:
   class _Internal;
@@ -310,6 +320,7 @@ class InformationalMessageContents_CollectionInformationRecord_CreationRateData 
   double longallocationratio_;
   double createdpreviousday_;
   double createdpreviousweek_;
+  bool keyspaceisempty_;
   mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
   friend struct ::TableStruct_message_2eproto;
 };
@@ -1427,6 +1438,26 @@ inline void InformationalMessageContents_CollectionInformationRecord_CreationRat
 inline void InformationalMessageContents_CollectionInformationRecord_CreationRateData::set_createdpreviousweek(double value) {
   _internal_set_createdpreviousweek(value);
   // @@protoc_insertion_point(field_set:InformationalMessageContents.CollectionInformationRecord.CreationRateData.createdPreviousWeek)
+}
+
+// bool keyspaceIsEmpty = 5;
+inline void InformationalMessageContents_CollectionInformationRecord_CreationRateData::clear_keyspaceisempty() {
+  keyspaceisempty_ = false;
+}
+inline bool InformationalMessageContents_CollectionInformationRecord_CreationRateData::_internal_keyspaceisempty() const {
+  return keyspaceisempty_;
+}
+inline bool InformationalMessageContents_CollectionInformationRecord_CreationRateData::keyspaceisempty() const {
+  // @@protoc_insertion_point(field_get:InformationalMessageContents.CollectionInformationRecord.CreationRateData.keyspaceIsEmpty)
+  return _internal_keyspaceisempty();
+}
+inline void InformationalMessageContents_CollectionInformationRecord_CreationRateData::_internal_set_keyspaceisempty(bool value) {
+  
+  keyspaceisempty_ = value;
+}
+inline void InformationalMessageContents_CollectionInformationRecord_CreationRateData::set_keyspaceisempty(bool value) {
+  _internal_set_keyspaceisempty(value);
+  // @@protoc_insertion_point(field_set:InformationalMessageContents.CollectionInformationRecord.CreationRateData.keyspaceIsEmpty)
 }
 
 // -------------------------------------------------------------------

@@ -61,6 +61,8 @@ build-and-test : all
 	make run-test3-non-repeatability
 	make run-test4-scenario-1
 	make run-test5-doNothing
+
+fails: all
 	make run-test6-scenario-2
 	make run-test7-scenario-3
 
