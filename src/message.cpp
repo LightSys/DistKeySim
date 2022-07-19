@@ -10,11 +10,8 @@ void addCollectionInfoRecord(InformationalMessageContents::CollectionInformation
     creationRateData->set_createdpreviousweek(createdWeek);
     creationRateData->set_longallocationratio(longAlloc);
 
-    // In section "Information Statistics", subpoint 4.2,
-    // "If CS is zero (or rounds to zero), then a value of 1 is substituted for CS."
     if (ACE::areCloseEnough(shortAlloc, 0)) {
-        Logger::log(Formatter() << "addCollectionInfoRecord: shortAlloc (" << shortAlloc << ") is close to zero, setting it to 1");
-        creationRateData->set_shortallocationratio(1);
+        creationRateData->set_shortallocationratio(0);
     } else {
         creationRateData->set_shortallocationratio(shortAlloc);
     }

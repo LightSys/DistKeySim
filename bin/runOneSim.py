@@ -4,16 +4,15 @@ import os
 import subprocess
 import sys
 
-def runOneSim(configFileName, connectionMode, simLength, numNodes):
+def runOneSim(configFileName, connectionMode, simLength):
 
-    print("runOneSim(configFileName=%s, connectionMode=%s, simLength=%d, numNodes=%d)" % (configFileName, connectionMode, simLength, numNodes))
+    print("runOneSim(configFileName=%s, connectionMode=%s, simLength=%d)" % (configFileName, connectionMode, simLength))
  
     # Read and edit config file
     with open(configFileName, 'r') as configFile:
        config = json.load(configFile)
     config["connectionMode"] = connectionMode
     config["simLength"] = simLength
-    config["numNodes"] = numNodes
 
     # Write config file as JSON
     editedConfigFileName = "build/src/config.json"

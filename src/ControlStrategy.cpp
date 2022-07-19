@@ -82,13 +82,6 @@ void ControlStrategy::adak(Node &node, int keysToShift) {
         double prevWeek =
             i->second.first->info().records(0).creationratedata().createdpreviousweek();
 
-        // In section "Information Statistics", subpoint 4.2,
-        // "If CS is zero (or rounds to zero), then a value of 1 is substituted for CS."
-        if (ACE::areCloseEnough(shortAlloc, 0)) {
-            Logger::log(Formatter() << "+-shortAlloc(" << shortAlloc << ") is close to zero, setting it to 1");
-            shortAlloc = 1;
-        }
-
         // store provisioning rate for block sharing, and keysace size for sub-block sharing
         avgProv += longAlloc / prevWeek;  // big is good, small is bad
         avgKey += shortAlloc;
@@ -222,13 +215,6 @@ void ControlStrategy::adak(Node &node, int keysToShift) {
             double prevDay =
                 i->second.first->info().records(0).creationratedata().createdpreviousday();
  
-            // In section "Information Statistics", subpoint 4.2,
-            // "If CS is zero (or rounds to zero), then a value of 1 is substituted for CS."
-            if (ACE::areCloseEnough(shortAlloc, 0)) {
-                Logger::log(Formatter() << "+-shortAlloc(" << shortAlloc << ") is close to zero, setting it to 1");
-                shortAlloc = 1;
-            }
-
             ControlStrategy::logKeySharing(i->first, shortAlloc,
                 longAlloc, prevDay, prevWeek, avgProv, avgKey,
                 provShortRatio, provLongRatio, peersChecked);
@@ -446,13 +432,6 @@ void ControlStrategy::subBlocks(Node &node, long double avgKeys, int keysToShift
                 i->second.first->info().records(0).creationratedata().shortallocationratio();
             double longAlloc =
                 i->second.first->info().records(0).creationratedata().longallocationratio();
-
-            // In section "Information Statistics", subpoint 4.2,
-            // "If CS is zero (or rounds to zero), then a value of 1 is substituted for CS."
-            if (ACE::areCloseEnough(shortAlloc, 0)) {
-                Logger::log(Formatter() << "+-shortAlloc(" << shortAlloc << ") is close to zero, setting it to 1");
-                shortAlloc = 1;
-            }
 
             // Commented out because not used
             // double prevDay   =
