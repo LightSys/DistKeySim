@@ -15,6 +15,7 @@ if __name__ == '__main__':
 
     parser = argparse.ArgumentParser(description='Test Scenario')
     parser.add_argument('--scenarioNum', '-s', type=int, help='Scenario number')
+    parser.add_argument('--numNodes', '-n', type=int, help='Number of nodes')
     parser.add_argument('--days', '-d', type=float, default=0.1, help='Number of simulated days')
     parser.add_argument('--config', '-c', help='Config file name and path')
     parser.add_argument('--assertion', '-a', help='Python assertion code')
@@ -23,6 +24,6 @@ if __name__ == '__main__':
     iterations = simUnitsPerSecond * seconds * minutes * hours * args.days
     print("Testing Scenario %d with %s iterations (%g days) ..." % (args.scenarioNum, iterations, args.days))
 
-    numKeyspaces = runOneSim(args.config, "full", iterations)
+    numKeyspaces = runOneSim(args.config, "full", iterations, args.numNodes)
     exec(args.assertion)
     print("Test Scenario %d passed, numKeyspaces=%d" % (args.scenarioNum, numKeyspaces))
