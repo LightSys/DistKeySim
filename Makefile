@@ -62,19 +62,18 @@ build-and-test : all
 	make run-test4-scenario-1
 	make run-test5-doNothing
 
-fails: all
+fail: all
 	make run-test6-scenario-2
 	make run-test7-scenario-3
+	make run-test8-scenario-4
 
-short-tests : all
+fail-short : all
 	make run-test4-scenario-1 SCEN_1_DAYS=0.001
 	make sanitize jsonify
-	make run-test5-doNothing SCEN_1_DAYS=0.001
-	make sanitize jsonify
-	make run-test6-scenario-2 SCEN_2_DAYS=0.001
+	-make run-test6-scenario-2 SCEN_2_DAYS=0.001
 	make sanitize jsonify
 
-not-these-yet : all
+not-yet : all
 	make run-test7-scenario-3 SCEN_3_DAYS=0.001
 	make sanitize jsonify
 	make run-test8-scenario-4 SCEN_4_DAYS=0.001

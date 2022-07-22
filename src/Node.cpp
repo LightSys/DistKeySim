@@ -476,21 +476,37 @@ Message Node::getHeartbeatMessage(const UUID &peerID) {
         );   
     }
     
-    Logger::log(Formatter() << getUUID() << " keyspace is not empty:"
-        << " longAlloc=" << lastDay.getLongTermAllocationRatio()
-        << " shortAlloc=" << lastDay.getShortTermAllocationRatio()
-        << " keyspaceIsEmpty=" << to_string(keyspaces.empty()));
-    toInformationalMessage(
-        msg, 
-        {
-            //use the update keyspace functions so that what is being recived is the most up to date possible
-            CollectionInfoRecord{"test", calcShortAggregate(peerID), // createdDay
-                                        calcLongAggregate(peerID),  // createdWeek
-                                        lastDay.getLongTermAllocationRatio(), 
-                                        lastDay.getShortTermAllocationRatio(),
-                                        keyspaces.empty()}
-        }
-    );
+    // HACK
+    /// NOTE, this is basically fixed in the develop branch, it is only here right now to tell other nodes,
+    /// "If I don't have a keyspace, then give me a keyspace", this is because 1.0 is above the treshold ALLOCATION_BEFORE_GIVING_KEYSPACE
+    if (keyspaces.empty()) {
+        Logger::log(Formatter() << getUUID() << " keyspace is empty: setting long and short term alloc ratio to 1");
+        toInformationalMessage(
+           msg,
+           {
+               CollectionInfoRecord{"test", calcShortAggregate(peerID), // createdDay
+                                            calcLongAggregate(peerID),  // createdWeek
+                                            1,
+                                            1},
+           }
+       );
+
+    }else{
+
+        Logger::log(Formatter() << getUUID() << " keyspace is not empty:"
+            << " longAlloc=" << lastDay.getLongTermAllocationRatio()
+            << " shortAlloc=" << lastDay.getShortTermAllocationRatio());
+        toInformationalMessage(
+           msg, 
+           {
+	           //use the update keyspace functions so that what is being recived is the most up to date possible
+               CollectionInfoRecord{"test", calcShortAggregate(peerID), // createdDay
+	                                        calcLongAggregate(peerID),  // createdWeek
+                                            lastDay.getLongTermAllocationRatio(), 
+	                                        lastDay.getShortTermAllocationRatio()},
+           }
+       );
+    }
 
     //log time of message creation
     timeStamps[msg.messageid()] = currentTick; 
