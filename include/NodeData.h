@@ -75,6 +75,13 @@ public:
        
     //incriments how many ticks this node data has been in use
     void incTimeUnitPast() {timeUnitsPast++;} 
+
+    string toString() {
+        return Formatter() << "dayInMonth=" << day << " keysUsed=" << keysUsed << " timeUnitsPast=" << timeUnitsPast
+            << " shortAlloc=" << shortTermAllocationRatio
+            << " longAlloc=" << longTermAllocationRatio;
+
+    }
 };
 
 

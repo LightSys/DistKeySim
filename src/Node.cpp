@@ -80,10 +80,14 @@ void Node::consumeObjects(){
         amountOfOneKeyUsed--;
 	    Logger::log(Formatter() << "+-consuming next key: " << this->getNextKey()
             << ", amountOfOneKeyUsed=" << amountOfOneKeyUsed);
-         	
+
        	//update createdWeek to reflect the current history 
         
-        createdDay = 0;
+        /* Each history entry has #keys used this far. Why are we adding #keys used
+           thus far up to 24 times into created Day? Each history entry is for all
+           keys used, not just those use in each of the past 24 hours.
+           Ditto created Week.
+
 	    unsigned max = 24;
 
         if(max > history.size()){
@@ -93,24 +97,26 @@ void Node::consumeObjects(){
         //add up the number of logs to get a day
         //newest are at the rear of history
         for(int i = max - 1; i > 0 ; i--){
+            Logger::log(Formatter() << "+-adding " << history[i].getKeysUsed() << " to createdDay");
             createdDay +=  history[i].getKeysUsed();
         }
         Logger::log(Formatter() << "+-createdDay from history: " << createdDay);
 
-        createdWeek = 0;
     	int size = history.size();
         
     	//add up teh full history, which loggs up to a week
         for(int i = 0 ; i < size ; i ++){
-           createdWeek += history[i].getKeysUsed();
+            Logger::log(Formatter() << "+-adding " << history[i].getKeysUsed() << " to createdWeek");
+            createdWeek += history[i].getKeysUsed();
         }
         Logger::log(Formatter() << "+-createdWeek from history: " << createdWeek);
+        */
 
 	    //add in the current progress this timestep (name lastDay is from older structure) 
-        createdDay += lastDay.getKeysUsed();
-        createdWeek += lastDay.getKeysUsed(); 
-        Logger::log(Formatter() << "+-createdDay from lastday.getKeysUsed: " << createdDay);
-        Logger::log(Formatter() << "+-createdWeek from lastday.getKeysUsed: " << createdWeek);
+        createdDay  = lastDay.getKeysUsed();
+        createdWeek = lastDay.getKeysUsed(); 
+        Logger::log(Formatter() << "+-createdDay=" << createdDay
+            << " createdWeek=" << createdWeek);
     }
     Logger::log(Formatter() << "+-amountOfOneKeyUsed=" << amountOfOneKeyUsed
         << " createdDay=" << createdDay << " createdWeek=" << createdWeek);
@@ -140,9 +146,15 @@ double Node::getTimeOffline(){
 }
 
 void Node::changeConsumptionRate(){
-    objectConsumptionRatePerSecond = 1.0/(1 + (*d3)(*gen));
+    auto d3value = (*d3);
+    auto genvalue = (*gen);
+    auto d3genvalue = (*d3)(*gen);
+    Logger::log(Formatter() << this->uuid << " (*d3)(*gen)=" << d3genvalue
+        << " (1 + (*d3)(*gen))=" << (1 + (d3genvalue)));
+    objectConsumptionRatePerSecond = 1.0/(1 + (d3genvalue));
     Logger::log(Formatter() << this->uuid
-        << " changed consumption rate to " << objectConsumptionRatePerSecond);
+        << " changed consumption rate (1.0/(1 + (*d3)(*gen)) to " << objectConsumptionRatePerSecond
+        << "/second");
 }
 
 static Node rootNode(double lambda1, double lambda2, double lambda3, int latency, double networkScale, unsigned seed) {
@@ -208,10 +220,10 @@ ADAK_Key_t Node::getNextKey() {
         Logger::log(message);
         return -1;
     } else {
-	int key = keyspaces.at(index).getNextAvailableKey();
-	if(!keyspaces.at(index).isKeyAvailable()){
-           keyspaces.erase(keyspaces.begin() + index);
-	}
+        int key = keyspaces.at(index).getNextAvailableKey();
+        if(!keyspaces.at(index).isKeyAvailable()){
+            keyspaces.erase(keyspaces.begin() + index);
+        }
         return key;
     }
 }
@@ -259,20 +271,17 @@ bool Node::isKeyAvailable(){
  */
 
 void Node::tick(){
-    if(lastDay.getTimeUnitsPast() >= Config::timeStepUnitsPerMinute){
-      history.push_back(lastDay);
-  
-      if (history.size() > (7 * Config::timeStepUnitsPerWeek)) {
-            // Remove the first value from the vector, shifting the time, so we only store 1 week
-            history.erase(history.begin());
-        }
-    
-    }
+    Logger::log(Formatter() << uuid << " tick: "
+        << " lastDay.getTimeUnitsPast(" << lastDay.getTimeUnitsPast()
+        << ") >= Config::timeStepUnitsPerMinute(" << Config::timeStepUnitsPerMinute
+        << ") = " << ACE::toString(lastDay.getTimeUnitsPast() >= Config::timeStepUnitsPerMinute));
     currentTick ++;
     //also log heartbeat
     logInfoForHeartbeat(); 
     
     lastDay.incTimeUnitPast();
+    Logger::log(Formatter() << "+-currentTick=" << currentTick
+        << " lastDay.timeUnitsPast=" << lastDay.getTimeUnitsPast());
 }
 
 void Node::heartbeat() {   

@@ -83,6 +83,11 @@ if __name__ == "__main__":
             uuid = uuidParts[0]
             if uuid not in uuids:
                 uuids.append(uuid)
+        if "(*d3)(*gen)" in log:
+            uuidParts = log.split(" ")
+            uuid = uuidParts[0]
+            if uuid not in uuids:
+                uuids.append(uuid)
         foundChannels = foundChannels or "CHANNELS" in log
         foundToFrom = foundToFrom or "TO,FROM,ID" in log
         if foundChannels and foundToFrom and "TO,FROM,ID" not in log:

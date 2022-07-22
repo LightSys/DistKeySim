@@ -25,7 +25,6 @@ private:
     std::deque<Message> sendQueue;
     std::vector<Keyspace> keyspaces;
     std::map<UUID, std::pair<Message*, uint64_t>> peers; //Hold the message and the next ID to send
-    std::vector<NodeData> history;
     //map to store confirmation messages
     std::map<uint64_t, Message*> confirmMsg;  
     

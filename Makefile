@@ -68,15 +68,19 @@ fail: all
 	make run-test8-scenario-4
 
 fail-short : all
-	make run-test4-scenario-1 SCEN_1_DAYS=0.001
+	make run-test4-scenario-1 SCEN_1_DAYS=0.01
 	make sanitize jsonify
-	-make run-test6-scenario-2 SCEN_2_DAYS=0.001
+	make run-test6-scenario-2 SCEN_2_DAYS=0.01
 	make sanitize jsonify
+
+consuming-next-key :
+	awk '/SimTime/ {simTime=$$5} /consumes/ {uuid=$$1} /consuming/ {print simTime, uuid, $$4}' \
+		$(OUTPUTS)/logOutput*.clean.txt
 
 not-yet : all
 	make run-test7-scenario-3 SCEN_3_DAYS=0.001
 	make sanitize jsonify
-	make run-test8-scenario-4 SCEN_4_DAYS=0.001
+	-make run-test8-scenario-4 SCEN_4_DAYS=0.001
 	make sanitize jsonify
 
 NEXT_RUN = $(shell cat $(OUTPUTS)/num.txt)
