@@ -81,10 +81,12 @@ void ControlStrategy::adak(Node &node, int keysToShift) {
         double prevDay = i->second.first->info().records(0).creationratedata().createdpreviousday();
         double prevWeek =
             i->second.first->info().records(0).creationratedata().createdpreviousweek();
+        Logger::log(Formatter() << "+-longAlloc=" << longAlloc << " shortAlloc=" << shortAlloc);
 
         // store provisioning rate for block sharing, and keysace size for sub-block sharing
         avgProv += longAlloc / prevWeek;  // big is good, small is bad
         avgKey += shortAlloc;
+        Logger::log(Formatter() << "avgKey=" << avgKey << " += " << shortAlloc);
         peersChecked++;
 
         // make sure sharing keyspace is actually possible
@@ -146,6 +148,7 @@ void ControlStrategy::adak(Node &node, int keysToShift) {
     // calculate averages
     avgProv /= peersChecked;
     avgKey /= peersChecked;
+    Logger::log(Formatter() << "avgKey=" << avgKey << " /= " << peersChecked);
 
     // determine block sharing
     std::shared_ptr<NodeData> nodeData = node.getNodeData();
@@ -410,6 +413,8 @@ void ControlStrategy::adak(Node &node, int keysToShift) {
 }
 
 void ControlStrategy::subBlocks(Node &node, long double avgKeys, int keysToShift) {
+    Logger::log(Formatter() << "subBlocks(" << node.getUUID() << ", " << avgKeys << ", " << keysToShift << ")"
+        << " keySpace.size=" << node.getKeySpace().size());
     // need keyspace to do anything
     if (node.getKeySpace().size() == 0) return;
 
@@ -420,6 +425,9 @@ void ControlStrategy::subBlocks(Node &node, long double avgKeys, int keysToShift
     double totalDef = 0;  // the deficit below the average
     vector<Keyspace> nodeKeyspaces = node.getKeySpace();
     double provShortRatio = nodeData->updateShortTermAllocationRatio(nodeKeyspaces);
+
+    Logger::log(Formatter() << "subBlocks: avgKeys(" << avgKeys << ") > provShortRatio(" << provShortRatio << ") = "
+        << ACE::toString(ACE::isGreaterThan(avgKeys, provShortRatio)));
 
     if (ACE::isGreaterThan(avgKeys, provShortRatio)) {
         Logger::log(Formatter() << "+-wants to give keyspace...");
@@ -432,6 +440,8 @@ void ControlStrategy::subBlocks(Node &node, long double avgKeys, int keysToShift
                 i->second.first->info().records(0).creationratedata().shortallocationratio();
             double longAlloc =
                 i->second.first->info().records(0).creationratedata().longallocationratio();
+            Logger::log(Formatter() << "+-peer=" << i->first
+                << " longAlloc=" << longAlloc << " shortAlloc=" << shortAlloc);
 
             // Commented out because not used
             // double prevDay   =
@@ -441,6 +451,7 @@ void ControlStrategy::subBlocks(Node &node, long double avgKeys, int keysToShift
                 !(ACE::areCloseEnough(1, shortAlloc) && ACE::areCloseEnough(1, longAlloc))) {
                 totalDef += shortAlloc - avgKeys;
                 if (!node.canSendKeyspace(i->first))
+                    Logger::log(Formatter() << "+-" << node.getUUID() << " has no keyspace to send");
                     continue;  // want factored in, but do not consider sending to.
                 defs.push_back(std::pair<UUID, long double>(i->second.first->sourcenodeid(), 0));
             } else {
@@ -448,7 +459,7 @@ void ControlStrategy::subBlocks(Node &node, long double avgKeys, int keysToShift
             }
         }
         if (defs.size() == 0) {
-            Logger::log(Formatter() << "+-But the peer deficits are zero");
+            Logger::log("+-But peer deficits is empty");
         } else {
             Logger::log(Formatter() << "+-defs size: " << defs.size() << "... ");
         }

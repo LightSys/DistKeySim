@@ -68,22 +68,12 @@ fail: all
 	make run-test8-scenario-4
 
 fail-short : all
-	make run-test4-scenario-1 SCEN_1_DAYS=0.01
+	-make run-test4-scenario-1 SCEN_1_DAYS=0.01
 	make sanitize jsonify
-	make run-test6-scenario-2 SCEN_2_DAYS=0.01
-	make sanitize jsonify
-
-consuming-next-key :
-	awk '/SimTime/ {simTime=$$5} /consumes/ {uuid=$$1} /consuming/ {print simTime, uuid, $$4}' \
-		$(OUTPUTS)/logOutput*.clean.txt
-
-not-yet : all
-	make run-test7-scenario-3 SCEN_3_DAYS=0.001
-	make sanitize jsonify
-	-make run-test8-scenario-4 SCEN_4_DAYS=0.001
+	-make run-test6-scenario-2 SCEN_2_DAYS=0.01
 	make sanitize jsonify
 
-NEXT_RUN = $(shell cat $(OUTPUTS)/num.txt)
+NEXT_RUN = $(shell if [ -e "$(OUTPUTS)/num.txt" ]; then cat "$(OUTPUTS)/num.txt"; else echo 1; fi)
 LAST_RUN = $(shell echo $(NEXT_RUN) - 1 | bc)
 .PHONY: sanitize
 sanitize :
@@ -154,7 +144,7 @@ run-repeatable :
 	cd $(ADAK_ROOT)
 
 .PHONY: run-test1-repeatability
-run-test1-repeatability :
+run-test1-repeatability : all
 	make run-repeatable sanitize
 	make run-repeatable sanitize
 	make compare
@@ -164,7 +154,7 @@ run-test1-repeatability :
 # Assert absence of oscillation
 # -----------------------------
 .PHONY: run-test2-oscillation
-run-test2-oscillation :
+run-test2-oscillation : all
 	$(BIN)/testOscillation.py
 	@echo "Test 2 Passed: Oscillation"
 
@@ -187,7 +177,7 @@ run-non-repeatable :
 	make run-repeatable NON=non
 
 .PHONY: run-test3-non-repeatability
-run-test3-non-repeatability :
+run-test3-non-repeatability : all
 	make run-non-repeatable sanitize
 	make run-non-repeatable sanitize
 	@make compare; \
@@ -215,7 +205,7 @@ SCEN_1_CONFIG = "config/scenario1-config.json"
 
 .PHONY: run-test4-scenario-1
 run-test4-scenario-1 : all
-	time $(BIN)/testScenario.py --scenarioNum 1 --numNodes 0 --days $(SCEN_1_DAYS) --config $(SCEN_1_CONFIG) \
+	$(BIN)/testScenario.py --scenarioNum 1 --numNodes 0 --days $(SCEN_1_DAYS) --config $(SCEN_1_CONFIG) \
 		-a 'assert numKeyspaces == 2, "Test Scenario 1 failed: numKeyspaces=%d" % numKeyspaces'
 	@echo "Test 4 Passed: Scenario 1"
 
@@ -223,7 +213,7 @@ run-test4-scenario-1 : all
 
 .PHONY: run-test5-doNothing
 run-test5-doNothing : all
-	time $(BIN)/testScenario.py --scenarioNum 1 --numNodes 0 --days $(SCEN_1_DAYS) \
+	$(BIN)/testScenario.py --scenarioNum 1 --numNodes 0 --days $(SCEN_1_DAYS) \
 		--config "config/doNothing-config.json" \
 		-a 'assert numKeyspaces == 1, "Test Do Nothing failed: numKeyspaces=%d" % numKeyspaces'
 	@echo "Test 5 Passed: Do Nothing Strategy"
@@ -248,7 +238,7 @@ SCEN_2_CONFIG = "config/scenario2-config.json"
 
 .PHONY: run-test6-scenario-2
 run-test6-scenario-2 : all
-	time $(BIN)/testScenario.py --scenarioNum 2 --numNodes 0 --days $(SCEN_2_DAYS) --config $(SCEN_2_CONFIG) \
+	$(BIN)/testScenario.py --scenarioNum 2 --numNodes 0 --days $(SCEN_2_DAYS) --config $(SCEN_2_CONFIG) \
 		-a 'assert numKeyspaces == 3, "Test Scenario 2 failed: numKeyspaces=%d" % numKeyspaces'
 	@echo "Test 6 Passed: Scenario 2"
 
@@ -278,7 +268,7 @@ SCEN_3_CONFIG = "config/scenario3-config.json"
 
 .PHONY: run-test7-scenario-3
 run-test7-scenario-3 : all
-	time $(BIN)/testScenario.py --scenarioNum 3 --numNodes 0 --days $(SCEN_3_DAYS) --config $(SCEN_3_CONFIG) \
+	$(BIN)/testScenario.py --scenarioNum 3 --numNodes 0 --days $(SCEN_3_DAYS) --config $(SCEN_3_CONFIG) \
 		-a 'assert numKeyspaces == 32, "Test Scenario 3 failed: numKeyspaces=%d" % numKeyspaces'
 	@echo "Test 7 Passed: Scenario 3"
 
@@ -299,7 +289,7 @@ SCEN_4_CONFIG  = "config/scenario4-config.json"
 
 .PHONY: run-test8-scenario-4
 run-test8-scenario-4 : all
-	time $(BIN)/testScenario.py --scenarioNum 4 --numNodes 0 --days $(SCEN_4_DAYS) --config $(SCEN_4_CONFIG) \
+	$(BIN)/testScenario.py --scenarioNum 4 --numNodes 0 --days $(SCEN_4_DAYS) --config $(SCEN_4_CONFIG) \
 		-a 'assert numKeyspaces == 32, "Test Scenario 4 failed: numKeyspaces=%d" % numKeyspaces'
 	@echo "Test 7 Passed: Scenario 4"
 

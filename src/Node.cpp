@@ -463,6 +463,7 @@ deque<Message> Node::checkMessages() {
 }
 
 Message Node::getHeartbeatMessage(const UUID &peerID) {
+    Logger::log(Formatter() << "getHeartbeatMessage(" << peerID << ")");
     Message msg;
     if (peerID == BROADCAST_UUID) {
         // Broadcasting
@@ -640,14 +641,18 @@ bool Node::canSendKeyspace(UUID id){
     
     //search through confirmation and make sure that no keyspace messages are pending confirmation
     //from the node in question 
-    for(i = confirmMsg.begin(); i != confirmMsg.end() ; i++){
-        if( i->second->messagetype() != Message::MessageType::Message_MessageType_INFORMATION
-			&& i->second->destnodeid() == id){	   
-           //was a keyspace, cannot send another to that UUID
-	   canSend = false;
+    for (i = confirmMsg.begin(); i != confirmMsg.end() ; i++) {
+        const Message msg = *(i->second);
+        //Logger::logMsg(Formatter() << "canSendKeyspace(" << id << ") msg=", msg);
+        if ( i->second->messagetype() != Message::MessageType::Message_MessageType_INFORMATION
+    			&& i->second->destnodeid() == id) {
+            //was a keyspace, cannot send another to that UUID
+    	    canSend = false;
+            break;
         }
     }
  
+    Logger::log(Formatter() << "+-returns " << ACE::toString(canSend));
     return canSend; 
 }
 
@@ -743,9 +748,10 @@ vector<int> Node::makeSubBlock(int range){
 
 double Node::calcLongAggregate(UUID target){
    //sum all of the long term calculations, but not the the one for target
-   Logger::log(Formatter() << "+-calcLongAggregate for " << uuid);
+   Logger::log(Formatter() << "+-calcLongAggregate for "
+        << target << " which has " << peers.size() << " peers");
    double result = 0;
-   int numCounted = 1; 
+   int numCounted = 1; // start with 1 for target
    for(auto & peer: peers){
        if(peer.first == target || peer.second.first == nullptr){continue;}
        Logger::log(Formatter() << " +-peer: " << peer.first
@@ -765,23 +771,24 @@ double Node::calcLongAggregate(UUID target){
 
 double Node::calcShortAggregate(UUID target){
    //sum all of the short term calculations, but not the the one for target
-   Logger::log(Formatter() << "+-calcShortAggregate for " << uuid);
+   Logger::log(Formatter() << "+-calcShortAggregate for " << target
+        << " which has " << peers.size() << " peers");
    double result = 0;
-   int numCounted = 1;
+   int numCounted = 1; // start with 1 for target
    for(auto & peer: peers){
        if(peer.first == target || peer.second.first == nullptr){continue;}
        Logger::log(Formatter() << " +-peer: " << peer.first
             << " createdPreviousDay:" << peer.second.first->info().records(0).creationratedata().createdpreviousday());
        result += peer.second.first->info().records(0).creationratedata().createdpreviousday();
        numCounted++;
+       Logger::log(Formatter() << "  +-result=" << result << " numCounted=" << numCounted);
    }
-   Logger::log(Formatter() << " +-sum created prev day: " << result);
    result *= networkScale; 
    Logger::log(Formatter() << " +-result after *networkScale (" << networkScale << "): " << result);
    result += createdDay;
    Logger::log(Formatter() << " +-result after +createdDay (" << createdDay << "): " << result);
    result /= numCounted; //# of peers + self - target 
-   Logger::log(Formatter() << " +-result after /numCounted (" << numCounted << "): " << result);
+   Logger::log(Formatter() << " +-(final) result after /numCounted (" << numCounted << "): " << result);
    return result; 
 }
 

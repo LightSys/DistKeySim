@@ -26,7 +26,6 @@ PROTOBUF_CONSTEXPR InformationalMessageContents_CollectionInformationRecord_Crea
   , /*decltype(_impl_.longallocationratio_)*/0
   , /*decltype(_impl_.createdpreviousday_)*/0
   , /*decltype(_impl_.createdpreviousweek_)*/0
-  , /*decltype(_impl_.keyspaceisempty_)*/false
   , /*decltype(_impl_._cached_size_)*/{}} {}
 struct InformationalMessageContents_CollectionInformationRecord_CreationRateDataDefaultTypeInternal {
   PROTOBUF_CONSTEXPR InformationalMessageContents_CollectionInformationRecord_CreationRateDataDefaultTypeInternal()
@@ -129,7 +128,6 @@ const uint32_t TableStruct_message_2eproto::offsets[] PROTOBUF_SECTION_VARIABLE(
   PROTOBUF_FIELD_OFFSET(::InformationalMessageContents_CollectionInformationRecord_CreationRateData, _impl_.longallocationratio_),
   PROTOBUF_FIELD_OFFSET(::InformationalMessageContents_CollectionInformationRecord_CreationRateData, _impl_.createdpreviousday_),
   PROTOBUF_FIELD_OFFSET(::InformationalMessageContents_CollectionInformationRecord_CreationRateData, _impl_.createdpreviousweek_),
-  PROTOBUF_FIELD_OFFSET(::InformationalMessageContents_CollectionInformationRecord_CreationRateData, _impl_.keyspaceisempty_),
   ~0u,  // no _has_bits_
   PROTOBUF_FIELD_OFFSET(::InformationalMessageContents_CollectionInformationRecord, _internal_metadata_),
   ~0u,  // no _extensions_
@@ -181,11 +179,11 @@ const uint32_t TableStruct_message_2eproto::offsets[] PROTOBUF_SECTION_VARIABLE(
 };
 static const ::_pbi::MigrationSchema schemas[] PROTOBUF_SECTION_VARIABLE(protodesc_cold) = {
   { 0, -1, -1, sizeof(::InformationalMessageContents_CollectionInformationRecord_CreationRateData)},
-  { 11, -1, -1, sizeof(::InformationalMessageContents_CollectionInformationRecord)},
-  { 19, -1, -1, sizeof(::InformationalMessageContents)},
-  { 26, -1, -1, sizeof(::KeyspaceMessageContents_Keyspace)},
-  { 36, -1, -1, sizeof(::KeyspaceMessageContents)},
-  { 43, -1, -1, sizeof(::Message)},
+  { 10, -1, -1, sizeof(::InformationalMessageContents_CollectionInformationRecord)},
+  { 18, -1, -1, sizeof(::InformationalMessageContents)},
+  { 25, -1, -1, sizeof(::KeyspaceMessageContents_Keyspace)},
+  { 35, -1, -1, sizeof(::KeyspaceMessageContents)},
+  { 42, -1, -1, sizeof(::Message)},
 };
 
 static const ::_pb::Message* const file_default_instances[] = {
@@ -199,41 +197,40 @@ static const ::_pb::Message* const file_default_instances[] = {
 
 const char descriptor_table_protodef_message_2eproto[] PROTOBUF_SECTION_VARIABLE(protodesc_cold) =
   "\n\rmessage.proto\032\037google/protobuf/timesta"
-  "mp.proto\"\252\003\n\034InformationalMessageContent"
+  "mp.proto\"\221\003\n\034InformationalMessageContent"
   "s\022J\n\007records\030\001 \003(\01329.InformationalMessag"
-  "eContents.CollectionInformationRecord\032\275\002"
+  "eContents.CollectionInformationRecord\032\244\002"
   "\n\033CollectionInformationRecord\022\026\n\016collect"
   "ionName\030\001 \001(\t\022d\n\020creationRateData\030\002 \001(\0132"
   "J.InformationalMessageContents.Collectio"
-  "nInformationRecord.CreationRateData\032\237\001\n\020"
+  "nInformationRecord.CreationRateData\032\206\001\n\020"
   "CreationRateData\022\034\n\024shortAllocationRatio"
   "\030\001 \001(\001\022\033\n\023longAllocationRatio\030\002 \001(\001\022\032\n\022c"
   "reatedPreviousDay\030\003 \001(\001\022\033\n\023createdPrevio"
-  "usWeek\030\004 \001(\001\022\027\n\017keyspaceIsEmpty\030\005 \001(\010\"\235\001"
-  "\n\027KeyspaceMessageContents\0224\n\tkeyspaces\030\001"
-  " \003(\0132!.KeyspaceMessageContents.Keyspace\032"
-  "L\n\010Keyspace\022\014\n\004name\030\001 \001(\t\022\017\n\007startID\030\002 \001"
-  "(\004\022\r\n\005endID\030\003 \001(\004\022\022\n\nsuffixBits\030\004 \001(\r\"\356\003"
-  "\n\007Message\022\024\n\014sourceNodeID\030\001 \001(\014\022\022\n\ndestN"
-  "odeID\030\002 \001(\014\022\027\n\017lastReceivedMsg\030\003 \001(\004\022+\n\014"
-  "channelState\030\004 \001(\0162\025.Message.ChannelStat"
-  "e\022-\n\ttimestamp\030\005 \001(\0132\032.google.protobuf.T"
-  "imestamp\022\021\n\tmessageID\030\006 \001(\022\022)\n\013messageTy"
-  "pe\030\007 \001(\0162\024.Message.MessageType\022-\n\004info\030\010"
-  " \001(\0132\035.InformationalMessageContentsH\000\022,\n"
-  "\010keyspace\030\t \001(\0132\030.KeyspaceMessageContent"
-  "sH\000\"S\n\014ChannelState\022\023\n\017INITIAL_STARTUP\020\000"
-  "\022\030\n\024NORMAL_COMMUNICATION\020\001\022\024\n\020CHANNEL_SH"
-  "UTDOWN\020\002\"I\n\013MessageType\022\017\n\013INFORMATION\020\000"
-  "\022\014\n\010KEYSPACE\020\001\022\033\n\027DATA_REPLICATION_UNUSE"
-  "D\020\002B\t\n\007messageb\006proto3"
+  "usWeek\030\004 \001(\001\"\235\001\n\027KeyspaceMessageContents"
+  "\0224\n\tkeyspaces\030\001 \003(\0132!.KeyspaceMessageCon"
+  "tents.Keyspace\032L\n\010Keyspace\022\014\n\004name\030\001 \001(\t"
+  "\022\017\n\007startID\030\002 \001(\004\022\r\n\005endID\030\003 \001(\004\022\022\n\nsuff"
+  "ixBits\030\004 \001(\r\"\356\003\n\007Message\022\024\n\014sourceNodeID"
+  "\030\001 \001(\014\022\022\n\ndestNodeID\030\002 \001(\014\022\027\n\017lastReceiv"
+  "edMsg\030\003 \001(\004\022+\n\014channelState\030\004 \001(\0162\025.Mess"
+  "age.ChannelState\022-\n\ttimestamp\030\005 \001(\0132\032.go"
+  "ogle.protobuf.Timestamp\022\021\n\tmessageID\030\006 \001"
+  "(\022\022)\n\013messageType\030\007 \001(\0162\024.Message.Messag"
+  "eType\022-\n\004info\030\010 \001(\0132\035.InformationalMessa"
+  "geContentsH\000\022,\n\010keyspace\030\t \001(\0132\030.Keyspac"
+  "eMessageContentsH\000\"S\n\014ChannelState\022\023\n\017IN"
+  "ITIAL_STARTUP\020\000\022\030\n\024NORMAL_COMMUNICATION\020"
+  "\001\022\024\n\020CHANNEL_SHUTDOWN\020\002\"I\n\013MessageType\022\017"
+  "\n\013INFORMATION\020\000\022\014\n\010KEYSPACE\020\001\022\033\n\027DATA_RE"
+  "PLICATION_UNUSED\020\002B\t\n\007messageb\006proto3"
   ;
 static const ::_pbi::DescriptorTable* const descriptor_table_message_2eproto_deps[1] = {
   &::descriptor_table_google_2fprotobuf_2ftimestamp_2eproto,
 };
 static ::_pbi::once_flag descriptor_table_message_2eproto_once;
 const ::_pbi::DescriptorTable descriptor_table_message_2eproto = {
-    false, false, 1142, descriptor_table_protodef_message_2eproto,
+    false, false, 1117, descriptor_table_protodef_message_2eproto,
     "message.proto",
     &descriptor_table_message_2eproto_once, descriptor_table_message_2eproto_deps, 1, 6,
     schemas, file_default_instances, TableStruct_message_2eproto::offsets,
@@ -313,13 +310,12 @@ InformationalMessageContents_CollectionInformationRecord_CreationRateData::Infor
     , decltype(_impl_.longallocationratio_){}
     , decltype(_impl_.createdpreviousday_){}
     , decltype(_impl_.createdpreviousweek_){}
-    , decltype(_impl_.keyspaceisempty_){}
     , /*decltype(_impl_._cached_size_)*/{}};
 
   _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
   ::memcpy(&_impl_.shortallocationratio_, &from._impl_.shortallocationratio_,
-    static_cast<size_t>(reinterpret_cast<char*>(&_impl_.keyspaceisempty_) -
-    reinterpret_cast<char*>(&_impl_.shortallocationratio_)) + sizeof(_impl_.keyspaceisempty_));
+    static_cast<size_t>(reinterpret_cast<char*>(&_impl_.createdpreviousweek_) -
+    reinterpret_cast<char*>(&_impl_.shortallocationratio_)) + sizeof(_impl_.createdpreviousweek_));
   // @@protoc_insertion_point(copy_constructor:InformationalMessageContents.CollectionInformationRecord.CreationRateData)
 }
 
@@ -332,7 +328,6 @@ inline void InformationalMessageContents_CollectionInformationRecord_CreationRat
     , decltype(_impl_.longallocationratio_){0}
     , decltype(_impl_.createdpreviousday_){0}
     , decltype(_impl_.createdpreviousweek_){0}
-    , decltype(_impl_.keyspaceisempty_){false}
     , /*decltype(_impl_._cached_size_)*/{}
   };
 }
@@ -361,8 +356,8 @@ void InformationalMessageContents_CollectionInformationRecord_CreationRateData::
   (void) cached_has_bits;
 
   ::memset(&_impl_.shortallocationratio_, 0, static_cast<size_t>(
-      reinterpret_cast<char*>(&_impl_.keyspaceisempty_) -
-      reinterpret_cast<char*>(&_impl_.shortallocationratio_)) + sizeof(_impl_.keyspaceisempty_));
+      reinterpret_cast<char*>(&_impl_.createdpreviousweek_) -
+      reinterpret_cast<char*>(&_impl_.shortallocationratio_)) + sizeof(_impl_.createdpreviousweek_));
   _internal_metadata_.Clear<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
 }
 
@@ -401,14 +396,6 @@ const char* InformationalMessageContents_CollectionInformationRecord_CreationRat
         if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 33)) {
           _impl_.createdpreviousweek_ = ::PROTOBUF_NAMESPACE_ID::internal::UnalignedLoad<double>(ptr);
           ptr += sizeof(double);
-        } else
-          goto handle_unusual;
-        continue;
-      // bool keyspaceIsEmpty = 5;
-      case 5:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 40)) {
-          _impl_.keyspaceisempty_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint64(&ptr);
-          CHK_(ptr);
         } else
           goto handle_unusual;
         continue;
@@ -481,12 +468,6 @@ uint8_t* InformationalMessageContents_CollectionInformationRecord_CreationRateDa
     target = ::_pbi::WireFormatLite::WriteDoubleToArray(4, this->_internal_createdpreviousweek(), target);
   }
 
-  // bool keyspaceIsEmpty = 5;
-  if (this->_internal_keyspaceisempty() != 0) {
-    target = stream->EnsureSpace(target);
-    target = ::_pbi::WireFormatLite::WriteBoolToArray(5, this->_internal_keyspaceisempty(), target);
-  }
-
   if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
     target = ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
         _internal_metadata_.unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(::PROTOBUF_NAMESPACE_ID::UnknownFieldSet::default_instance), target, stream);
@@ -539,11 +520,6 @@ size_t InformationalMessageContents_CollectionInformationRecord_CreationRateData
     total_size += 1 + 8;
   }
 
-  // bool keyspaceIsEmpty = 5;
-  if (this->_internal_keyspaceisempty() != 0) {
-    total_size += 1 + 1;
-  }
-
   return MaybeComputeUnknownFieldsSize(total_size, &_impl_._cached_size_);
 }
 
@@ -590,9 +566,6 @@ void InformationalMessageContents_CollectionInformationRecord_CreationRateData::
   if (raw_createdpreviousweek != 0) {
     _this->_internal_set_createdpreviousweek(from._internal_createdpreviousweek());
   }
-  if (from._internal_keyspaceisempty() != 0) {
-    _this->_internal_set_keyspaceisempty(from._internal_keyspaceisempty());
-  }
   _this->_internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
 }
 
@@ -611,8 +584,8 @@ void InformationalMessageContents_CollectionInformationRecord_CreationRateData::
   using std::swap;
   _internal_metadata_.InternalSwap(&other->_internal_metadata_);
   ::PROTOBUF_NAMESPACE_ID::internal::memswap<
-      PROTOBUF_FIELD_OFFSET(InformationalMessageContents_CollectionInformationRecord_CreationRateData, _impl_.keyspaceisempty_)
-      + sizeof(InformationalMessageContents_CollectionInformationRecord_CreationRateData::_impl_.keyspaceisempty_)
+      PROTOBUF_FIELD_OFFSET(InformationalMessageContents_CollectionInformationRecord_CreationRateData, _impl_.createdpreviousweek_)
+      + sizeof(InformationalMessageContents_CollectionInformationRecord_CreationRateData::_impl_.createdpreviousweek_)
       - PROTOBUF_FIELD_OFFSET(InformationalMessageContents_CollectionInformationRecord_CreationRateData, _impl_.shortallocationratio_)>(
           reinterpret_cast<char*>(&_impl_.shortallocationratio_),
           reinterpret_cast<char*>(&other->_impl_.shortallocationratio_));
