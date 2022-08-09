@@ -42,7 +42,7 @@ unsigned Config::timeStepUnitsPerWeek   = Config::timeStepUnitsPerDay * 7;
 Config::Config(ifstream jsonFile) {
     // Check if the JSON file can be opened
     if (jsonFile.good()) {
-	    Logger::log(Formatter() << "Loading from JSON...");
+	    if (Logger::logOutputVerbose) Logger::log(Formatter() << "Loading from JSON...");
         json jf = json::parse(jsonFile);
         
         // This checks for the existence of a key in the JSON file, setting the corresponding key in our Config instance
@@ -75,12 +75,12 @@ Config::Config(ifstream jsonFile) {
         if (jf.contains(ADAK_STRATEGY_LABEL)) {
             std::string adakStrategy;
             jf.at(ADAK_STRATEGY_LABEL).get_to(adakStrategy);
-            Logger::log(Formatter() << "adakStrategy=" << adakStrategy);
+            if (Logger::logOutputVerbose) Logger::log(Formatter() << "adakStrategy=" << adakStrategy);
             this->adakStrategy = toAdakStrategy(adakStrategy);
         } else {
             this->adakStrategy = toAdakStrategy(DEFAULT_ADAK_STRATEGY);
         }
-        Logger::log(Formatter() << "adakStrategy=" << Config::toString(this->adakStrategy));
+        if (Logger::logOutputVerbose) Logger::log(Formatter() << "adakStrategy=" << Config::toString(this->adakStrategy));
         
         if (jf.contains(CREATION_RATE_LABEL)) {
             jf.at(CREATION_RATE_LABEL).get_to(this->creationRate);

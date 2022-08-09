@@ -19,7 +19,6 @@ add_library(adakCore
     Random.cpp
     NodeData.cpp
     config.cpp
-    AbstractStrategy.cpp
     ControlStrategy.cpp
     Factory.cpp
     GeometricDisconnect.cpp

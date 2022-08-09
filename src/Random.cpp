@@ -6,7 +6,7 @@ using namespace std;
 
 Random::Random() : EventGen() {
     // Seed Random
-    Logger::log(Formatter() << "Random Class Created... Seeding random number.");
+    if (Logger::logOutputVerbose) Logger::log(Formatter() << "Random Class Created... Seeding random number.");
     srand(time(NULL));
 }
 
@@ -28,7 +28,7 @@ void Random::eventTick(Network* network) {
 //            network->disconnectNodes(network->getRandomNode(), network->getRandomNode());
             break;
         default:
-            Logger::log(Formatter() << "Something wrong with random!");
+            if (Logger::logOutputVerbose) Logger::log(Formatter() << "Something wrong with random!");
             break;
     }
 }

@@ -44,6 +44,14 @@ if __name__ == "__main__":
         lineParts = line.rstrip().split(splitOn)
         log = lineParts[0]
 
+        # skip lines with messages because the timestamps won't match
+        if 'sendMsg: {' in log or \
+           'receiveMessage: {' in log or \
+           'getHeartbeatMessage: {' in log or \
+           'canSendKeyspace: {' in log or \
+           'adak: {' in log:
+            continue
+
         # Find UUIDs
         if "Root UUID:" in log:
             uuidParts = log.split(": ")
@@ -103,6 +111,7 @@ if __name__ == "__main__":
         # replace uuids with index into set array
         for index, value in enumerate(uuids):
             log = log.replace(value, "uuid" + str(index))
+
         print(log)
     
     # Closing files

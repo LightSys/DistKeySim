@@ -10,8 +10,6 @@ const std::string logOutput = "logOutput";  // general log file
 const std::string logOutputTxt = logOutput + ".txt";
 const std::string statsLog = "statsLog";   // log file for stats output
 const std::string statsLogCsv = statsLog + ".csv";
-const std::string keySharing = "keySharing";   // log file for keyspace sharing output
-const std::string keySharingCsv = keySharing + ".csv";
 const std::string infoMsg = "infoMsg";  // Info Msg log file
 const std::string infoMsgTxt = infoMsg + ".txt";
 const std::string keyMsg = "keyMsg";  // Keyspace Msg log file
@@ -19,7 +17,6 @@ const std::string keyMsgTxt = keyMsg + ".txt";
 
 static ofstream logOutputStream;
 static ofstream logStatsStream;
-static ofstream keySharingStream;
 
 int Logger::timeslot = 0;
 int Logger::shared = 0;
@@ -28,12 +25,10 @@ int Logger::rate = 0;
 void Logger::deleteOldLog() {
     remove(logOutputTxt.c_str());
     remove(statsLogCsv.c_str());
-    remove(keySharingCsv.c_str());
     remove(infoMsgTxt.c_str());
     remove(keyMsgTxt.c_str());
     logOutputStream.open(logOutputTxt, ofstream::app);
     logStatsStream.open(statsLogCsv, ofstream::app);
-    keySharingStream.open(keySharingCsv, ofstream::app);
 }
 
 void Logger::log(string message) {
@@ -51,33 +46,21 @@ void Logger::logStats(vector<string> stats) {
     }
 }
 
-void Logger::logKeySharing(vector<string> stats) {
-    if (stats.size() == csvHeadersKeySharing.size()) {
-        keySharingStream << join(stats, ",");
-        keySharingStream << "\n";
-    } else {  // don't log if array isn't accurate size
-        log("Key sharing array was incorrect length");
-    }
-}
-
-
 void Logger::logMsg (const string procName, const Message &message) {
-    std::string prototextOutput;
-    google::protobuf::TextFormat::PrintToString(message, &prototextOutput);
-    // Logger::log(Formatter() << procName << ": " << prototextOutput);
+    if (Logger::logOutputVerbose) {
+        std::string prototextOutput;
+        google::protobuf::TextFormat::PrintToString(message, &prototextOutput);
+        // Logger::log(Formatter() << procName << ": " << prototextOutput);
 
-    // Log the message as JSON on one line (this is not real JSON, but close enough)
-    auto removeNewLine = std::regex_replace(prototextOutput, std::regex("([^{])\\n([^}])"), "$1, $2");
-    auto squeezeWhitespace = std::regex_replace(removeNewLine, std::regex("\\s+"), " ");
-    Logger::log(Formatter() << procName << ": {" << squeezeWhitespace << "}");
+        // Log the message as JSON on one line (this is not real JSON, but close enough)
+        auto removeNewLine = std::regex_replace(prototextOutput, std::regex("([^{])\\n([^}])"), "$1, $2");
+        auto squeezeWhitespace = std::regex_replace(removeNewLine, std::regex("\\s+"), " ");
+        Logger::log(Formatter() << procName << ": {" << squeezeWhitespace << "}");
+    }
 }
 
 void Logger::setCSVHeadersLogStats() {
     logStats(csvHeadersStatsLog);  // first line should be column titles
-}
-
-void Logger::setCSVHeadersKeySharing() {
-    logKeySharing(csvHeadersKeySharing);  // first line should be column titles
 }
 
 int Logger::getTimeslot(bool increment) {
@@ -131,15 +114,6 @@ std::string Logger::copyFile(string path) {
     // copy the statsLog
     ifstream src("./" + statsLogCsv, std::ios::binary);
     ofstream dest(path + statsLog + to_string(num) + ".csv", std::ios::binary);
-    // move over the information
-    dest << src.rdbuf();
-    // close files
-    src.close();
-    dest.close();
-
-    // copy the key sharing csv
-    src.open("./" + keySharingCsv, std::ios::binary);
-    dest.open(path + keySharing + to_string(num) + ".csv", std::ios::binary);
     // move over the information
     dest << src.rdbuf();
     // close files
@@ -215,9 +189,9 @@ void Logger::logBackTrace() {
     if (unw_get_proc_name(&cursor, sym, sizeof(sym), &offset) == 0) {
     //   printf(" (%s+0x%lx)\n", sym, offset);
       sprintf(str, " (%s+0x%lx)", sym, offset);
-      Logger::log(std::string(str));
+      if (Logger::logOutputVerbose) Logger::log(std::string(str));
     } else {
-      Logger::log("ERROR: unable to obtain symbol name for this frame");
+      if (Logger::logOutputVerbose) Logger::log("ERROR: unable to obtain symbol name for this frame");
     }
   }
 }

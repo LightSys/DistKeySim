@@ -24,11 +24,9 @@ class Logger {
         static void deleteOldLog ();
         static void log (string message);
         static void logStats (vector<string> stats);
-        static void logKeySharing (vector<string> keyspace);
         static void logMsg (const string procName, const Message &message);
 
         static void setCSVHeadersLogStats();
-        static void setCSVHeadersKeySharing();
         static int getTimeslot(bool increment);
         static int getShared(bool clear,int more);
         static int getConsumption(bool clear, int more);
@@ -41,10 +39,14 @@ class Logger {
         // some time between 12/28/2021 and now.
         // static void logBackTrace();
 
+        static const bool logStatsVerbose  = true;
+        static const bool logOutputVerbose = true;
+
     private:
         static int timeslot;
         static int shared;
         static int rate;
+
 };
 
 // From https://stackoverflow.com/questions/5396790/concatenate-strings-in-function-call-c

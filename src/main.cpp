@@ -43,16 +43,15 @@ int main(int argc, char** argv) {
         std::cout << "ADAK initializing..." << std::endl;
         Logger::deleteOldLog();//clearing old log files
         Logger::setCSVHeadersLogStats();//setting the headers of the columns of the csv file
-        Logger::setCSVHeadersKeySharing();//setting the headers of the columns of the other csv file
         std::cout << "ADAK configuring..." << std::endl;
-        Logger::log(Formatter() << "ADAK loading config from config.json ...");
+        if (Logger::logOutputVerbose) Logger::log(Formatter() << "ADAK loading config from config.json ...");
         config = Config(ifstream("config.json")); 
         try {
             std::cout << "ADAK running simulation..." << std::endl;
             Simulation simulation(config);
             simulation.run();
         } catch (exception& e) {
-            Logger::log(Formatter() << e.what());
+            if (Logger::logOutputVerbose) Logger::log(Formatter() << e.what());
         }
         saveLogs();
     } catch (exception& e) {
