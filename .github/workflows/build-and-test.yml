@@ -15,8 +15,8 @@ jobs:
         if: steps.cache-protobuf.outputs.cache-hit != 'true'
         run: |
           git clone https://github.com/protocolbuffers/protobuf.git
-          git checkout 13b3647
           cd protobuf
+          git checkout 13b3647
           git submodule update --init --recursive
           ./autogen.sh
           ./autogen.sh  # run autogen twice due to alleged bug
