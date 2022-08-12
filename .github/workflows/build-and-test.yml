@@ -17,6 +17,7 @@ jobs:
           git clone https://github.com/protocolbuffers/protobuf.git
           cd protobuf
           git submodule update --init --recursive
+          ls -l ./autogen.sh
           ./autogen.sh
           ./autogen.sh  # run autogen twice due to alleged bug
           ./configure
