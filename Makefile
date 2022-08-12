@@ -49,13 +49,23 @@ src :
 # ----------------------------------------------
 #
 
+set-verbose-false :
+	sed -i '' 's/Verbose *= .*/Verbose = false;/g' include/Logger.h
+	grep Verbose include/Logger.h
+
+set-verbose-true :
+	sed -i '' 's/Verbose *= .*/Verbose = true;/g' include/Logger.h
+	grep Verbose include/Logger.h
+
 .PHONY: build-and-test
 build-and-test : all
+	make set-verbose-false
 	make run-test1-repeatability
 	make run-test2-oscillation
 	make run-test3-non-repeatability
 	make run-test4-scenario-1
 	make run-test5-doNothing
+	make set-verbose-true
 
 fail : all
 	make run-test6-scenario-2
