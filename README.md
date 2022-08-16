@@ -16,7 +16,12 @@ These characteristics make ADAK especially well-suited for Hybrid Cloud Computin
 
 (This entire introduction was lifted from [ADAK Keying Scheme](ADAK%20Keying%20Scheme.pdf).)
 
-## Build Instructions
+## Dear new developer
+
+If you are coming to this project for the first time or a long time has passed since you last worked on it, start by learning about GitHub Actions and how it runs the automated build and test. See `./github/workflows/build-and-test.yml` and then the `Makefile`. 
+
+
+## Manual Build Instructions
 
 ```
 mkdir build
@@ -33,7 +38,7 @@ Notes:
 
 The build will be completed at this point, executable is in `src` directory.
 
-Automating the build:
+## Automated build
 
 1. Use the `Makefile` in the top level directory to build: `make`
 
