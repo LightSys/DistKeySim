@@ -205,11 +205,11 @@ Config::Config(ifstream jsonFile) {
         timeStepUnitsPerHour = timeStepUnitsPerMinute * 60;
         timeStepUnitsPerDay = timeStepUnitsPerHour * 24;
         timeStepUnitsPerWeek = timeStepUnitsPerDay * 7;
-    	Logger::log(Formatter() << "timeStepUnitsPerSecond is "<< timeStepUnitsPerSecond);
-    	Logger::log(Formatter() << "timeStepUnitsPerMinute is "<< timeStepUnitsPerMinute);
-    	Logger::log(Formatter() << "timeStepUnitsPerHour is "<< timeStepUnitsPerHour);
-    	Logger::log(Formatter() << "timeStepUnitsPerDay is "<< timeStepUnitsPerDay);
-    	Logger::log(Formatter() << "timeStepUnitsPerWeek is "<< timeStepUnitsPerWeek);
+    	if (Logger::logOutputVerbose) Logger::log(Formatter() << "timeStepUnitsPerSecond is "<< timeStepUnitsPerSecond);
+    	if (Logger::logOutputVerbose) Logger::log(Formatter() << "timeStepUnitsPerMinute is "<< timeStepUnitsPerMinute);
+    	if (Logger::logOutputVerbose) Logger::log(Formatter() << "timeStepUnitsPerHour is "<< timeStepUnitsPerHour);
+    	if (Logger::logOutputVerbose) Logger::log(Formatter() << "timeStepUnitsPerDay is "<< timeStepUnitsPerDay);
+    	if (Logger::logOutputVerbose) Logger::log(Formatter() << "timeStepUnitsPerWeek is "<< timeStepUnitsPerWeek);
         
         //hard knobs: 
         
