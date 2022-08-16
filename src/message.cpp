@@ -12,12 +12,12 @@ void addCollectionInfoRecord(InformationalMessageContents::CollectionInformation
 
     // In section "Information Statistics", subpoint 4.2,
     // "If CS is zero (or rounds to zero), then a value of 1 is substituted for CS."
-    // if (ACE::areCloseEnough(shortAlloc, 0)) {
-    //     if (Logger::logOutputVerbose) Logger::log(Formatter() << "addCollectionInfoRecord: shortAlloc (" << shortAlloc << ") is close to zero, setting it to 1");
-    //     creationRateData->set_shortallocationratio(1);
-    // } else {
+    if (ACE::areCloseEnough(shortAlloc, 0)) {
+        if (Logger::logOutputVerbose) Logger::log(Formatter() << "addCollectionInfoRecord: shortAlloc (" << shortAlloc << ") is close to zero, setting it to 1");
+        creationRateData->set_shortallocationratio(1);
+    } else {
         creationRateData->set_shortallocationratio(shortAlloc);
-    // }
+    }
     collection->set_allocated_creationratedata(creationRateData);
 }
 
