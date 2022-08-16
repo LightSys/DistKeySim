@@ -245,7 +245,7 @@ SCEN_2_CONFIG = "config/scenario2-config.json"
 .PHONY: run-test6-scenario-2
 run-test6-scenario-2 : all
 	$(BIN)/testScenario.py --scenarioNum 2 --numNodes 2 --days $(SCEN_2_DAYS) --config $(SCEN_2_CONFIG) \
-		-a 'assert numKeyspaces == 3, "Test Scenario 2 failed: numKeyspaces=%d" % numKeyspaces'
+		-a 'assert numKeyspaces > 2, "Test Scenario 2 failed: numKeyspaces=%d" % numKeyspaces'
 	@echo "Test 6 Passed: Scenario 2"
 
 .PHONY: run-test6-scenario-2a
