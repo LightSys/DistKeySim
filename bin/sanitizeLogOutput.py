@@ -81,7 +81,7 @@ if __name__ == "__main__":
             uuid = uuidParts[0]
             if uuid not in uuids:
                 uuids.append(uuid)
-        if "+-peer: " in log:
+        if ": peer: " in log:
             uuidParts = log.split(" ")
             uuid = uuidParts[2]
             if uuid not in uuids:
@@ -94,6 +94,21 @@ if __name__ == "__main__":
         if "(*d3)(*gen)" in log:
             uuidParts = log.split(" ")
             uuid = uuidParts[0]
+            if uuid not in uuids:
+                uuids.append(uuid)
+        if "for node" in log:
+            uuidParts = log.split(" ")
+            uuid = uuidParts[3]
+            if uuid not in uuids:
+                uuids.append(uuid)
+        if "calculating shortAlloc" in log:
+            uuidParts = log.split(" ")
+            uuid = uuidParts[1]
+            if uuid not in uuids:
+                uuids.append(uuid)
+        if "calculating longAlloc" in log:
+            uuidParts = log.split(" ")
+            uuid = uuidParts[1]
             if uuid not in uuids:
                 uuids.append(uuid)
         foundChannels = foundChannels or "CHANNELS" in log
