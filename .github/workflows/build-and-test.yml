@@ -16,7 +16,7 @@ jobs:
         run: |
           git clone https://github.com/protocolbuffers/protobuf.git
           cd protobuf
-          git checkout 13b3647
+          git checkout 13b3647 # restore autotools version because I haven't figured out bazel build yet
           git submodule update --init --recursive
           ./autogen.sh
           ./autogen.sh  # run autogen twice due to alleged bug
