@@ -45,23 +45,23 @@ double NodeData::updateShortTermAllocationRatio(const vector<Keyspace> &keyspace
     ///Baylor you may want to change this if you want a different value saying I need help right away.
     if (Logger::logOutputVerbose) Logger::log(Formatter() << "updateShortTermAllocationRatio: startKey=" << startKey << " endKey=" << endKey);
     if(endKey == -2) {
-        shortTermAllocationRatio = 1;
+        shortTermAllocationRatio.addValue(1);
         if (Logger::logOutputVerbose) Logger::log(Formatter() << "updateShortTermAllocationRatio:"
-            << " shortTermAllocationRatio=" << shortTermAllocationRatio);
+            << " shortTermAllocationRatio=" << shortTermAllocationRatio.getValue());
     }
     ///This is the normal case that works for long term allocation.
     else {
         //In theory you could get a ratio larger than one but you would need trillions of keys created by
         //one node in a day to make this happen therefore we did not deal with it
-        shortTermAllocationRatio =  (double) tempKeys /  (endKey - startKey);
-        if (ACE::areCloseEnough(shortTermAllocationRatio, 0)) {
-            shortTermAllocationRatio = 0;
+        shortTermAllocationRatio.addValue((double) tempKeys /  (endKey - startKey));
+        if (ACE::areCloseEnough(shortTermAllocationRatio.getValue(), 0)) {
+            shortTermAllocationRatio.addValue(0);
         }
         if (Logger::logOutputVerbose) Logger::log(Formatter() << "updateShortTermAllocationRatio:"
             << " tempKeys(" << tempKeys << ") / (endKey(" << endKey << ") - startKey(" << startKey << ")) = "
-            << shortTermAllocationRatio);
+            << shortTermAllocationRatio.getValue());
     }
-    return shortTermAllocationRatio;
+    return shortTermAllocationRatio.getValue();
 }
 
 double NodeData::updateProvisioningRatio(double creationRate, double shortTermRatio) {
@@ -133,11 +133,11 @@ void NodeData::setAggregateGenRate(double aggregateGenRate) {
 }
 
 double NodeData::getShortTermAllocationRatio() const {
-    return shortTermAllocationRatio;
+    return shortTermAllocationRatio.getValue();
 }
 
 void NodeData::setShortTermAllocationRatio(double shortTermAllocationRatio) {
-    NodeData::shortTermAllocationRatio = shortTermAllocationRatio;
+    NodeData::shortTermAllocationRatio.addValue(shortTermAllocationRatio);
 }
 
 double NodeData::getLongTermAllocationRatio() const {
