@@ -44,14 +44,14 @@ int main(int argc, char** argv) {
         Logger::deleteOldLog();//clearing old log files
         Logger::setCSVHeadersLogStats();//setting the headers of the columns of the csv file
         std::cout << "ADAK configuring..." << std::endl;
-        if (Logger::logOutputVerbose) Logger::log(Formatter() << "ADAK loading config from config.json ...");
+        Logger::log(Formatter() << "ADAK loading config from config.json ...");
         config = Config(ifstream("config.json")); 
         try {
             std::cout << "ADAK running simulation..." << std::endl;
             Simulation simulation(config);
             simulation.run();
         } catch (exception& e) {
-            if (Logger::logOutputVerbose) Logger::log(Formatter() << e.what());
+            Logger::log(Formatter() << e.what());
         }
         saveLogs();
     } catch (exception& e) {

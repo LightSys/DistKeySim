@@ -27,16 +27,16 @@ void Simulation::run() {
     // the file twice.
     Config config(ifstream("config.json"));
 
-    if (Logger::logOutputVerbose) Logger::log(Formatter() << "Making " << config.adakStrategy << " strategy");
+    Logger::log(Formatter() << "Making " << config.adakStrategy << " strategy");
     adakStrategy = Factory::makeAdakStrategy(config);
     adakStrategy->setAccuracy(config.longTermPrecision);
 
-    if (Logger::logOutputVerbose) Logger::log("Started Simulation");
+    Logger::log("Started Simulation");
 
     // Create root node that will have the max keyspace 0/0
     network.addRootNode(config.randomSeed);
 
-    if (Logger::logOutputVerbose) Logger::log(Formatter() << "Root UUID: " << network.getNodes().begin()->first);
+    Logger::log(Formatter() << "Root UUID: " << network.getNodes().begin()->first);
 
     // Create new nodes and add them to the map
     for (int i = 1; i < numNodes; i++) {
@@ -59,15 +59,15 @@ void Simulation::run() {
     network.printChannels();
     network.printKeyspaces();
 
-    if (Logger::logOutputVerbose) Logger::log(Formatter() << "Ticking network " << config.simLength << " iterations");
+    Logger::log(Formatter() << "Ticking network " << config.simLength << " iterations");
     long prevPercentComplete = -1;
     for (long i = 0; i < config.simLength; i++) {
-        if (Logger::logOutputVerbose) Logger::log(Formatter() << "***********************************************Tick");
+        Logger::log(Formatter() << "***********************************************Tick");
         int step = numNodes + 1 + i;
-        if (Logger::logOutputVerbose) Logger::log(Formatter() << "Time Step " << step
+        Logger::log(Formatter() << "Time Step " << step
             << ", SimTime " << double(i)/double(config.timeStepUnitsPerSecond) << "s ... ");
         long percentComplete = long(i * 100) / long(config.simLength);
-        if (Logger::logOutputVerbose) Logger::log(Formatter()
+        Logger::log(Formatter()
             << "percentComplete ( " << percentComplete << ")"
             << " = i (" << i << ")"
             << " * 100 / config.simLength (" << config.simLength << ")");

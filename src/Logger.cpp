@@ -32,9 +32,11 @@ void Logger::deleteOldLog() {
 }
 
 void Logger::log(string message) {
-    time_t date = chrono::system_clock::to_time_t(chrono::system_clock::now());
-    logOutputStream << message << " -- " << ctime(&date);  // log message and timestamp
-    logOutputStream.flush();
+    if (logOutputVerbose) {
+        time_t date = chrono::system_clock::to_time_t(chrono::system_clock::now());
+        logOutputStream << message << " -- " << ctime(&date);  // log message and timestamp
+        logOutputStream.flush();
+    }
 }
 
 void Logger::logStats(vector<string> stats) {
@@ -47,7 +49,7 @@ void Logger::logStats(vector<string> stats) {
 }
 
 void Logger::logMsg (const string procName, const Message &message) {
-    if (Logger::logOutputVerbose) {
+    {
         std::string prototextOutput;
         google::protobuf::TextFormat::PrintToString(message, &prototextOutput);
         // Logger::log(Formatter() << procName << ": " << prototextOutput);
@@ -189,9 +191,9 @@ void Logger::logBackTrace() {
     if (unw_get_proc_name(&cursor, sym, sizeof(sym), &offset) == 0) {
     //   printf(" (%s+0x%lx)\n", sym, offset);
       sprintf(str, " (%s+0x%lx)", sym, offset);
-      if (Logger::logOutputVerbose) Logger::log(std::string(str));
+      Logger::log(std::string(str));
     } else {
-      if (Logger::logOutputVerbose) Logger::log("ERROR: unable to obtain symbol name for this frame");
+      Logger::log("ERROR: unable to obtain symbol name for this frame");
     }
   }
 }

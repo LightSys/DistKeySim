@@ -66,19 +66,19 @@ unsigned long long int Node::getTotalKeyspaceBlockSize(){
 
 void Node::consumeObjects(){
     amountOfOneKeyUsed += objectConsumptionRatePerSecond;
-    if (Logger::logOutputVerbose) Logger::log(Formatter() << this->uuid
+    Logger::log(Formatter() << this->uuid
         << " consumes " << objectConsumptionRatePerSecond
         << " objects per second, amountOfOneKeyUsed=" << amountOfOneKeyUsed);
  
     //make sure can consume keys.
     if (keyspaces.size() == 0) {
-        if (Logger::logOutputVerbose) Logger::log(Formatter()  << this->uuid << ": No keys available");
+        Logger::log(Formatter()  << this->uuid << ": No keys available");
         return;
     }
 
     if (amountOfOneKeyUsed >= 1.0) {
         amountOfOneKeyUsed--;
-	    if (Logger::logOutputVerbose) Logger::log(Formatter()  << this->uuid << ": consuming next key: " << this->getNextKey()
+	    Logger::log(Formatter()  << this->uuid << ": consuming next key: " << this->getNextKey()
             << ", amountOfOneKeyUsed=" << amountOfOneKeyUsed);
 
        	//update createdWeek to reflect the current history 
@@ -97,28 +97,28 @@ void Node::consumeObjects(){
         //add up the number of logs to get a day
         //newest are at the rear of history
         for(int i = max - 1; i > 0 ; i--){
-            if (Logger::logOutputVerbose) Logger::log(Formatter()  << this->uuid << ": adding " << history[i].getKeysUsed() << " to createdDay");
+            Logger::log(Formatter()  << this->uuid << ": adding " << history[i].getKeysUsed() << " to createdDay");
             createdDay +=  history[i].getKeysUsed();
         }
-        if (Logger::logOutputVerbose) Logger::log(Formatter()  << this->uuid << ": createdDay from history: " << createdDay);
+        Logger::log(Formatter()  << this->uuid << ": createdDay from history: " << createdDay);
 
     	int size = history.size();
         
     	//add up teh full history, which loggs up to a week
         for(int i = 0 ; i < size ; i ++){
-            if (Logger::logOutputVerbose) Logger::log(Formatter()  << this->uuid << ": adding " << history[i].getKeysUsed() << " to createdWeek");
+            Logger::log(Formatter()  << this->uuid << ": adding " << history[i].getKeysUsed() << " to createdWeek");
             createdWeek += history[i].getKeysUsed();
         }
-        if (Logger::logOutputVerbose) Logger::log(Formatter()  << this->uuid << ": createdWeek from history: " << createdWeek);
+        Logger::log(Formatter()  << this->uuid << ": createdWeek from history: " << createdWeek);
         */
 
 	    //add in the current progress this timestep (name lastDay is from older structure) 
         createdDay  = lastDay.getKeysUsed();
         createdWeek = lastDay.getKeysUsed(); 
-        if (Logger::logOutputVerbose) Logger::log(Formatter()  << this->uuid << ": createdDay=" << createdDay
+        Logger::log(Formatter()  << this->uuid << ": createdDay=" << createdDay
             << " createdWeek=" << createdWeek);
     }
-    if (Logger::logOutputVerbose) Logger::log(Formatter()  << this->uuid << ": amountOfOneKeyUsed=" << amountOfOneKeyUsed
+    Logger::log(Formatter()  << this->uuid << ": amountOfOneKeyUsed=" << amountOfOneKeyUsed
         << " createdDay=" << createdDay << " createdWeek=" << createdWeek);
 
     //set new somsumption rate: (should make it match  its lambda3 better
@@ -134,7 +134,7 @@ void Node::generateObjectCreationRateDistribution(unsigned seed){
     // Save the seed for debugging
     // unsigned int seed = rd();
     gen = new mt19937(seed);
-    //if (Logger::logOutputVerbose) Logger::log(Formatter() << "generateObjectCreationRateDistribution: seed=" << seed);
+    //Logger::log(Formatter() << "generateObjectCreationRateDistribution: seed=" << seed);
 }
 
 double Node::getTimeOnline(){
@@ -149,10 +149,10 @@ void Node::changeConsumptionRate(){
     auto d3value = (*d3);
     auto genvalue = (*gen);
     auto d3genvalue = (*d3)(*gen);
-    if (Logger::logOutputVerbose) Logger::log(Formatter() << this->uuid << " (*d3)(*gen)=" << d3genvalue
+    Logger::log(Formatter() << this->uuid << " (*d3)(*gen)=" << d3genvalue
         << " (1 + (*d3)(*gen))=" << (1 + (d3genvalue)));
     objectConsumptionRatePerSecond = 1.0/(1 + (d3genvalue));
-    if (Logger::logOutputVerbose) Logger::log(Formatter() << this->uuid
+    Logger::log(Formatter() << this->uuid
         << " changed consumption rate (1.0/(1 + (*d3)(*gen)) to " << objectConsumptionRatePerSecond
         << "/second");
 }
@@ -217,7 +217,7 @@ ADAK_Key_t Node::getNextKey() {
         ///getting distributed more than the current node has capcity for.
 
         string message = "ERROR from getNextKey in Node: No more keys to give";
-        if (Logger::logOutputVerbose) Logger::log(message);
+        Logger::log(message);
         return -1;
     } else {
         int key = keyspaces.at(index).getNextAvailableKey();
@@ -242,11 +242,11 @@ int Node::minimumKeyspaceIndex(int newMin) {
             min = keyspaces.at(i).getStart();
             index = i;
         }else if(! keyspaces.at(i).isKeyAvailable()){
-            if (Logger::logOutputVerbose) Logger::log(Formatter() << uuid << " has invalid keyspace "
+            Logger::log(Formatter() << uuid << " has invalid keyspace "
                 << keyspaces[i].getStart() << "/" << keyspaces[i].getSuffix()
                 << ", end " << keyspaces[i].getEnd()); 
         }else if(!(start > newMin) && newMin == -1){
-            if (Logger::logOutputVerbose) Logger::log(Formatter() << uuid << " has keyspace " << start << "/" << suffix << ", end " << end << ". Start is <= "<< newMin); 
+            Logger::log(Formatter() << uuid << " has keyspace " << start << "/" << suffix << ", end " << end << ". Start is <= "<< newMin); 
         }
     }
     return index;
@@ -269,7 +269,7 @@ bool Node::isKeyAvailable(){
  */
 
 void Node::tick(){
-    if (Logger::logOutputVerbose) Logger::log(Formatter() << uuid << " tick: "
+    Logger::log(Formatter() << uuid << " tick: "
         << " lastDay.getTimeUnitsPast(" << lastDay.getTimeUnitsPast()
         << ") >= Config::timeStepUnitsPerMinute(" << Config::timeStepUnitsPerMinute
         << ") = " << ACE::toString(lastDay.getTimeUnitsPast() >= Config::timeStepUnitsPerMinute));
@@ -278,14 +278,14 @@ void Node::tick(){
     logInfoForHeartbeat(); 
     
     lastDay.incTimeUnitPast();
-    if (Logger::logOutputVerbose) Logger::log(Formatter()  << this->uuid << ": currentTick=" << currentTick
+    Logger::log(Formatter()  << this->uuid << ": currentTick=" << currentTick
         << " lastDay.timeUnitsPast=" << lastDay.getTimeUnitsPast());
 }
 
 void Node::heartbeat() {   
 
     //update the allocation
-    if (Logger::logOutputVerbose) Logger::log(Formatter() << "heartbeat() for node " << this->uuid << " updating allocation ratios");
+    Logger::log(Formatter() << "heartbeat() for node " << this->uuid << " updating allocation ratios");
     lastDay.updateLongTermAllocationRatio(keyspaces);
     lastDay.updateShortTermAllocationRatio(keyspaces);
   
@@ -309,12 +309,12 @@ bool Node::receiveMessage(const Message &message) {
 
     if (msg.sourcenodeid() == uuid) {
         // Destination node is this node, don't receive it
-        // if (Logger::logOutputVerbose) Logger::log(Formatter() << "rejected a message, was sent to self ");
+        // Logger::log(Formatter() << "rejected a message, was sent to self ");
         return false;
     }  
     
     // Must be commented out for repeatability test
-    if (Logger::logOutputVerbose) Logger::logMsg(Formatter() << msg.sourcenodeid() << " receiveMessage", msg);
+    Logger::logMsg(Formatter() << msg.sourcenodeid() << " receiveMessage", msg);
    
     // Handle last received message ID incrementing
     auto peer = peers.find(msg.sourcenodeid());
@@ -342,13 +342,13 @@ bool Node::receiveMessage(const Message &message) {
 	        uint64_t lastID = peers[msg.sourcenodeid()].first->messageid();
 	        if(msg.messageid() != lastID +1){
                 //a message was missed. Take new info, but carry over confirmation and ID
-//if (Logger::logOutputVerbose) Logger::log(Formatter() << uuid << "'s received message id " << msg.messageid() << " confirm " << msg.lastreceivedmsg();
-//if (Logger::logOutputVerbose) Logger::log(Formatter() << " (from " << msg.sourcenodeid() << ")";
+//Logger::log(Formatter() << uuid << "'s received message id " << msg.messageid() << " confirm " << msg.lastreceivedmsg();
+//Logger::log(Formatter() << " (from " << msg.sourcenodeid() << ")";
                 uint64_t temp = (peers[msg.sourcenodeid()].first->messageid());
 	            msg.set_messageid(temp);
 	            temp = (peers[msg.sourcenodeid()].first->lastreceivedmsg());
 	            msg.set_lastreceivedmsg(temp);
-//if (Logger::logOutputVerbose) Logger::log(Formatter() << " is now message id " << msg.messageid() << " confirm " << msg.lastreceivedmsg());
+//Logger::log(Formatter() << " is now message id " << msg.messageid() << " confirm " << msg.lastreceivedmsg());
 	        }
   	        Message *temp = new Message;
             *temp = msg;
@@ -358,7 +358,7 @@ bool Node::receiveMessage(const Message &message) {
 	    }
     }
 
-//if (Logger::logOutputVerbose) Logger::log(Formatter() << uuid << " updated last message to " << msg.messageid() << " from " << msg.sourcenodeid()); 
+//Logger::log(Formatter() << uuid << " updated last message to " << msg.messageid() << " from " << msg.sourcenodeid()); 
 
     //Find out if the conifrmation matches
    // Message* lastMessage = NULL;
@@ -366,20 +366,20 @@ bool Node::receiveMessage(const Message &message) {
 int loops = 0;
     //Remove all of the messages msg confirms. If a newer message is old enough and was not confimed, resend it
     
-    //if (Logger::logOutputVerbose) Logger::log(Formatter() << uuid << " confirmed message " << tempID << " from " <<  confirmMsg[tempID]->sourcenodeid());
+    //Logger::log(Formatter() << uuid << " confirmed message " << tempID << " from " <<  confirmMsg[tempID]->sourcenodeid());
       
      //remove all messages with ID's older than confirmed from the same peer
      for(auto iter = confirmMsg.begin() ; iter != confirmMsg.end() ; iter++){ 
         //if it was sent before the confirmed one and came from the peers that just confirmed it, delente it
         if(iter->second == nullptr){
             //this is a problem, and should not be possible
-	    if (Logger::logOutputVerbose) Logger::log(Formatter() << "ERROR: confirm message somehow got a null"); 
-	    if (Logger::logOutputVerbose) Logger::log(Formatter() << "message was suposed to be id " << iter->first);
-	    if (Logger::logOutputVerbose) Logger::log(Formatter() << "can find with id: " << (confirmMsg.find(iter->first) != confirmMsg.end())); 
+	    Logger::log(Formatter() << "ERROR: confirm message somehow got a null"); 
+	    Logger::log(Formatter() << "message was suposed to be id " << iter->first);
+	    Logger::log(Formatter() << "can find with id: " << (confirmMsg.find(iter->first) != confirmMsg.end())); 
            // break;  
 	   throw 1; //just give up... 
 	}else  if(confirmMsg.find(iter->first) == confirmMsg.end()){
-           if (Logger::logOutputVerbose) Logger::log(Formatter() << "The value " << iter->first <<  " is not in the map... ");
+           Logger::log(Formatter() << "The value " << iter->first <<  " is not in the map... ");
            throw 1; //no point in going on...
 	}
 
@@ -388,7 +388,7 @@ int loops = 0;
            if(msg.lastreceivedmsg() >= iter->second->messageid()){
 	      //confirm the messae
 	      uint64_t tempID = iter->second->messageid();
-//if (Logger::logOutputVerbose) Logger::log(Formatter() << "confirming message " << tempID); 
+//Logger::log(Formatter() << "confirming message " << tempID); 
 
               delete confirmMsg[tempID];
 
@@ -400,7 +400,7 @@ int loops = 0;
 	    } else {      
               //the message was meant for sender, but was not confirmed. See if it is old enough to resend
 	       if(currentTick - timeStamps[iter->first] >=  2*networkLatency){
-                  if (Logger::logOutputVerbose) Logger::log(Formatter() << "resending message " << iter->first);
+                  Logger::log(Formatter() << "resending message " << iter->first);
                   sendQueue.push_back(*(iter->second));
 		  //update time stamp to prevent spamming resends 
 		  timeStamps[iter->first] = currentTick;  
@@ -414,12 +414,12 @@ int loops = 0;
 
 
     if(msg.messagetype() == Message_MessageType_KEYSPACE){
-//if (Logger::logOutputVerbose) Logger::log(Formatter() << "was a keyspace"); 
+//Logger::log(Formatter() << "was a keyspace"); 
        // Receiving keyspace from a peer, generate new one for local store
        for (auto &&j =  0; j < msg.keyspace().keyspaces_size(); j++) {
            KeyspaceMessageContents::Keyspace peerSpace = msg.keyspace().keyspaces(j);
            Keyspace newSpace = Keyspace{peerSpace.startid(), peerSpace.endid(), peerSpace.suffixbits()};
-// if (Logger::logOutputVerbose) Logger::log(Formatter() << "collected keysapce");
+// Logger::log(Formatter() << "collected keysapce");
            //make sure keyspace is not a duplicate
            int size = keyspaces.size();
 	   bool isNew = true;
@@ -427,7 +427,7 @@ int loops = 0;
               if(keyspaces[i].getSuffix() == newSpace.getSuffix() && keyspaces[i].getStart() == 
 			   newSpace.getStart() && keyspaces[i].getEnd() == newSpace.getEnd()){
 	         isNew = false;
-                 if (Logger::logOutputVerbose) Logger::log(Formatter() << uuid << " found duplicate keyspace " << newSpace.getStart() << "/" << newSpace.getSuffix() << 
+                 Logger::log(Formatter() << uuid << " found duplicate keyspace " << newSpace.getStart() << "/" << newSpace.getSuffix() << 
 	              ", " << newSpace.getEnd()); 
 	         break;  
 	      } 
@@ -436,10 +436,10 @@ int loops = 0;
 	      keyspaces.emplace_back(newSpace);
               totalLocalKeyspaceSize+=newSpace.getSize(); //updating total after recievin
 	
-//if (Logger::logOutputVerbose) Logger::log(Formatter() << uuid << " recived keyspace " << keyspaces.back().getStart() << "/" << keyspaces.back().getSuffix()
+//Logger::log(Formatter() << uuid << " recived keyspace " << keyspaces.back().getStart() << "/" << keyspaces.back().getSuffix()
 //       	<< " from " << msg.sourcenodeid()); 
 	   } else {
-              if (Logger::logOutputVerbose) Logger::log(Formatter() << "duplicate keyspace received by " <<  uuid << " from " << msg.sourcenodeid()
+              Logger::log(Formatter() << "duplicate keyspace received by " <<  uuid << " from " << msg.sourcenodeid()
                << " in message " << msg.messageid());
 	   }
 
@@ -461,7 +461,7 @@ deque<Message> Node::checkMessages() {
 }
 
 Message Node::getHeartbeatMessage(const UUID &peerID) {
-    //if (Logger::logOutputVerbose) Logger::log(Formatter() << getUUID() << ": getHeartbeatMessage(" << peerID << ")");
+    //Logger::log(Formatter() << getUUID() << ": getHeartbeatMessage(" << peerID << ")");
     Message msg;
     if (peerID == BROADCAST_UUID) {
         // Broadcasting
@@ -488,7 +488,7 @@ Message Node::getHeartbeatMessage(const UUID &peerID) {
     /// NOTE, this is basically fixed in the develop branch, it is only here right now to tell other nodes,
     /// "If I don't have a keyspace, then give me a keyspace", this is because 1.0 is above the treshold ALLOCATION_BEFORE_GIVING_KEYSPACE
     if (keyspaces.empty()) {
-        if (Logger::logOutputVerbose) Logger::log(Formatter() << getUUID() << ": keyspace is empty: setting long and short term alloc ratio to 1");
+        Logger::log(Formatter() << getUUID() << ": keyspace is empty: setting long and short term alloc ratio to 1");
         toInformationalMessage(
            msg,
            {
@@ -501,7 +501,7 @@ Message Node::getHeartbeatMessage(const UUID &peerID) {
 
     }else{
 
-        if (Logger::logOutputVerbose) Logger::log(Formatter() << getUUID() << ": keyspace is not empty: "
+        Logger::log(Formatter() << getUUID() << ": keyspace is not empty: "
             << " longAlloc=" << lastDay.getLongTermAllocationRatio()
             << " shortAlloc=" << lastDay.getShortTermAllocationRatio());
         toInformationalMessage(
@@ -524,10 +524,10 @@ Message Node::getHeartbeatMessage(const UUID &peerID) {
     *temp = msg;
     confirmMsg[temp->messageid()] = temp;
  
-    if (Logger::logOutputVerbose) Logger::log(Formatter() << getUUID() << " made a heartbeat message for " << peerID << ":");
+    Logger::log(Formatter() << getUUID() << " made a heartbeat message for " << peerID << ":");
 
     // Must be commented out for repeatability test
-    if (Logger::logOutputVerbose) Logger::logMsg(Formatter() << msg.sourcenodeid() << " getHeartbeatMessage", msg);
+    Logger::logMsg(Formatter() << msg.sourcenodeid() << " getHeartbeatMessage", msg);
     return msg;
 }
 
@@ -569,7 +569,7 @@ void Node::logInfoForHeartbeat(){
 int Node::splitKeyspace(int keyspaceIndex){
     if(keyspaceIndex > keyspaces.size() - 1){
        //invalid index, cannot split
-       if (Logger::logOutputVerbose) Logger::log(Formatter() << "Invalid index for keyspace split"); 
+       Logger::log(Formatter() << "Invalid index for keyspace split"); 
        return -1;
     } 
 
@@ -583,7 +583,7 @@ int Node::splitKeyspace(int keyspaceIndex){
 
     //Warn if splitting a sub block
     if(end != UINT_MAX){
-      if (Logger::logOutputVerbose) Logger::log(Formatter() << "warning: node " << uuid << " is splitting sub-block " << start1 << "/" << suffix << ", " << end); 
+      Logger::log(Formatter() << "warning: node " << uuid << " is splitting sub-block " << start1 << "/" << suffix << ", " << end); 
     }
 
     Keyspace key1(start1, end, suffix);        
@@ -595,10 +595,10 @@ int Node::splitKeyspace(int keyspaceIndex){
     
     //check validity of pieces make
     if(!key1.isKeyAvailable()){
-       if (Logger::logOutputVerbose) Logger::log(Formatter() << "Made first half: " << key1.getStart() << "/" << key1.getSuffix() <<  ", " << key1.getEnd());
+       Logger::log(Formatter() << "Made first half: " << key1.getStart() << "/" << key1.getSuffix() <<  ", " << key1.getEnd());
        throw 1;
     } else if(!key2.isKeyAvailable()){
-       if (Logger::logOutputVerbose) Logger::log(Formatter() << "Made second half: " << key2.getStart() << "/" << key2.getSuffix() <<  ", " << key2.getEnd());
+       Logger::log(Formatter() << "Made second half: " << key2.getStart() << "/" << key2.getSuffix() <<  ", " << key2.getEnd());
        throw 2;
     }
 
@@ -645,7 +645,7 @@ bool Node::canSendKeyspace(UUID id){
     for (i = confirmMsg.begin(); i != confirmMsg.end() ; i++) {
         const Message msg = *(i->second);
         // Must be commented out for repeatability test
-        if (Logger::logOutputVerbose) Logger::logMsg(Formatter() << msg.sourcenodeid() << " canSendKeyspace", msg);
+        Logger::logMsg(Formatter() << msg.sourcenodeid() << " canSendKeyspace", msg);
         if ( i->second->messagetype() != Message::MessageType::Message_MessageType_INFORMATION
     			&& i->second->destnodeid() == id) {
             //was a keyspace, cannot send another to that UUID
@@ -654,7 +654,7 @@ bool Node::canSendKeyspace(UUID id){
         }
     }
  
-    if (Logger::logOutputVerbose) Logger::log(Formatter()  << this->uuid << ": canSendKeyspace returns " << ACE::toString(canSend));
+    Logger::log(Formatter()  << this->uuid << ": canSendKeyspace returns " << ACE::toString(canSend));
     return canSend; 
 }
 
@@ -705,8 +705,8 @@ vector<int> Node::makeSubBlock(int range){
       int mindex = minimumKeyspaceIndex(oldMin);
       if(mindex == -1){
           //the node does not have enough keyspace to finish...
-	  if (Logger::logOutputVerbose) Logger::log(Formatter() << "Node " << uuid << " does not have enough keyspace to make sub-block size " << range);
-	  if (Logger::logOutputVerbose) Logger::log(Formatter() << "Number of keyspaces: " << keyspaces.size() << ", and old min: " << oldMin); 
+	  Logger::log(Formatter() << "Node " << uuid << " does not have enough keyspace to make sub-block size " << range);
+	  Logger::log(Formatter() << "Number of keyspaces: " << keyspaces.size() << ", and old min: " << oldMin); 
 	  throw "Not enough keyspace to make sub-block";
 	  //TODO: make a node exception class and throw it here... 
       }
@@ -739,7 +739,7 @@ vector<int> Node::makeSubBlock(int range){
           //}
 	  indecies.push_back(keyspaces.size() -1); //the deised keyspace is at the end of the vector
 	  if(keyspaces[mindex].getStart() != keyspaces.back().getEnd()){
-             if (Logger::logOutputVerbose) Logger::log(Formatter() << "Sub-Block creation error: full starts " << keyspaces[mindex].getStart() << ", sub ends " 
+             Logger::log(Formatter() << "Sub-Block creation error: full starts " << keyspaces[mindex].getStart() << ", sub ends " 
 		    << keyspaces.back().getEnd()); 
 	     throw 3; 
 	  }
@@ -750,52 +750,52 @@ vector<int> Node::makeSubBlock(int range){
 
 double Node::calcLongAggregate(UUID target){
    //sum all of the long term calculations, but not the the one for target
-   if (Logger::logOutputVerbose) Logger::log(Formatter()  << this->uuid << ": calcLongAggregate for "
+   Logger::log(Formatter()  << this->uuid << ": calcLongAggregate for "
         << target << " which has " << peers.size() << " peers");
    double result = 0;
    int numCounted = 1; // start with 1 for target
    for(auto & peer: peers){
        if(peer.first == target || peer.second.first == nullptr){continue;}
-       if (Logger::logOutputVerbose) Logger::log(Formatter() << this->uuid << ": peer: " << peer.first
+       Logger::log(Formatter() << this->uuid << ": peer: " << peer.first
             << " createdPreviousWeek:" << peer.second.first->info().records(0).creationratedata().createdpreviousweek());
        result += peer.second.first->info().records(0).creationratedata().createdpreviousweek();
        numCounted++;
    }
-   if (Logger::logOutputVerbose) Logger::log(Formatter()  << this->uuid << ": sum created prev week: " << result);
+   Logger::log(Formatter()  << this->uuid << ": sum created prev week: " << result);
    result *= networkScale; 
-   if (Logger::logOutputVerbose) Logger::log(Formatter() << this->uuid << ": result after *networkScale (" << networkScale << "): " << result);
+   Logger::log(Formatter() << this->uuid << ": result after *networkScale (" << networkScale << "): " << result);
    result += createdWeek;
-   if (Logger::logOutputVerbose) Logger::log(Formatter() << this->uuid << ": result after +createdWeek (" << createdWeek << "): " << result);
+   Logger::log(Formatter() << this->uuid << ": result after +createdWeek (" << createdWeek << "): " << result);
    result /= numCounted; //# of peers + 1 for self - 1 for target
-   if (Logger::logOutputVerbose) Logger::log(Formatter() << this->uuid << ": result after /numCounted (" << numCounted << "): " << result);
+   Logger::log(Formatter() << this->uuid << ": result after /numCounted (" << numCounted << "): " << result);
    return result; 
 }
 
 double Node::calcShortAggregate(UUID target){
    //sum all of the short term calculations, but not the the one for target
-   if (Logger::logOutputVerbose) Logger::log(Formatter()  << this->uuid << ": calcShortAggregate for " << target
+   Logger::log(Formatter()  << this->uuid << ": calcShortAggregate for " << target
         << " which has " << peers.size() << " peers");
    double result = 0;
    int numCounted = 1; // start with 1 for target
    for(auto & peer: peers){
        if(peer.first == target || peer.second.first == nullptr){continue;}
-       if (Logger::logOutputVerbose) Logger::log(Formatter() << this->uuid << ": peer: " << peer.first
+       Logger::log(Formatter() << this->uuid << ": peer: " << peer.first
             << " createdPreviousDay:" << peer.second.first->info().records(0).creationratedata().createdpreviousday());
        result += peer.second.first->info().records(0).creationratedata().createdpreviousday();
        numCounted++;
-       if (Logger::logOutputVerbose) Logger::log(Formatter() << this->uuid << ": result=" << result << " numCounted=" << numCounted);
+       Logger::log(Formatter() << this->uuid << ": result=" << result << " numCounted=" << numCounted);
    }
    result *= networkScale; 
-   if (Logger::logOutputVerbose) Logger::log(Formatter() << this->uuid << ": result after *networkScale (" << networkScale << "): " << result);
+   Logger::log(Formatter() << this->uuid << ": result after *networkScale (" << networkScale << "): " << result);
    result += createdDay;
-   if (Logger::logOutputVerbose) Logger::log(Formatter() << this->uuid << ": result after +createdDay (" << createdDay << "): " << result);
+   Logger::log(Formatter() << this->uuid << ": result after +createdDay (" << createdDay << "): " << result);
    result /= numCounted; //# of peers + self - target 
-   if (Logger::logOutputVerbose) Logger::log(Formatter() << this->uuid << ": result after /numCounted (" << numCounted << "): " << result);
+   Logger::log(Formatter() << this->uuid << ": result after /numCounted (" << numCounted << "): " << result);
 
     // In section "Information Statistics", subpoint 4.2,
     // "If CS is zero (or rounds to zero), then a value of 1 is substituted for CS."
     // if (ACE::areCloseEnough(result, 0)) {
-    //     if (Logger::logOutputVerbose) Logger::log(Formatter() << this->uuid << ": result (" << result << ") is close to zero, setting it to 1");
+    //     Logger::log(Formatter() << this->uuid << ": result (" << result << ") is close to zero, setting it to 1");
     //     result = 1;
     // }
    return result; 
@@ -806,7 +806,7 @@ uint64_t Node::getNextMsgId(UUID peerID){
    if(peers.find(peerID) != peers.end()){
       msgID = peers[peerID].second++; //assign the ID and then incriment next
    }else {
-      if (Logger::logOutputVerbose) Logger::log(Formatter() << uuid << " has no peer " << peerID << " so returning 0 for msg ID"); 
+      Logger::log(Formatter() << uuid << " has no peer " << peerID << " so returning 0 for msg ID"); 
    }
    
    return msgID; 

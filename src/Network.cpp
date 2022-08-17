@@ -16,7 +16,7 @@ Network::Network(ConnectionType connectionType, float PERCENT_CONNECTED, double 
     this->connectionType = connectionType;
     //PERCENT_CONNECTED is a 5 digit int (99.999% = 99999)
     this->PERCENT_CONNECTED = (int)(PERCENT_CONNECTED*1000);
-    if (Logger::logOutputVerbose) Logger::log("Network online");
+    Logger::log("Network online");
     custLambda3 = {};
     custLambda2 = {};
     custLambda1 = {};
@@ -30,7 +30,7 @@ Network::Network(ConnectionType connectionType, float PERCENT_CONNECTED, double 
     this->connectionType = connectionType;
     //PERCENT_CONNECTED is a 5 digit int (99.999% = 99999)
     this->PERCENT_CONNECTED = (int)(PERCENT_CONNECTED*1000);
-    if (Logger::logOutputVerbose) Logger::log("Network online");
+    Logger::log("Network online");
     custLambda3 = lam3s;
     custLambda2 = lam2s;
     custLambda1 = lam1s;
@@ -51,7 +51,7 @@ void Network::tellAllNodesToConsumeObjects(){
 void Network::disableNode(UUID nodeUUID){
     nodeStatus[nodeUUID] = false;
     string message = nodeUUID + " has gone offline.";
-    if (Logger::logOutputVerbose) Logger::log(message);//log that the node has gone offline
+    Logger::log(message);//log that the node has gone offline
 }
 
 //sends a single node online
@@ -64,12 +64,12 @@ bool Network::isOffline(UUID nodeID){
 }
 
 bool Network::sendMsg(const Message &message) {
-    //if (Logger::logOutputVerbose) Logger::logBackTrace();
+    //Logger::logBackTrace();
     UUID destID = message.destnodeid(), srcID = message.sourcenodeid();
 
     if (!isOffline(destID) && !isOffline(srcID)) {
         if (enableSendMsgLog) {
-            if (Logger::logOutputVerbose) Logger::logMsg(Formatter() << srcID << " sendMsg", message);
+            Logger::logMsg(Formatter() << srcID << " sendMsg", message);
         }
         shared_ptr<Node> destNode = getNodeFromUUID(destID);
         return destNode->receiveMessage(message);
@@ -89,14 +89,14 @@ void Network::doAllHeartbeat(AbstractStrategy *adakStrategy, int keysToSend) {
 
     	node->heartbeat();
 //auto end = std::chrono::high_resolution_clock::now();
-//if (Logger::logOutputVerbose) Logger::log("sending a heartbeat took " << std::chrono::duration_cast<std::chrono::nanoseconds>(end - start).count()
+//Logger::log("sending a heartbeat took " << std::chrono::duration_cast<std::chrono::nanoseconds>(end - start).count()
 //      	<< " ns");
 
 //start = std::chrono::high_resolution_clock::now();
-        if (Logger::logOutputVerbose) Logger::log(Formatter() << "doAllHeartbeat: uuid=" << uuid);
+        Logger::log(Formatter() << "doAllHeartbeat: uuid=" << uuid);
         adakStrategy->adak(*(node), keysToSend); //have the node decide what to do 
 //end = std::chrono::high_resolution_clock::now();
-//if (Logger::logOutputVerbose) Logger::log("chekcing control strat took " << std::chrono::duration_cast<std::chrono::nanoseconds>(end - start).count()
+//Logger::log("chekcing control strat took " << std::chrono::duration_cast<std::chrono::nanoseconds>(end - start).count()
 //       	<< " ns");    
     }
  
@@ -152,7 +152,7 @@ void Network::checkAndSendAllNodesLatency(int latency) {
             //auto start = std::chrono::high_resolution_clock::now();
 		    sendMsg(temp[i]);
             //auto end = std::chrono::high_resolution_clock::now();
-            //if (Logger::logOutputVerbose) Logger::log("sending a message took " << std::chrono::duration_cast<std::chrono::nanoseconds>(end - start).count() << " ms"); 
+            //Logger::log("sending a message took " << std::chrono::duration_cast<std::chrono::nanoseconds>(end - start).count() << " ms"); 
 	    }
     }
 }
@@ -340,11 +340,11 @@ bool Network::customConnect(shared_ptr<Node> node) {
 	   string node2 = connections.substr(comma + 2, end - comma - 2); 
 	   //cut off current pair from connections
 	   connections = connections.substr(end +1); 
-       //if (Logger::logOutputVerbose) Logger::log(Formatter() << "connecting Nodes " << node1 << " and " << node2);
+       //Logger::log(Formatter() << "connecting Nodes " << node1 << " and " << node2);
 	   //Assign nodes to connection values if needed
 	   if(strToID.find((node1)) == strToID.end()){
 	    if(nextNode == nodes.end()){
-	        //if (Logger::logOutputVerbose) Logger::log(Formatter() << "Cannot have a node to represent connection with node " << node1);
+	        //Logger::log(Formatter() << "Cannot have a node to represent connection with node " << node1);
 		    continue; //cannot finish this iteration, nothing to connect
 	     }else{ 
                 strToID.insert(pair<string, UUID>(node1, nextNode->first));
@@ -354,7 +354,7 @@ bool Network::customConnect(shared_ptr<Node> node) {
 	   //and now the second item
 	   if(strToID.find(node2) == strToID.end()){
 	     if(nextNode == nodes.end()){
-	        //if (Logger::logOutputVerbose) Logger::log(Formatter() << "Cannot have a node to represent connection with node " << node2);
+	        //Logger::log(Formatter() << "Cannot have a node to represent connection with node " << node2);
 		    continue; //cannot finish this loop; nothing to connect
 	     }else{
 	       strToID.insert(pair<string, UUID>(node2, nextNode->first));
@@ -448,29 +448,29 @@ UUID Network::getRandomNode() {
 
 void Network::printUUIDList(char spacer) {
     int counter = 0;
-    if (Logger::logOutputVerbose) Logger::log(Formatter() << "UUID List");
-    if (Logger::logOutputVerbose) Logger::log(Formatter() << "COUNT" << spacer << "UUID (in hex)" << spacer << "# bits");
+    Logger::log(Formatter() << "UUID List");
+    Logger::log(Formatter() << "COUNT" << spacer << "UUID (in hex)" << spacer << "# bits");
     for (UUID const uuid : generateUUIDList()) {
-        if (Logger::logOutputVerbose) Logger::log(Formatter() << counter << spacer << uuid << spacer << (uuid.size() * 8) << spacer);
+        Logger::log(Formatter() << counter << spacer << uuid << spacer << (uuid.size() * 8) << spacer);
         counter++;
     }
 }
 void Network::printChannels(char spacer) {
-    if (Logger::logOutputVerbose) Logger::log(Formatter() << "CHANNELS");
-    if (Logger::logOutputVerbose) Logger::log(Formatter() << "TO" << spacer << "FROM" << spacer << "ID");
+    Logger::log(Formatter() << "CHANNELS");
+    Logger::log(Formatter() << "TO" << spacer << "FROM" << spacer << "ID");
     for (const Channel &channel : channels) {
-        if (Logger::logOutputVerbose) Logger::log(Formatter() << channel.getToNode() << spacer
+        Logger::log(Formatter() << channel.getToNode() << spacer
             << channel.getFromNode() << spacer
             << channel.getChannelId()
             << (this->isOffline(channel.getToNode()) || this->isOffline(channel.getFromNode())
                 ? "OFFLINE!!" : ""));
     }
-    if (Logger::logOutputVerbose) Logger::log(Formatter() << "END CHANNELS");
+    Logger::log(Formatter() << "END CHANNELS");
 }
 
 void Network::printKeyspaces(char spacer) {
-    if (Logger::logOutputVerbose) Logger::log(Formatter() << "KEYSPACES");
-    if (Logger::logOutputVerbose) Logger::log(Formatter()
+    Logger::log(Formatter() << "KEYSPACES");
+    Logger::log(Formatter()
         << "Node Count" << spacer
         << "UUID" << spacer
         << "Start" << spacer
@@ -485,7 +485,7 @@ void Network::printKeyspaces(char spacer) {
         auto uuid = uuids.at(i);
         auto node = nodes.at(uuid);
         for (const Keyspace &keyspace : node->getKeySpace()) {
-            if (Logger::logOutputVerbose) Logger::log(Formatter()
+            Logger::log(Formatter()
                 << nodeCounter << spacer
                 << node->getUUID() << spacer
                 << keyspace.getStart() << spacer
@@ -496,7 +496,7 @@ void Network::printKeyspaces(char spacer) {
         }
         nodeCounter++;
     }
-    if (Logger::logOutputVerbose) Logger::log(Formatter() << "END KEYSPACES");
+    Logger::log(Formatter() << "END KEYSPACES");
 }
 
 double Network::checkAllKeyspace(){
@@ -534,6 +534,6 @@ double Network::checkAllKeyspace(){
 	    } 
 	}
     }
-    if (Logger::logOutputVerbose) Logger::log(Formatter() << "total keyspace is " << total * 100 << "% of the keyspace");
+    Logger::log(Formatter() << "total keyspace is " << total * 100 << "% of the keyspace");
     return total; 
 }
