@@ -132,7 +132,7 @@ void NodeData::setAggregateGenRate(double aggregateGenRate) {
     NodeData::aggregateGenRate = aggregateGenRate;
 }
 
-double NodeData::getShortTermAllocationRatio() {
+double NodeData::getShortTermAllocationRatio() const {
     return shortTermAllocationRatio.getValue();
 }
 
