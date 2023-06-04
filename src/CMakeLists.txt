@@ -9,6 +9,7 @@ target_link_libraries(messages ${Protobuf_LIBRARIES})
 target_include_directories(messages PUBLIC ${PROJECT_SOURCE_DIR}/include)
 
 add_library(adakCore
+    Damping.cpp
     Simulation.cpp
     Node.cpp
     Keyspace.cpp

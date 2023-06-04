@@ -39,7 +39,7 @@ class Logger {
         // some time between 12/28/2021 and now.
         // static void logBackTrace();
 
-        static const bool logOutputVerbose = false;
+        static const bool logOutputVerbose = true;
 
     private:
         static int timeslot;

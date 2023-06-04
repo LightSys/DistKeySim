@@ -65,12 +65,12 @@ build-and-test : all
 	make run-test4-scenario-1
 	make run-test5-doNothing
 
-fail : all
+next :
 	make run-test6-scenario-2
 	make run-test7-scenario-3
 	make run-test8-scenario-4
 
-fail-short : all
+next-short : all
 	-make run-test6-scenario-2 SCEN_2_DAYS=0.01
 	make sanitize jsonify
 
@@ -146,6 +146,9 @@ run-repeatable :
 
 .PHONY: run-test1-repeatability
 run-test1-repeatability : all
+	@echo "------"
+	@echo "Test 1"
+	@echo "------"
 	make run-repeatable sanitize
 	make run-repeatable sanitize
 	make compare
@@ -156,6 +159,9 @@ run-test1-repeatability : all
 # -----------------------------
 .PHONY: run-test2-oscillation
 run-test2-oscillation : all
+	@echo "------"
+	@echo "Test 2"
+	@echo "------"
 	$(BIN)/testOscillation.py
 	@echo "Test 2 Passed: Oscillation"
 
@@ -179,6 +185,9 @@ run-non-repeatable :
 
 .PHONY: run-test3-non-repeatability
 run-test3-non-repeatability : all
+	@echo "------"
+	@echo "Test 3"
+	@echo "------"
 	make run-non-repeatable sanitize
 	make run-non-repeatable sanitize
 	@make compare; \
@@ -206,7 +215,10 @@ SCEN_1_CONFIG = "config/scenario1-config.json"
 
 .PHONY: run-test4-scenario-1
 run-test4-scenario-1 : all
-	$(BIN)/testScenario.py --scenarioNum 1 --numNodes 2 --days $(SCEN_1_DAYS) --config $(SCEN_1_CONFIG) \
+	@echo "------"
+	@echo "Test 4"
+	@echo "------"
+	@$(BIN)/testScenario.py --scenarioNum 1 --numNodes 2 --days $(SCEN_1_DAYS) --config $(SCEN_1_CONFIG) \
 		-a 'assert numKeyspaces == 2, "Test Scenario 1 failed: numKeyspaces=%d" % numKeyspaces'
 	@echo "Test 4 Passed: Scenario 1"
 
@@ -214,7 +226,10 @@ run-test4-scenario-1 : all
 
 .PHONY: run-test5-doNothing
 run-test5-doNothing : all
-	$(BIN)/testScenario.py --scenarioNum 1 --numNodes 2 --days $(SCEN_1_DAYS) \
+	@echo "------"
+	@echo "Test 5"
+	@echo "------"
+	@$(BIN)/testScenario.py --scenarioNum 1 --numNodes 2 --days $(SCEN_1_DAYS) \
 		--config "config/doNothing-config.json" \
 		-a 'assert numKeyspaces == 1, "Test Do Nothing failed: numKeyspaces=%d" % numKeyspaces'
 	@echo "Test 5 Passed: Do Nothing Strategy"
@@ -244,7 +259,10 @@ SCEN_2_CONFIG = "config/scenario2-config.json"
 
 .PHONY: run-test6-scenario-2
 run-test6-scenario-2 : all
-	$(BIN)/testScenario.py --scenarioNum 2 --numNodes 2 --days $(SCEN_2_DAYS) --config $(SCEN_2_CONFIG) \
+	@echo "------"
+	@echo "Test 6"
+	@echo "------"
+	@$(BIN)/testScenario.py --scenarioNum 2 --numNodes 2 --days $(SCEN_2_DAYS) --config $(SCEN_2_CONFIG) \
 		-a 'assert numKeyspaces > 2, "Test Scenario 2 failed: numKeyspaces=%d" % numKeyspaces'
 	@echo "Test 6 Passed: Scenario 2"
 
@@ -274,7 +292,10 @@ SCEN_3_CONFIG = "config/scenario3-config.json"
 
 .PHONY: run-test7-scenario-3
 run-test7-scenario-3 : all
-	$(BIN)/testScenario.py --scenarioNum 3 --numNodes 2 --days $(SCEN_3_DAYS) --config $(SCEN_3_CONFIG) \
+	@echo "------"
+	@echo "Test 7"
+	@echo "------"
+	@$(BIN)/testScenario.py --scenarioNum 3 --numNodes 2 --days $(SCEN_3_DAYS) --config $(SCEN_3_CONFIG) \
 		-a 'assert numKeyspaces == 32, "Test Scenario 3 failed: numKeyspaces=%d" % numKeyspaces'
 	@echo "Test 7 Passed: Scenario 3"
 
@@ -295,7 +316,10 @@ SCEN_4_CONFIG  = "config/scenario4-config.json"
 
 .PHONY: run-test8-scenario-4
 run-test8-scenario-4 : all
-	$(BIN)/testScenario.py --scenarioNum 4 --numNodes 2 --days $(SCEN_4_DAYS) --config $(SCEN_4_CONFIG) \
+	@echo "------"
+	@echo "Test 7"
+	@echo "------"
+	@$(BIN)/testScenario.py --scenarioNum 4 --numNodes 2 --days $(SCEN_4_DAYS) --config $(SCEN_4_CONFIG) \
 		-a 'assert numKeyspaces == 32, "Test Scenario 4 failed: numKeyspaces=%d" % numKeyspaces'
 	@echo "Test 7 Passed: Scenario 4"
 

@@ -1,21 +1,20 @@
 #pragma once
 
-#include <queue>
+#include <deque>
 
 class Damping {
 public:
-    void setDampingFactor(int f) {
-        factor = f;
-    }
+     explicit Damping() { }
+    ~Damping() = default;
 
-    void addValue(double value) {
-        currentValue = value;
-    }
-
-    double getValue() const { return currentValue; }
+    void setDampingFactor(int f);
+    void addValue(double value);
+    void setValue(double value);
+    double getValue() const;
+    std::string toString() const;
 
 private:
-    int factor;
-    std::queue<double> values;
-    double currentValue;
+    int factor = 1;
+    std::deque<double> values;
+    bool verbose = true;
 };
