@@ -246,7 +246,7 @@ UUID Network::addNode(const Keyspace &keyspace, unsigned seed) {
 
     // Add the new node to the nodes map
     nodeStatus[newNode->getUUID()] = true;
-    nodes.insert({newNode->getUUID(), move(newNode)});
+    nodes.insert({newNode->getUUID(), std::move(newNode)});
     uuids.push_back(newUUID);
 
     //log node created
