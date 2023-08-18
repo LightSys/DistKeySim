@@ -36,7 +36,7 @@ $(SRC)/message.pb.cc $(INCLUDE)/message.pb.h : $(SRC)/message.proto
 $(BUILD_SRC)/adak : $(SOURCES)
 	mkdir -p $(BUILD)
 	cd $(BUILD) && \
-		cmake .. -DBUILD_TESTING=0 && \
+		cmake .. -DBUILD_TESTING=0 --trace && \
 		make -j$(USE_CORES)
 
 .PHONY: src
@@ -65,9 +65,16 @@ build-and-test : all
 	make run-test4-scenario-1
 	make run-test5-doNothing
 
-next :
+test6 :
+	# Test 6 fails as of 8/18
 	make run-test6-scenario-2
+
+test7 :
+	# Test 7 fails as of 8/18
 	make run-test7-scenario-3
+
+test8 :
+	# Probably fails too
 	make run-test8-scenario-4
 
 next-short : all
@@ -141,7 +148,7 @@ NON =
 .PHONY: run-repeatable
 run-repeatable :
 	cp -p config/$(NON)repeatable-config.json $(BUILD_SRC)/config.json
-	cd $(BUILD_SRC) && ./adak
+	cd $(BUILD_SRC) && time ./adak
 	cd $(ADAK_ROOT)
 
 .PHONY: run-test1-repeatability
@@ -162,7 +169,7 @@ run-test2-oscillation : all
 	@echo "------"
 	@echo "Test 2"
 	@echo "------"
-	$(BIN)/testOscillation.py
+	time $(BIN)/testOscillation.py
 	@echo "Test 2 Passed: Oscillation"
 
 # ----------------------
@@ -218,7 +225,7 @@ run-test4-scenario-1 : all
 	@echo "------"
 	@echo "Test 4"
 	@echo "------"
-	@$(BIN)/testScenario.py --scenarioNum 1 --numNodes 2 --days $(SCEN_1_DAYS) --config $(SCEN_1_CONFIG) \
+	@time $(BIN)/testScenario.py --scenarioNum 1 --numNodes 2 --days $(SCEN_1_DAYS) --config $(SCEN_1_CONFIG) \
 		-a 'assert numKeyspaces == 2, "Test Scenario 1 failed: numKeyspaces=%d" % numKeyspaces'
 	@echo "Test 4 Passed: Scenario 1"
 
@@ -229,7 +236,7 @@ run-test5-doNothing : all
 	@echo "------"
 	@echo "Test 5"
 	@echo "------"
-	@$(BIN)/testScenario.py --scenarioNum 1 --numNodes 2 --days $(SCEN_1_DAYS) \
+	@time $(BIN)/testScenario.py --scenarioNum 1 --numNodes 2 --days $(SCEN_1_DAYS) \
 		--config "config/doNothing-config.json" \
 		-a 'assert numKeyspaces == 1, "Test Do Nothing failed: numKeyspaces=%d" % numKeyspaces'
 	@echo "Test 5 Passed: Do Nothing Strategy"
@@ -262,7 +269,7 @@ run-test6-scenario-2 : all
 	@echo "------"
 	@echo "Test 6"
 	@echo "------"
-	@$(BIN)/testScenario.py --scenarioNum 2 --numNodes 2 --days $(SCEN_2_DAYS) --config $(SCEN_2_CONFIG) \
+	@time $(BIN)/testScenario.py --scenarioNum 2 --numNodes 2 --days $(SCEN_2_DAYS) --config $(SCEN_2_CONFIG) \
 		-a 'assert numKeyspaces > 2, "Test Scenario 2 failed: numKeyspaces=%d" % numKeyspaces'
 	@echo "Test 6 Passed: Scenario 2"
 
@@ -295,7 +302,7 @@ run-test7-scenario-3 : all
 	@echo "------"
 	@echo "Test 7"
 	@echo "------"
-	@$(BIN)/testScenario.py --scenarioNum 3 --numNodes 2 --days $(SCEN_3_DAYS) --config $(SCEN_3_CONFIG) \
+	@time $(BIN)/testScenario.py --scenarioNum 3 --numNodes 2 --days $(SCEN_3_DAYS) --config $(SCEN_3_CONFIG) \
 		-a 'assert numKeyspaces == 32, "Test Scenario 3 failed: numKeyspaces=%d" % numKeyspaces'
 	@echo "Test 7 Passed: Scenario 3"
 
@@ -319,7 +326,7 @@ run-test8-scenario-4 : all
 	@echo "------"
 	@echo "Test 7"
 	@echo "------"
-	@$(BIN)/testScenario.py --scenarioNum 4 --numNodes 2 --days $(SCEN_4_DAYS) --config $(SCEN_4_CONFIG) \
+	@time $(BIN)/testScenario.py --scenarioNum 4 --numNodes 2 --days $(SCEN_4_DAYS) --config $(SCEN_4_CONFIG) \
 		-a 'assert numKeyspaces == 32, "Test Scenario 4 failed: numKeyspaces=%d" % numKeyspaces'
 	@echo "Test 7 Passed: Scenario 4"
 
@@ -359,7 +366,7 @@ run-eventGen :
 	jq ".connectionMode |= \"$(CONNECTION_MODE)\"" < config/eventGen-config.json | \
 		jq ".simLength |= $(SIM_LENGTH)" | \
 		jq ".numNodes |= $(NUM_NODES)" > $(BUILD_SRC)/config.json
-	cd $(BUILD_SRC) && ./adak
+	cd $(BUILD_SRC) && time ./adak
 	cd $(ADAK_ROOT)
 
 # ------------------

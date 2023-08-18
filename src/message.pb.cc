@@ -4,245 +4,327 @@
 #include "message.pb.h"
 
 #include <algorithm>
-
-#include <google/protobuf/io/coded_stream.h>
-#include <google/protobuf/extension_set.h>
-#include <google/protobuf/wire_format_lite.h>
-#include <google/protobuf/descriptor.h>
-#include <google/protobuf/generated_message_reflection.h>
-#include <google/protobuf/reflection_ops.h>
-#include <google/protobuf/wire_format.h>
+#include "google/protobuf/io/coded_stream.h"
+#include "google/protobuf/extension_set.h"
+#include "google/protobuf/wire_format_lite.h"
+#include "google/protobuf/descriptor.h"
+#include "google/protobuf/generated_message_reflection.h"
+#include "google/protobuf/reflection_ops.h"
+#include "google/protobuf/wire_format.h"
 // @@protoc_insertion_point(includes)
-#include <google/protobuf/port_def.inc>
 
+// Must be included last.
+#include "google/protobuf/port_def.inc"
 PROTOBUF_PRAGMA_INIT_SEG
-
 namespace _pb = ::PROTOBUF_NAMESPACE_ID;
-namespace _pbi = _pb::internal;
-
+namespace _pbi = ::PROTOBUF_NAMESPACE_ID::internal;
+template <typename>
 PROTOBUF_CONSTEXPR InformationalMessageContents_CollectionInformationRecord_CreationRateData::InformationalMessageContents_CollectionInformationRecord_CreationRateData(
     ::_pbi::ConstantInitialized): _impl_{
-    /*decltype(_impl_.shortallocationratio_)*/0
-  , /*decltype(_impl_.longallocationratio_)*/0
-  , /*decltype(_impl_.createdpreviousday_)*/0
-  , /*decltype(_impl_.createdpreviousweek_)*/0
+    /*decltype(_impl_.shortallocationratio_)*/ 0
+
+  , /*decltype(_impl_.longallocationratio_)*/ 0
+
+  , /*decltype(_impl_.createdpreviousday_)*/ 0
+
+  , /*decltype(_impl_.createdpreviousweek_)*/ 0
+
   , /*decltype(_impl_._cached_size_)*/{}} {}
 struct InformationalMessageContents_CollectionInformationRecord_CreationRateDataDefaultTypeInternal {
-  PROTOBUF_CONSTEXPR InformationalMessageContents_CollectionInformationRecord_CreationRateDataDefaultTypeInternal()
-      : _instance(::_pbi::ConstantInitialized{}) {}
+  PROTOBUF_CONSTEXPR InformationalMessageContents_CollectionInformationRecord_CreationRateDataDefaultTypeInternal() : _instance(::_pbi::ConstantInitialized{}) {}
   ~InformationalMessageContents_CollectionInformationRecord_CreationRateDataDefaultTypeInternal() {}
   union {
     InformationalMessageContents_CollectionInformationRecord_CreationRateData _instance;
   };
 };
-PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 InformationalMessageContents_CollectionInformationRecord_CreationRateDataDefaultTypeInternal _InformationalMessageContents_CollectionInformationRecord_CreationRateData_default_instance_;
+
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
+    PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 InformationalMessageContents_CollectionInformationRecord_CreationRateDataDefaultTypeInternal _InformationalMessageContents_CollectionInformationRecord_CreationRateData_default_instance_;
+template <typename>
 PROTOBUF_CONSTEXPR InformationalMessageContents_CollectionInformationRecord::InformationalMessageContents_CollectionInformationRecord(
     ::_pbi::ConstantInitialized): _impl_{
-    /*decltype(_impl_.collectionname_)*/{&::_pbi::fixed_address_empty_string, ::_pbi::ConstantInitialized{}}
-  , /*decltype(_impl_.creationratedata_)*/nullptr
-  , /*decltype(_impl_._cached_size_)*/{}} {}
+    /*decltype(_impl_._has_bits_)*/{}
+  , /*decltype(_impl_._cached_size_)*/{}
+  , /*decltype(_impl_.collectionname_)*/ {
+    &::_pbi::fixed_address_empty_string, ::_pbi::ConstantInitialized {}
+  }
+
+  , /*decltype(_impl_.creationratedata_)*/nullptr} {}
 struct InformationalMessageContents_CollectionInformationRecordDefaultTypeInternal {
-  PROTOBUF_CONSTEXPR InformationalMessageContents_CollectionInformationRecordDefaultTypeInternal()
-      : _instance(::_pbi::ConstantInitialized{}) {}
+  PROTOBUF_CONSTEXPR InformationalMessageContents_CollectionInformationRecordDefaultTypeInternal() : _instance(::_pbi::ConstantInitialized{}) {}
   ~InformationalMessageContents_CollectionInformationRecordDefaultTypeInternal() {}
   union {
     InformationalMessageContents_CollectionInformationRecord _instance;
   };
 };
-PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 InformationalMessageContents_CollectionInformationRecordDefaultTypeInternal _InformationalMessageContents_CollectionInformationRecord_default_instance_;
+
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
+    PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 InformationalMessageContents_CollectionInformationRecordDefaultTypeInternal _InformationalMessageContents_CollectionInformationRecord_default_instance_;
+template <typename>
 PROTOBUF_CONSTEXPR InformationalMessageContents::InformationalMessageContents(
     ::_pbi::ConstantInitialized): _impl_{
     /*decltype(_impl_.records_)*/{}
   , /*decltype(_impl_._cached_size_)*/{}} {}
 struct InformationalMessageContentsDefaultTypeInternal {
-  PROTOBUF_CONSTEXPR InformationalMessageContentsDefaultTypeInternal()
-      : _instance(::_pbi::ConstantInitialized{}) {}
+  PROTOBUF_CONSTEXPR InformationalMessageContentsDefaultTypeInternal() : _instance(::_pbi::ConstantInitialized{}) {}
   ~InformationalMessageContentsDefaultTypeInternal() {}
   union {
     InformationalMessageContents _instance;
   };
 };
-PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 InformationalMessageContentsDefaultTypeInternal _InformationalMessageContents_default_instance_;
+
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
+    PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 InformationalMessageContentsDefaultTypeInternal _InformationalMessageContents_default_instance_;
+template <typename>
 PROTOBUF_CONSTEXPR KeyspaceMessageContents_Keyspace::KeyspaceMessageContents_Keyspace(
     ::_pbi::ConstantInitialized): _impl_{
-    /*decltype(_impl_.name_)*/{&::_pbi::fixed_address_empty_string, ::_pbi::ConstantInitialized{}}
-  , /*decltype(_impl_.startid_)*/uint64_t{0u}
-  , /*decltype(_impl_.endid_)*/uint64_t{0u}
-  , /*decltype(_impl_.suffixbits_)*/0u
+    /*decltype(_impl_.name_)*/ {
+    &::_pbi::fixed_address_empty_string, ::_pbi::ConstantInitialized {}
+  }
+
+  , /*decltype(_impl_.startid_)*/ ::uint64_t{0u}
+
+  , /*decltype(_impl_.endid_)*/ ::uint64_t{0u}
+
+  , /*decltype(_impl_.suffixbits_)*/ 0u
+
   , /*decltype(_impl_._cached_size_)*/{}} {}
 struct KeyspaceMessageContents_KeyspaceDefaultTypeInternal {
-  PROTOBUF_CONSTEXPR KeyspaceMessageContents_KeyspaceDefaultTypeInternal()
-      : _instance(::_pbi::ConstantInitialized{}) {}
+  PROTOBUF_CONSTEXPR KeyspaceMessageContents_KeyspaceDefaultTypeInternal() : _instance(::_pbi::ConstantInitialized{}) {}
   ~KeyspaceMessageContents_KeyspaceDefaultTypeInternal() {}
   union {
     KeyspaceMessageContents_Keyspace _instance;
   };
 };
-PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 KeyspaceMessageContents_KeyspaceDefaultTypeInternal _KeyspaceMessageContents_Keyspace_default_instance_;
+
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
+    PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 KeyspaceMessageContents_KeyspaceDefaultTypeInternal _KeyspaceMessageContents_Keyspace_default_instance_;
+template <typename>
 PROTOBUF_CONSTEXPR KeyspaceMessageContents::KeyspaceMessageContents(
     ::_pbi::ConstantInitialized): _impl_{
     /*decltype(_impl_.keyspaces_)*/{}
   , /*decltype(_impl_._cached_size_)*/{}} {}
 struct KeyspaceMessageContentsDefaultTypeInternal {
-  PROTOBUF_CONSTEXPR KeyspaceMessageContentsDefaultTypeInternal()
-      : _instance(::_pbi::ConstantInitialized{}) {}
+  PROTOBUF_CONSTEXPR KeyspaceMessageContentsDefaultTypeInternal() : _instance(::_pbi::ConstantInitialized{}) {}
   ~KeyspaceMessageContentsDefaultTypeInternal() {}
   union {
     KeyspaceMessageContents _instance;
   };
 };
-PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 KeyspaceMessageContentsDefaultTypeInternal _KeyspaceMessageContents_default_instance_;
+
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
+    PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 KeyspaceMessageContentsDefaultTypeInternal _KeyspaceMessageContents_default_instance_;
+template <typename>
 PROTOBUF_CONSTEXPR Message::Message(
     ::_pbi::ConstantInitialized): _impl_{
-    /*decltype(_impl_.sourcenodeid_)*/{&::_pbi::fixed_address_empty_string, ::_pbi::ConstantInitialized{}}
-  , /*decltype(_impl_.destnodeid_)*/{&::_pbi::fixed_address_empty_string, ::_pbi::ConstantInitialized{}}
-  , /*decltype(_impl_.timestamp_)*/nullptr
-  , /*decltype(_impl_.lastreceivedmsg_)*/uint64_t{0u}
-  , /*decltype(_impl_.channelstate_)*/0
-  , /*decltype(_impl_.messagetype_)*/0
-  , /*decltype(_impl_.messageid_)*/int64_t{0}
-  , /*decltype(_impl_.message_)*/{}
+    /*decltype(_impl_._has_bits_)*/{}
   , /*decltype(_impl_._cached_size_)*/{}
+  , /*decltype(_impl_.sourcenodeid_)*/ {
+    &::_pbi::fixed_address_empty_string, ::_pbi::ConstantInitialized {}
+  }
+
+  , /*decltype(_impl_.destnodeid_)*/ {
+    &::_pbi::fixed_address_empty_string, ::_pbi::ConstantInitialized {}
+  }
+
+  , /*decltype(_impl_.timestamp_)*/nullptr
+  , /*decltype(_impl_.lastreceivedmsg_)*/ ::uint64_t{0u}
+
+  , /*decltype(_impl_.channelstate_)*/ 0
+
+  , /*decltype(_impl_.messagetype_)*/ 0
+
+  , /*decltype(_impl_.messageid_)*/ ::int64_t{0}
+
+  , /*decltype(_impl_.message_)*/{}
   , /*decltype(_impl_._oneof_case_)*/{}} {}
 struct MessageDefaultTypeInternal {
-  PROTOBUF_CONSTEXPR MessageDefaultTypeInternal()
-      : _instance(::_pbi::ConstantInitialized{}) {}
+  PROTOBUF_CONSTEXPR MessageDefaultTypeInternal() : _instance(::_pbi::ConstantInitialized{}) {}
   ~MessageDefaultTypeInternal() {}
   union {
     Message _instance;
   };
 };
-PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 MessageDefaultTypeInternal _Message_default_instance_;
+
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
+    PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 MessageDefaultTypeInternal _Message_default_instance_;
 static ::_pb::Metadata file_level_metadata_message_2eproto[6];
 static const ::_pb::EnumDescriptor* file_level_enum_descriptors_message_2eproto[2];
-static constexpr ::_pb::ServiceDescriptor const** file_level_service_descriptors_message_2eproto = nullptr;
-
-const uint32_t TableStruct_message_2eproto::offsets[] PROTOBUF_SECTION_VARIABLE(protodesc_cold) = {
-  ~0u,  // no _has_bits_
-  PROTOBUF_FIELD_OFFSET(::InformationalMessageContents_CollectionInformationRecord_CreationRateData, _internal_metadata_),
-  ~0u,  // no _extensions_
-  ~0u,  // no _oneof_case_
-  ~0u,  // no _weak_field_map_
-  ~0u,  // no _inlined_string_donated_
-  PROTOBUF_FIELD_OFFSET(::InformationalMessageContents_CollectionInformationRecord_CreationRateData, _impl_.shortallocationratio_),
-  PROTOBUF_FIELD_OFFSET(::InformationalMessageContents_CollectionInformationRecord_CreationRateData, _impl_.longallocationratio_),
-  PROTOBUF_FIELD_OFFSET(::InformationalMessageContents_CollectionInformationRecord_CreationRateData, _impl_.createdpreviousday_),
-  PROTOBUF_FIELD_OFFSET(::InformationalMessageContents_CollectionInformationRecord_CreationRateData, _impl_.createdpreviousweek_),
-  ~0u,  // no _has_bits_
-  PROTOBUF_FIELD_OFFSET(::InformationalMessageContents_CollectionInformationRecord, _internal_metadata_),
-  ~0u,  // no _extensions_
-  ~0u,  // no _oneof_case_
-  ~0u,  // no _weak_field_map_
-  ~0u,  // no _inlined_string_donated_
-  PROTOBUF_FIELD_OFFSET(::InformationalMessageContents_CollectionInformationRecord, _impl_.collectionname_),
-  PROTOBUF_FIELD_OFFSET(::InformationalMessageContents_CollectionInformationRecord, _impl_.creationratedata_),
-  ~0u,  // no _has_bits_
-  PROTOBUF_FIELD_OFFSET(::InformationalMessageContents, _internal_metadata_),
-  ~0u,  // no _extensions_
-  ~0u,  // no _oneof_case_
-  ~0u,  // no _weak_field_map_
-  ~0u,  // no _inlined_string_donated_
-  PROTOBUF_FIELD_OFFSET(::InformationalMessageContents, _impl_.records_),
-  ~0u,  // no _has_bits_
-  PROTOBUF_FIELD_OFFSET(::KeyspaceMessageContents_Keyspace, _internal_metadata_),
-  ~0u,  // no _extensions_
-  ~0u,  // no _oneof_case_
-  ~0u,  // no _weak_field_map_
-  ~0u,  // no _inlined_string_donated_
-  PROTOBUF_FIELD_OFFSET(::KeyspaceMessageContents_Keyspace, _impl_.name_),
-  PROTOBUF_FIELD_OFFSET(::KeyspaceMessageContents_Keyspace, _impl_.startid_),
-  PROTOBUF_FIELD_OFFSET(::KeyspaceMessageContents_Keyspace, _impl_.endid_),
-  PROTOBUF_FIELD_OFFSET(::KeyspaceMessageContents_Keyspace, _impl_.suffixbits_),
-  ~0u,  // no _has_bits_
-  PROTOBUF_FIELD_OFFSET(::KeyspaceMessageContents, _internal_metadata_),
-  ~0u,  // no _extensions_
-  ~0u,  // no _oneof_case_
-  ~0u,  // no _weak_field_map_
-  ~0u,  // no _inlined_string_donated_
-  PROTOBUF_FIELD_OFFSET(::KeyspaceMessageContents, _impl_.keyspaces_),
-  ~0u,  // no _has_bits_
-  PROTOBUF_FIELD_OFFSET(::Message, _internal_metadata_),
-  ~0u,  // no _extensions_
-  PROTOBUF_FIELD_OFFSET(::Message, _impl_._oneof_case_[0]),
-  ~0u,  // no _weak_field_map_
-  ~0u,  // no _inlined_string_donated_
-  PROTOBUF_FIELD_OFFSET(::Message, _impl_.sourcenodeid_),
-  PROTOBUF_FIELD_OFFSET(::Message, _impl_.destnodeid_),
-  PROTOBUF_FIELD_OFFSET(::Message, _impl_.lastreceivedmsg_),
-  PROTOBUF_FIELD_OFFSET(::Message, _impl_.channelstate_),
-  PROTOBUF_FIELD_OFFSET(::Message, _impl_.timestamp_),
-  PROTOBUF_FIELD_OFFSET(::Message, _impl_.messageid_),
-  PROTOBUF_FIELD_OFFSET(::Message, _impl_.messagetype_),
-  ::_pbi::kInvalidFieldOffsetTag,
-  ::_pbi::kInvalidFieldOffsetTag,
-  PROTOBUF_FIELD_OFFSET(::Message, _impl_.message_),
+static constexpr const ::_pb::ServiceDescriptor**
+    file_level_service_descriptors_message_2eproto = nullptr;
+const ::uint32_t TableStruct_message_2eproto::offsets[] PROTOBUF_SECTION_VARIABLE(
+    protodesc_cold) = {
+    ~0u,  // no _has_bits_
+    PROTOBUF_FIELD_OFFSET(::InformationalMessageContents_CollectionInformationRecord_CreationRateData, _internal_metadata_),
+    ~0u,  // no _extensions_
+    ~0u,  // no _oneof_case_
+    ~0u,  // no _weak_field_map_
+    ~0u,  // no _inlined_string_donated_
+    ~0u,  // no _split_
+    ~0u,  // no sizeof(Split)
+    PROTOBUF_FIELD_OFFSET(::InformationalMessageContents_CollectionInformationRecord_CreationRateData, _impl_.shortallocationratio_),
+    PROTOBUF_FIELD_OFFSET(::InformationalMessageContents_CollectionInformationRecord_CreationRateData, _impl_.longallocationratio_),
+    PROTOBUF_FIELD_OFFSET(::InformationalMessageContents_CollectionInformationRecord_CreationRateData, _impl_.createdpreviousday_),
+    PROTOBUF_FIELD_OFFSET(::InformationalMessageContents_CollectionInformationRecord_CreationRateData, _impl_.createdpreviousweek_),
+    PROTOBUF_FIELD_OFFSET(::InformationalMessageContents_CollectionInformationRecord, _impl_._has_bits_),
+    PROTOBUF_FIELD_OFFSET(::InformationalMessageContents_CollectionInformationRecord, _internal_metadata_),
+    ~0u,  // no _extensions_
+    ~0u,  // no _oneof_case_
+    ~0u,  // no _weak_field_map_
+    ~0u,  // no _inlined_string_donated_
+    ~0u,  // no _split_
+    ~0u,  // no sizeof(Split)
+    PROTOBUF_FIELD_OFFSET(::InformationalMessageContents_CollectionInformationRecord, _impl_.collectionname_),
+    PROTOBUF_FIELD_OFFSET(::InformationalMessageContents_CollectionInformationRecord, _impl_.creationratedata_),
+    ~0u,
+    0,
+    ~0u,  // no _has_bits_
+    PROTOBUF_FIELD_OFFSET(::InformationalMessageContents, _internal_metadata_),
+    ~0u,  // no _extensions_
+    ~0u,  // no _oneof_case_
+    ~0u,  // no _weak_field_map_
+    ~0u,  // no _inlined_string_donated_
+    ~0u,  // no _split_
+    ~0u,  // no sizeof(Split)
+    PROTOBUF_FIELD_OFFSET(::InformationalMessageContents, _impl_.records_),
+    ~0u,  // no _has_bits_
+    PROTOBUF_FIELD_OFFSET(::KeyspaceMessageContents_Keyspace, _internal_metadata_),
+    ~0u,  // no _extensions_
+    ~0u,  // no _oneof_case_
+    ~0u,  // no _weak_field_map_
+    ~0u,  // no _inlined_string_donated_
+    ~0u,  // no _split_
+    ~0u,  // no sizeof(Split)
+    PROTOBUF_FIELD_OFFSET(::KeyspaceMessageContents_Keyspace, _impl_.name_),
+    PROTOBUF_FIELD_OFFSET(::KeyspaceMessageContents_Keyspace, _impl_.startid_),
+    PROTOBUF_FIELD_OFFSET(::KeyspaceMessageContents_Keyspace, _impl_.endid_),
+    PROTOBUF_FIELD_OFFSET(::KeyspaceMessageContents_Keyspace, _impl_.suffixbits_),
+    ~0u,  // no _has_bits_
+    PROTOBUF_FIELD_OFFSET(::KeyspaceMessageContents, _internal_metadata_),
+    ~0u,  // no _extensions_
+    ~0u,  // no _oneof_case_
+    ~0u,  // no _weak_field_map_
+    ~0u,  // no _inlined_string_donated_
+    ~0u,  // no _split_
+    ~0u,  // no sizeof(Split)
+    PROTOBUF_FIELD_OFFSET(::KeyspaceMessageContents, _impl_.keyspaces_),
+    PROTOBUF_FIELD_OFFSET(::Message, _impl_._has_bits_),
+    PROTOBUF_FIELD_OFFSET(::Message, _internal_metadata_),
+    ~0u,  // no _extensions_
+    PROTOBUF_FIELD_OFFSET(::Message, _impl_._oneof_case_[0]),
+    ~0u,  // no _weak_field_map_
+    ~0u,  // no _inlined_string_donated_
+    ~0u,  // no _split_
+    ~0u,  // no sizeof(Split)
+    PROTOBUF_FIELD_OFFSET(::Message, _impl_.sourcenodeid_),
+    PROTOBUF_FIELD_OFFSET(::Message, _impl_.destnodeid_),
+    PROTOBUF_FIELD_OFFSET(::Message, _impl_.lastreceivedmsg_),
+    PROTOBUF_FIELD_OFFSET(::Message, _impl_.channelstate_),
+    PROTOBUF_FIELD_OFFSET(::Message, _impl_.timestamp_),
+    PROTOBUF_FIELD_OFFSET(::Message, _impl_.messageid_),
+    PROTOBUF_FIELD_OFFSET(::Message, _impl_.messagetype_),
+    ::_pbi::kInvalidFieldOffsetTag,
+    ::_pbi::kInvalidFieldOffsetTag,
+    PROTOBUF_FIELD_OFFSET(::Message, _impl_.message_),
+    ~0u,
+    ~0u,
+    ~0u,
+    ~0u,
+    0,
+    ~0u,
+    ~0u,
+    ~0u,
+    ~0u,
 };
-static const ::_pbi::MigrationSchema schemas[] PROTOBUF_SECTION_VARIABLE(protodesc_cold) = {
-  { 0, -1, -1, sizeof(::InformationalMessageContents_CollectionInformationRecord_CreationRateData)},
-  { 10, -1, -1, sizeof(::InformationalMessageContents_CollectionInformationRecord)},
-  { 18, -1, -1, sizeof(::InformationalMessageContents)},
-  { 25, -1, -1, sizeof(::KeyspaceMessageContents_Keyspace)},
-  { 35, -1, -1, sizeof(::KeyspaceMessageContents)},
-  { 42, -1, -1, sizeof(::Message)},
+
+static const ::_pbi::MigrationSchema
+    schemas[] PROTOBUF_SECTION_VARIABLE(protodesc_cold) = {
+        { 0, -1, -1, sizeof(::InformationalMessageContents_CollectionInformationRecord_CreationRateData)},
+        { 12, 22, -1, sizeof(::InformationalMessageContents_CollectionInformationRecord)},
+        { 24, -1, -1, sizeof(::InformationalMessageContents)},
+        { 33, -1, -1, sizeof(::KeyspaceMessageContents_Keyspace)},
+        { 45, -1, -1, sizeof(::KeyspaceMessageContents)},
+        { 54, 72, -1, sizeof(::Message)},
 };
 
 static const ::_pb::Message* const file_default_instances[] = {
-  &::_InformationalMessageContents_CollectionInformationRecord_CreationRateData_default_instance_._instance,
-  &::_InformationalMessageContents_CollectionInformationRecord_default_instance_._instance,
-  &::_InformationalMessageContents_default_instance_._instance,
-  &::_KeyspaceMessageContents_Keyspace_default_instance_._instance,
-  &::_KeyspaceMessageContents_default_instance_._instance,
-  &::_Message_default_instance_._instance,
+    &::_InformationalMessageContents_CollectionInformationRecord_CreationRateData_default_instance_._instance,
+    &::_InformationalMessageContents_CollectionInformationRecord_default_instance_._instance,
+    &::_InformationalMessageContents_default_instance_._instance,
+    &::_KeyspaceMessageContents_Keyspace_default_instance_._instance,
+    &::_KeyspaceMessageContents_default_instance_._instance,
+    &::_Message_default_instance_._instance,
 };
-
-const char descriptor_table_protodef_message_2eproto[] PROTOBUF_SECTION_VARIABLE(protodesc_cold) =
-  "\n\rmessage.proto\032\037google/protobuf/timesta"
-  "mp.proto\"\221\003\n\034InformationalMessageContent"
-  "s\022J\n\007records\030\001 \003(\01329.InformationalMessag"
-  "eContents.CollectionInformationRecord\032\244\002"
-  "\n\033CollectionInformationRecord\022\026\n\016collect"
-  "ionName\030\001 \001(\t\022d\n\020creationRateData\030\002 \001(\0132"
-  "J.InformationalMessageContents.Collectio"
-  "nInformationRecord.CreationRateData\032\206\001\n\020"
-  "CreationRateData\022\034\n\024shortAllocationRatio"
-  "\030\001 \001(\001\022\033\n\023longAllocationRatio\030\002 \001(\001\022\032\n\022c"
-  "reatedPreviousDay\030\003 \001(\001\022\033\n\023createdPrevio"
-  "usWeek\030\004 \001(\001\"\235\001\n\027KeyspaceMessageContents"
-  "\0224\n\tkeyspaces\030\001 \003(\0132!.KeyspaceMessageCon"
-  "tents.Keyspace\032L\n\010Keyspace\022\014\n\004name\030\001 \001(\t"
-  "\022\017\n\007startID\030\002 \001(\004\022\r\n\005endID\030\003 \001(\004\022\022\n\nsuff"
-  "ixBits\030\004 \001(\r\"\356\003\n\007Message\022\024\n\014sourceNodeID"
-  "\030\001 \001(\014\022\022\n\ndestNodeID\030\002 \001(\014\022\027\n\017lastReceiv"
-  "edMsg\030\003 \001(\004\022+\n\014channelState\030\004 \001(\0162\025.Mess"
-  "age.ChannelState\022-\n\ttimestamp\030\005 \001(\0132\032.go"
-  "ogle.protobuf.Timestamp\022\021\n\tmessageID\030\006 \001"
-  "(\022\022)\n\013messageType\030\007 \001(\0162\024.Message.Messag"
-  "eType\022-\n\004info\030\010 \001(\0132\035.InformationalMessa"
-  "geContentsH\000\022,\n\010keyspace\030\t \001(\0132\030.Keyspac"
-  "eMessageContentsH\000\"S\n\014ChannelState\022\023\n\017IN"
-  "ITIAL_STARTUP\020\000\022\030\n\024NORMAL_COMMUNICATION\020"
-  "\001\022\024\n\020CHANNEL_SHUTDOWN\020\002\"I\n\013MessageType\022\017"
-  "\n\013INFORMATION\020\000\022\014\n\010KEYSPACE\020\001\022\033\n\027DATA_RE"
-  "PLICATION_UNUSED\020\002B\t\n\007messageb\006proto3"
-  ;
-static const ::_pbi::DescriptorTable* const descriptor_table_message_2eproto_deps[1] = {
-  &::descriptor_table_google_2fprotobuf_2ftimestamp_2eproto,
+const char descriptor_table_protodef_message_2eproto[] PROTOBUF_SECTION_VARIABLE(protodesc_cold) = {
+    "\n\rmessage.proto\032\037google/protobuf/timesta"
+    "mp.proto\"\221\003\n\034InformationalMessageContent"
+    "s\022J\n\007records\030\001 \003(\01329.InformationalMessag"
+    "eContents.CollectionInformationRecord\032\244\002"
+    "\n\033CollectionInformationRecord\022\026\n\016collect"
+    "ionName\030\001 \001(\t\022d\n\020creationRateData\030\002 \001(\0132"
+    "J.InformationalMessageContents.Collectio"
+    "nInformationRecord.CreationRateData\032\206\001\n\020"
+    "CreationRateData\022\034\n\024shortAllocationRatio"
+    "\030\001 \001(\001\022\033\n\023longAllocationRatio\030\002 \001(\001\022\032\n\022c"
+    "reatedPreviousDay\030\003 \001(\001\022\033\n\023createdPrevio"
+    "usWeek\030\004 \001(\001\"\235\001\n\027KeyspaceMessageContents"
+    "\0224\n\tkeyspaces\030\001 \003(\0132!.KeyspaceMessageCon"
+    "tents.Keyspace\032L\n\010Keyspace\022\014\n\004name\030\001 \001(\t"
+    "\022\017\n\007startID\030\002 \001(\004\022\r\n\005endID\030\003 \001(\004\022\022\n\nsuff"
+    "ixBits\030\004 \001(\r\"\356\003\n\007Message\022\024\n\014sourceNodeID"
+    "\030\001 \001(\014\022\022\n\ndestNodeID\030\002 \001(\014\022\027\n\017lastReceiv"
+    "edMsg\030\003 \001(\004\022+\n\014channelState\030\004 \001(\0162\025.Mess"
+    "age.ChannelState\022-\n\ttimestamp\030\005 \001(\0132\032.go"
+    "ogle.protobuf.Timestamp\022\021\n\tmessageID\030\006 \001"
+    "(\022\022)\n\013messageType\030\007 \001(\0162\024.Message.Messag"
+    "eType\022-\n\004info\030\010 \001(\0132\035.InformationalMessa"
+    "geContentsH\000\022,\n\010keyspace\030\t \001(\0132\030.Keyspac"
+    "eMessageContentsH\000\"S\n\014ChannelState\022\023\n\017IN"
+    "ITIAL_STARTUP\020\000\022\030\n\024NORMAL_COMMUNICATION\020"
+    "\001\022\024\n\020CHANNEL_SHUTDOWN\020\002\"I\n\013MessageType\022\017"
+    "\n\013INFORMATION\020\000\022\014\n\010KEYSPACE\020\001\022\033\n\027DATA_RE"
+    "PLICATION_UNUSED\020\002B\t\n\007messageb\006proto3"
 };
-static ::_pbi::once_flag descriptor_table_message_2eproto_once;
+static const ::_pbi::DescriptorTable* const descriptor_table_message_2eproto_deps[1] =
+    {
+        &::descriptor_table_google_2fprotobuf_2ftimestamp_2eproto,
+};
+static ::absl::once_flag descriptor_table_message_2eproto_once;
 const ::_pbi::DescriptorTable descriptor_table_message_2eproto = {
-    false, false, 1117, descriptor_table_protodef_message_2eproto,
+    false,
+    false,
+    1117,
+    descriptor_table_protodef_message_2eproto,
     "message.proto",
-    &descriptor_table_message_2eproto_once, descriptor_table_message_2eproto_deps, 1, 6,
-    schemas, file_default_instances, TableStruct_message_2eproto::offsets,
-    file_level_metadata_message_2eproto, file_level_enum_descriptors_message_2eproto,
+    &descriptor_table_message_2eproto_once,
+    descriptor_table_message_2eproto_deps,
+    1,
+    6,
+    schemas,
+    file_default_instances,
+    TableStruct_message_2eproto::offsets,
+    file_level_metadata_message_2eproto,
+    file_level_enum_descriptors_message_2eproto,
     file_level_service_descriptors_message_2eproto,
 };
+
+// This function exists to be marked as weak.
+// It can significantly speed up compilation by breaking up LLVM's SCC
+// in the .pb.cc translation units. Large translation units see a
+// reduction of more than 35% of walltime for optimized builds. Without
+// the weak attribute all the messages in the file, including all the
+// vtables and everything they use become part of the same SCC through
+// a cycle like:
+// GetMetadata -> descriptor table -> default instances ->
+//   vtables -> GetMetadata
+// By adding a weak function here we break the connection from the
+// individual vtables back into the descriptor table.
 PROTOBUF_ATTRIBUTE_WEAK const ::_pbi::DescriptorTable* descriptor_table_message_2eproto_getter() {
   return &descriptor_table_message_2eproto;
 }
-
 // Force running AddDescriptors() at dynamic initialization time.
-PROTOBUF_ATTRIBUTE_INIT_PRIORITY2 static ::_pbi::AddDescriptorsRunner dynamic_init_dummy_message_2eproto(&descriptor_table_message_2eproto);
+PROTOBUF_ATTRIBUTE_INIT_PRIORITY2
+static ::_pbi::AddDescriptorsRunner dynamic_init_dummy_message_2eproto(&descriptor_table_message_2eproto);
 const ::PROTOBUF_NAMESPACE_ID::EnumDescriptor* Message_ChannelState_descriptor() {
   ::PROTOBUF_NAMESPACE_ID::internal::AssignDescriptors(&descriptor_table_message_2eproto);
   return file_level_enum_descriptors_message_2eproto[0];
@@ -257,15 +339,18 @@ bool Message_ChannelState_IsValid(int value) {
       return false;
   }
 }
+#if (__cplusplus < 201703) && \
+  (!defined(_MSC_VER) || (_MSC_VER >= 1900 && _MSC_VER < 1912))
 
-#if (__cplusplus < 201703) && (!defined(_MSC_VER) || (_MSC_VER >= 1900 && _MSC_VER < 1912))
 constexpr Message_ChannelState Message::INITIAL_STARTUP;
 constexpr Message_ChannelState Message::NORMAL_COMMUNICATION;
 constexpr Message_ChannelState Message::CHANNEL_SHUTDOWN;
 constexpr Message_ChannelState Message::ChannelState_MIN;
 constexpr Message_ChannelState Message::ChannelState_MAX;
 constexpr int Message::ChannelState_ARRAYSIZE;
-#endif  // (__cplusplus < 201703) && (!defined(_MSC_VER) || (_MSC_VER >= 1900 && _MSC_VER < 1912))
+
+#endif  // (__cplusplus < 201703) &&
+        // (!defined(_MSC_VER) || (_MSC_VER >= 1900 && _MSC_VER < 1912))
 const ::PROTOBUF_NAMESPACE_ID::EnumDescriptor* Message_MessageType_descriptor() {
   ::PROTOBUF_NAMESPACE_ID::internal::AssignDescriptors(&descriptor_table_message_2eproto);
   return file_level_enum_descriptors_message_2eproto[1];
@@ -280,54 +365,47 @@ bool Message_MessageType_IsValid(int value) {
       return false;
   }
 }
+#if (__cplusplus < 201703) && \
+  (!defined(_MSC_VER) || (_MSC_VER >= 1900 && _MSC_VER < 1912))
 
-#if (__cplusplus < 201703) && (!defined(_MSC_VER) || (_MSC_VER >= 1900 && _MSC_VER < 1912))
 constexpr Message_MessageType Message::INFORMATION;
 constexpr Message_MessageType Message::KEYSPACE;
 constexpr Message_MessageType Message::DATA_REPLICATION_UNUSED;
 constexpr Message_MessageType Message::MessageType_MIN;
 constexpr Message_MessageType Message::MessageType_MAX;
 constexpr int Message::MessageType_ARRAYSIZE;
-#endif  // (__cplusplus < 201703) && (!defined(_MSC_VER) || (_MSC_VER >= 1900 && _MSC_VER < 1912))
 
+#endif  // (__cplusplus < 201703) &&
+        // (!defined(_MSC_VER) || (_MSC_VER >= 1900 && _MSC_VER < 1912))
 // ===================================================================
 
 class InformationalMessageContents_CollectionInformationRecord_CreationRateData::_Internal {
  public:
 };
 
-InformationalMessageContents_CollectionInformationRecord_CreationRateData::InformationalMessageContents_CollectionInformationRecord_CreationRateData(::PROTOBUF_NAMESPACE_ID::Arena* arena,
-                         bool is_message_owned)
-  : ::PROTOBUF_NAMESPACE_ID::Message(arena, is_message_owned) {
-  SharedCtor(arena, is_message_owned);
+InformationalMessageContents_CollectionInformationRecord_CreationRateData::InformationalMessageContents_CollectionInformationRecord_CreationRateData(::PROTOBUF_NAMESPACE_ID::Arena* arena)
+  : ::PROTOBUF_NAMESPACE_ID::Message(arena) {
+  SharedCtor(arena);
   // @@protoc_insertion_point(arena_constructor:InformationalMessageContents.CollectionInformationRecord.CreationRateData)
 }
 InformationalMessageContents_CollectionInformationRecord_CreationRateData::InformationalMessageContents_CollectionInformationRecord_CreationRateData(const InformationalMessageContents_CollectionInformationRecord_CreationRateData& from)
-  : ::PROTOBUF_NAMESPACE_ID::Message() {
-  InformationalMessageContents_CollectionInformationRecord_CreationRateData* const _this = this; (void)_this;
-  new (&_impl_) Impl_{
-      decltype(_impl_.shortallocationratio_){}
-    , decltype(_impl_.longallocationratio_){}
-    , decltype(_impl_.createdpreviousday_){}
-    , decltype(_impl_.createdpreviousweek_){}
-    , /*decltype(_impl_._cached_size_)*/{}};
-
-  _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
-  ::memcpy(&_impl_.shortallocationratio_, &from._impl_.shortallocationratio_,
-    static_cast<size_t>(reinterpret_cast<char*>(&_impl_.createdpreviousweek_) -
-    reinterpret_cast<char*>(&_impl_.shortallocationratio_)) + sizeof(_impl_.createdpreviousweek_));
+  : ::PROTOBUF_NAMESPACE_ID::Message(), _impl_(from._impl_) {
+  _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(
+      from._internal_metadata_);
   // @@protoc_insertion_point(copy_constructor:InformationalMessageContents.CollectionInformationRecord.CreationRateData)
 }
 
-inline void InformationalMessageContents_CollectionInformationRecord_CreationRateData::SharedCtor(
-    ::_pb::Arena* arena, bool is_message_owned) {
+inline void InformationalMessageContents_CollectionInformationRecord_CreationRateData::SharedCtor(::_pb::Arena* arena) {
   (void)arena;
-  (void)is_message_owned;
   new (&_impl_) Impl_{
-      decltype(_impl_.shortallocationratio_){0}
-    , decltype(_impl_.longallocationratio_){0}
-    , decltype(_impl_.createdpreviousday_){0}
-    , decltype(_impl_.createdpreviousweek_){0}
+      decltype(_impl_.shortallocationratio_) { 0 }
+
+    , decltype(_impl_.longallocationratio_) { 0 }
+
+    , decltype(_impl_.createdpreviousday_) { 0 }
+
+    , decltype(_impl_.createdpreviousweek_) { 0 }
+
     , /*decltype(_impl_._cached_size_)*/{}
   };
 }
@@ -342,7 +420,7 @@ InformationalMessageContents_CollectionInformationRecord_CreationRateData::~Info
 }
 
 inline void InformationalMessageContents_CollectionInformationRecord_CreationRateData::SharedDtor() {
-  GOOGLE_DCHECK(GetArenaForAllocation() == nullptr);
+  ABSL_DCHECK(GetArenaForAllocation() == nullptr);
 }
 
 void InformationalMessageContents_CollectionInformationRecord_CreationRateData::SetCachedSize(int size) const {
@@ -351,11 +429,11 @@ void InformationalMessageContents_CollectionInformationRecord_CreationRateData::
 
 void InformationalMessageContents_CollectionInformationRecord_CreationRateData::Clear() {
 // @@protoc_insertion_point(message_clear_start:InformationalMessageContents.CollectionInformationRecord.CreationRateData)
-  uint32_t cached_has_bits = 0;
+  ::uint32_t cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
-  ::memset(&_impl_.shortallocationratio_, 0, static_cast<size_t>(
+  ::memset(&_impl_.shortallocationratio_, 0, static_cast<::size_t>(
       reinterpret_cast<char*>(&_impl_.createdpreviousweek_) -
       reinterpret_cast<char*>(&_impl_.shortallocationratio_)) + sizeof(_impl_.createdpreviousweek_));
   _internal_metadata_.Clear<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
@@ -364,40 +442,44 @@ void InformationalMessageContents_CollectionInformationRecord_CreationRateData::
 const char* InformationalMessageContents_CollectionInformationRecord_CreationRateData::_InternalParse(const char* ptr, ::_pbi::ParseContext* ctx) {
 #define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
   while (!ctx->Done(&ptr)) {
-    uint32_t tag;
+    ::uint32_t tag;
     ptr = ::_pbi::ReadTag(ptr, &tag);
     switch (tag >> 3) {
       // double shortAllocationRatio = 1;
       case 1:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 9)) {
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::uint8_t>(tag) == 9)) {
           _impl_.shortallocationratio_ = ::PROTOBUF_NAMESPACE_ID::internal::UnalignedLoad<double>(ptr);
           ptr += sizeof(double);
-        } else
+        } else {
           goto handle_unusual;
+        }
         continue;
       // double longAllocationRatio = 2;
       case 2:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 17)) {
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::uint8_t>(tag) == 17)) {
           _impl_.longallocationratio_ = ::PROTOBUF_NAMESPACE_ID::internal::UnalignedLoad<double>(ptr);
           ptr += sizeof(double);
-        } else
+        } else {
           goto handle_unusual;
+        }
         continue;
       // double createdPreviousDay = 3;
       case 3:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 25)) {
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::uint8_t>(tag) == 25)) {
           _impl_.createdpreviousday_ = ::PROTOBUF_NAMESPACE_ID::internal::UnalignedLoad<double>(ptr);
           ptr += sizeof(double);
-        } else
+        } else {
           goto handle_unusual;
+        }
         continue;
       // double createdPreviousWeek = 4;
       case 4:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 33)) {
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::uint8_t>(tag) == 33)) {
           _impl_.createdpreviousweek_ = ::PROTOBUF_NAMESPACE_ID::internal::UnalignedLoad<double>(ptr);
           ptr += sizeof(double);
-        } else
+        } else {
           goto handle_unusual;
+        }
         continue;
       default:
         goto handle_unusual;
@@ -422,50 +504,54 @@ failure:
 #undef CHK_
 }
 
-uint8_t* InformationalMessageContents_CollectionInformationRecord_CreationRateData::_InternalSerialize(
-    uint8_t* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
+::uint8_t* InformationalMessageContents_CollectionInformationRecord_CreationRateData::_InternalSerialize(
+    ::uint8_t* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
   // @@protoc_insertion_point(serialize_to_array_start:InformationalMessageContents.CollectionInformationRecord.CreationRateData)
-  uint32_t cached_has_bits = 0;
+  ::uint32_t cached_has_bits = 0;
   (void) cached_has_bits;
 
   // double shortAllocationRatio = 1;
-  static_assert(sizeof(uint64_t) == sizeof(double), "Code assumes uint64_t and double are the same size.");
+  static_assert(sizeof(::uint64_t) == sizeof(double), "Code assumes ::uint64_t and double are the same size.");
   double tmp_shortallocationratio = this->_internal_shortallocationratio();
-  uint64_t raw_shortallocationratio;
+  ::uint64_t raw_shortallocationratio;
   memcpy(&raw_shortallocationratio, &tmp_shortallocationratio, sizeof(tmp_shortallocationratio));
   if (raw_shortallocationratio != 0) {
     target = stream->EnsureSpace(target);
-    target = ::_pbi::WireFormatLite::WriteDoubleToArray(1, this->_internal_shortallocationratio(), target);
+    target = ::_pbi::WireFormatLite::WriteDoubleToArray(
+        1, this->_internal_shortallocationratio(), target);
   }
 
   // double longAllocationRatio = 2;
-  static_assert(sizeof(uint64_t) == sizeof(double), "Code assumes uint64_t and double are the same size.");
+  static_assert(sizeof(::uint64_t) == sizeof(double), "Code assumes ::uint64_t and double are the same size.");
   double tmp_longallocationratio = this->_internal_longallocationratio();
-  uint64_t raw_longallocationratio;
+  ::uint64_t raw_longallocationratio;
   memcpy(&raw_longallocationratio, &tmp_longallocationratio, sizeof(tmp_longallocationratio));
   if (raw_longallocationratio != 0) {
     target = stream->EnsureSpace(target);
-    target = ::_pbi::WireFormatLite::WriteDoubleToArray(2, this->_internal_longallocationratio(), target);
+    target = ::_pbi::WireFormatLite::WriteDoubleToArray(
+        2, this->_internal_longallocationratio(), target);
   }
 
   // double createdPreviousDay = 3;
-  static_assert(sizeof(uint64_t) == sizeof(double), "Code assumes uint64_t and double are the same size.");
+  static_assert(sizeof(::uint64_t) == sizeof(double), "Code assumes ::uint64_t and double are the same size.");
   double tmp_createdpreviousday = this->_internal_createdpreviousday();
-  uint64_t raw_createdpreviousday;
+  ::uint64_t raw_createdpreviousday;
   memcpy(&raw_createdpreviousday, &tmp_createdpreviousday, sizeof(tmp_createdpreviousday));
   if (raw_createdpreviousday != 0) {
     target = stream->EnsureSpace(target);
-    target = ::_pbi::WireFormatLite::WriteDoubleToArray(3, this->_internal_createdpreviousday(), target);
+    target = ::_pbi::WireFormatLite::WriteDoubleToArray(
+        3, this->_internal_createdpreviousday(), target);
   }
 
   // double createdPreviousWeek = 4;
-  static_assert(sizeof(uint64_t) == sizeof(double), "Code assumes uint64_t and double are the same size.");
+  static_assert(sizeof(::uint64_t) == sizeof(double), "Code assumes ::uint64_t and double are the same size.");
   double tmp_createdpreviousweek = this->_internal_createdpreviousweek();
-  uint64_t raw_createdpreviousweek;
+  ::uint64_t raw_createdpreviousweek;
   memcpy(&raw_createdpreviousweek, &tmp_createdpreviousweek, sizeof(tmp_createdpreviousweek));
   if (raw_createdpreviousweek != 0) {
     target = stream->EnsureSpace(target);
-    target = ::_pbi::WireFormatLite::WriteDoubleToArray(4, this->_internal_createdpreviousweek(), target);
+    target = ::_pbi::WireFormatLite::WriteDoubleToArray(
+        4, this->_internal_createdpreviousweek(), target);
   }
 
   if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
@@ -476,48 +562,48 @@ uint8_t* InformationalMessageContents_CollectionInformationRecord_CreationRateDa
   return target;
 }
 
-size_t InformationalMessageContents_CollectionInformationRecord_CreationRateData::ByteSizeLong() const {
+::size_t InformationalMessageContents_CollectionInformationRecord_CreationRateData::ByteSizeLong() const {
 // @@protoc_insertion_point(message_byte_size_start:InformationalMessageContents.CollectionInformationRecord.CreationRateData)
-  size_t total_size = 0;
+  ::size_t total_size = 0;
 
-  uint32_t cached_has_bits = 0;
+  ::uint32_t cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
   // double shortAllocationRatio = 1;
-  static_assert(sizeof(uint64_t) == sizeof(double), "Code assumes uint64_t and double are the same size.");
+  static_assert(sizeof(::uint64_t) == sizeof(double), "Code assumes ::uint64_t and double are the same size.");
   double tmp_shortallocationratio = this->_internal_shortallocationratio();
-  uint64_t raw_shortallocationratio;
+  ::uint64_t raw_shortallocationratio;
   memcpy(&raw_shortallocationratio, &tmp_shortallocationratio, sizeof(tmp_shortallocationratio));
   if (raw_shortallocationratio != 0) {
-    total_size += 1 + 8;
+    total_size += 9;
   }
 
   // double longAllocationRatio = 2;
-  static_assert(sizeof(uint64_t) == sizeof(double), "Code assumes uint64_t and double are the same size.");
+  static_assert(sizeof(::uint64_t) == sizeof(double), "Code assumes ::uint64_t and double are the same size.");
   double tmp_longallocationratio = this->_internal_longallocationratio();
-  uint64_t raw_longallocationratio;
+  ::uint64_t raw_longallocationratio;
   memcpy(&raw_longallocationratio, &tmp_longallocationratio, sizeof(tmp_longallocationratio));
   if (raw_longallocationratio != 0) {
-    total_size += 1 + 8;
+    total_size += 9;
   }
 
   // double createdPreviousDay = 3;
-  static_assert(sizeof(uint64_t) == sizeof(double), "Code assumes uint64_t and double are the same size.");
+  static_assert(sizeof(::uint64_t) == sizeof(double), "Code assumes ::uint64_t and double are the same size.");
   double tmp_createdpreviousday = this->_internal_createdpreviousday();
-  uint64_t raw_createdpreviousday;
+  ::uint64_t raw_createdpreviousday;
   memcpy(&raw_createdpreviousday, &tmp_createdpreviousday, sizeof(tmp_createdpreviousday));
   if (raw_createdpreviousday != 0) {
-    total_size += 1 + 8;
+    total_size += 9;
   }
 
   // double createdPreviousWeek = 4;
-  static_assert(sizeof(uint64_t) == sizeof(double), "Code assumes uint64_t and double are the same size.");
+  static_assert(sizeof(::uint64_t) == sizeof(double), "Code assumes ::uint64_t and double are the same size.");
   double tmp_createdpreviousweek = this->_internal_createdpreviousweek();
-  uint64_t raw_createdpreviousweek;
+  ::uint64_t raw_createdpreviousweek;
   memcpy(&raw_createdpreviousweek, &tmp_createdpreviousweek, sizeof(tmp_createdpreviousweek));
   if (raw_createdpreviousweek != 0) {
-    total_size += 1 + 8;
+    total_size += 9;
   }
 
   return MaybeComputeUnknownFieldsSize(total_size, &_impl_._cached_size_);
@@ -534,34 +620,34 @@ void InformationalMessageContents_CollectionInformationRecord_CreationRateData::
   auto* const _this = static_cast<InformationalMessageContents_CollectionInformationRecord_CreationRateData*>(&to_msg);
   auto& from = static_cast<const InformationalMessageContents_CollectionInformationRecord_CreationRateData&>(from_msg);
   // @@protoc_insertion_point(class_specific_merge_from_start:InformationalMessageContents.CollectionInformationRecord.CreationRateData)
-  GOOGLE_DCHECK_NE(&from, _this);
-  uint32_t cached_has_bits = 0;
+  ABSL_DCHECK_NE(&from, _this);
+  ::uint32_t cached_has_bits = 0;
   (void) cached_has_bits;
 
-  static_assert(sizeof(uint64_t) == sizeof(double), "Code assumes uint64_t and double are the same size.");
+  static_assert(sizeof(::uint64_t) == sizeof(double), "Code assumes ::uint64_t and double are the same size.");
   double tmp_shortallocationratio = from._internal_shortallocationratio();
-  uint64_t raw_shortallocationratio;
+  ::uint64_t raw_shortallocationratio;
   memcpy(&raw_shortallocationratio, &tmp_shortallocationratio, sizeof(tmp_shortallocationratio));
   if (raw_shortallocationratio != 0) {
     _this->_internal_set_shortallocationratio(from._internal_shortallocationratio());
   }
-  static_assert(sizeof(uint64_t) == sizeof(double), "Code assumes uint64_t and double are the same size.");
+  static_assert(sizeof(::uint64_t) == sizeof(double), "Code assumes ::uint64_t and double are the same size.");
   double tmp_longallocationratio = from._internal_longallocationratio();
-  uint64_t raw_longallocationratio;
+  ::uint64_t raw_longallocationratio;
   memcpy(&raw_longallocationratio, &tmp_longallocationratio, sizeof(tmp_longallocationratio));
   if (raw_longallocationratio != 0) {
     _this->_internal_set_longallocationratio(from._internal_longallocationratio());
   }
-  static_assert(sizeof(uint64_t) == sizeof(double), "Code assumes uint64_t and double are the same size.");
+  static_assert(sizeof(::uint64_t) == sizeof(double), "Code assumes ::uint64_t and double are the same size.");
   double tmp_createdpreviousday = from._internal_createdpreviousday();
-  uint64_t raw_createdpreviousday;
+  ::uint64_t raw_createdpreviousday;
   memcpy(&raw_createdpreviousday, &tmp_createdpreviousday, sizeof(tmp_createdpreviousday));
   if (raw_createdpreviousday != 0) {
     _this->_internal_set_createdpreviousday(from._internal_createdpreviousday());
   }
-  static_assert(sizeof(uint64_t) == sizeof(double), "Code assumes uint64_t and double are the same size.");
+  static_assert(sizeof(::uint64_t) == sizeof(double), "Code assumes ::uint64_t and double are the same size.");
   double tmp_createdpreviousweek = from._internal_createdpreviousweek();
-  uint64_t raw_createdpreviousweek;
+  ::uint64_t raw_createdpreviousweek;
   memcpy(&raw_createdpreviousweek, &tmp_createdpreviousweek, sizeof(tmp_createdpreviousweek));
   if (raw_createdpreviousweek != 0) {
     _this->_internal_set_createdpreviousweek(from._internal_createdpreviousweek());
@@ -596,60 +682,65 @@ void InformationalMessageContents_CollectionInformationRecord_CreationRateData::
       &descriptor_table_message_2eproto_getter, &descriptor_table_message_2eproto_once,
       file_level_metadata_message_2eproto[0]);
 }
-
 // ===================================================================
 
 class InformationalMessageContents_CollectionInformationRecord::_Internal {
  public:
+  using HasBits = decltype(std::declval<InformationalMessageContents_CollectionInformationRecord>()._impl_._has_bits_);
+  static constexpr ::int32_t kHasBitsOffset =
+    8 * PROTOBUF_FIELD_OFFSET(InformationalMessageContents_CollectionInformationRecord, _impl_._has_bits_);
   static const ::InformationalMessageContents_CollectionInformationRecord_CreationRateData& creationratedata(const InformationalMessageContents_CollectionInformationRecord* msg);
+  static void set_has_creationratedata(HasBits* has_bits) {
+    (*has_bits)[0] |= 1u;
+  }
 };
 
 const ::InformationalMessageContents_CollectionInformationRecord_CreationRateData&
 InformationalMessageContents_CollectionInformationRecord::_Internal::creationratedata(const InformationalMessageContents_CollectionInformationRecord* msg) {
   return *msg->_impl_.creationratedata_;
 }
-InformationalMessageContents_CollectionInformationRecord::InformationalMessageContents_CollectionInformationRecord(::PROTOBUF_NAMESPACE_ID::Arena* arena,
-                         bool is_message_owned)
-  : ::PROTOBUF_NAMESPACE_ID::Message(arena, is_message_owned) {
-  SharedCtor(arena, is_message_owned);
+InformationalMessageContents_CollectionInformationRecord::InformationalMessageContents_CollectionInformationRecord(::PROTOBUF_NAMESPACE_ID::Arena* arena)
+  : ::PROTOBUF_NAMESPACE_ID::Message(arena) {
+  SharedCtor(arena);
   // @@protoc_insertion_point(arena_constructor:InformationalMessageContents.CollectionInformationRecord)
 }
 InformationalMessageContents_CollectionInformationRecord::InformationalMessageContents_CollectionInformationRecord(const InformationalMessageContents_CollectionInformationRecord& from)
   : ::PROTOBUF_NAMESPACE_ID::Message() {
   InformationalMessageContents_CollectionInformationRecord* const _this = this; (void)_this;
   new (&_impl_) Impl_{
-      decltype(_impl_.collectionname_){}
-    , decltype(_impl_.creationratedata_){nullptr}
-    , /*decltype(_impl_._cached_size_)*/{}};
+      decltype(_impl_._has_bits_){from._impl_._has_bits_}
+    , /*decltype(_impl_._cached_size_)*/{}
+    , decltype(_impl_.collectionname_) {}
+
+    , decltype(_impl_.creationratedata_){nullptr}};
 
   _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
   _impl_.collectionname_.InitDefault();
   #ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
-    _impl_.collectionname_.Set("", GetArenaForAllocation());
-  #endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
+        _impl_.collectionname_.Set("", GetArenaForAllocation());
+  #endif  // PROTOBUF_FORCE_COPY_DEFAULT_STRING
   if (!from._internal_collectionname().empty()) {
-    _this->_impl_.collectionname_.Set(from._internal_collectionname(), 
-      _this->GetArenaForAllocation());
+    _this->_impl_.collectionname_.Set(from._internal_collectionname(), _this->GetArenaForAllocation());
   }
-  if (from._internal_has_creationratedata()) {
+  if ((from._impl_._has_bits_[0] & 0x00000001u) != 0) {
     _this->_impl_.creationratedata_ = new ::InformationalMessageContents_CollectionInformationRecord_CreationRateData(*from._impl_.creationratedata_);
   }
   // @@protoc_insertion_point(copy_constructor:InformationalMessageContents.CollectionInformationRecord)
 }
 
-inline void InformationalMessageContents_CollectionInformationRecord::SharedCtor(
-    ::_pb::Arena* arena, bool is_message_owned) {
+inline void InformationalMessageContents_CollectionInformationRecord::SharedCtor(::_pb::Arena* arena) {
   (void)arena;
-  (void)is_message_owned;
   new (&_impl_) Impl_{
-      decltype(_impl_.collectionname_){}
-    , decltype(_impl_.creationratedata_){nullptr}
+      decltype(_impl_._has_bits_){}
     , /*decltype(_impl_._cached_size_)*/{}
+    , decltype(_impl_.collectionname_) {}
+
+    , decltype(_impl_.creationratedata_){nullptr}
   };
   _impl_.collectionname_.InitDefault();
   #ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
-    _impl_.collectionname_.Set("", GetArenaForAllocation());
-  #endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
+        _impl_.collectionname_.Set("", GetArenaForAllocation());
+  #endif  // PROTOBUF_FORCE_COPY_DEFAULT_STRING
 }
 
 InformationalMessageContents_CollectionInformationRecord::~InformationalMessageContents_CollectionInformationRecord() {
@@ -662,7 +753,7 @@ InformationalMessageContents_CollectionInformationRecord::~InformationalMessageC
 }
 
 inline void InformationalMessageContents_CollectionInformationRecord::SharedDtor() {
-  GOOGLE_DCHECK(GetArenaForAllocation() == nullptr);
+  ABSL_DCHECK(GetArenaForAllocation() == nullptr);
   _impl_.collectionname_.Destroy();
   if (this != internal_default_instance()) delete _impl_.creationratedata_;
 }
@@ -673,41 +764,46 @@ void InformationalMessageContents_CollectionInformationRecord::SetCachedSize(int
 
 void InformationalMessageContents_CollectionInformationRecord::Clear() {
 // @@protoc_insertion_point(message_clear_start:InformationalMessageContents.CollectionInformationRecord)
-  uint32_t cached_has_bits = 0;
+  ::uint32_t cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
   _impl_.collectionname_.ClearToEmpty();
-  if (GetArenaForAllocation() == nullptr && _impl_.creationratedata_ != nullptr) {
-    delete _impl_.creationratedata_;
+  cached_has_bits = _impl_._has_bits_[0];
+  if (cached_has_bits & 0x00000001u) {
+    ABSL_DCHECK(_impl_.creationratedata_ != nullptr);
+    _impl_.creationratedata_->Clear();
   }
-  _impl_.creationratedata_ = nullptr;
+  _impl_._has_bits_.Clear();
   _internal_metadata_.Clear<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
 }
 
 const char* InformationalMessageContents_CollectionInformationRecord::_InternalParse(const char* ptr, ::_pbi::ParseContext* ctx) {
 #define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
+  _Internal::HasBits has_bits{};
   while (!ctx->Done(&ptr)) {
-    uint32_t tag;
+    ::uint32_t tag;
     ptr = ::_pbi::ReadTag(ptr, &tag);
     switch (tag >> 3) {
       // string collectionName = 1;
       case 1:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 10)) {
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::uint8_t>(tag) == 10)) {
           auto str = _internal_mutable_collectionname();
           ptr = ::_pbi::InlineGreedyStringParser(str, ptr, ctx);
           CHK_(ptr);
           CHK_(::_pbi::VerifyUTF8(str, "InformationalMessageContents.CollectionInformationRecord.collectionName"));
-        } else
+        } else {
           goto handle_unusual;
+        }
         continue;
       // .InformationalMessageContents.CollectionInformationRecord.CreationRateData creationRateData = 2;
       case 2:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 18)) {
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::uint8_t>(tag) == 18)) {
           ptr = ctx->ParseMessage(_internal_mutable_creationratedata(), ptr);
           CHK_(ptr);
-        } else
+        } else {
           goto handle_unusual;
+        }
         continue;
       default:
         goto handle_unusual;
@@ -725,6 +821,7 @@ const char* InformationalMessageContents_CollectionInformationRecord::_InternalP
     CHK_(ptr != nullptr);
   }  // while
 message_done:
+  _impl_._has_bits_.Or(has_bits);
   return ptr;
 failure:
   ptr = nullptr;
@@ -732,24 +829,23 @@ failure:
 #undef CHK_
 }
 
-uint8_t* InformationalMessageContents_CollectionInformationRecord::_InternalSerialize(
-    uint8_t* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
+::uint8_t* InformationalMessageContents_CollectionInformationRecord::_InternalSerialize(
+    ::uint8_t* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
   // @@protoc_insertion_point(serialize_to_array_start:InformationalMessageContents.CollectionInformationRecord)
-  uint32_t cached_has_bits = 0;
+  ::uint32_t cached_has_bits = 0;
   (void) cached_has_bits;
 
   // string collectionName = 1;
   if (!this->_internal_collectionname().empty()) {
+    const std::string& _s = this->_internal_collectionname();
     ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::VerifyUtf8String(
-      this->_internal_collectionname().data(), static_cast<int>(this->_internal_collectionname().length()),
-      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::SERIALIZE,
-      "InformationalMessageContents.CollectionInformationRecord.collectionName");
-    target = stream->WriteStringMaybeAliased(
-        1, this->_internal_collectionname(), target);
+        _s.data(), static_cast<int>(_s.length()), ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::SERIALIZE, "InformationalMessageContents.CollectionInformationRecord.collectionName");
+    target = stream->WriteStringMaybeAliased(1, _s, target);
   }
 
+  cached_has_bits = _impl_._has_bits_[0];
   // .InformationalMessageContents.CollectionInformationRecord.CreationRateData creationRateData = 2;
-  if (this->_internal_has_creationratedata()) {
+  if (cached_has_bits & 0x00000001u) {
     target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::
       InternalWriteMessage(2, _Internal::creationratedata(this),
         _Internal::creationratedata(this).GetCachedSize(), target, stream);
@@ -763,23 +859,23 @@ uint8_t* InformationalMessageContents_CollectionInformationRecord::_InternalSeri
   return target;
 }
 
-size_t InformationalMessageContents_CollectionInformationRecord::ByteSizeLong() const {
+::size_t InformationalMessageContents_CollectionInformationRecord::ByteSizeLong() const {
 // @@protoc_insertion_point(message_byte_size_start:InformationalMessageContents.CollectionInformationRecord)
-  size_t total_size = 0;
+  ::size_t total_size = 0;
 
-  uint32_t cached_has_bits = 0;
+  ::uint32_t cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
   // string collectionName = 1;
   if (!this->_internal_collectionname().empty()) {
-    total_size += 1 +
-      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::StringSize(
-        this->_internal_collectionname());
+    total_size += 1 + ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::StringSize(
+                                    this->_internal_collectionname());
   }
 
   // .InformationalMessageContents.CollectionInformationRecord.CreationRateData creationRateData = 2;
-  if (this->_internal_has_creationratedata()) {
+  cached_has_bits = _impl_._has_bits_[0];
+  if (cached_has_bits & 0x00000001u) {
     total_size += 1 +
       ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::MessageSize(
         *_impl_.creationratedata_);
@@ -799,14 +895,14 @@ void InformationalMessageContents_CollectionInformationRecord::MergeImpl(::PROTO
   auto* const _this = static_cast<InformationalMessageContents_CollectionInformationRecord*>(&to_msg);
   auto& from = static_cast<const InformationalMessageContents_CollectionInformationRecord&>(from_msg);
   // @@protoc_insertion_point(class_specific_merge_from_start:InformationalMessageContents.CollectionInformationRecord)
-  GOOGLE_DCHECK_NE(&from, _this);
-  uint32_t cached_has_bits = 0;
+  ABSL_DCHECK_NE(&from, _this);
+  ::uint32_t cached_has_bits = 0;
   (void) cached_has_bits;
 
   if (!from._internal_collectionname().empty()) {
     _this->_internal_set_collectionname(from._internal_collectionname());
   }
-  if (from._internal_has_creationratedata()) {
+  if ((from._impl_._has_bits_[0] & 0x00000001u) != 0) {
     _this->_internal_mutable_creationratedata()->::InformationalMessageContents_CollectionInformationRecord_CreationRateData::MergeFrom(
         from._internal_creationratedata());
   }
@@ -829,10 +925,9 @@ void InformationalMessageContents_CollectionInformationRecord::InternalSwap(Info
   auto* lhs_arena = GetArenaForAllocation();
   auto* rhs_arena = other->GetArenaForAllocation();
   _internal_metadata_.InternalSwap(&other->_internal_metadata_);
-  ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::InternalSwap(
-      &_impl_.collectionname_, lhs_arena,
-      &other->_impl_.collectionname_, rhs_arena
-  );
+  swap(_impl_._has_bits_[0], other->_impl_._has_bits_[0]);
+  ::_pbi::ArenaStringPtr::InternalSwap(&_impl_.collectionname_, lhs_arena,
+                                       &other->_impl_.collectionname_, rhs_arena);
   swap(_impl_.creationratedata_, other->_impl_.creationratedata_);
 }
 
@@ -841,17 +936,15 @@ void InformationalMessageContents_CollectionInformationRecord::InternalSwap(Info
       &descriptor_table_message_2eproto_getter, &descriptor_table_message_2eproto_once,
       file_level_metadata_message_2eproto[1]);
 }
-
 // ===================================================================
 
 class InformationalMessageContents::_Internal {
  public:
 };
 
-InformationalMessageContents::InformationalMessageContents(::PROTOBUF_NAMESPACE_ID::Arena* arena,
-                         bool is_message_owned)
-  : ::PROTOBUF_NAMESPACE_ID::Message(arena, is_message_owned) {
-  SharedCtor(arena, is_message_owned);
+InformationalMessageContents::InformationalMessageContents(::PROTOBUF_NAMESPACE_ID::Arena* arena)
+  : ::PROTOBUF_NAMESPACE_ID::Message(arena) {
+  SharedCtor(arena);
   // @@protoc_insertion_point(arena_constructor:InformationalMessageContents)
 }
 InformationalMessageContents::InformationalMessageContents(const InformationalMessageContents& from)
@@ -865,10 +958,8 @@ InformationalMessageContents::InformationalMessageContents(const InformationalMe
   // @@protoc_insertion_point(copy_constructor:InformationalMessageContents)
 }
 
-inline void InformationalMessageContents::SharedCtor(
-    ::_pb::Arena* arena, bool is_message_owned) {
+inline void InformationalMessageContents::SharedCtor(::_pb::Arena* arena) {
   (void)arena;
-  (void)is_message_owned;
   new (&_impl_) Impl_{
       decltype(_impl_.records_){arena}
     , /*decltype(_impl_._cached_size_)*/{}
@@ -885,8 +976,8 @@ InformationalMessageContents::~InformationalMessageContents() {
 }
 
 inline void InformationalMessageContents::SharedDtor() {
-  GOOGLE_DCHECK(GetArenaForAllocation() == nullptr);
-  _impl_.records_.~RepeatedPtrField();
+  ABSL_DCHECK(GetArenaForAllocation() == nullptr);
+  _internal_mutable_records()->~RepeatedPtrField();
 }
 
 void InformationalMessageContents::SetCachedSize(int size) const {
@@ -895,23 +986,23 @@ void InformationalMessageContents::SetCachedSize(int size) const {
 
 void InformationalMessageContents::Clear() {
 // @@protoc_insertion_point(message_clear_start:InformationalMessageContents)
-  uint32_t cached_has_bits = 0;
+  ::uint32_t cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
-  _impl_.records_.Clear();
+  _internal_mutable_records()->Clear();
   _internal_metadata_.Clear<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
 }
 
 const char* InformationalMessageContents::_InternalParse(const char* ptr, ::_pbi::ParseContext* ctx) {
 #define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
   while (!ctx->Done(&ptr)) {
-    uint32_t tag;
+    ::uint32_t tag;
     ptr = ::_pbi::ReadTag(ptr, &tag);
     switch (tag >> 3) {
       // repeated .InformationalMessageContents.CollectionInformationRecord records = 1;
       case 1:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 10)) {
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::uint8_t>(tag) == 10)) {
           ptr -= 1;
           do {
             ptr += 1;
@@ -919,8 +1010,9 @@ const char* InformationalMessageContents::_InternalParse(const char* ptr, ::_pbi
             CHK_(ptr);
             if (!ctx->DataAvailable(ptr)) break;
           } while (::PROTOBUF_NAMESPACE_ID::internal::ExpectTag<10>(ptr));
-        } else
+        } else {
           goto handle_unusual;
+        }
         continue;
       default:
         goto handle_unusual;
@@ -945,10 +1037,10 @@ failure:
 #undef CHK_
 }
 
-uint8_t* InformationalMessageContents::_InternalSerialize(
-    uint8_t* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
+::uint8_t* InformationalMessageContents::_InternalSerialize(
+    ::uint8_t* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
   // @@protoc_insertion_point(serialize_to_array_start:InformationalMessageContents)
-  uint32_t cached_has_bits = 0;
+  ::uint32_t cached_has_bits = 0;
   (void) cached_has_bits;
 
   // repeated .InformationalMessageContents.CollectionInformationRecord records = 1;
@@ -967,17 +1059,17 @@ uint8_t* InformationalMessageContents::_InternalSerialize(
   return target;
 }
 
-size_t InformationalMessageContents::ByteSizeLong() const {
+::size_t InformationalMessageContents::ByteSizeLong() const {
 // @@protoc_insertion_point(message_byte_size_start:InformationalMessageContents)
-  size_t total_size = 0;
+  ::size_t total_size = 0;
 
-  uint32_t cached_has_bits = 0;
+  ::uint32_t cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
   // repeated .InformationalMessageContents.CollectionInformationRecord records = 1;
   total_size += 1UL * this->_internal_records_size();
-  for (const auto& msg : this->_impl_.records_) {
+  for (const auto& msg : this->_internal_records()) {
     total_size +=
       ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::MessageSize(msg);
   }
@@ -996,11 +1088,11 @@ void InformationalMessageContents::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message& t
   auto* const _this = static_cast<InformationalMessageContents*>(&to_msg);
   auto& from = static_cast<const InformationalMessageContents&>(from_msg);
   // @@protoc_insertion_point(class_specific_merge_from_start:InformationalMessageContents)
-  GOOGLE_DCHECK_NE(&from, _this);
-  uint32_t cached_has_bits = 0;
+  ABSL_DCHECK_NE(&from, _this);
+  ::uint32_t cached_has_bits = 0;
   (void) cached_has_bits;
 
-  _this->_impl_.records_.MergeFrom(from._impl_.records_);
+  _this->_internal_mutable_records()->MergeFrom(from._internal_records());
   _this->_internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
 }
 
@@ -1018,7 +1110,7 @@ bool InformationalMessageContents::IsInitialized() const {
 void InformationalMessageContents::InternalSwap(InformationalMessageContents* other) {
   using std::swap;
   _internal_metadata_.InternalSwap(&other->_internal_metadata_);
-  _impl_.records_.InternalSwap(&other->_impl_.records_);
+  _internal_mutable_records()->InternalSwap(other->_internal_mutable_records());
 }
 
 ::PROTOBUF_NAMESPACE_ID::Metadata InformationalMessageContents::GetMetadata() const {
@@ -1026,59 +1118,62 @@ void InformationalMessageContents::InternalSwap(InformationalMessageContents* ot
       &descriptor_table_message_2eproto_getter, &descriptor_table_message_2eproto_once,
       file_level_metadata_message_2eproto[2]);
 }
-
 // ===================================================================
 
 class KeyspaceMessageContents_Keyspace::_Internal {
  public:
 };
 
-KeyspaceMessageContents_Keyspace::KeyspaceMessageContents_Keyspace(::PROTOBUF_NAMESPACE_ID::Arena* arena,
-                         bool is_message_owned)
-  : ::PROTOBUF_NAMESPACE_ID::Message(arena, is_message_owned) {
-  SharedCtor(arena, is_message_owned);
+KeyspaceMessageContents_Keyspace::KeyspaceMessageContents_Keyspace(::PROTOBUF_NAMESPACE_ID::Arena* arena)
+  : ::PROTOBUF_NAMESPACE_ID::Message(arena) {
+  SharedCtor(arena);
   // @@protoc_insertion_point(arena_constructor:KeyspaceMessageContents.Keyspace)
 }
 KeyspaceMessageContents_Keyspace::KeyspaceMessageContents_Keyspace(const KeyspaceMessageContents_Keyspace& from)
   : ::PROTOBUF_NAMESPACE_ID::Message() {
   KeyspaceMessageContents_Keyspace* const _this = this; (void)_this;
   new (&_impl_) Impl_{
-      decltype(_impl_.name_){}
-    , decltype(_impl_.startid_){}
-    , decltype(_impl_.endid_){}
-    , decltype(_impl_.suffixbits_){}
+      decltype(_impl_.name_) {}
+
+    , decltype(_impl_.startid_) {}
+
+    , decltype(_impl_.endid_) {}
+
+    , decltype(_impl_.suffixbits_) {}
+
     , /*decltype(_impl_._cached_size_)*/{}};
 
   _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
   _impl_.name_.InitDefault();
   #ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
-    _impl_.name_.Set("", GetArenaForAllocation());
-  #endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
+        _impl_.name_.Set("", GetArenaForAllocation());
+  #endif  // PROTOBUF_FORCE_COPY_DEFAULT_STRING
   if (!from._internal_name().empty()) {
-    _this->_impl_.name_.Set(from._internal_name(), 
-      _this->GetArenaForAllocation());
+    _this->_impl_.name_.Set(from._internal_name(), _this->GetArenaForAllocation());
   }
   ::memcpy(&_impl_.startid_, &from._impl_.startid_,
-    static_cast<size_t>(reinterpret_cast<char*>(&_impl_.suffixbits_) -
+    static_cast<::size_t>(reinterpret_cast<char*>(&_impl_.suffixbits_) -
     reinterpret_cast<char*>(&_impl_.startid_)) + sizeof(_impl_.suffixbits_));
   // @@protoc_insertion_point(copy_constructor:KeyspaceMessageContents.Keyspace)
 }
 
-inline void KeyspaceMessageContents_Keyspace::SharedCtor(
-    ::_pb::Arena* arena, bool is_message_owned) {
+inline void KeyspaceMessageContents_Keyspace::SharedCtor(::_pb::Arena* arena) {
   (void)arena;
-  (void)is_message_owned;
   new (&_impl_) Impl_{
-      decltype(_impl_.name_){}
-    , decltype(_impl_.startid_){uint64_t{0u}}
-    , decltype(_impl_.endid_){uint64_t{0u}}
-    , decltype(_impl_.suffixbits_){0u}
+      decltype(_impl_.name_) {}
+
+    , decltype(_impl_.startid_) { ::uint64_t{0u} }
+
+    , decltype(_impl_.endid_) { ::uint64_t{0u} }
+
+    , decltype(_impl_.suffixbits_) { 0u }
+
     , /*decltype(_impl_._cached_size_)*/{}
   };
   _impl_.name_.InitDefault();
   #ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
-    _impl_.name_.Set("", GetArenaForAllocation());
-  #endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
+        _impl_.name_.Set("", GetArenaForAllocation());
+  #endif  // PROTOBUF_FORCE_COPY_DEFAULT_STRING
 }
 
 KeyspaceMessageContents_Keyspace::~KeyspaceMessageContents_Keyspace() {
@@ -1091,7 +1186,7 @@ KeyspaceMessageContents_Keyspace::~KeyspaceMessageContents_Keyspace() {
 }
 
 inline void KeyspaceMessageContents_Keyspace::SharedDtor() {
-  GOOGLE_DCHECK(GetArenaForAllocation() == nullptr);
+  ABSL_DCHECK(GetArenaForAllocation() == nullptr);
   _impl_.name_.Destroy();
 }
 
@@ -1101,12 +1196,12 @@ void KeyspaceMessageContents_Keyspace::SetCachedSize(int size) const {
 
 void KeyspaceMessageContents_Keyspace::Clear() {
 // @@protoc_insertion_point(message_clear_start:KeyspaceMessageContents.Keyspace)
-  uint32_t cached_has_bits = 0;
+  ::uint32_t cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
   _impl_.name_.ClearToEmpty();
-  ::memset(&_impl_.startid_, 0, static_cast<size_t>(
+  ::memset(&_impl_.startid_, 0, static_cast<::size_t>(
       reinterpret_cast<char*>(&_impl_.suffixbits_) -
       reinterpret_cast<char*>(&_impl_.startid_)) + sizeof(_impl_.suffixbits_));
   _internal_metadata_.Clear<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
@@ -1115,42 +1210,46 @@ void KeyspaceMessageContents_Keyspace::Clear() {
 const char* KeyspaceMessageContents_Keyspace::_InternalParse(const char* ptr, ::_pbi::ParseContext* ctx) {
 #define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
   while (!ctx->Done(&ptr)) {
-    uint32_t tag;
+    ::uint32_t tag;
     ptr = ::_pbi::ReadTag(ptr, &tag);
     switch (tag >> 3) {
       // string name = 1;
       case 1:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 10)) {
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::uint8_t>(tag) == 10)) {
           auto str = _internal_mutable_name();
           ptr = ::_pbi::InlineGreedyStringParser(str, ptr, ctx);
           CHK_(ptr);
           CHK_(::_pbi::VerifyUTF8(str, "KeyspaceMessageContents.Keyspace.name"));
-        } else
+        } else {
           goto handle_unusual;
+        }
         continue;
       // uint64 startID = 2;
       case 2:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 16)) {
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::uint8_t>(tag) == 16)) {
           _impl_.startid_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint64(&ptr);
           CHK_(ptr);
-        } else
+        } else {
           goto handle_unusual;
+        }
         continue;
       // uint64 endID = 3;
       case 3:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 24)) {
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::uint8_t>(tag) == 24)) {
           _impl_.endid_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint64(&ptr);
           CHK_(ptr);
-        } else
+        } else {
           goto handle_unusual;
+        }
         continue;
       // uint32 suffixBits = 4;
       case 4:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 32)) {
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::uint8_t>(tag) == 32)) {
           _impl_.suffixbits_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint32(&ptr);
           CHK_(ptr);
-        } else
+        } else {
           goto handle_unusual;
+        }
         continue;
       default:
         goto handle_unusual;
@@ -1175,38 +1274,39 @@ failure:
 #undef CHK_
 }
 
-uint8_t* KeyspaceMessageContents_Keyspace::_InternalSerialize(
-    uint8_t* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
+::uint8_t* KeyspaceMessageContents_Keyspace::_InternalSerialize(
+    ::uint8_t* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
   // @@protoc_insertion_point(serialize_to_array_start:KeyspaceMessageContents.Keyspace)
-  uint32_t cached_has_bits = 0;
+  ::uint32_t cached_has_bits = 0;
   (void) cached_has_bits;
 
   // string name = 1;
   if (!this->_internal_name().empty()) {
+    const std::string& _s = this->_internal_name();
     ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::VerifyUtf8String(
-      this->_internal_name().data(), static_cast<int>(this->_internal_name().length()),
-      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::SERIALIZE,
-      "KeyspaceMessageContents.Keyspace.name");
-    target = stream->WriteStringMaybeAliased(
-        1, this->_internal_name(), target);
+        _s.data(), static_cast<int>(_s.length()), ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::SERIALIZE, "KeyspaceMessageContents.Keyspace.name");
+    target = stream->WriteStringMaybeAliased(1, _s, target);
   }
 
   // uint64 startID = 2;
   if (this->_internal_startid() != 0) {
     target = stream->EnsureSpace(target);
-    target = ::_pbi::WireFormatLite::WriteUInt64ToArray(2, this->_internal_startid(), target);
+    target = ::_pbi::WireFormatLite::WriteUInt64ToArray(
+        2, this->_internal_startid(), target);
   }
 
   // uint64 endID = 3;
   if (this->_internal_endid() != 0) {
     target = stream->EnsureSpace(target);
-    target = ::_pbi::WireFormatLite::WriteUInt64ToArray(3, this->_internal_endid(), target);
+    target = ::_pbi::WireFormatLite::WriteUInt64ToArray(
+        3, this->_internal_endid(), target);
   }
 
   // uint32 suffixBits = 4;
   if (this->_internal_suffixbits() != 0) {
     target = stream->EnsureSpace(target);
-    target = ::_pbi::WireFormatLite::WriteUInt32ToArray(4, this->_internal_suffixbits(), target);
+    target = ::_pbi::WireFormatLite::WriteUInt32ToArray(
+        4, this->_internal_suffixbits(), target);
   }
 
   if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
@@ -1217,34 +1317,36 @@ uint8_t* KeyspaceMessageContents_Keyspace::_InternalSerialize(
   return target;
 }
 
-size_t KeyspaceMessageContents_Keyspace::ByteSizeLong() const {
+::size_t KeyspaceMessageContents_Keyspace::ByteSizeLong() const {
 // @@protoc_insertion_point(message_byte_size_start:KeyspaceMessageContents.Keyspace)
-  size_t total_size = 0;
+  ::size_t total_size = 0;
 
-  uint32_t cached_has_bits = 0;
+  ::uint32_t cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
   // string name = 1;
   if (!this->_internal_name().empty()) {
-    total_size += 1 +
-      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::StringSize(
-        this->_internal_name());
+    total_size += 1 + ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::StringSize(
+                                    this->_internal_name());
   }
 
   // uint64 startID = 2;
   if (this->_internal_startid() != 0) {
-    total_size += ::_pbi::WireFormatLite::UInt64SizePlusOne(this->_internal_startid());
+    total_size += ::_pbi::WireFormatLite::UInt64SizePlusOne(
+        this->_internal_startid());
   }
 
   // uint64 endID = 3;
   if (this->_internal_endid() != 0) {
-    total_size += ::_pbi::WireFormatLite::UInt64SizePlusOne(this->_internal_endid());
+    total_size += ::_pbi::WireFormatLite::UInt64SizePlusOne(
+        this->_internal_endid());
   }
 
   // uint32 suffixBits = 4;
   if (this->_internal_suffixbits() != 0) {
-    total_size += ::_pbi::WireFormatLite::UInt32SizePlusOne(this->_internal_suffixbits());
+    total_size += ::_pbi::WireFormatLite::UInt32SizePlusOne(
+        this->_internal_suffixbits());
   }
 
   return MaybeComputeUnknownFieldsSize(total_size, &_impl_._cached_size_);
@@ -1261,8 +1363,8 @@ void KeyspaceMessageContents_Keyspace::MergeImpl(::PROTOBUF_NAMESPACE_ID::Messag
   auto* const _this = static_cast<KeyspaceMessageContents_Keyspace*>(&to_msg);
   auto& from = static_cast<const KeyspaceMessageContents_Keyspace&>(from_msg);
   // @@protoc_insertion_point(class_specific_merge_from_start:KeyspaceMessageContents.Keyspace)
-  GOOGLE_DCHECK_NE(&from, _this);
-  uint32_t cached_has_bits = 0;
+  ABSL_DCHECK_NE(&from, _this);
+  ::uint32_t cached_has_bits = 0;
   (void) cached_has_bits;
 
   if (!from._internal_name().empty()) {
@@ -1296,10 +1398,8 @@ void KeyspaceMessageContents_Keyspace::InternalSwap(KeyspaceMessageContents_Keys
   auto* lhs_arena = GetArenaForAllocation();
   auto* rhs_arena = other->GetArenaForAllocation();
   _internal_metadata_.InternalSwap(&other->_internal_metadata_);
-  ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::InternalSwap(
-      &_impl_.name_, lhs_arena,
-      &other->_impl_.name_, rhs_arena
-  );
+  ::_pbi::ArenaStringPtr::InternalSwap(&_impl_.name_, lhs_arena,
+                                       &other->_impl_.name_, rhs_arena);
   ::PROTOBUF_NAMESPACE_ID::internal::memswap<
       PROTOBUF_FIELD_OFFSET(KeyspaceMessageContents_Keyspace, _impl_.suffixbits_)
       + sizeof(KeyspaceMessageContents_Keyspace::_impl_.suffixbits_)
@@ -1313,17 +1413,15 @@ void KeyspaceMessageContents_Keyspace::InternalSwap(KeyspaceMessageContents_Keys
       &descriptor_table_message_2eproto_getter, &descriptor_table_message_2eproto_once,
       file_level_metadata_message_2eproto[3]);
 }
-
 // ===================================================================
 
 class KeyspaceMessageContents::_Internal {
  public:
 };
 
-KeyspaceMessageContents::KeyspaceMessageContents(::PROTOBUF_NAMESPACE_ID::Arena* arena,
-                         bool is_message_owned)
-  : ::PROTOBUF_NAMESPACE_ID::Message(arena, is_message_owned) {
-  SharedCtor(arena, is_message_owned);
+KeyspaceMessageContents::KeyspaceMessageContents(::PROTOBUF_NAMESPACE_ID::Arena* arena)
+  : ::PROTOBUF_NAMESPACE_ID::Message(arena) {
+  SharedCtor(arena);
   // @@protoc_insertion_point(arena_constructor:KeyspaceMessageContents)
 }
 KeyspaceMessageContents::KeyspaceMessageContents(const KeyspaceMessageContents& from)
@@ -1337,10 +1435,8 @@ KeyspaceMessageContents::KeyspaceMessageContents(const KeyspaceMessageContents& 
   // @@protoc_insertion_point(copy_constructor:KeyspaceMessageContents)
 }
 
-inline void KeyspaceMessageContents::SharedCtor(
-    ::_pb::Arena* arena, bool is_message_owned) {
+inline void KeyspaceMessageContents::SharedCtor(::_pb::Arena* arena) {
   (void)arena;
-  (void)is_message_owned;
   new (&_impl_) Impl_{
       decltype(_impl_.keyspaces_){arena}
     , /*decltype(_impl_._cached_size_)*/{}
@@ -1357,8 +1453,8 @@ KeyspaceMessageContents::~KeyspaceMessageContents() {
 }
 
 inline void KeyspaceMessageContents::SharedDtor() {
-  GOOGLE_DCHECK(GetArenaForAllocation() == nullptr);
-  _impl_.keyspaces_.~RepeatedPtrField();
+  ABSL_DCHECK(GetArenaForAllocation() == nullptr);
+  _internal_mutable_keyspaces()->~RepeatedPtrField();
 }
 
 void KeyspaceMessageContents::SetCachedSize(int size) const {
@@ -1367,23 +1463,23 @@ void KeyspaceMessageContents::SetCachedSize(int size) const {
 
 void KeyspaceMessageContents::Clear() {
 // @@protoc_insertion_point(message_clear_start:KeyspaceMessageContents)
-  uint32_t cached_has_bits = 0;
+  ::uint32_t cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
-  _impl_.keyspaces_.Clear();
+  _internal_mutable_keyspaces()->Clear();
   _internal_metadata_.Clear<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
 }
 
 const char* KeyspaceMessageContents::_InternalParse(const char* ptr, ::_pbi::ParseContext* ctx) {
 #define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
   while (!ctx->Done(&ptr)) {
-    uint32_t tag;
+    ::uint32_t tag;
     ptr = ::_pbi::ReadTag(ptr, &tag);
     switch (tag >> 3) {
       // repeated .KeyspaceMessageContents.Keyspace keyspaces = 1;
       case 1:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 10)) {
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::uint8_t>(tag) == 10)) {
           ptr -= 1;
           do {
             ptr += 1;
@@ -1391,8 +1487,9 @@ const char* KeyspaceMessageContents::_InternalParse(const char* ptr, ::_pbi::Par
             CHK_(ptr);
             if (!ctx->DataAvailable(ptr)) break;
           } while (::PROTOBUF_NAMESPACE_ID::internal::ExpectTag<10>(ptr));
-        } else
+        } else {
           goto handle_unusual;
+        }
         continue;
       default:
         goto handle_unusual;
@@ -1417,10 +1514,10 @@ failure:
 #undef CHK_
 }
 
-uint8_t* KeyspaceMessageContents::_InternalSerialize(
-    uint8_t* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
+::uint8_t* KeyspaceMessageContents::_InternalSerialize(
+    ::uint8_t* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
   // @@protoc_insertion_point(serialize_to_array_start:KeyspaceMessageContents)
-  uint32_t cached_has_bits = 0;
+  ::uint32_t cached_has_bits = 0;
   (void) cached_has_bits;
 
   // repeated .KeyspaceMessageContents.Keyspace keyspaces = 1;
@@ -1439,17 +1536,17 @@ uint8_t* KeyspaceMessageContents::_InternalSerialize(
   return target;
 }
 
-size_t KeyspaceMessageContents::ByteSizeLong() const {
+::size_t KeyspaceMessageContents::ByteSizeLong() const {
 // @@protoc_insertion_point(message_byte_size_start:KeyspaceMessageContents)
-  size_t total_size = 0;
+  ::size_t total_size = 0;
 
-  uint32_t cached_has_bits = 0;
+  ::uint32_t cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
   // repeated .KeyspaceMessageContents.Keyspace keyspaces = 1;
   total_size += 1UL * this->_internal_keyspaces_size();
-  for (const auto& msg : this->_impl_.keyspaces_) {
+  for (const auto& msg : this->_internal_keyspaces()) {
     total_size +=
       ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::MessageSize(msg);
   }
@@ -1468,11 +1565,11 @@ void KeyspaceMessageContents::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message& to_msg
   auto* const _this = static_cast<KeyspaceMessageContents*>(&to_msg);
   auto& from = static_cast<const KeyspaceMessageContents&>(from_msg);
   // @@protoc_insertion_point(class_specific_merge_from_start:KeyspaceMessageContents)
-  GOOGLE_DCHECK_NE(&from, _this);
-  uint32_t cached_has_bits = 0;
+  ABSL_DCHECK_NE(&from, _this);
+  ::uint32_t cached_has_bits = 0;
   (void) cached_has_bits;
 
-  _this->_impl_.keyspaces_.MergeFrom(from._impl_.keyspaces_);
+  _this->_internal_mutable_keyspaces()->MergeFrom(from._internal_keyspaces());
   _this->_internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
 }
 
@@ -1490,7 +1587,7 @@ bool KeyspaceMessageContents::IsInitialized() const {
 void KeyspaceMessageContents::InternalSwap(KeyspaceMessageContents* other) {
   using std::swap;
   _internal_metadata_.InternalSwap(&other->_internal_metadata_);
-  _impl_.keyspaces_.InternalSwap(&other->_impl_.keyspaces_);
+  _internal_mutable_keyspaces()->InternalSwap(other->_internal_mutable_keyspaces());
 }
 
 ::PROTOBUF_NAMESPACE_ID::Metadata KeyspaceMessageContents::GetMetadata() const {
@@ -1498,12 +1595,19 @@ void KeyspaceMessageContents::InternalSwap(KeyspaceMessageContents* other) {
       &descriptor_table_message_2eproto_getter, &descriptor_table_message_2eproto_once,
       file_level_metadata_message_2eproto[4]);
 }
-
 // ===================================================================
 
 class Message::_Internal {
  public:
+  using HasBits = decltype(std::declval<Message>()._impl_._has_bits_);
+  static constexpr ::int32_t kHasBitsOffset =
+    8 * PROTOBUF_FIELD_OFFSET(Message, _impl_._has_bits_);
+  static constexpr ::int32_t kOneofCaseOffset =
+    PROTOBUF_FIELD_OFFSET(::Message, _impl_._oneof_case_);
   static const ::PROTOBUF_NAMESPACE_ID::Timestamp& timestamp(const Message* msg);
+  static void set_has_timestamp(HasBits* has_bits) {
+    (*has_bits)[0] |= 1u;
+  }
   static const ::InformationalMessageContents& info(const Message* msg);
   static const ::KeyspaceMessageContents& keyspace(const Message* msg);
 };
@@ -1521,10 +1625,8 @@ Message::_Internal::keyspace(const Message* msg) {
   return *msg->_impl_.message_.keyspace_;
 }
 void Message::clear_timestamp() {
-  if (GetArenaForAllocation() == nullptr && _impl_.timestamp_ != nullptr) {
-    delete _impl_.timestamp_;
-  }
-  _impl_.timestamp_ = nullptr;
+  if (_impl_.timestamp_ != nullptr) _impl_.timestamp_->Clear();
+  _impl_._has_bits_[0] &= ~0x00000001u;
 }
 void Message::set_allocated_info(::InformationalMessageContents* info) {
   ::PROTOBUF_NAMESPACE_ID::Arena* message_arena = GetArenaForAllocation();
@@ -1556,49 +1658,53 @@ void Message::set_allocated_keyspace(::KeyspaceMessageContents* keyspace) {
   }
   // @@protoc_insertion_point(field_set_allocated:Message.keyspace)
 }
-Message::Message(::PROTOBUF_NAMESPACE_ID::Arena* arena,
-                         bool is_message_owned)
-  : ::PROTOBUF_NAMESPACE_ID::Message(arena, is_message_owned) {
-  SharedCtor(arena, is_message_owned);
+Message::Message(::PROTOBUF_NAMESPACE_ID::Arena* arena)
+  : ::PROTOBUF_NAMESPACE_ID::Message(arena) {
+  SharedCtor(arena);
   // @@protoc_insertion_point(arena_constructor:Message)
 }
 Message::Message(const Message& from)
   : ::PROTOBUF_NAMESPACE_ID::Message() {
   Message* const _this = this; (void)_this;
   new (&_impl_) Impl_{
-      decltype(_impl_.sourcenodeid_){}
-    , decltype(_impl_.destnodeid_){}
-    , decltype(_impl_.timestamp_){nullptr}
-    , decltype(_impl_.lastreceivedmsg_){}
-    , decltype(_impl_.channelstate_){}
-    , decltype(_impl_.messagetype_){}
-    , decltype(_impl_.messageid_){}
-    , decltype(_impl_.message_){}
+      decltype(_impl_._has_bits_){from._impl_._has_bits_}
     , /*decltype(_impl_._cached_size_)*/{}
+    , decltype(_impl_.sourcenodeid_) {}
+
+    , decltype(_impl_.destnodeid_) {}
+
+    , decltype(_impl_.timestamp_){nullptr}
+    , decltype(_impl_.lastreceivedmsg_) {}
+
+    , decltype(_impl_.channelstate_) {}
+
+    , decltype(_impl_.messagetype_) {}
+
+    , decltype(_impl_.messageid_) {}
+
+    , decltype(_impl_.message_){}
     , /*decltype(_impl_._oneof_case_)*/{}};
 
   _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
   _impl_.sourcenodeid_.InitDefault();
   #ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
-    _impl_.sourcenodeid_.Set("", GetArenaForAllocation());
-  #endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
+        _impl_.sourcenodeid_.Set("", GetArenaForAllocation());
+  #endif  // PROTOBUF_FORCE_COPY_DEFAULT_STRING
   if (!from._internal_sourcenodeid().empty()) {
-    _this->_impl_.sourcenodeid_.Set(from._internal_sourcenodeid(), 
-      _this->GetArenaForAllocation());
+    _this->_impl_.sourcenodeid_.Set(from._internal_sourcenodeid(), _this->GetArenaForAllocation());
   }
   _impl_.destnodeid_.InitDefault();
   #ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
-    _impl_.destnodeid_.Set("", GetArenaForAllocation());
-  #endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
+        _impl_.destnodeid_.Set("", GetArenaForAllocation());
+  #endif  // PROTOBUF_FORCE_COPY_DEFAULT_STRING
   if (!from._internal_destnodeid().empty()) {
-    _this->_impl_.destnodeid_.Set(from._internal_destnodeid(), 
-      _this->GetArenaForAllocation());
+    _this->_impl_.destnodeid_.Set(from._internal_destnodeid(), _this->GetArenaForAllocation());
   }
-  if (from._internal_has_timestamp()) {
+  if ((from._impl_._has_bits_[0] & 0x00000001u) != 0) {
     _this->_impl_.timestamp_ = new ::PROTOBUF_NAMESPACE_ID::Timestamp(*from._impl_.timestamp_);
   }
   ::memcpy(&_impl_.lastreceivedmsg_, &from._impl_.lastreceivedmsg_,
-    static_cast<size_t>(reinterpret_cast<char*>(&_impl_.messageid_) -
+    static_cast<::size_t>(reinterpret_cast<char*>(&_impl_.messageid_) -
     reinterpret_cast<char*>(&_impl_.lastreceivedmsg_)) + sizeof(_impl_.messageid_));
   clear_has_message();
   switch (from.message_case()) {
@@ -1619,30 +1725,35 @@ Message::Message(const Message& from)
   // @@protoc_insertion_point(copy_constructor:Message)
 }
 
-inline void Message::SharedCtor(
-    ::_pb::Arena* arena, bool is_message_owned) {
+inline void Message::SharedCtor(::_pb::Arena* arena) {
   (void)arena;
-  (void)is_message_owned;
   new (&_impl_) Impl_{
-      decltype(_impl_.sourcenodeid_){}
-    , decltype(_impl_.destnodeid_){}
-    , decltype(_impl_.timestamp_){nullptr}
-    , decltype(_impl_.lastreceivedmsg_){uint64_t{0u}}
-    , decltype(_impl_.channelstate_){0}
-    , decltype(_impl_.messagetype_){0}
-    , decltype(_impl_.messageid_){int64_t{0}}
-    , decltype(_impl_.message_){}
+      decltype(_impl_._has_bits_){}
     , /*decltype(_impl_._cached_size_)*/{}
+    , decltype(_impl_.sourcenodeid_) {}
+
+    , decltype(_impl_.destnodeid_) {}
+
+    , decltype(_impl_.timestamp_){nullptr}
+    , decltype(_impl_.lastreceivedmsg_) { ::uint64_t{0u} }
+
+    , decltype(_impl_.channelstate_) { 0 }
+
+    , decltype(_impl_.messagetype_) { 0 }
+
+    , decltype(_impl_.messageid_) { ::int64_t{0} }
+
+    , decltype(_impl_.message_){}
     , /*decltype(_impl_._oneof_case_)*/{}
   };
   _impl_.sourcenodeid_.InitDefault();
   #ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
-    _impl_.sourcenodeid_.Set("", GetArenaForAllocation());
-  #endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
+        _impl_.sourcenodeid_.Set("", GetArenaForAllocation());
+  #endif  // PROTOBUF_FORCE_COPY_DEFAULT_STRING
   _impl_.destnodeid_.InitDefault();
   #ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
-    _impl_.destnodeid_.Set("", GetArenaForAllocation());
-  #endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
+        _impl_.destnodeid_.Set("", GetArenaForAllocation());
+  #endif  // PROTOBUF_FORCE_COPY_DEFAULT_STRING
   clear_has_message();
 }
 
@@ -1656,7 +1767,7 @@ Message::~Message() {
 }
 
 inline void Message::SharedDtor() {
-  GOOGLE_DCHECK(GetArenaForAllocation() == nullptr);
+  ABSL_DCHECK(GetArenaForAllocation() == nullptr);
   _impl_.sourcenodeid_.Destroy();
   _impl_.destnodeid_.Destroy();
   if (this != internal_default_instance()) delete _impl_.timestamp_;
@@ -1694,104 +1805,116 @@ void Message::clear_message() {
 
 void Message::Clear() {
 // @@protoc_insertion_point(message_clear_start:Message)
-  uint32_t cached_has_bits = 0;
+  ::uint32_t cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
   _impl_.sourcenodeid_.ClearToEmpty();
   _impl_.destnodeid_.ClearToEmpty();
-  if (GetArenaForAllocation() == nullptr && _impl_.timestamp_ != nullptr) {
-    delete _impl_.timestamp_;
+  cached_has_bits = _impl_._has_bits_[0];
+  if (cached_has_bits & 0x00000001u) {
+    ABSL_DCHECK(_impl_.timestamp_ != nullptr);
+    _impl_.timestamp_->Clear();
   }
-  _impl_.timestamp_ = nullptr;
-  ::memset(&_impl_.lastreceivedmsg_, 0, static_cast<size_t>(
+  ::memset(&_impl_.lastreceivedmsg_, 0, static_cast<::size_t>(
       reinterpret_cast<char*>(&_impl_.messageid_) -
       reinterpret_cast<char*>(&_impl_.lastreceivedmsg_)) + sizeof(_impl_.messageid_));
   clear_message();
+  _impl_._has_bits_.Clear();
   _internal_metadata_.Clear<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
 }
 
 const char* Message::_InternalParse(const char* ptr, ::_pbi::ParseContext* ctx) {
 #define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
+  _Internal::HasBits has_bits{};
   while (!ctx->Done(&ptr)) {
-    uint32_t tag;
+    ::uint32_t tag;
     ptr = ::_pbi::ReadTag(ptr, &tag);
     switch (tag >> 3) {
       // bytes sourceNodeID = 1;
       case 1:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 10)) {
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::uint8_t>(tag) == 10)) {
           auto str = _internal_mutable_sourcenodeid();
           ptr = ::_pbi::InlineGreedyStringParser(str, ptr, ctx);
           CHK_(ptr);
-        } else
+        } else {
           goto handle_unusual;
+        }
         continue;
       // bytes destNodeID = 2;
       case 2:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 18)) {
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::uint8_t>(tag) == 18)) {
           auto str = _internal_mutable_destnodeid();
           ptr = ::_pbi::InlineGreedyStringParser(str, ptr, ctx);
           CHK_(ptr);
-        } else
+        } else {
           goto handle_unusual;
+        }
         continue;
       // uint64 lastReceivedMsg = 3;
       case 3:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 24)) {
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::uint8_t>(tag) == 24)) {
           _impl_.lastreceivedmsg_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint64(&ptr);
           CHK_(ptr);
-        } else
+        } else {
           goto handle_unusual;
+        }
         continue;
       // .Message.ChannelState channelState = 4;
       case 4:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 32)) {
-          uint64_t val = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint64(&ptr);
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::uint8_t>(tag) == 32)) {
+          ::int32_t val = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint32(&ptr);
           CHK_(ptr);
           _internal_set_channelstate(static_cast<::Message_ChannelState>(val));
-        } else
+        } else {
           goto handle_unusual;
+        }
         continue;
       // .google.protobuf.Timestamp timestamp = 5;
       case 5:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 42)) {
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::uint8_t>(tag) == 42)) {
           ptr = ctx->ParseMessage(_internal_mutable_timestamp(), ptr);
           CHK_(ptr);
-        } else
+        } else {
           goto handle_unusual;
+        }
         continue;
       // sint64 messageID = 6;
       case 6:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 48)) {
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::uint8_t>(tag) == 48)) {
           _impl_.messageid_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarintZigZag64(&ptr);
           CHK_(ptr);
-        } else
+        } else {
           goto handle_unusual;
+        }
         continue;
       // .Message.MessageType messageType = 7;
       case 7:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 56)) {
-          uint64_t val = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint64(&ptr);
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::uint8_t>(tag) == 56)) {
+          ::int32_t val = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint32(&ptr);
           CHK_(ptr);
           _internal_set_messagetype(static_cast<::Message_MessageType>(val));
-        } else
+        } else {
           goto handle_unusual;
+        }
         continue;
       // .InformationalMessageContents info = 8;
       case 8:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 66)) {
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::uint8_t>(tag) == 66)) {
           ptr = ctx->ParseMessage(_internal_mutable_info(), ptr);
           CHK_(ptr);
-        } else
+        } else {
           goto handle_unusual;
+        }
         continue;
       // .KeyspaceMessageContents keyspace = 9;
       case 9:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 74)) {
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::uint8_t>(tag) == 74)) {
           ptr = ctx->ParseMessage(_internal_mutable_keyspace(), ptr);
           CHK_(ptr);
-        } else
+        } else {
           goto handle_unusual;
+        }
         continue;
       default:
         goto handle_unusual;
@@ -1809,6 +1932,7 @@ const char* Message::_InternalParse(const char* ptr, ::_pbi::ParseContext* ctx) 
     CHK_(ptr != nullptr);
   }  // while
 message_done:
+  _impl_._has_bits_.Or(has_bits);
   return ptr;
 failure:
   ptr = nullptr;
@@ -1816,39 +1940,41 @@ failure:
 #undef CHK_
 }
 
-uint8_t* Message::_InternalSerialize(
-    uint8_t* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
+::uint8_t* Message::_InternalSerialize(
+    ::uint8_t* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
   // @@protoc_insertion_point(serialize_to_array_start:Message)
-  uint32_t cached_has_bits = 0;
+  ::uint32_t cached_has_bits = 0;
   (void) cached_has_bits;
 
   // bytes sourceNodeID = 1;
   if (!this->_internal_sourcenodeid().empty()) {
-    target = stream->WriteBytesMaybeAliased(
-        1, this->_internal_sourcenodeid(), target);
+    const std::string& _s = this->_internal_sourcenodeid();
+    target = stream->WriteBytesMaybeAliased(1, _s, target);
   }
 
   // bytes destNodeID = 2;
   if (!this->_internal_destnodeid().empty()) {
-    target = stream->WriteBytesMaybeAliased(
-        2, this->_internal_destnodeid(), target);
+    const std::string& _s = this->_internal_destnodeid();
+    target = stream->WriteBytesMaybeAliased(2, _s, target);
   }
 
   // uint64 lastReceivedMsg = 3;
   if (this->_internal_lastreceivedmsg() != 0) {
     target = stream->EnsureSpace(target);
-    target = ::_pbi::WireFormatLite::WriteUInt64ToArray(3, this->_internal_lastreceivedmsg(), target);
+    target = ::_pbi::WireFormatLite::WriteUInt64ToArray(
+        3, this->_internal_lastreceivedmsg(), target);
   }
 
   // .Message.ChannelState channelState = 4;
   if (this->_internal_channelstate() != 0) {
     target = stream->EnsureSpace(target);
     target = ::_pbi::WireFormatLite::WriteEnumToArray(
-      4, this->_internal_channelstate(), target);
+        4, this->_internal_channelstate(), target);
   }
 
+  cached_has_bits = _impl_._has_bits_[0];
   // .google.protobuf.Timestamp timestamp = 5;
-  if (this->_internal_has_timestamp()) {
+  if (cached_has_bits & 0x00000001u) {
     target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::
       InternalWriteMessage(5, _Internal::timestamp(this),
         _Internal::timestamp(this).GetCachedSize(), target, stream);
@@ -1857,30 +1983,32 @@ uint8_t* Message::_InternalSerialize(
   // sint64 messageID = 6;
   if (this->_internal_messageid() != 0) {
     target = stream->EnsureSpace(target);
-    target = ::_pbi::WireFormatLite::WriteSInt64ToArray(6, this->_internal_messageid(), target);
+    target = ::_pbi::WireFormatLite::WriteSInt64ToArray(
+        6, this->_internal_messageid(), target);
   }
 
   // .Message.MessageType messageType = 7;
   if (this->_internal_messagetype() != 0) {
     target = stream->EnsureSpace(target);
     target = ::_pbi::WireFormatLite::WriteEnumToArray(
-      7, this->_internal_messagetype(), target);
+        7, this->_internal_messagetype(), target);
   }
 
-  // .InformationalMessageContents info = 8;
-  if (_internal_has_info()) {
-    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::
-      InternalWriteMessage(8, _Internal::info(this),
-        _Internal::info(this).GetCachedSize(), target, stream);
+  switch (message_case()) {
+    case kInfo: {
+      target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::
+        InternalWriteMessage(8, _Internal::info(this),
+          _Internal::info(this).GetCachedSize(), target, stream);
+      break;
+    }
+    case kKeyspace: {
+      target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::
+        InternalWriteMessage(9, _Internal::keyspace(this),
+          _Internal::keyspace(this).GetCachedSize(), target, stream);
+      break;
+    }
+    default: ;
   }
-
-  // .KeyspaceMessageContents keyspace = 9;
-  if (_internal_has_keyspace()) {
-    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::
-      InternalWriteMessage(9, _Internal::keyspace(this),
-        _Internal::keyspace(this).GetCachedSize(), target, stream);
-  }
-
   if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
     target = ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
         _internal_metadata_.unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(::PROTOBUF_NAMESPACE_ID::UnknownFieldSet::default_instance), target, stream);
@@ -1889,30 +2017,29 @@ uint8_t* Message::_InternalSerialize(
   return target;
 }
 
-size_t Message::ByteSizeLong() const {
+::size_t Message::ByteSizeLong() const {
 // @@protoc_insertion_point(message_byte_size_start:Message)
-  size_t total_size = 0;
+  ::size_t total_size = 0;
 
-  uint32_t cached_has_bits = 0;
+  ::uint32_t cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
   // bytes sourceNodeID = 1;
   if (!this->_internal_sourcenodeid().empty()) {
-    total_size += 1 +
-      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::BytesSize(
-        this->_internal_sourcenodeid());
+    total_size += 1 + ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::BytesSize(
+                                    this->_internal_sourcenodeid());
   }
 
   // bytes destNodeID = 2;
   if (!this->_internal_destnodeid().empty()) {
-    total_size += 1 +
-      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::BytesSize(
-        this->_internal_destnodeid());
+    total_size += 1 + ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::BytesSize(
+                                    this->_internal_destnodeid());
   }
 
   // .google.protobuf.Timestamp timestamp = 5;
-  if (this->_internal_has_timestamp()) {
+  cached_has_bits = _impl_._has_bits_[0];
+  if (cached_has_bits & 0x00000001u) {
     total_size += 1 +
       ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::MessageSize(
         *_impl_.timestamp_);
@@ -1920,24 +2047,26 @@ size_t Message::ByteSizeLong() const {
 
   // uint64 lastReceivedMsg = 3;
   if (this->_internal_lastreceivedmsg() != 0) {
-    total_size += ::_pbi::WireFormatLite::UInt64SizePlusOne(this->_internal_lastreceivedmsg());
+    total_size += ::_pbi::WireFormatLite::UInt64SizePlusOne(
+        this->_internal_lastreceivedmsg());
   }
 
   // .Message.ChannelState channelState = 4;
   if (this->_internal_channelstate() != 0) {
     total_size += 1 +
-      ::_pbi::WireFormatLite::EnumSize(this->_internal_channelstate());
+                  ::_pbi::WireFormatLite::EnumSize(this->_internal_channelstate());
   }
 
   // .Message.MessageType messageType = 7;
   if (this->_internal_messagetype() != 0) {
     total_size += 1 +
-      ::_pbi::WireFormatLite::EnumSize(this->_internal_messagetype());
+                  ::_pbi::WireFormatLite::EnumSize(this->_internal_messagetype());
   }
 
   // sint64 messageID = 6;
   if (this->_internal_messageid() != 0) {
-    total_size += ::_pbi::WireFormatLite::SInt64SizePlusOne(this->_internal_messageid());
+    total_size += ::_pbi::WireFormatLite::SInt64SizePlusOne(
+        this->_internal_messageid());
   }
 
   switch (message_case()) {
@@ -1973,8 +2102,8 @@ void Message::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message& to_msg, const ::PROTOB
   auto* const _this = static_cast<Message*>(&to_msg);
   auto& from = static_cast<const Message&>(from_msg);
   // @@protoc_insertion_point(class_specific_merge_from_start:Message)
-  GOOGLE_DCHECK_NE(&from, _this);
-  uint32_t cached_has_bits = 0;
+  ABSL_DCHECK_NE(&from, _this);
+  ::uint32_t cached_has_bits = 0;
   (void) cached_has_bits;
 
   if (!from._internal_sourcenodeid().empty()) {
@@ -1983,7 +2112,7 @@ void Message::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message& to_msg, const ::PROTOB
   if (!from._internal_destnodeid().empty()) {
     _this->_internal_set_destnodeid(from._internal_destnodeid());
   }
-  if (from._internal_has_timestamp()) {
+  if ((from._impl_._has_bits_[0] & 0x00000001u) != 0) {
     _this->_internal_mutable_timestamp()->::PROTOBUF_NAMESPACE_ID::Timestamp::MergeFrom(
         from._internal_timestamp());
   }
@@ -2033,14 +2162,11 @@ void Message::InternalSwap(Message* other) {
   auto* lhs_arena = GetArenaForAllocation();
   auto* rhs_arena = other->GetArenaForAllocation();
   _internal_metadata_.InternalSwap(&other->_internal_metadata_);
-  ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::InternalSwap(
-      &_impl_.sourcenodeid_, lhs_arena,
-      &other->_impl_.sourcenodeid_, rhs_arena
-  );
-  ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::InternalSwap(
-      &_impl_.destnodeid_, lhs_arena,
-      &other->_impl_.destnodeid_, rhs_arena
-  );
+  swap(_impl_._has_bits_[0], other->_impl_._has_bits_[0]);
+  ::_pbi::ArenaStringPtr::InternalSwap(&_impl_.sourcenodeid_, lhs_arena,
+                                       &other->_impl_.sourcenodeid_, rhs_arena);
+  ::_pbi::ArenaStringPtr::InternalSwap(&_impl_.destnodeid_, lhs_arena,
+                                       &other->_impl_.destnodeid_, rhs_arena);
   ::PROTOBUF_NAMESPACE_ID::internal::memswap<
       PROTOBUF_FIELD_OFFSET(Message, _impl_.messageid_)
       + sizeof(Message::_impl_.messageid_)
@@ -2056,7 +2182,6 @@ void Message::InternalSwap(Message* other) {
       &descriptor_table_message_2eproto_getter, &descriptor_table_message_2eproto_once,
       file_level_metadata_message_2eproto[5]);
 }
-
 // @@protoc_insertion_point(namespace_scope)
 PROTOBUF_NAMESPACE_OPEN
 template<> PROTOBUF_NOINLINE ::InformationalMessageContents_CollectionInformationRecord_CreationRateData*
@@ -2084,6 +2209,5 @@ Arena::CreateMaybeMessage< ::Message >(Arena* arena) {
   return Arena::CreateMessageInternal< ::Message >(arena);
 }
 PROTOBUF_NAMESPACE_CLOSE
-
 // @@protoc_insertion_point(global_scope)
-#include <google/protobuf/port_undef.inc>
+#include "google/protobuf/port_undef.inc"
