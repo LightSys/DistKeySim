@@ -33,10 +33,10 @@ $(SRC)/message.pb.cc $(INCLUDE)/message.pb.h : $(SRC)/message.proto
 		mv  message.pb.h $(INCLUDE)
 
 # Build ADAK
-$(BUILD_SRC)/adak : $(SOURCES)
+$(BUILD_SRC)/adak : CMakeLists.txt src/CMakeLists.txt $(SOURCES)
 	mkdir -p $(BUILD)
 	cd $(BUILD) && \
-		cmake .. -DBUILD_TESTING=0 --trace && \
+		cmake .. -DBUILD_TESTING=0 && \
 		make -j$(USE_CORES)
 
 .PHONY: src
