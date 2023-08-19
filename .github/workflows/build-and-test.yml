@@ -29,7 +29,11 @@ jobs:
           cd protobuf
           sudo make install
           sudo ldconfig
-      - name: Build and test
+      - name: Build and install Abseil
+        run: |
+          git clone --no-checkout https://github.com/abseil/abseil-cpp
+          cd abseil-cpp && cmake . -DCMAKE_INSTALL_PREFIX=$INSTALL_DIR && make install
+      - name: Build and test ADAK
         if: always()
         run: make all build-and-test USE_CORES=1
       - uses: actions/upload-artifact@v2
