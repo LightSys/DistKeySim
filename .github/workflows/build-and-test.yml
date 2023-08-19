@@ -31,7 +31,7 @@ jobs:
           sudo ldconfig
       - name: Build and install Abseil
         run: |
-          git clone --no-checkout https://github.com/abseil/abseil-cpp
+          git clone https://github.com/abseil/abseil-cpp
           cd abseil-cpp && mkdir build && cd build && cmake -DCMAKE_CXX_STANDARD=14 .. && make install
       - name: Build and test ADAK
         if: always()
