@@ -42,8 +42,8 @@ jobs:
       - name: Build and test ADAK group 1
         if: always()
         run: |
-          tree .
-          make all build-and-test-1-of-2 USE_CORES=1
+          ls
+          make build-and-test-1-of-2 USE_CORES=1
       - uses: actions/upload-artifact@v2
         if: always()
         with:
@@ -55,7 +55,7 @@ jobs:
     steps:
       - name: Build and test ADAK group 2
         if: always()
-        run: make all build-and-test-2-of-2 USE_CORES=1
+        run: make build-and-test-2-of-2 USE_CORES=1
       - uses: actions/upload-artifact@v2
         if: always()
         with:
