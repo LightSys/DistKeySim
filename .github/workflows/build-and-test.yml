@@ -29,11 +29,10 @@ jobs:
           cd protobuf
           sudo make install
           sudo ldconfig
-      # We may not need abseil because we're using such an old commit of protobuf
-      # - name: Build and install Abseil
-      #   run: |
-      #     git clone https://github.com/abseil/abseil-cpp
-      #     cd abseil-cpp && mkdir build && cd build && cmake -DCMAKE_CXX_STANDARD=14 .. && sudo make install
+      - name: Build and install Abseil
+        run: |
+          git clone https://github.com/abseil/abseil-cpp
+          cd abseil-cpp && mkdir build && cd build && cmake -DCMAKE_CXX_STANDARD=14 .. && sudo make install
       - name: Build and test ADAK
         if: always()
         run: make all build-and-test USE_CORES=1
