@@ -39,11 +39,10 @@ jobs:
     runs-on: ubuntu-latest
     needs: build
     steps:
+      - uses: actions/checkout@v2
       - name: Build and test ADAK group 1
         if: always()
-        run: |
-          ls
-          make build-and-test-1-of-2 USE_CORES=1
+        run: make build-and-test-1-of-2 USE_CORES=1
       - uses: actions/upload-artifact@v2
         if: always()
         with:
@@ -53,6 +52,7 @@ jobs:
     runs-on: ubuntu-latest
     needs: [ build, test-group-1 ]
     steps:
+      - uses: actions/checkout@v2
       - name: Build and test ADAK group 2
         if: always()
         run: make build-and-test-2-of-2 USE_CORES=1
