@@ -7,6 +7,7 @@ import sys
 def runOneSim(configFileName, connectionMode, simLength, numNodes=0):
 
     print("runOneSim(configFileName=%s, connectionMode=%s, simLength=%d, numNodes=%d)" % (configFileName, connectionMode, simLength, numNodes))
+    sys.stdout.flush()
  
     # Read and edit config file
     with open(configFileName, 'r') as configFile:

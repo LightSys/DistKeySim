@@ -58,12 +58,17 @@ set-verbose-true :
 	grep Verbose include/Logger.h
 
 .PHONY: build-and-test
-build-and-test : all
+
+# Build and Test is running into GitHub's time limit, 6 hours.
+# The longest test is test2, so let's split that one out.
+build-and-test-1-of-2 : all
 	make run-test1-repeatability
-	make run-test2-oscillation
-	make run-test3-non-repeatability
-	make run-test4-scenario-1
+	make run-test2-non-repeatability
+	make run-test3-scenario-1
 	make run-test5-doNothing
+
+build-and-test-2-of-2 : all
+	make run-test4-oscillation
 
 test6 :
 	# Test 6 fails as of 8/18
@@ -225,7 +230,7 @@ run-test4-scenario-1 : all
 	@echo "------"
 	@echo "Test 4"
 	@echo "------"
-	@time $(BIN)/testScenario.py --scenarioNum 1 --numNodes 2 --days $(SCEN_1_DAYS) --config $(SCEN_1_CONFIG) \
+	time $(BIN)/testScenario.py --scenarioNum 1 --numNodes 2 --days $(SCEN_1_DAYS) --config $(SCEN_1_CONFIG) \
 		-a 'assert numKeyspaces == 2, "Test Scenario 1 failed: numKeyspaces=%d" % numKeyspaces'
 	@echo "Test 4 Passed: Scenario 1"
 
@@ -236,7 +241,7 @@ run-test5-doNothing : all
 	@echo "------"
 	@echo "Test 5"
 	@echo "------"
-	@time $(BIN)/testScenario.py --scenarioNum 1 --numNodes 2 --days $(SCEN_1_DAYS) \
+	time $(BIN)/testScenario.py --scenarioNum 1 --numNodes 2 --days $(SCEN_1_DAYS) \
 		--config "config/doNothing-config.json" \
 		-a 'assert numKeyspaces == 1, "Test Do Nothing failed: numKeyspaces=%d" % numKeyspaces'
 	@echo "Test 5 Passed: Do Nothing Strategy"
@@ -269,7 +274,7 @@ run-test6-scenario-2 : all
 	@echo "------"
 	@echo "Test 6"
 	@echo "------"
-	@time $(BIN)/testScenario.py --scenarioNum 2 --numNodes 2 --days $(SCEN_2_DAYS) --config $(SCEN_2_CONFIG) \
+	time $(BIN)/testScenario.py --scenarioNum 2 --numNodes 2 --days $(SCEN_2_DAYS) --config $(SCEN_2_CONFIG) \
 		-a 'assert numKeyspaces > 2, "Test Scenario 2 failed: numKeyspaces=%d" % numKeyspaces'
 	@echo "Test 6 Passed: Scenario 2"
 
@@ -302,7 +307,7 @@ run-test7-scenario-3 : all
 	@echo "------"
 	@echo "Test 7"
 	@echo "------"
-	@time $(BIN)/testScenario.py --scenarioNum 3 --numNodes 2 --days $(SCEN_3_DAYS) --config $(SCEN_3_CONFIG) \
+	time $(BIN)/testScenario.py --scenarioNum 3 --numNodes 2 --days $(SCEN_3_DAYS) --config $(SCEN_3_CONFIG) \
 		-a 'assert numKeyspaces == 32, "Test Scenario 3 failed: numKeyspaces=%d" % numKeyspaces'
 	@echo "Test 7 Passed: Scenario 3"
 
@@ -326,7 +331,7 @@ run-test8-scenario-4 : all
 	@echo "------"
 	@echo "Test 7"
 	@echo "------"
-	@time $(BIN)/testScenario.py --scenarioNum 4 --numNodes 2 --days $(SCEN_4_DAYS) --config $(SCEN_4_CONFIG) \
+	time $(BIN)/testScenario.py --scenarioNum 4 --numNodes 2 --days $(SCEN_4_DAYS) --config $(SCEN_4_CONFIG) \
 		-a 'assert numKeyspaces == 32, "Test Scenario 4 failed: numKeyspaces=%d" % numKeyspaces'
 	@echo "Test 7 Passed: Scenario 4"
 
