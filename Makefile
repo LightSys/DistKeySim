@@ -58,17 +58,12 @@ set-verbose-true :
 	grep Verbose include/Logger.h
 
 .PHONY: build-and-test
-
-# Build and Test is running into GitHub's time limit, 6 hours.
-# The longest test is test2, so let's split that one out.
-build-and-test-1-of-2 : all
+build-and-test : all
 	make run-test1-repeatability
-	make run-test2-non-repeatability
-	make run-test3-scenario-1
+	make run-test2-oscillation
+	make run-test3-non-repeatability
+	make run-test4-scenario-1
 	make run-test5-doNothing
-
-build-and-test-2-of-2 : all
-	make run-test4-oscillation
 
 test6 :
 	# Test 6 fails as of 8/18
