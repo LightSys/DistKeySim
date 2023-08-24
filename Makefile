@@ -43,6 +43,15 @@ $(BUILD_SRC)/adak : CMakeLists.txt src/CMakeLists.txt $(SOURCES)
 src :
 	@echo $(SOURCES)
 
+protobuf :
+	git clone https://github.com/protocolbuffers/protobuf.git
+	cd protobuf && \
+	git submodule update --init --recursive && \
+	cmake . -DCMAKE_CXX_STANDARD=14 && \
+	cmake --build .
+#	sudo make install
+#	sudo ldconfig
+
 # ----------------------------------------------
 # This is the most comprehensive automated
 # test. It is the test we run in GitHub actions.
