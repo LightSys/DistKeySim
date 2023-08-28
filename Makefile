@@ -27,10 +27,12 @@ endif
 all: $(BUILD_SRC)/adak
 
 # Update message protobuf sources when message.proto changes
-$(SRC)/message.pb.cc $(INCLUDE)/message.pb.h : $(SRC)/message.proto 
+$(SRC)/message.pb.cc $(INCLUDE)/message.pb.h : $(SRC)/message.proto
 	cd $(SRC) && \
+		which protoc && \
+		protoc --version && \
 		protoc message.proto --cpp_out=. && \
-		mv  message.pb.h $(INCLUDE)
+		mv message.pb.h $(INCLUDE)
 
 # Build ADAK
 $(BUILD_SRC)/adak : CMakeLists.txt src/CMakeLists.txt $(SOURCES)
@@ -43,14 +45,21 @@ $(BUILD_SRC)/adak : CMakeLists.txt src/CMakeLists.txt $(SOURCES)
 src :
 	@echo $(SOURCES)
 
-protobuf :
+# This build process was adapted from https://lukasjoswiak.com/
+protobuf : FORCE
 	git clone https://github.com/protocolbuffers/protobuf.git
 	cd protobuf && \
+	git checkout tags/v23.0 && \
 	git submodule update --init --recursive && \
-	cmake . -DCMAKE_CXX_STANDARD=14 && \
+	mkdir -p ~/protobuf && \
+	cmake . -DCMAKE_CXX_STANDARD=14 -DCMAKE_INSTALL_PREFIX=~/protobuf && \
 	cmake --build .
-#	sudo make install
-#	sudo ldconfig
+
+install-protobuf :
+	cd protobuf && make install
+
+clean-protobuf :
+	rm -rf protobuf
 
 # ----------------------------------------------
 # This is the most comprehensive automated
@@ -462,3 +471,5 @@ clean-all : clean clean-outputs
 cores :
 	@echo NUM_CORES=$(NUM_CORES)
 	@echo USE_CORES=$(USE_CORES)
+
+FORCE :
