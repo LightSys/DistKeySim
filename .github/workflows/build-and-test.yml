@@ -4,33 +4,13 @@ jobs:
   build-and-test:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
-      - name: Cache protobuf library
-        id: cache-protobuf
-        uses: actions/cache@v1
-        with:
-          path: protobuf
-          key: ${{ runner.os }}-protobuf
-      - name: Build protobuf library
-        if: steps.cache-protobuf.outputs.cache-hit != 'true'
-        run: |
-          git clone https://github.com/protocolbuffers/protobuf.git
-          cd protobuf
-          git checkout tags/v23.0
-          git submodule update --init --recursive
-          cmake . -DCMAKE_CXX_STANDARD=14
-          cmake --build .
+      - name: Install abseil library
+        run: sudo apt-get install abseil
       - name: Install protobuf library
-        if: always()
-        run: |
-          cd protobuf
-          sudo make install
-          sudo ldconfig
+        run: sudo apt-get install protobuf
       - name: Build and test ADAK
-        if: always()
         run: make all build-and-test USE_CORES=1
       - uses: actions/upload-artifact@v2
-        if: always()
         with:
           name: outputs
           path: build/src/outputs/
