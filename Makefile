@@ -28,18 +28,16 @@ all: $(BUILD_SRC)/adak
 
 # Update message protobuf sources when message.proto changes
 $(SRC)/message.pb.cc $(INCLUDE)/message.pb.h : $(SRC)/message.proto
-	cd $(SRC) && \
-		which protoc && \
-		protoc --version && \
-		protoc message.proto --cpp_out=. && \
-		mv message.pb.h $(INCLUDE)
+	which protoc
+	protoc --version
+	cd $(SRC) && protoc message.proto --cpp_out=.
+	cd $(SRC) && mv message.pb.h $(INCLUDE)
 
 # Build ADAK
 $(BUILD_SRC)/adak : CMakeLists.txt src/CMakeLists.txt $(SOURCES)
 	mkdir -p $(BUILD)
-	cd $(BUILD) && \
-		cmake .. -DBUILD_TESTING=0 && \
-		make -j$(USE_CORES)
+	cd $(BUILD) && cmake .. -DBUILD_TESTING=0
+	cd $(BUILD) && make -j$(USE_CORES)
 
 .PHONY: src
 src :
