@@ -4,8 +4,14 @@ jobs:
   build-and-test:
     runs-on: ubuntu-latest
     steps:
+      - uses: actions/checkout@v2
       - name: Install abseil library
-        run: sudo apt-get install abseil
+        run: |
+          git clone https://github.com/abseil/abseil-cpp.git
+          cd abseil-cpp
+          mkdir build && cd build
+          cmake .. -DCMAKE_INSTALL_PREFIX=../CMakeProject/install
+          cmake --build . --target install
       - name: Install protobuf library
         run: sudo apt-get install protobuf
       - name: Build and test ADAK
