@@ -13,6 +13,7 @@ jobs:
           sudo apt install cmake
           cmake ..
           sudo cmake --build . --target install
+      - uses: actions/checkout@v2
       - name: Build and test ADAK
         run: make all build-and-test USE_CORES=1
       - uses: actions/upload-artifact@v2
