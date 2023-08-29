@@ -12,8 +12,7 @@ jobs:
           mkdir build && cd build
           sudo apt install cmake
           cmake ..
-          cmake --build .
-          sudo cmake --target install .
+          sudo cmake --build . --target install
       - name: Build and test ADAK
         run: make all build-and-test USE_CORES=1
       - uses: actions/upload-artifact@v2
