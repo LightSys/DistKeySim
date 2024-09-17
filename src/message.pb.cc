@@ -12,6 +12,7 @@
 #include "google/protobuf/reflection_ops.h"
 #include "google/protobuf/wire_format.h"
 // @@protoc_insertion_point(includes)
+<<<<<<< Updated upstream
 
 // Must be included last.
 #include "google/protobuf/port_def.inc"
@@ -235,6 +236,196 @@ const ::uint32_t TableStruct_message_2eproto::offsets[] PROTOBUF_SECTION_VARIABL
     ~0u,
     ~0u,
     ~0u,
+=======
+#include <google/protobuf/port_def.inc>
+extern PROTOBUF_INTERNAL_EXPORT_message_2eproto ::PROTOBUF_NAMESPACE_ID::internal::SCCInfo<1> scc_info_InformationalMessageContents_message_2eproto;
+extern PROTOBUF_INTERNAL_EXPORT_message_2eproto ::PROTOBUF_NAMESPACE_ID::internal::SCCInfo<1> scc_info_InformationalMessageContents_CollectionInformationRecord_message_2eproto;
+extern PROTOBUF_INTERNAL_EXPORT_message_2eproto ::PROTOBUF_NAMESPACE_ID::internal::SCCInfo<0> scc_info_InformationalMessageContents_CollectionInformationRecord_CreationRateData_message_2eproto;
+extern PROTOBUF_INTERNAL_EXPORT_message_2eproto ::PROTOBUF_NAMESPACE_ID::internal::SCCInfo<1> scc_info_KeyspaceMessageContents_message_2eproto;
+extern PROTOBUF_INTERNAL_EXPORT_message_2eproto ::PROTOBUF_NAMESPACE_ID::internal::SCCInfo<0> scc_info_KeyspaceMessageContents_Keyspace_message_2eproto;
+extern PROTOBUF_INTERNAL_EXPORT_google_2fprotobuf_2ftimestamp_2eproto ::PROTOBUF_NAMESPACE_ID::internal::SCCInfo<0> scc_info_Timestamp_google_2fprotobuf_2ftimestamp_2eproto;
+class InformationalMessageContents_CollectionInformationRecord_CreationRateDataDefaultTypeInternal {
+ public:
+  ::PROTOBUF_NAMESPACE_ID::internal::ExplicitlyConstructed<InformationalMessageContents_CollectionInformationRecord_CreationRateData> _instance;
+} _InformationalMessageContents_CollectionInformationRecord_CreationRateData_default_instance_;
+class InformationalMessageContents_CollectionInformationRecordDefaultTypeInternal {
+ public:
+  ::PROTOBUF_NAMESPACE_ID::internal::ExplicitlyConstructed<InformationalMessageContents_CollectionInformationRecord> _instance;
+} _InformationalMessageContents_CollectionInformationRecord_default_instance_;
+class InformationalMessageContentsDefaultTypeInternal {
+ public:
+  ::PROTOBUF_NAMESPACE_ID::internal::ExplicitlyConstructed<InformationalMessageContents> _instance;
+} _InformationalMessageContents_default_instance_;
+class KeyspaceMessageContents_KeyspaceDefaultTypeInternal {
+ public:
+  ::PROTOBUF_NAMESPACE_ID::internal::ExplicitlyConstructed<KeyspaceMessageContents_Keyspace> _instance;
+} _KeyspaceMessageContents_Keyspace_default_instance_;
+class KeyspaceMessageContentsDefaultTypeInternal {
+ public:
+  ::PROTOBUF_NAMESPACE_ID::internal::ExplicitlyConstructed<KeyspaceMessageContents> _instance;
+} _KeyspaceMessageContents_default_instance_;
+class MessageDefaultTypeInternal {
+ public:
+  ::PROTOBUF_NAMESPACE_ID::internal::ExplicitlyConstructed<Message> _instance;
+  const ::InformationalMessageContents* info_;
+  const ::KeyspaceMessageContents* keyspace_;
+} _Message_default_instance_;
+static void InitDefaultsscc_info_InformationalMessageContents_message_2eproto() {
+  GOOGLE_PROTOBUF_VERIFY_VERSION;
+
+  {
+    void* ptr = &::_InformationalMessageContents_default_instance_;
+    new (ptr) ::InformationalMessageContents();
+    ::PROTOBUF_NAMESPACE_ID::internal::OnShutdownDestroyMessage(ptr);
+  }
+  ::InformationalMessageContents::InitAsDefaultInstance();
+}
+
+::PROTOBUF_NAMESPACE_ID::internal::SCCInfo<1> scc_info_InformationalMessageContents_message_2eproto =
+    {{ATOMIC_VAR_INIT(::PROTOBUF_NAMESPACE_ID::internal::SCCInfoBase::kUninitialized), 1, 0, InitDefaultsscc_info_InformationalMessageContents_message_2eproto}, {
+      &scc_info_InformationalMessageContents_CollectionInformationRecord_message_2eproto.base,}};
+
+static void InitDefaultsscc_info_InformationalMessageContents_CollectionInformationRecord_message_2eproto() {
+  GOOGLE_PROTOBUF_VERIFY_VERSION;
+
+  {
+    void* ptr = &::_InformationalMessageContents_CollectionInformationRecord_default_instance_;
+    new (ptr) ::InformationalMessageContents_CollectionInformationRecord();
+    ::PROTOBUF_NAMESPACE_ID::internal::OnShutdownDestroyMessage(ptr);
+  }
+  ::InformationalMessageContents_CollectionInformationRecord::InitAsDefaultInstance();
+}
+
+::PROTOBUF_NAMESPACE_ID::internal::SCCInfo<1> scc_info_InformationalMessageContents_CollectionInformationRecord_message_2eproto =
+    {{ATOMIC_VAR_INIT(::PROTOBUF_NAMESPACE_ID::internal::SCCInfoBase::kUninitialized), 1, 0, InitDefaultsscc_info_InformationalMessageContents_CollectionInformationRecord_message_2eproto}, {
+      &scc_info_InformationalMessageContents_CollectionInformationRecord_CreationRateData_message_2eproto.base,}};
+
+static void InitDefaultsscc_info_InformationalMessageContents_CollectionInformationRecord_CreationRateData_message_2eproto() {
+  GOOGLE_PROTOBUF_VERIFY_VERSION;
+
+  {
+    void* ptr = &::_InformationalMessageContents_CollectionInformationRecord_CreationRateData_default_instance_;
+    new (ptr) ::InformationalMessageContents_CollectionInformationRecord_CreationRateData();
+    ::PROTOBUF_NAMESPACE_ID::internal::OnShutdownDestroyMessage(ptr);
+  }
+  ::InformationalMessageContents_CollectionInformationRecord_CreationRateData::InitAsDefaultInstance();
+}
+
+::PROTOBUF_NAMESPACE_ID::internal::SCCInfo<0> scc_info_InformationalMessageContents_CollectionInformationRecord_CreationRateData_message_2eproto =
+    {{ATOMIC_VAR_INIT(::PROTOBUF_NAMESPACE_ID::internal::SCCInfoBase::kUninitialized), 0, 0, InitDefaultsscc_info_InformationalMessageContents_CollectionInformationRecord_CreationRateData_message_2eproto}, {}};
+
+static void InitDefaultsscc_info_KeyspaceMessageContents_message_2eproto() {
+  GOOGLE_PROTOBUF_VERIFY_VERSION;
+
+  {
+    void* ptr = &::_KeyspaceMessageContents_default_instance_;
+    new (ptr) ::KeyspaceMessageContents();
+    ::PROTOBUF_NAMESPACE_ID::internal::OnShutdownDestroyMessage(ptr);
+  }
+  ::KeyspaceMessageContents::InitAsDefaultInstance();
+}
+
+::PROTOBUF_NAMESPACE_ID::internal::SCCInfo<1> scc_info_KeyspaceMessageContents_message_2eproto =
+    {{ATOMIC_VAR_INIT(::PROTOBUF_NAMESPACE_ID::internal::SCCInfoBase::kUninitialized), 1, 0, InitDefaultsscc_info_KeyspaceMessageContents_message_2eproto}, {
+      &scc_info_KeyspaceMessageContents_Keyspace_message_2eproto.base,}};
+
+static void InitDefaultsscc_info_KeyspaceMessageContents_Keyspace_message_2eproto() {
+  GOOGLE_PROTOBUF_VERIFY_VERSION;
+
+  {
+    void* ptr = &::_KeyspaceMessageContents_Keyspace_default_instance_;
+    new (ptr) ::KeyspaceMessageContents_Keyspace();
+    ::PROTOBUF_NAMESPACE_ID::internal::OnShutdownDestroyMessage(ptr);
+  }
+  ::KeyspaceMessageContents_Keyspace::InitAsDefaultInstance();
+}
+
+::PROTOBUF_NAMESPACE_ID::internal::SCCInfo<0> scc_info_KeyspaceMessageContents_Keyspace_message_2eproto =
+    {{ATOMIC_VAR_INIT(::PROTOBUF_NAMESPACE_ID::internal::SCCInfoBase::kUninitialized), 0, 0, InitDefaultsscc_info_KeyspaceMessageContents_Keyspace_message_2eproto}, {}};
+
+static void InitDefaultsscc_info_Message_message_2eproto() {
+  GOOGLE_PROTOBUF_VERIFY_VERSION;
+
+  {
+    void* ptr = &::_Message_default_instance_;
+    new (ptr) ::Message();
+    ::PROTOBUF_NAMESPACE_ID::internal::OnShutdownDestroyMessage(ptr);
+  }
+  ::Message::InitAsDefaultInstance();
+}
+
+::PROTOBUF_NAMESPACE_ID::internal::SCCInfo<3> scc_info_Message_message_2eproto =
+    {{ATOMIC_VAR_INIT(::PROTOBUF_NAMESPACE_ID::internal::SCCInfoBase::kUninitialized), 3, 0, InitDefaultsscc_info_Message_message_2eproto}, {
+      &scc_info_Timestamp_google_2fprotobuf_2ftimestamp_2eproto.base,
+      &scc_info_InformationalMessageContents_message_2eproto.base,
+      &scc_info_KeyspaceMessageContents_message_2eproto.base,}};
+
+static ::PROTOBUF_NAMESPACE_ID::Metadata file_level_metadata_message_2eproto[6];
+static const ::PROTOBUF_NAMESPACE_ID::EnumDescriptor* file_level_enum_descriptors_message_2eproto[2];
+static constexpr ::PROTOBUF_NAMESPACE_ID::ServiceDescriptor const** file_level_service_descriptors_message_2eproto = nullptr;
+
+const ::PROTOBUF_NAMESPACE_ID::uint32 TableStruct_message_2eproto::offsets[] PROTOBUF_SECTION_VARIABLE(protodesc_cold) = {
+  ~0u,  // no _has_bits_
+  PROTOBUF_FIELD_OFFSET(::InformationalMessageContents_CollectionInformationRecord_CreationRateData, _internal_metadata_),
+  ~0u,  // no _extensions_
+  ~0u,  // no _oneof_case_
+  ~0u,  // no _weak_field_map_
+  PROTOBUF_FIELD_OFFSET(::InformationalMessageContents_CollectionInformationRecord_CreationRateData, shortallocationratio_),
+  PROTOBUF_FIELD_OFFSET(::InformationalMessageContents_CollectionInformationRecord_CreationRateData, longallocationratio_),
+  PROTOBUF_FIELD_OFFSET(::InformationalMessageContents_CollectionInformationRecord_CreationRateData, createdpreviousday_),
+  PROTOBUF_FIELD_OFFSET(::InformationalMessageContents_CollectionInformationRecord_CreationRateData, createdpreviousweek_),
+  ~0u,  // no _has_bits_
+  PROTOBUF_FIELD_OFFSET(::InformationalMessageContents_CollectionInformationRecord, _internal_metadata_),
+  ~0u,  // no _extensions_
+  ~0u,  // no _oneof_case_
+  ~0u,  // no _weak_field_map_
+  PROTOBUF_FIELD_OFFSET(::InformationalMessageContents_CollectionInformationRecord, collectionname_),
+  PROTOBUF_FIELD_OFFSET(::InformationalMessageContents_CollectionInformationRecord, creationratedata_),
+  ~0u,  // no _has_bits_
+  PROTOBUF_FIELD_OFFSET(::InformationalMessageContents, _internal_metadata_),
+  ~0u,  // no _extensions_
+  ~0u,  // no _oneof_case_
+  ~0u,  // no _weak_field_map_
+  PROTOBUF_FIELD_OFFSET(::InformationalMessageContents, records_),
+  ~0u,  // no _has_bits_
+  PROTOBUF_FIELD_OFFSET(::KeyspaceMessageContents_Keyspace, _internal_metadata_),
+  ~0u,  // no _extensions_
+  ~0u,  // no _oneof_case_
+  ~0u,  // no _weak_field_map_
+  PROTOBUF_FIELD_OFFSET(::KeyspaceMessageContents_Keyspace, name_),
+  PROTOBUF_FIELD_OFFSET(::KeyspaceMessageContents_Keyspace, startid_),
+  PROTOBUF_FIELD_OFFSET(::KeyspaceMessageContents_Keyspace, endid_),
+  PROTOBUF_FIELD_OFFSET(::KeyspaceMessageContents_Keyspace, suffixbits_),
+  ~0u,  // no _has_bits_
+  PROTOBUF_FIELD_OFFSET(::KeyspaceMessageContents, _internal_metadata_),
+  ~0u,  // no _extensions_
+  ~0u,  // no _oneof_case_
+  ~0u,  // no _weak_field_map_
+  PROTOBUF_FIELD_OFFSET(::KeyspaceMessageContents, keyspaces_),
+  ~0u,  // no _has_bits_
+  PROTOBUF_FIELD_OFFSET(::Message, _internal_metadata_),
+  ~0u,  // no _extensions_
+  PROTOBUF_FIELD_OFFSET(::Message, _oneof_case_[0]),
+  ~0u,  // no _weak_field_map_
+  PROTOBUF_FIELD_OFFSET(::Message, sourcenodeid_),
+  PROTOBUF_FIELD_OFFSET(::Message, destnodeid_),
+  PROTOBUF_FIELD_OFFSET(::Message, lastreceivedmsg_),
+  PROTOBUF_FIELD_OFFSET(::Message, channelstate_),
+  PROTOBUF_FIELD_OFFSET(::Message, timestamp_),
+  PROTOBUF_FIELD_OFFSET(::Message, messageid_),
+  PROTOBUF_FIELD_OFFSET(::Message, messagetype_),
+  offsetof(::MessageDefaultTypeInternal, info_),
+  offsetof(::MessageDefaultTypeInternal, keyspace_),
+  PROTOBUF_FIELD_OFFSET(::Message, message_),
+};
+static const ::PROTOBUF_NAMESPACE_ID::internal::MigrationSchema schemas[] PROTOBUF_SECTION_VARIABLE(protodesc_cold) = {
+  { 0, -1, sizeof(::InformationalMessageContents_CollectionInformationRecord_CreationRateData)},
+  { 9, -1, sizeof(::InformationalMessageContents_CollectionInformationRecord)},
+  { 16, -1, sizeof(::InformationalMessageContents)},
+  { 22, -1, sizeof(::KeyspaceMessageContents_Keyspace)},
+  { 31, -1, sizeof(::KeyspaceMessageContents)},
+  { 37, -1, sizeof(::Message)},
+>>>>>>> Stashed changes
 };
 
 static const ::_pbi::MigrationSchema
@@ -255,6 +446,7 @@ static const ::_pb::Message* const file_default_instances[] = {
     &::_KeyspaceMessageContents_default_instance_._instance,
     &::_Message_default_instance_._instance,
 };
+<<<<<<< Updated upstream
 const char descriptor_table_protodef_message_2eproto[] PROTOBUF_SECTION_VARIABLE(protodesc_cold) = {
     "\n\rmessage.proto\032\037google/protobuf/timesta"
     "mp.proto\"\221\003\n\034InformationalMessageContent"
@@ -325,6 +517,27 @@ PROTOBUF_ATTRIBUTE_WEAK const ::_pbi::DescriptorTable* descriptor_table_message_
 // Force running AddDescriptors() at dynamic initialization time.
 PROTOBUF_ATTRIBUTE_INIT_PRIORITY2
 static ::_pbi::AddDescriptorsRunner dynamic_init_dummy_message_2eproto(&descriptor_table_message_2eproto);
+=======
+static ::PROTOBUF_NAMESPACE_ID::internal::SCCInfoBase*const descriptor_table_message_2eproto_sccs[6] = {
+  &scc_info_InformationalMessageContents_message_2eproto.base,
+  &scc_info_InformationalMessageContents_CollectionInformationRecord_message_2eproto.base,
+  &scc_info_InformationalMessageContents_CollectionInformationRecord_CreationRateData_message_2eproto.base,
+  &scc_info_KeyspaceMessageContents_message_2eproto.base,
+  &scc_info_KeyspaceMessageContents_Keyspace_message_2eproto.base,
+  &scc_info_Message_message_2eproto.base,
+};
+static ::PROTOBUF_NAMESPACE_ID::internal::once_flag descriptor_table_message_2eproto_once;
+static bool descriptor_table_message_2eproto_initialized = false;
+const ::PROTOBUF_NAMESPACE_ID::internal::DescriptorTable descriptor_table_message_2eproto = {
+  &descriptor_table_message_2eproto_initialized, descriptor_table_protodef_message_2eproto, "message.proto", 1117,
+  &descriptor_table_message_2eproto_once, descriptor_table_message_2eproto_sccs, descriptor_table_message_2eproto_deps, 6, 1,
+  schemas, file_default_instances, TableStruct_message_2eproto::offsets,
+  file_level_metadata_message_2eproto, 6, file_level_enum_descriptors_message_2eproto, file_level_service_descriptors_message_2eproto,
+};
+
+// Force running AddDescriptors() at dynamic initialization time.
+static bool dynamic_init_dummy_message_2eproto = (  ::PROTOBUF_NAMESPACE_ID::internal::AddDescriptors(&descriptor_table_message_2eproto), true);
+>>>>>>> Stashed changes
 const ::PROTOBUF_NAMESPACE_ID::EnumDescriptor* Message_ChannelState_descriptor() {
   ::PROTOBUF_NAMESPACE_ID::internal::AssignDescriptors(&descriptor_table_message_2eproto);
   return file_level_enum_descriptors_message_2eproto[0];
@@ -342,15 +555,23 @@ bool Message_ChannelState_IsValid(int value) {
 #if (__cplusplus < 201703) && \
   (!defined(_MSC_VER) || (_MSC_VER >= 1900 && _MSC_VER < 1912))
 
+<<<<<<< Updated upstream
+=======
+#if (__cplusplus < 201703) && (!defined(_MSC_VER) || _MSC_VER >= 1900)
+>>>>>>> Stashed changes
 constexpr Message_ChannelState Message::INITIAL_STARTUP;
 constexpr Message_ChannelState Message::NORMAL_COMMUNICATION;
 constexpr Message_ChannelState Message::CHANNEL_SHUTDOWN;
 constexpr Message_ChannelState Message::ChannelState_MIN;
 constexpr Message_ChannelState Message::ChannelState_MAX;
 constexpr int Message::ChannelState_ARRAYSIZE;
+<<<<<<< Updated upstream
 
 #endif  // (__cplusplus < 201703) &&
         // (!defined(_MSC_VER) || (_MSC_VER >= 1900 && _MSC_VER < 1912))
+=======
+#endif  // (__cplusplus < 201703) && (!defined(_MSC_VER) || _MSC_VER >= 1900)
+>>>>>>> Stashed changes
 const ::PROTOBUF_NAMESPACE_ID::EnumDescriptor* Message_MessageType_descriptor() {
   ::PROTOBUF_NAMESPACE_ID::internal::AssignDescriptors(&descriptor_table_message_2eproto);
   return file_level_enum_descriptors_message_2eproto[1];
@@ -368,21 +589,32 @@ bool Message_MessageType_IsValid(int value) {
 #if (__cplusplus < 201703) && \
   (!defined(_MSC_VER) || (_MSC_VER >= 1900 && _MSC_VER < 1912))
 
+<<<<<<< Updated upstream
+=======
+#if (__cplusplus < 201703) && (!defined(_MSC_VER) || _MSC_VER >= 1900)
+>>>>>>> Stashed changes
 constexpr Message_MessageType Message::INFORMATION;
 constexpr Message_MessageType Message::KEYSPACE;
 constexpr Message_MessageType Message::DATA_REPLICATION_UNUSED;
 constexpr Message_MessageType Message::MessageType_MIN;
 constexpr Message_MessageType Message::MessageType_MAX;
 constexpr int Message::MessageType_ARRAYSIZE;
+<<<<<<< Updated upstream
+=======
+#endif  // (__cplusplus < 201703) && (!defined(_MSC_VER) || _MSC_VER >= 1900)
+>>>>>>> Stashed changes
 
 #endif  // (__cplusplus < 201703) &&
         // (!defined(_MSC_VER) || (_MSC_VER >= 1900 && _MSC_VER < 1912))
 // ===================================================================
 
+void InformationalMessageContents_CollectionInformationRecord_CreationRateData::InitAsDefaultInstance() {
+}
 class InformationalMessageContents_CollectionInformationRecord_CreationRateData::_Internal {
  public:
 };
 
+<<<<<<< Updated upstream
 InformationalMessageContents_CollectionInformationRecord_CreationRateData::InformationalMessageContents_CollectionInformationRecord_CreationRateData(::PROTOBUF_NAMESPACE_ID::Arena* arena)
   : ::PROTOBUF_NAMESPACE_ID::Message(arena) {
   SharedCtor(arena);
@@ -408,10 +640,32 @@ inline void InformationalMessageContents_CollectionInformationRecord_CreationRat
 
     , /*decltype(_impl_._cached_size_)*/{}
   };
+=======
+InformationalMessageContents_CollectionInformationRecord_CreationRateData::InformationalMessageContents_CollectionInformationRecord_CreationRateData()
+  : ::PROTOBUF_NAMESPACE_ID::Message(), _internal_metadata_(nullptr) {
+  SharedCtor();
+  // @@protoc_insertion_point(constructor:InformationalMessageContents.CollectionInformationRecord.CreationRateData)
+}
+InformationalMessageContents_CollectionInformationRecord_CreationRateData::InformationalMessageContents_CollectionInformationRecord_CreationRateData(const InformationalMessageContents_CollectionInformationRecord_CreationRateData& from)
+  : ::PROTOBUF_NAMESPACE_ID::Message(),
+      _internal_metadata_(nullptr) {
+  _internal_metadata_.MergeFrom(from._internal_metadata_);
+  ::memcpy(&shortallocationratio_, &from.shortallocationratio_,
+    static_cast<size_t>(reinterpret_cast<char*>(&createdpreviousweek_) -
+    reinterpret_cast<char*>(&shortallocationratio_)) + sizeof(createdpreviousweek_));
+  // @@protoc_insertion_point(copy_constructor:InformationalMessageContents.CollectionInformationRecord.CreationRateData)
+}
+
+void InformationalMessageContents_CollectionInformationRecord_CreationRateData::SharedCtor() {
+  ::memset(&shortallocationratio_, 0, static_cast<size_t>(
+      reinterpret_cast<char*>(&createdpreviousweek_) -
+      reinterpret_cast<char*>(&shortallocationratio_)) + sizeof(createdpreviousweek_));
+>>>>>>> Stashed changes
 }
 
 InformationalMessageContents_CollectionInformationRecord_CreationRateData::~InformationalMessageContents_CollectionInformationRecord_CreationRateData() {
   // @@protoc_insertion_point(destructor:InformationalMessageContents.CollectionInformationRecord.CreationRateData)
+<<<<<<< Updated upstream
   if (auto *arena = _internal_metadata_.DeleteReturnArena<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>()) {
   (void)arena;
     return;
@@ -421,14 +675,26 @@ InformationalMessageContents_CollectionInformationRecord_CreationRateData::~Info
 
 inline void InformationalMessageContents_CollectionInformationRecord_CreationRateData::SharedDtor() {
   ABSL_DCHECK(GetArenaForAllocation() == nullptr);
+=======
+  SharedDtor();
+}
+
+void InformationalMessageContents_CollectionInformationRecord_CreationRateData::SharedDtor() {
+>>>>>>> Stashed changes
 }
 
 void InformationalMessageContents_CollectionInformationRecord_CreationRateData::SetCachedSize(int size) const {
   _impl_._cached_size_.Set(size);
 }
+const InformationalMessageContents_CollectionInformationRecord_CreationRateData& InformationalMessageContents_CollectionInformationRecord_CreationRateData::default_instance() {
+  ::PROTOBUF_NAMESPACE_ID::internal::InitSCC(&::scc_info_InformationalMessageContents_CollectionInformationRecord_CreationRateData_message_2eproto.base);
+  return *internal_default_instance();
+}
+
 
 void InformationalMessageContents_CollectionInformationRecord_CreationRateData::Clear() {
 // @@protoc_insertion_point(message_clear_start:InformationalMessageContents.CollectionInformationRecord.CreationRateData)
+<<<<<<< Updated upstream
   ::uint32_t cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
@@ -437,11 +703,22 @@ void InformationalMessageContents_CollectionInformationRecord_CreationRateData::
       reinterpret_cast<char*>(&_impl_.createdpreviousweek_) -
       reinterpret_cast<char*>(&_impl_.shortallocationratio_)) + sizeof(_impl_.createdpreviousweek_));
   _internal_metadata_.Clear<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
+=======
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
+  // Prevent compiler warnings about cached_has_bits being unused
+  (void) cached_has_bits;
+
+  ::memset(&shortallocationratio_, 0, static_cast<size_t>(
+      reinterpret_cast<char*>(&createdpreviousweek_) -
+      reinterpret_cast<char*>(&shortallocationratio_)) + sizeof(createdpreviousweek_));
+  _internal_metadata_.Clear();
+>>>>>>> Stashed changes
 }
 
 const char* InformationalMessageContents_CollectionInformationRecord_CreationRateData::_InternalParse(const char* ptr, ::_pbi::ParseContext* ctx) {
 #define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
   while (!ctx->Done(&ptr)) {
+<<<<<<< Updated upstream
     ::uint32_t tag;
     ptr = ::_pbi::ReadTag(ptr, &tag);
     switch (tag >> 3) {
@@ -480,30 +757,61 @@ const char* InformationalMessageContents_CollectionInformationRecord_CreationRat
         } else {
           goto handle_unusual;
         }
+=======
+    ::PROTOBUF_NAMESPACE_ID::uint32 tag;
+    ptr = ::PROTOBUF_NAMESPACE_ID::internal::ReadTag(ptr, &tag);
+    CHK_(ptr);
+    switch (tag >> 3) {
+      // double shortAllocationRatio = 1;
+      case 1:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 9)) {
+          shortallocationratio_ = ::PROTOBUF_NAMESPACE_ID::internal::UnalignedLoad<double>(ptr);
+          ptr += sizeof(double);
+        } else goto handle_unusual;
         continue;
-      default:
-        goto handle_unusual;
+      // double longAllocationRatio = 2;
+      case 2:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 17)) {
+          longallocationratio_ = ::PROTOBUF_NAMESPACE_ID::internal::UnalignedLoad<double>(ptr);
+          ptr += sizeof(double);
+        } else goto handle_unusual;
+        continue;
+      // double createdPreviousDay = 3;
+      case 3:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 25)) {
+          createdpreviousday_ = ::PROTOBUF_NAMESPACE_ID::internal::UnalignedLoad<double>(ptr);
+          ptr += sizeof(double);
+        } else goto handle_unusual;
+        continue;
+      // double createdPreviousWeek = 4;
+      case 4:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 33)) {
+          createdpreviousweek_ = ::PROTOBUF_NAMESPACE_ID::internal::UnalignedLoad<double>(ptr);
+          ptr += sizeof(double);
+        } else goto handle_unusual;
+>>>>>>> Stashed changes
+        continue;
+      default: {
+      handle_unusual:
+        if ((tag & 7) == 4 || tag == 0) {
+          ctx->SetLastTag(tag);
+          goto success;
+        }
+        ptr = UnknownFieldParse(tag, &_internal_metadata_, ptr, ctx);
+        CHK_(ptr != nullptr);
+        continue;
+      }
     }  // switch
-  handle_unusual:
-    if ((tag == 0) || ((tag & 7) == 4)) {
-      CHK_(ptr);
-      ctx->SetLastTag(tag);
-      goto message_done;
-    }
-    ptr = UnknownFieldParse(
-        tag,
-        _internal_metadata_.mutable_unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(),
-        ptr, ctx);
-    CHK_(ptr != nullptr);
   }  // while
-message_done:
+success:
   return ptr;
 failure:
   ptr = nullptr;
-  goto message_done;
+  goto success;
 #undef CHK_
 }
 
+<<<<<<< Updated upstream
 ::uint8_t* InformationalMessageContents_CollectionInformationRecord_CreationRateData::_InternalSerialize(
     ::uint8_t* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
   // @@protoc_insertion_point(serialize_to_array_start:InformationalMessageContents.CollectionInformationRecord.CreationRateData)
@@ -516,47 +824,74 @@ failure:
   ::uint64_t raw_shortallocationratio;
   memcpy(&raw_shortallocationratio, &tmp_shortallocationratio, sizeof(tmp_shortallocationratio));
   if (raw_shortallocationratio != 0) {
+=======
+::PROTOBUF_NAMESPACE_ID::uint8* InformationalMessageContents_CollectionInformationRecord_CreationRateData::_InternalSerialize(
+    ::PROTOBUF_NAMESPACE_ID::uint8* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
+  // @@protoc_insertion_point(serialize_to_array_start:InformationalMessageContents.CollectionInformationRecord.CreationRateData)
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
+  (void) cached_has_bits;
+
+  // double shortAllocationRatio = 1;
+  if (!(this->shortallocationratio() <= 0 && this->shortallocationratio() >= 0)) {
+>>>>>>> Stashed changes
     target = stream->EnsureSpace(target);
     target = ::_pbi::WireFormatLite::WriteDoubleToArray(
         1, this->_internal_shortallocationratio(), target);
   }
 
   // double longAllocationRatio = 2;
+<<<<<<< Updated upstream
   static_assert(sizeof(::uint64_t) == sizeof(double), "Code assumes ::uint64_t and double are the same size.");
   double tmp_longallocationratio = this->_internal_longallocationratio();
   ::uint64_t raw_longallocationratio;
   memcpy(&raw_longallocationratio, &tmp_longallocationratio, sizeof(tmp_longallocationratio));
   if (raw_longallocationratio != 0) {
+=======
+  if (!(this->longallocationratio() <= 0 && this->longallocationratio() >= 0)) {
+>>>>>>> Stashed changes
     target = stream->EnsureSpace(target);
     target = ::_pbi::WireFormatLite::WriteDoubleToArray(
         2, this->_internal_longallocationratio(), target);
   }
 
   // double createdPreviousDay = 3;
+<<<<<<< Updated upstream
   static_assert(sizeof(::uint64_t) == sizeof(double), "Code assumes ::uint64_t and double are the same size.");
   double tmp_createdpreviousday = this->_internal_createdpreviousday();
   ::uint64_t raw_createdpreviousday;
   memcpy(&raw_createdpreviousday, &tmp_createdpreviousday, sizeof(tmp_createdpreviousday));
   if (raw_createdpreviousday != 0) {
+=======
+  if (!(this->createdpreviousday() <= 0 && this->createdpreviousday() >= 0)) {
+>>>>>>> Stashed changes
     target = stream->EnsureSpace(target);
     target = ::_pbi::WireFormatLite::WriteDoubleToArray(
         3, this->_internal_createdpreviousday(), target);
   }
 
   // double createdPreviousWeek = 4;
+<<<<<<< Updated upstream
   static_assert(sizeof(::uint64_t) == sizeof(double), "Code assumes ::uint64_t and double are the same size.");
   double tmp_createdpreviousweek = this->_internal_createdpreviousweek();
   ::uint64_t raw_createdpreviousweek;
   memcpy(&raw_createdpreviousweek, &tmp_createdpreviousweek, sizeof(tmp_createdpreviousweek));
   if (raw_createdpreviousweek != 0) {
+=======
+  if (!(this->createdpreviousweek() <= 0 && this->createdpreviousweek() >= 0)) {
+>>>>>>> Stashed changes
     target = stream->EnsureSpace(target);
     target = ::_pbi::WireFormatLite::WriteDoubleToArray(
         4, this->_internal_createdpreviousweek(), target);
   }
 
   if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
+<<<<<<< Updated upstream
     target = ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
         _internal_metadata_.unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(::PROTOBUF_NAMESPACE_ID::UnknownFieldSet::default_instance), target, stream);
+=======
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormat::InternalSerializeUnknownFieldsToArray(
+        _internal_metadata_.unknown_fields(), target, stream);
+>>>>>>> Stashed changes
   }
   // @@protoc_insertion_point(serialize_to_array_end:InformationalMessageContents.CollectionInformationRecord.CreationRateData)
   return target;
@@ -566,11 +901,16 @@ failure:
 // @@protoc_insertion_point(message_byte_size_start:InformationalMessageContents.CollectionInformationRecord.CreationRateData)
   ::size_t total_size = 0;
 
+<<<<<<< Updated upstream
   ::uint32_t cached_has_bits = 0;
+=======
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
+>>>>>>> Stashed changes
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
   // double shortAllocationRatio = 1;
+<<<<<<< Updated upstream
   static_assert(sizeof(::uint64_t) == sizeof(double), "Code assumes ::uint64_t and double are the same size.");
   double tmp_shortallocationratio = this->_internal_shortallocationratio();
   ::uint64_t raw_shortallocationratio;
@@ -653,6 +993,77 @@ void InformationalMessageContents_CollectionInformationRecord_CreationRateData::
     _this->_internal_set_createdpreviousweek(from._internal_createdpreviousweek());
   }
   _this->_internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
+=======
+  if (!(this->shortallocationratio() <= 0 && this->shortallocationratio() >= 0)) {
+    total_size += 1 + 8;
+  }
+
+  // double longAllocationRatio = 2;
+  if (!(this->longallocationratio() <= 0 && this->longallocationratio() >= 0)) {
+    total_size += 1 + 8;
+  }
+
+  // double createdPreviousDay = 3;
+  if (!(this->createdpreviousday() <= 0 && this->createdpreviousday() >= 0)) {
+    total_size += 1 + 8;
+  }
+
+  // double createdPreviousWeek = 4;
+  if (!(this->createdpreviousweek() <= 0 && this->createdpreviousweek() >= 0)) {
+    total_size += 1 + 8;
+  }
+
+  if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
+    return ::PROTOBUF_NAMESPACE_ID::internal::ComputeUnknownFieldsSize(
+        _internal_metadata_, total_size, &_cached_size_);
+  }
+  int cached_size = ::PROTOBUF_NAMESPACE_ID::internal::ToCachedSize(total_size);
+  SetCachedSize(cached_size);
+  return total_size;
+}
+
+void InformationalMessageContents_CollectionInformationRecord_CreationRateData::MergeFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) {
+// @@protoc_insertion_point(generalized_merge_from_start:InformationalMessageContents.CollectionInformationRecord.CreationRateData)
+  GOOGLE_DCHECK_NE(&from, this);
+  const InformationalMessageContents_CollectionInformationRecord_CreationRateData* source =
+      ::PROTOBUF_NAMESPACE_ID::DynamicCastToGenerated<InformationalMessageContents_CollectionInformationRecord_CreationRateData>(
+          &from);
+  if (source == nullptr) {
+  // @@protoc_insertion_point(generalized_merge_from_cast_fail:InformationalMessageContents.CollectionInformationRecord.CreationRateData)
+    ::PROTOBUF_NAMESPACE_ID::internal::ReflectionOps::Merge(from, this);
+  } else {
+  // @@protoc_insertion_point(generalized_merge_from_cast_success:InformationalMessageContents.CollectionInformationRecord.CreationRateData)
+    MergeFrom(*source);
+  }
+}
+
+void InformationalMessageContents_CollectionInformationRecord_CreationRateData::MergeFrom(const InformationalMessageContents_CollectionInformationRecord_CreationRateData& from) {
+// @@protoc_insertion_point(class_specific_merge_from_start:InformationalMessageContents.CollectionInformationRecord.CreationRateData)
+  GOOGLE_DCHECK_NE(&from, this);
+  _internal_metadata_.MergeFrom(from._internal_metadata_);
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
+  (void) cached_has_bits;
+
+  if (!(from.shortallocationratio() <= 0 && from.shortallocationratio() >= 0)) {
+    _internal_set_shortallocationratio(from._internal_shortallocationratio());
+  }
+  if (!(from.longallocationratio() <= 0 && from.longallocationratio() >= 0)) {
+    _internal_set_longallocationratio(from._internal_longallocationratio());
+  }
+  if (!(from.createdpreviousday() <= 0 && from.createdpreviousday() >= 0)) {
+    _internal_set_createdpreviousday(from._internal_createdpreviousday());
+  }
+  if (!(from.createdpreviousweek() <= 0 && from.createdpreviousweek() >= 0)) {
+    _internal_set_createdpreviousweek(from._internal_createdpreviousweek());
+  }
+}
+
+void InformationalMessageContents_CollectionInformationRecord_CreationRateData::CopyFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) {
+// @@protoc_insertion_point(generalized_copy_from_start:InformationalMessageContents.CollectionInformationRecord.CreationRateData)
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+>>>>>>> Stashed changes
 }
 
 void InformationalMessageContents_CollectionInformationRecord_CreationRateData::CopyFrom(const InformationalMessageContents_CollectionInformationRecord_CreationRateData& from) {
@@ -668,6 +1079,7 @@ bool InformationalMessageContents_CollectionInformationRecord_CreationRateData::
 
 void InformationalMessageContents_CollectionInformationRecord_CreationRateData::InternalSwap(InformationalMessageContents_CollectionInformationRecord_CreationRateData* other) {
   using std::swap;
+<<<<<<< Updated upstream
   _internal_metadata_.InternalSwap(&other->_internal_metadata_);
   ::PROTOBUF_NAMESPACE_ID::internal::memswap<
       PROTOBUF_FIELD_OFFSET(InformationalMessageContents_CollectionInformationRecord_CreationRateData, _impl_.createdpreviousweek_)
@@ -682,8 +1094,26 @@ void InformationalMessageContents_CollectionInformationRecord_CreationRateData::
       &descriptor_table_message_2eproto_getter, &descriptor_table_message_2eproto_once,
       file_level_metadata_message_2eproto[0]);
 }
+=======
+  _internal_metadata_.Swap(&other->_internal_metadata_);
+  swap(shortallocationratio_, other->shortallocationratio_);
+  swap(longallocationratio_, other->longallocationratio_);
+  swap(createdpreviousday_, other->createdpreviousday_);
+  swap(createdpreviousweek_, other->createdpreviousweek_);
+}
+
+::PROTOBUF_NAMESPACE_ID::Metadata InformationalMessageContents_CollectionInformationRecord_CreationRateData::GetMetadata() const {
+  return GetMetadataStatic();
+}
+
+
+>>>>>>> Stashed changes
 // ===================================================================
 
+void InformationalMessageContents_CollectionInformationRecord::InitAsDefaultInstance() {
+  ::_InformationalMessageContents_CollectionInformationRecord_default_instance_._instance.get_mutable()->creationratedata_ = const_cast< ::InformationalMessageContents_CollectionInformationRecord_CreationRateData*>(
+      ::InformationalMessageContents_CollectionInformationRecord_CreationRateData::internal_default_instance());
+}
 class InformationalMessageContents_CollectionInformationRecord::_Internal {
  public:
   using HasBits = decltype(std::declval<InformationalMessageContents_CollectionInformationRecord>()._impl_._has_bits_);
@@ -699,6 +1129,7 @@ const ::InformationalMessageContents_CollectionInformationRecord_CreationRateDat
 InformationalMessageContents_CollectionInformationRecord::_Internal::creationratedata(const InformationalMessageContents_CollectionInformationRecord* msg) {
   return *msg->_impl_.creationratedata_;
 }
+<<<<<<< Updated upstream
 InformationalMessageContents_CollectionInformationRecord::InformationalMessageContents_CollectionInformationRecord(::PROTOBUF_NAMESPACE_ID::Arena* arena)
   : ::PROTOBUF_NAMESPACE_ID::Message(arena) {
   SharedCtor(arena);
@@ -721,6 +1152,20 @@ InformationalMessageContents_CollectionInformationRecord::InformationalMessageCo
   #endif  // PROTOBUF_FORCE_COPY_DEFAULT_STRING
   if (!from._internal_collectionname().empty()) {
     _this->_impl_.collectionname_.Set(from._internal_collectionname(), _this->GetArenaForAllocation());
+=======
+InformationalMessageContents_CollectionInformationRecord::InformationalMessageContents_CollectionInformationRecord()
+  : ::PROTOBUF_NAMESPACE_ID::Message(), _internal_metadata_(nullptr) {
+  SharedCtor();
+  // @@protoc_insertion_point(constructor:InformationalMessageContents.CollectionInformationRecord)
+}
+InformationalMessageContents_CollectionInformationRecord::InformationalMessageContents_CollectionInformationRecord(const InformationalMessageContents_CollectionInformationRecord& from)
+  : ::PROTOBUF_NAMESPACE_ID::Message(),
+      _internal_metadata_(nullptr) {
+  _internal_metadata_.MergeFrom(from._internal_metadata_);
+  collectionname_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
+  if (!from._internal_collectionname().empty()) {
+    collectionname_.AssignWithDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), from.collectionname_);
+>>>>>>> Stashed changes
   }
   if ((from._impl_._has_bits_[0] & 0x00000001u) != 0) {
     _this->_impl_.creationratedata_ = new ::InformationalMessageContents_CollectionInformationRecord_CreationRateData(*from._impl_.creationratedata_);
@@ -728,6 +1173,7 @@ InformationalMessageContents_CollectionInformationRecord::InformationalMessageCo
   // @@protoc_insertion_point(copy_constructor:InformationalMessageContents.CollectionInformationRecord)
 }
 
+<<<<<<< Updated upstream
 inline void InformationalMessageContents_CollectionInformationRecord::SharedCtor(::_pb::Arena* arena) {
   (void)arena;
   new (&_impl_) Impl_{
@@ -741,10 +1187,17 @@ inline void InformationalMessageContents_CollectionInformationRecord::SharedCtor
   #ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
         _impl_.collectionname_.Set("", GetArenaForAllocation());
   #endif  // PROTOBUF_FORCE_COPY_DEFAULT_STRING
+=======
+void InformationalMessageContents_CollectionInformationRecord::SharedCtor() {
+  ::PROTOBUF_NAMESPACE_ID::internal::InitSCC(&scc_info_InformationalMessageContents_CollectionInformationRecord_message_2eproto.base);
+  collectionname_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
+  creationratedata_ = nullptr;
+>>>>>>> Stashed changes
 }
 
 InformationalMessageContents_CollectionInformationRecord::~InformationalMessageContents_CollectionInformationRecord() {
   // @@protoc_insertion_point(destructor:InformationalMessageContents.CollectionInformationRecord)
+<<<<<<< Updated upstream
   if (auto *arena = _internal_metadata_.DeleteReturnArena<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>()) {
   (void)arena;
     return;
@@ -756,14 +1209,28 @@ inline void InformationalMessageContents_CollectionInformationRecord::SharedDtor
   ABSL_DCHECK(GetArenaForAllocation() == nullptr);
   _impl_.collectionname_.Destroy();
   if (this != internal_default_instance()) delete _impl_.creationratedata_;
+=======
+  SharedDtor();
+}
+
+void InformationalMessageContents_CollectionInformationRecord::SharedDtor() {
+  collectionname_.DestroyNoArena(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
+  if (this != internal_default_instance()) delete creationratedata_;
+>>>>>>> Stashed changes
 }
 
 void InformationalMessageContents_CollectionInformationRecord::SetCachedSize(int size) const {
   _impl_._cached_size_.Set(size);
 }
+const InformationalMessageContents_CollectionInformationRecord& InformationalMessageContents_CollectionInformationRecord::default_instance() {
+  ::PROTOBUF_NAMESPACE_ID::internal::InitSCC(&::scc_info_InformationalMessageContents_CollectionInformationRecord_message_2eproto.base);
+  return *internal_default_instance();
+}
+
 
 void InformationalMessageContents_CollectionInformationRecord::Clear() {
 // @@protoc_insertion_point(message_clear_start:InformationalMessageContents.CollectionInformationRecord)
+<<<<<<< Updated upstream
   ::uint32_t cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
@@ -776,21 +1243,44 @@ void InformationalMessageContents_CollectionInformationRecord::Clear() {
   }
   _impl_._has_bits_.Clear();
   _internal_metadata_.Clear<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
+=======
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
+  // Prevent compiler warnings about cached_has_bits being unused
+  (void) cached_has_bits;
+
+  collectionname_.ClearToEmptyNoArena(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
+  if (GetArenaNoVirtual() == nullptr && creationratedata_ != nullptr) {
+    delete creationratedata_;
+  }
+  creationratedata_ = nullptr;
+  _internal_metadata_.Clear();
+>>>>>>> Stashed changes
 }
 
 const char* InformationalMessageContents_CollectionInformationRecord::_InternalParse(const char* ptr, ::_pbi::ParseContext* ctx) {
 #define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
   _Internal::HasBits has_bits{};
   while (!ctx->Done(&ptr)) {
+<<<<<<< Updated upstream
     ::uint32_t tag;
     ptr = ::_pbi::ReadTag(ptr, &tag);
     switch (tag >> 3) {
       // string collectionName = 1;
       case 1:
         if (PROTOBUF_PREDICT_TRUE(static_cast<::uint8_t>(tag) == 10)) {
+=======
+    ::PROTOBUF_NAMESPACE_ID::uint32 tag;
+    ptr = ::PROTOBUF_NAMESPACE_ID::internal::ReadTag(ptr, &tag);
+    CHK_(ptr);
+    switch (tag >> 3) {
+      // string collectionName = 1;
+      case 1:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 10)) {
+>>>>>>> Stashed changes
           auto str = _internal_mutable_collectionname();
           ptr = ::_pbi::InlineGreedyStringParser(str, ptr, ctx);
           CHK_(ptr);
+<<<<<<< Updated upstream
           CHK_(::_pbi::VerifyUTF8(str, "InformationalMessageContents.CollectionInformationRecord.collectionName"));
         } else {
           goto handle_unusual;
@@ -804,31 +1294,43 @@ const char* InformationalMessageContents_CollectionInformationRecord::_InternalP
         } else {
           goto handle_unusual;
         }
+=======
+        } else goto handle_unusual;
         continue;
-      default:
-        goto handle_unusual;
+      // .InformationalMessageContents.CollectionInformationRecord.CreationRateData creationRateData = 2;
+      case 2:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 18)) {
+          ptr = ctx->ParseMessage(_internal_mutable_creationratedata(), ptr);
+          CHK_(ptr);
+        } else goto handle_unusual;
+>>>>>>> Stashed changes
+        continue;
+      default: {
+      handle_unusual:
+        if ((tag & 7) == 4 || tag == 0) {
+          ctx->SetLastTag(tag);
+          goto success;
+        }
+        ptr = UnknownFieldParse(tag, &_internal_metadata_, ptr, ctx);
+        CHK_(ptr != nullptr);
+        continue;
+      }
     }  // switch
-  handle_unusual:
-    if ((tag == 0) || ((tag & 7) == 4)) {
-      CHK_(ptr);
-      ctx->SetLastTag(tag);
-      goto message_done;
-    }
-    ptr = UnknownFieldParse(
-        tag,
-        _internal_metadata_.mutable_unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(),
-        ptr, ctx);
-    CHK_(ptr != nullptr);
   }  // while
+<<<<<<< Updated upstream
 message_done:
   _impl_._has_bits_.Or(has_bits);
+=======
+success:
+>>>>>>> Stashed changes
   return ptr;
 failure:
   ptr = nullptr;
-  goto message_done;
+  goto success;
 #undef CHK_
 }
 
+<<<<<<< Updated upstream
 ::uint8_t* InformationalMessageContents_CollectionInformationRecord::_InternalSerialize(
     ::uint8_t* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
   // @@protoc_insertion_point(serialize_to_array_start:InformationalMessageContents.CollectionInformationRecord)
@@ -838,6 +1340,16 @@ failure:
   // string collectionName = 1;
   if (!this->_internal_collectionname().empty()) {
     const std::string& _s = this->_internal_collectionname();
+=======
+::PROTOBUF_NAMESPACE_ID::uint8* InformationalMessageContents_CollectionInformationRecord::_InternalSerialize(
+    ::PROTOBUF_NAMESPACE_ID::uint8* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
+  // @@protoc_insertion_point(serialize_to_array_start:InformationalMessageContents.CollectionInformationRecord)
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
+  (void) cached_has_bits;
+
+  // string collectionName = 1;
+  if (this->collectionname().size() > 0) {
+>>>>>>> Stashed changes
     ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::VerifyUtf8String(
         _s.data(), static_cast<int>(_s.length()), ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::SERIALIZE, "InformationalMessageContents.CollectionInformationRecord.collectionName");
     target = stream->WriteStringMaybeAliased(1, _s, target);
@@ -845,15 +1357,25 @@ failure:
 
   cached_has_bits = _impl_._has_bits_[0];
   // .InformationalMessageContents.CollectionInformationRecord.CreationRateData creationRateData = 2;
+<<<<<<< Updated upstream
   if (cached_has_bits & 0x00000001u) {
+=======
+  if (this->has_creationratedata()) {
+    target = stream->EnsureSpace(target);
+>>>>>>> Stashed changes
     target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::
       InternalWriteMessage(2, _Internal::creationratedata(this),
         _Internal::creationratedata(this).GetCachedSize(), target, stream);
   }
 
   if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
+<<<<<<< Updated upstream
     target = ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
         _internal_metadata_.unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(::PROTOBUF_NAMESPACE_ID::UnknownFieldSet::default_instance), target, stream);
+=======
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormat::InternalSerializeUnknownFieldsToArray(
+        _internal_metadata_.unknown_fields(), target, stream);
+>>>>>>> Stashed changes
   }
   // @@protoc_insertion_point(serialize_to_array_end:InformationalMessageContents.CollectionInformationRecord)
   return target;
@@ -863,11 +1385,16 @@ failure:
 // @@protoc_insertion_point(message_byte_size_start:InformationalMessageContents.CollectionInformationRecord)
   ::size_t total_size = 0;
 
+<<<<<<< Updated upstream
   ::uint32_t cached_has_bits = 0;
+=======
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
+>>>>>>> Stashed changes
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
   // string collectionName = 1;
+<<<<<<< Updated upstream
   if (!this->_internal_collectionname().empty()) {
     total_size += 1 + ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::StringSize(
                                     this->_internal_collectionname());
@@ -876,11 +1403,22 @@ failure:
   // .InformationalMessageContents.CollectionInformationRecord.CreationRateData creationRateData = 2;
   cached_has_bits = _impl_._has_bits_[0];
   if (cached_has_bits & 0x00000001u) {
+=======
+  if (this->collectionname().size() > 0) {
+    total_size += 1 +
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::StringSize(
+        this->_internal_collectionname());
+  }
+
+  // .InformationalMessageContents.CollectionInformationRecord.CreationRateData creationRateData = 2;
+  if (this->has_creationratedata()) {
+>>>>>>> Stashed changes
     total_size += 1 +
       ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::MessageSize(
         *_impl_.creationratedata_);
   }
 
+<<<<<<< Updated upstream
   return MaybeComputeUnknownFieldsSize(total_size, &_impl_._cached_size_);
 }
 
@@ -907,6 +1445,53 @@ void InformationalMessageContents_CollectionInformationRecord::MergeImpl(::PROTO
         from._internal_creationratedata());
   }
   _this->_internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
+=======
+  if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
+    return ::PROTOBUF_NAMESPACE_ID::internal::ComputeUnknownFieldsSize(
+        _internal_metadata_, total_size, &_cached_size_);
+  }
+  int cached_size = ::PROTOBUF_NAMESPACE_ID::internal::ToCachedSize(total_size);
+  SetCachedSize(cached_size);
+  return total_size;
+}
+
+void InformationalMessageContents_CollectionInformationRecord::MergeFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) {
+// @@protoc_insertion_point(generalized_merge_from_start:InformationalMessageContents.CollectionInformationRecord)
+  GOOGLE_DCHECK_NE(&from, this);
+  const InformationalMessageContents_CollectionInformationRecord* source =
+      ::PROTOBUF_NAMESPACE_ID::DynamicCastToGenerated<InformationalMessageContents_CollectionInformationRecord>(
+          &from);
+  if (source == nullptr) {
+  // @@protoc_insertion_point(generalized_merge_from_cast_fail:InformationalMessageContents.CollectionInformationRecord)
+    ::PROTOBUF_NAMESPACE_ID::internal::ReflectionOps::Merge(from, this);
+  } else {
+  // @@protoc_insertion_point(generalized_merge_from_cast_success:InformationalMessageContents.CollectionInformationRecord)
+    MergeFrom(*source);
+  }
+}
+
+void InformationalMessageContents_CollectionInformationRecord::MergeFrom(const InformationalMessageContents_CollectionInformationRecord& from) {
+// @@protoc_insertion_point(class_specific_merge_from_start:InformationalMessageContents.CollectionInformationRecord)
+  GOOGLE_DCHECK_NE(&from, this);
+  _internal_metadata_.MergeFrom(from._internal_metadata_);
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
+  (void) cached_has_bits;
+
+  if (from.collectionname().size() > 0) {
+
+    collectionname_.AssignWithDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), from.collectionname_);
+  }
+  if (from.has_creationratedata()) {
+    _internal_mutable_creationratedata()->::InformationalMessageContents_CollectionInformationRecord_CreationRateData::MergeFrom(from._internal_creationratedata());
+  }
+}
+
+void InformationalMessageContents_CollectionInformationRecord::CopyFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) {
+// @@protoc_insertion_point(generalized_copy_from_start:InformationalMessageContents.CollectionInformationRecord)
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+>>>>>>> Stashed changes
 }
 
 void InformationalMessageContents_CollectionInformationRecord::CopyFrom(const InformationalMessageContents_CollectionInformationRecord& from) {
@@ -922,6 +1507,7 @@ bool InformationalMessageContents_CollectionInformationRecord::IsInitialized() c
 
 void InformationalMessageContents_CollectionInformationRecord::InternalSwap(InformationalMessageContents_CollectionInformationRecord* other) {
   using std::swap;
+<<<<<<< Updated upstream
   auto* lhs_arena = GetArenaForAllocation();
   auto* rhs_arena = other->GetArenaForAllocation();
   _internal_metadata_.InternalSwap(&other->_internal_metadata_);
@@ -936,12 +1522,28 @@ void InformationalMessageContents_CollectionInformationRecord::InternalSwap(Info
       &descriptor_table_message_2eproto_getter, &descriptor_table_message_2eproto_once,
       file_level_metadata_message_2eproto[1]);
 }
+=======
+  _internal_metadata_.Swap(&other->_internal_metadata_);
+  collectionname_.Swap(&other->collectionname_, &::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(),
+    GetArenaNoVirtual());
+  swap(creationratedata_, other->creationratedata_);
+}
+
+::PROTOBUF_NAMESPACE_ID::Metadata InformationalMessageContents_CollectionInformationRecord::GetMetadata() const {
+  return GetMetadataStatic();
+}
+
+
+>>>>>>> Stashed changes
 // ===================================================================
 
+void InformationalMessageContents::InitAsDefaultInstance() {
+}
 class InformationalMessageContents::_Internal {
  public:
 };
 
+<<<<<<< Updated upstream
 InformationalMessageContents::InformationalMessageContents(::PROTOBUF_NAMESPACE_ID::Arena* arena)
   : ::PROTOBUF_NAMESPACE_ID::Message(arena) {
   SharedCtor(arena);
@@ -964,10 +1566,28 @@ inline void InformationalMessageContents::SharedCtor(::_pb::Arena* arena) {
       decltype(_impl_.records_){arena}
     , /*decltype(_impl_._cached_size_)*/{}
   };
+=======
+InformationalMessageContents::InformationalMessageContents()
+  : ::PROTOBUF_NAMESPACE_ID::Message(), _internal_metadata_(nullptr) {
+  SharedCtor();
+  // @@protoc_insertion_point(constructor:InformationalMessageContents)
+}
+InformationalMessageContents::InformationalMessageContents(const InformationalMessageContents& from)
+  : ::PROTOBUF_NAMESPACE_ID::Message(),
+      _internal_metadata_(nullptr),
+      records_(from.records_) {
+  _internal_metadata_.MergeFrom(from._internal_metadata_);
+  // @@protoc_insertion_point(copy_constructor:InformationalMessageContents)
+}
+
+void InformationalMessageContents::SharedCtor() {
+  ::PROTOBUF_NAMESPACE_ID::internal::InitSCC(&scc_info_InformationalMessageContents_message_2eproto.base);
+>>>>>>> Stashed changes
 }
 
 InformationalMessageContents::~InformationalMessageContents() {
   // @@protoc_insertion_point(destructor:InformationalMessageContents)
+<<<<<<< Updated upstream
   if (auto *arena = _internal_metadata_.DeleteReturnArena<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>()) {
   (void)arena;
     return;
@@ -978,31 +1598,61 @@ InformationalMessageContents::~InformationalMessageContents() {
 inline void InformationalMessageContents::SharedDtor() {
   ABSL_DCHECK(GetArenaForAllocation() == nullptr);
   _internal_mutable_records()->~RepeatedPtrField();
+=======
+  SharedDtor();
+}
+
+void InformationalMessageContents::SharedDtor() {
+>>>>>>> Stashed changes
 }
 
 void InformationalMessageContents::SetCachedSize(int size) const {
   _impl_._cached_size_.Set(size);
 }
+const InformationalMessageContents& InformationalMessageContents::default_instance() {
+  ::PROTOBUF_NAMESPACE_ID::internal::InitSCC(&::scc_info_InformationalMessageContents_message_2eproto.base);
+  return *internal_default_instance();
+}
+
 
 void InformationalMessageContents::Clear() {
 // @@protoc_insertion_point(message_clear_start:InformationalMessageContents)
+<<<<<<< Updated upstream
   ::uint32_t cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
   _internal_mutable_records()->Clear();
   _internal_metadata_.Clear<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
+=======
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
+  // Prevent compiler warnings about cached_has_bits being unused
+  (void) cached_has_bits;
+
+  records_.Clear();
+  _internal_metadata_.Clear();
+>>>>>>> Stashed changes
 }
 
 const char* InformationalMessageContents::_InternalParse(const char* ptr, ::_pbi::ParseContext* ctx) {
 #define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
   while (!ctx->Done(&ptr)) {
+<<<<<<< Updated upstream
     ::uint32_t tag;
     ptr = ::_pbi::ReadTag(ptr, &tag);
     switch (tag >> 3) {
       // repeated .InformationalMessageContents.CollectionInformationRecord records = 1;
       case 1:
         if (PROTOBUF_PREDICT_TRUE(static_cast<::uint8_t>(tag) == 10)) {
+=======
+    ::PROTOBUF_NAMESPACE_ID::uint32 tag;
+    ptr = ::PROTOBUF_NAMESPACE_ID::internal::ReadTag(ptr, &tag);
+    CHK_(ptr);
+    switch (tag >> 3) {
+      // repeated .InformationalMessageContents.CollectionInformationRecord records = 1;
+      case 1:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 10)) {
+>>>>>>> Stashed changes
           ptr -= 1;
           do {
             ptr += 1;
@@ -1010,37 +1660,45 @@ const char* InformationalMessageContents::_InternalParse(const char* ptr, ::_pbi
             CHK_(ptr);
             if (!ctx->DataAvailable(ptr)) break;
           } while (::PROTOBUF_NAMESPACE_ID::internal::ExpectTag<10>(ptr));
+<<<<<<< Updated upstream
         } else {
           goto handle_unusual;
         }
+=======
+        } else goto handle_unusual;
+>>>>>>> Stashed changes
         continue;
-      default:
-        goto handle_unusual;
+      default: {
+      handle_unusual:
+        if ((tag & 7) == 4 || tag == 0) {
+          ctx->SetLastTag(tag);
+          goto success;
+        }
+        ptr = UnknownFieldParse(tag, &_internal_metadata_, ptr, ctx);
+        CHK_(ptr != nullptr);
+        continue;
+      }
     }  // switch
-  handle_unusual:
-    if ((tag == 0) || ((tag & 7) == 4)) {
-      CHK_(ptr);
-      ctx->SetLastTag(tag);
-      goto message_done;
-    }
-    ptr = UnknownFieldParse(
-        tag,
-        _internal_metadata_.mutable_unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(),
-        ptr, ctx);
-    CHK_(ptr != nullptr);
   }  // while
-message_done:
+success:
   return ptr;
 failure:
   ptr = nullptr;
-  goto message_done;
+  goto success;
 #undef CHK_
 }
 
+<<<<<<< Updated upstream
 ::uint8_t* InformationalMessageContents::_InternalSerialize(
     ::uint8_t* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
   // @@protoc_insertion_point(serialize_to_array_start:InformationalMessageContents)
   ::uint32_t cached_has_bits = 0;
+=======
+::PROTOBUF_NAMESPACE_ID::uint8* InformationalMessageContents::_InternalSerialize(
+    ::PROTOBUF_NAMESPACE_ID::uint8* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
+  // @@protoc_insertion_point(serialize_to_array_start:InformationalMessageContents)
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
+>>>>>>> Stashed changes
   (void) cached_has_bits;
 
   // repeated .InformationalMessageContents.CollectionInformationRecord records = 1;
@@ -1052,8 +1710,13 @@ failure:
   }
 
   if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
+<<<<<<< Updated upstream
     target = ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
         _internal_metadata_.unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(::PROTOBUF_NAMESPACE_ID::UnknownFieldSet::default_instance), target, stream);
+=======
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormat::InternalSerializeUnknownFieldsToArray(
+        _internal_metadata_.unknown_fields(), target, stream);
+>>>>>>> Stashed changes
   }
   // @@protoc_insertion_point(serialize_to_array_end:InformationalMessageContents)
   return target;
@@ -1063,7 +1726,11 @@ failure:
 // @@protoc_insertion_point(message_byte_size_start:InformationalMessageContents)
   ::size_t total_size = 0;
 
+<<<<<<< Updated upstream
   ::uint32_t cached_has_bits = 0;
+=======
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
+>>>>>>> Stashed changes
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
@@ -1074,6 +1741,7 @@ failure:
       ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::MessageSize(msg);
   }
 
+<<<<<<< Updated upstream
   return MaybeComputeUnknownFieldsSize(total_size, &_impl_._cached_size_);
 }
 
@@ -1094,6 +1762,47 @@ void InformationalMessageContents::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message& t
 
   _this->_internal_mutable_records()->MergeFrom(from._internal_records());
   _this->_internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
+=======
+  if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
+    return ::PROTOBUF_NAMESPACE_ID::internal::ComputeUnknownFieldsSize(
+        _internal_metadata_, total_size, &_cached_size_);
+  }
+  int cached_size = ::PROTOBUF_NAMESPACE_ID::internal::ToCachedSize(total_size);
+  SetCachedSize(cached_size);
+  return total_size;
+}
+
+void InformationalMessageContents::MergeFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) {
+// @@protoc_insertion_point(generalized_merge_from_start:InformationalMessageContents)
+  GOOGLE_DCHECK_NE(&from, this);
+  const InformationalMessageContents* source =
+      ::PROTOBUF_NAMESPACE_ID::DynamicCastToGenerated<InformationalMessageContents>(
+          &from);
+  if (source == nullptr) {
+  // @@protoc_insertion_point(generalized_merge_from_cast_fail:InformationalMessageContents)
+    ::PROTOBUF_NAMESPACE_ID::internal::ReflectionOps::Merge(from, this);
+  } else {
+  // @@protoc_insertion_point(generalized_merge_from_cast_success:InformationalMessageContents)
+    MergeFrom(*source);
+  }
+}
+
+void InformationalMessageContents::MergeFrom(const InformationalMessageContents& from) {
+// @@protoc_insertion_point(class_specific_merge_from_start:InformationalMessageContents)
+  GOOGLE_DCHECK_NE(&from, this);
+  _internal_metadata_.MergeFrom(from._internal_metadata_);
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
+  (void) cached_has_bits;
+
+  records_.MergeFrom(from.records_);
+}
+
+void InformationalMessageContents::CopyFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) {
+// @@protoc_insertion_point(generalized_copy_from_start:InformationalMessageContents)
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+>>>>>>> Stashed changes
 }
 
 void InformationalMessageContents::CopyFrom(const InformationalMessageContents& from) {
@@ -1109,6 +1818,7 @@ bool InformationalMessageContents::IsInitialized() const {
 
 void InformationalMessageContents::InternalSwap(InformationalMessageContents* other) {
   using std::swap;
+<<<<<<< Updated upstream
   _internal_metadata_.InternalSwap(&other->_internal_metadata_);
   _internal_mutable_records()->InternalSwap(other->_internal_mutable_records());
 }
@@ -1118,12 +1828,26 @@ void InformationalMessageContents::InternalSwap(InformationalMessageContents* ot
       &descriptor_table_message_2eproto_getter, &descriptor_table_message_2eproto_once,
       file_level_metadata_message_2eproto[2]);
 }
+=======
+  _internal_metadata_.Swap(&other->_internal_metadata_);
+  records_.InternalSwap(&other->records_);
+}
+
+::PROTOBUF_NAMESPACE_ID::Metadata InformationalMessageContents::GetMetadata() const {
+  return GetMetadataStatic();
+}
+
+
+>>>>>>> Stashed changes
 // ===================================================================
 
+void KeyspaceMessageContents_Keyspace::InitAsDefaultInstance() {
+}
 class KeyspaceMessageContents_Keyspace::_Internal {
  public:
 };
 
+<<<<<<< Updated upstream
 KeyspaceMessageContents_Keyspace::KeyspaceMessageContents_Keyspace(::PROTOBUF_NAMESPACE_ID::Arena* arena)
   : ::PROTOBUF_NAMESPACE_ID::Message(arena) {
   SharedCtor(arena);
@@ -1150,6 +1874,20 @@ KeyspaceMessageContents_Keyspace::KeyspaceMessageContents_Keyspace(const Keyspac
   #endif  // PROTOBUF_FORCE_COPY_DEFAULT_STRING
   if (!from._internal_name().empty()) {
     _this->_impl_.name_.Set(from._internal_name(), _this->GetArenaForAllocation());
+=======
+KeyspaceMessageContents_Keyspace::KeyspaceMessageContents_Keyspace()
+  : ::PROTOBUF_NAMESPACE_ID::Message(), _internal_metadata_(nullptr) {
+  SharedCtor();
+  // @@protoc_insertion_point(constructor:KeyspaceMessageContents.Keyspace)
+}
+KeyspaceMessageContents_Keyspace::KeyspaceMessageContents_Keyspace(const KeyspaceMessageContents_Keyspace& from)
+  : ::PROTOBUF_NAMESPACE_ID::Message(),
+      _internal_metadata_(nullptr) {
+  _internal_metadata_.MergeFrom(from._internal_metadata_);
+  name_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
+  if (!from._internal_name().empty()) {
+    name_.AssignWithDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), from.name_);
+>>>>>>> Stashed changes
   }
   ::memcpy(&_impl_.startid_, &from._impl_.startid_,
     static_cast<::size_t>(reinterpret_cast<char*>(&_impl_.suffixbits_) -
@@ -1157,6 +1895,7 @@ KeyspaceMessageContents_Keyspace::KeyspaceMessageContents_Keyspace(const Keyspac
   // @@protoc_insertion_point(copy_constructor:KeyspaceMessageContents.Keyspace)
 }
 
+<<<<<<< Updated upstream
 inline void KeyspaceMessageContents_Keyspace::SharedCtor(::_pb::Arena* arena) {
   (void)arena;
   new (&_impl_) Impl_{
@@ -1174,10 +1913,19 @@ inline void KeyspaceMessageContents_Keyspace::SharedCtor(::_pb::Arena* arena) {
   #ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
         _impl_.name_.Set("", GetArenaForAllocation());
   #endif  // PROTOBUF_FORCE_COPY_DEFAULT_STRING
+=======
+void KeyspaceMessageContents_Keyspace::SharedCtor() {
+  ::PROTOBUF_NAMESPACE_ID::internal::InitSCC(&scc_info_KeyspaceMessageContents_Keyspace_message_2eproto.base);
+  name_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
+  ::memset(&startid_, 0, static_cast<size_t>(
+      reinterpret_cast<char*>(&suffixbits_) -
+      reinterpret_cast<char*>(&startid_)) + sizeof(suffixbits_));
+>>>>>>> Stashed changes
 }
 
 KeyspaceMessageContents_Keyspace::~KeyspaceMessageContents_Keyspace() {
   // @@protoc_insertion_point(destructor:KeyspaceMessageContents.Keyspace)
+<<<<<<< Updated upstream
   if (auto *arena = _internal_metadata_.DeleteReturnArena<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>()) {
   (void)arena;
     return;
@@ -1188,14 +1936,27 @@ KeyspaceMessageContents_Keyspace::~KeyspaceMessageContents_Keyspace() {
 inline void KeyspaceMessageContents_Keyspace::SharedDtor() {
   ABSL_DCHECK(GetArenaForAllocation() == nullptr);
   _impl_.name_.Destroy();
+=======
+  SharedDtor();
+}
+
+void KeyspaceMessageContents_Keyspace::SharedDtor() {
+  name_.DestroyNoArena(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
+>>>>>>> Stashed changes
 }
 
 void KeyspaceMessageContents_Keyspace::SetCachedSize(int size) const {
   _impl_._cached_size_.Set(size);
 }
+const KeyspaceMessageContents_Keyspace& KeyspaceMessageContents_Keyspace::default_instance() {
+  ::PROTOBUF_NAMESPACE_ID::internal::InitSCC(&::scc_info_KeyspaceMessageContents_Keyspace_message_2eproto.base);
+  return *internal_default_instance();
+}
+
 
 void KeyspaceMessageContents_Keyspace::Clear() {
 // @@protoc_insertion_point(message_clear_start:KeyspaceMessageContents.Keyspace)
+<<<<<<< Updated upstream
   ::uint32_t cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
@@ -1205,20 +1966,42 @@ void KeyspaceMessageContents_Keyspace::Clear() {
       reinterpret_cast<char*>(&_impl_.suffixbits_) -
       reinterpret_cast<char*>(&_impl_.startid_)) + sizeof(_impl_.suffixbits_));
   _internal_metadata_.Clear<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
+=======
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
+  // Prevent compiler warnings about cached_has_bits being unused
+  (void) cached_has_bits;
+
+  name_.ClearToEmptyNoArena(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
+  ::memset(&startid_, 0, static_cast<size_t>(
+      reinterpret_cast<char*>(&suffixbits_) -
+      reinterpret_cast<char*>(&startid_)) + sizeof(suffixbits_));
+  _internal_metadata_.Clear();
+>>>>>>> Stashed changes
 }
 
 const char* KeyspaceMessageContents_Keyspace::_InternalParse(const char* ptr, ::_pbi::ParseContext* ctx) {
 #define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
   while (!ctx->Done(&ptr)) {
+<<<<<<< Updated upstream
     ::uint32_t tag;
     ptr = ::_pbi::ReadTag(ptr, &tag);
     switch (tag >> 3) {
       // string name = 1;
       case 1:
         if (PROTOBUF_PREDICT_TRUE(static_cast<::uint8_t>(tag) == 10)) {
+=======
+    ::PROTOBUF_NAMESPACE_ID::uint32 tag;
+    ptr = ::PROTOBUF_NAMESPACE_ID::internal::ReadTag(ptr, &tag);
+    CHK_(ptr);
+    switch (tag >> 3) {
+      // string name = 1;
+      case 1:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 10)) {
+>>>>>>> Stashed changes
           auto str = _internal_mutable_name();
           ptr = ::_pbi::InlineGreedyStringParser(str, ptr, ctx);
           CHK_(ptr);
+<<<<<<< Updated upstream
           CHK_(::_pbi::VerifyUTF8(str, "KeyspaceMessageContents.Keyspace.name"));
         } else {
           goto handle_unusual;
@@ -1250,30 +2033,52 @@ const char* KeyspaceMessageContents_Keyspace::_InternalParse(const char* ptr, ::
         } else {
           goto handle_unusual;
         }
+=======
+        } else goto handle_unusual;
         continue;
-      default:
-        goto handle_unusual;
+      // uint64 startID = 2;
+      case 2:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 16)) {
+          startid_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint(&ptr);
+          CHK_(ptr);
+        } else goto handle_unusual;
+        continue;
+      // uint64 endID = 3;
+      case 3:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 24)) {
+          endid_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint(&ptr);
+          CHK_(ptr);
+        } else goto handle_unusual;
+        continue;
+      // uint32 suffixBits = 4;
+      case 4:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 32)) {
+          suffixbits_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint(&ptr);
+          CHK_(ptr);
+        } else goto handle_unusual;
+>>>>>>> Stashed changes
+        continue;
+      default: {
+      handle_unusual:
+        if ((tag & 7) == 4 || tag == 0) {
+          ctx->SetLastTag(tag);
+          goto success;
+        }
+        ptr = UnknownFieldParse(tag, &_internal_metadata_, ptr, ctx);
+        CHK_(ptr != nullptr);
+        continue;
+      }
     }  // switch
-  handle_unusual:
-    if ((tag == 0) || ((tag & 7) == 4)) {
-      CHK_(ptr);
-      ctx->SetLastTag(tag);
-      goto message_done;
-    }
-    ptr = UnknownFieldParse(
-        tag,
-        _internal_metadata_.mutable_unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(),
-        ptr, ctx);
-    CHK_(ptr != nullptr);
   }  // while
-message_done:
+success:
   return ptr;
 failure:
   ptr = nullptr;
-  goto message_done;
+  goto success;
 #undef CHK_
 }
 
+<<<<<<< Updated upstream
 ::uint8_t* KeyspaceMessageContents_Keyspace::_InternalSerialize(
     ::uint8_t* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
   // @@protoc_insertion_point(serialize_to_array_start:KeyspaceMessageContents.Keyspace)
@@ -1283,35 +2088,50 @@ failure:
   // string name = 1;
   if (!this->_internal_name().empty()) {
     const std::string& _s = this->_internal_name();
+=======
+::PROTOBUF_NAMESPACE_ID::uint8* KeyspaceMessageContents_Keyspace::_InternalSerialize(
+    ::PROTOBUF_NAMESPACE_ID::uint8* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
+  // @@protoc_insertion_point(serialize_to_array_start:KeyspaceMessageContents.Keyspace)
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
+  (void) cached_has_bits;
+
+  // string name = 1;
+  if (this->name().size() > 0) {
+>>>>>>> Stashed changes
     ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::VerifyUtf8String(
         _s.data(), static_cast<int>(_s.length()), ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::SERIALIZE, "KeyspaceMessageContents.Keyspace.name");
     target = stream->WriteStringMaybeAliased(1, _s, target);
   }
 
   // uint64 startID = 2;
-  if (this->_internal_startid() != 0) {
+  if (this->startid() != 0) {
     target = stream->EnsureSpace(target);
     target = ::_pbi::WireFormatLite::WriteUInt64ToArray(
         2, this->_internal_startid(), target);
   }
 
   // uint64 endID = 3;
-  if (this->_internal_endid() != 0) {
+  if (this->endid() != 0) {
     target = stream->EnsureSpace(target);
     target = ::_pbi::WireFormatLite::WriteUInt64ToArray(
         3, this->_internal_endid(), target);
   }
 
   // uint32 suffixBits = 4;
-  if (this->_internal_suffixbits() != 0) {
+  if (this->suffixbits() != 0) {
     target = stream->EnsureSpace(target);
     target = ::_pbi::WireFormatLite::WriteUInt32ToArray(
         4, this->_internal_suffixbits(), target);
   }
 
   if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
+<<<<<<< Updated upstream
     target = ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
         _internal_metadata_.unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(::PROTOBUF_NAMESPACE_ID::UnknownFieldSet::default_instance), target, stream);
+=======
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormat::InternalSerializeUnknownFieldsToArray(
+        _internal_metadata_.unknown_fields(), target, stream);
+>>>>>>> Stashed changes
   }
   // @@protoc_insertion_point(serialize_to_array_end:KeyspaceMessageContents.Keyspace)
   return target;
@@ -1321,11 +2141,16 @@ failure:
 // @@protoc_insertion_point(message_byte_size_start:KeyspaceMessageContents.Keyspace)
   ::size_t total_size = 0;
 
+<<<<<<< Updated upstream
   ::uint32_t cached_has_bits = 0;
+=======
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
+>>>>>>> Stashed changes
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
   // string name = 1;
+<<<<<<< Updated upstream
   if (!this->_internal_name().empty()) {
     total_size += 1 + ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::StringSize(
                                     this->_internal_name());
@@ -1334,16 +2159,35 @@ failure:
   // uint64 startID = 2;
   if (this->_internal_startid() != 0) {
     total_size += ::_pbi::WireFormatLite::UInt64SizePlusOne(
+=======
+  if (this->name().size() > 0) {
+    total_size += 1 +
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::StringSize(
+        this->_internal_name());
+  }
+
+  // uint64 startID = 2;
+  if (this->startid() != 0) {
+    total_size += 1 +
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::UInt64Size(
+>>>>>>> Stashed changes
         this->_internal_startid());
   }
 
   // uint64 endID = 3;
+<<<<<<< Updated upstream
   if (this->_internal_endid() != 0) {
     total_size += ::_pbi::WireFormatLite::UInt64SizePlusOne(
+=======
+  if (this->endid() != 0) {
+    total_size += 1 +
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::UInt64Size(
+>>>>>>> Stashed changes
         this->_internal_endid());
   }
 
   // uint32 suffixBits = 4;
+<<<<<<< Updated upstream
   if (this->_internal_suffixbits() != 0) {
     total_size += ::_pbi::WireFormatLite::UInt32SizePlusOne(
         this->_internal_suffixbits());
@@ -1380,6 +2224,65 @@ void KeyspaceMessageContents_Keyspace::MergeImpl(::PROTOBUF_NAMESPACE_ID::Messag
     _this->_internal_set_suffixbits(from._internal_suffixbits());
   }
   _this->_internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
+=======
+  if (this->suffixbits() != 0) {
+    total_size += 1 +
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::UInt32Size(
+        this->_internal_suffixbits());
+  }
+
+  if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
+    return ::PROTOBUF_NAMESPACE_ID::internal::ComputeUnknownFieldsSize(
+        _internal_metadata_, total_size, &_cached_size_);
+  }
+  int cached_size = ::PROTOBUF_NAMESPACE_ID::internal::ToCachedSize(total_size);
+  SetCachedSize(cached_size);
+  return total_size;
+}
+
+void KeyspaceMessageContents_Keyspace::MergeFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) {
+// @@protoc_insertion_point(generalized_merge_from_start:KeyspaceMessageContents.Keyspace)
+  GOOGLE_DCHECK_NE(&from, this);
+  const KeyspaceMessageContents_Keyspace* source =
+      ::PROTOBUF_NAMESPACE_ID::DynamicCastToGenerated<KeyspaceMessageContents_Keyspace>(
+          &from);
+  if (source == nullptr) {
+  // @@protoc_insertion_point(generalized_merge_from_cast_fail:KeyspaceMessageContents.Keyspace)
+    ::PROTOBUF_NAMESPACE_ID::internal::ReflectionOps::Merge(from, this);
+  } else {
+  // @@protoc_insertion_point(generalized_merge_from_cast_success:KeyspaceMessageContents.Keyspace)
+    MergeFrom(*source);
+  }
+}
+
+void KeyspaceMessageContents_Keyspace::MergeFrom(const KeyspaceMessageContents_Keyspace& from) {
+// @@protoc_insertion_point(class_specific_merge_from_start:KeyspaceMessageContents.Keyspace)
+  GOOGLE_DCHECK_NE(&from, this);
+  _internal_metadata_.MergeFrom(from._internal_metadata_);
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
+  (void) cached_has_bits;
+
+  if (from.name().size() > 0) {
+
+    name_.AssignWithDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), from.name_);
+  }
+  if (from.startid() != 0) {
+    _internal_set_startid(from._internal_startid());
+  }
+  if (from.endid() != 0) {
+    _internal_set_endid(from._internal_endid());
+  }
+  if (from.suffixbits() != 0) {
+    _internal_set_suffixbits(from._internal_suffixbits());
+  }
+}
+
+void KeyspaceMessageContents_Keyspace::CopyFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) {
+// @@protoc_insertion_point(generalized_copy_from_start:KeyspaceMessageContents.Keyspace)
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+>>>>>>> Stashed changes
 }
 
 void KeyspaceMessageContents_Keyspace::CopyFrom(const KeyspaceMessageContents_Keyspace& from) {
@@ -1395,6 +2298,7 @@ bool KeyspaceMessageContents_Keyspace::IsInitialized() const {
 
 void KeyspaceMessageContents_Keyspace::InternalSwap(KeyspaceMessageContents_Keyspace* other) {
   using std::swap;
+<<<<<<< Updated upstream
   auto* lhs_arena = GetArenaForAllocation();
   auto* rhs_arena = other->GetArenaForAllocation();
   _internal_metadata_.InternalSwap(&other->_internal_metadata_);
@@ -1413,12 +2317,30 @@ void KeyspaceMessageContents_Keyspace::InternalSwap(KeyspaceMessageContents_Keys
       &descriptor_table_message_2eproto_getter, &descriptor_table_message_2eproto_once,
       file_level_metadata_message_2eproto[3]);
 }
+=======
+  _internal_metadata_.Swap(&other->_internal_metadata_);
+  name_.Swap(&other->name_, &::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(),
+    GetArenaNoVirtual());
+  swap(startid_, other->startid_);
+  swap(endid_, other->endid_);
+  swap(suffixbits_, other->suffixbits_);
+}
+
+::PROTOBUF_NAMESPACE_ID::Metadata KeyspaceMessageContents_Keyspace::GetMetadata() const {
+  return GetMetadataStatic();
+}
+
+
+>>>>>>> Stashed changes
 // ===================================================================
 
+void KeyspaceMessageContents::InitAsDefaultInstance() {
+}
 class KeyspaceMessageContents::_Internal {
  public:
 };
 
+<<<<<<< Updated upstream
 KeyspaceMessageContents::KeyspaceMessageContents(::PROTOBUF_NAMESPACE_ID::Arena* arena)
   : ::PROTOBUF_NAMESPACE_ID::Message(arena) {
   SharedCtor(arena);
@@ -1441,10 +2363,28 @@ inline void KeyspaceMessageContents::SharedCtor(::_pb::Arena* arena) {
       decltype(_impl_.keyspaces_){arena}
     , /*decltype(_impl_._cached_size_)*/{}
   };
+=======
+KeyspaceMessageContents::KeyspaceMessageContents()
+  : ::PROTOBUF_NAMESPACE_ID::Message(), _internal_metadata_(nullptr) {
+  SharedCtor();
+  // @@protoc_insertion_point(constructor:KeyspaceMessageContents)
+}
+KeyspaceMessageContents::KeyspaceMessageContents(const KeyspaceMessageContents& from)
+  : ::PROTOBUF_NAMESPACE_ID::Message(),
+      _internal_metadata_(nullptr),
+      keyspaces_(from.keyspaces_) {
+  _internal_metadata_.MergeFrom(from._internal_metadata_);
+  // @@protoc_insertion_point(copy_constructor:KeyspaceMessageContents)
+}
+
+void KeyspaceMessageContents::SharedCtor() {
+  ::PROTOBUF_NAMESPACE_ID::internal::InitSCC(&scc_info_KeyspaceMessageContents_message_2eproto.base);
+>>>>>>> Stashed changes
 }
 
 KeyspaceMessageContents::~KeyspaceMessageContents() {
   // @@protoc_insertion_point(destructor:KeyspaceMessageContents)
+<<<<<<< Updated upstream
   if (auto *arena = _internal_metadata_.DeleteReturnArena<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>()) {
   (void)arena;
     return;
@@ -1455,31 +2395,61 @@ KeyspaceMessageContents::~KeyspaceMessageContents() {
 inline void KeyspaceMessageContents::SharedDtor() {
   ABSL_DCHECK(GetArenaForAllocation() == nullptr);
   _internal_mutable_keyspaces()->~RepeatedPtrField();
+=======
+  SharedDtor();
+}
+
+void KeyspaceMessageContents::SharedDtor() {
+>>>>>>> Stashed changes
 }
 
 void KeyspaceMessageContents::SetCachedSize(int size) const {
   _impl_._cached_size_.Set(size);
 }
+const KeyspaceMessageContents& KeyspaceMessageContents::default_instance() {
+  ::PROTOBUF_NAMESPACE_ID::internal::InitSCC(&::scc_info_KeyspaceMessageContents_message_2eproto.base);
+  return *internal_default_instance();
+}
+
 
 void KeyspaceMessageContents::Clear() {
 // @@protoc_insertion_point(message_clear_start:KeyspaceMessageContents)
+<<<<<<< Updated upstream
   ::uint32_t cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
   _internal_mutable_keyspaces()->Clear();
   _internal_metadata_.Clear<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
+=======
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
+  // Prevent compiler warnings about cached_has_bits being unused
+  (void) cached_has_bits;
+
+  keyspaces_.Clear();
+  _internal_metadata_.Clear();
+>>>>>>> Stashed changes
 }
 
 const char* KeyspaceMessageContents::_InternalParse(const char* ptr, ::_pbi::ParseContext* ctx) {
 #define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
   while (!ctx->Done(&ptr)) {
+<<<<<<< Updated upstream
     ::uint32_t tag;
     ptr = ::_pbi::ReadTag(ptr, &tag);
     switch (tag >> 3) {
       // repeated .KeyspaceMessageContents.Keyspace keyspaces = 1;
       case 1:
         if (PROTOBUF_PREDICT_TRUE(static_cast<::uint8_t>(tag) == 10)) {
+=======
+    ::PROTOBUF_NAMESPACE_ID::uint32 tag;
+    ptr = ::PROTOBUF_NAMESPACE_ID::internal::ReadTag(ptr, &tag);
+    CHK_(ptr);
+    switch (tag >> 3) {
+      // repeated .KeyspaceMessageContents.Keyspace keyspaces = 1;
+      case 1:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 10)) {
+>>>>>>> Stashed changes
           ptr -= 1;
           do {
             ptr += 1;
@@ -1487,37 +2457,45 @@ const char* KeyspaceMessageContents::_InternalParse(const char* ptr, ::_pbi::Par
             CHK_(ptr);
             if (!ctx->DataAvailable(ptr)) break;
           } while (::PROTOBUF_NAMESPACE_ID::internal::ExpectTag<10>(ptr));
+<<<<<<< Updated upstream
         } else {
           goto handle_unusual;
         }
+=======
+        } else goto handle_unusual;
+>>>>>>> Stashed changes
         continue;
-      default:
-        goto handle_unusual;
+      default: {
+      handle_unusual:
+        if ((tag & 7) == 4 || tag == 0) {
+          ctx->SetLastTag(tag);
+          goto success;
+        }
+        ptr = UnknownFieldParse(tag, &_internal_metadata_, ptr, ctx);
+        CHK_(ptr != nullptr);
+        continue;
+      }
     }  // switch
-  handle_unusual:
-    if ((tag == 0) || ((tag & 7) == 4)) {
-      CHK_(ptr);
-      ctx->SetLastTag(tag);
-      goto message_done;
-    }
-    ptr = UnknownFieldParse(
-        tag,
-        _internal_metadata_.mutable_unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(),
-        ptr, ctx);
-    CHK_(ptr != nullptr);
   }  // while
-message_done:
+success:
   return ptr;
 failure:
   ptr = nullptr;
-  goto message_done;
+  goto success;
 #undef CHK_
 }
 
+<<<<<<< Updated upstream
 ::uint8_t* KeyspaceMessageContents::_InternalSerialize(
     ::uint8_t* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
   // @@protoc_insertion_point(serialize_to_array_start:KeyspaceMessageContents)
   ::uint32_t cached_has_bits = 0;
+=======
+::PROTOBUF_NAMESPACE_ID::uint8* KeyspaceMessageContents::_InternalSerialize(
+    ::PROTOBUF_NAMESPACE_ID::uint8* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
+  // @@protoc_insertion_point(serialize_to_array_start:KeyspaceMessageContents)
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
+>>>>>>> Stashed changes
   (void) cached_has_bits;
 
   // repeated .KeyspaceMessageContents.Keyspace keyspaces = 1;
@@ -1529,8 +2507,13 @@ failure:
   }
 
   if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
+<<<<<<< Updated upstream
     target = ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
         _internal_metadata_.unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(::PROTOBUF_NAMESPACE_ID::UnknownFieldSet::default_instance), target, stream);
+=======
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormat::InternalSerializeUnknownFieldsToArray(
+        _internal_metadata_.unknown_fields(), target, stream);
+>>>>>>> Stashed changes
   }
   // @@protoc_insertion_point(serialize_to_array_end:KeyspaceMessageContents)
   return target;
@@ -1540,7 +2523,11 @@ failure:
 // @@protoc_insertion_point(message_byte_size_start:KeyspaceMessageContents)
   ::size_t total_size = 0;
 
+<<<<<<< Updated upstream
   ::uint32_t cached_has_bits = 0;
+=======
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
+>>>>>>> Stashed changes
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
@@ -1551,6 +2538,7 @@ failure:
       ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::MessageSize(msg);
   }
 
+<<<<<<< Updated upstream
   return MaybeComputeUnknownFieldsSize(total_size, &_impl_._cached_size_);
 }
 
@@ -1571,6 +2559,47 @@ void KeyspaceMessageContents::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message& to_msg
 
   _this->_internal_mutable_keyspaces()->MergeFrom(from._internal_keyspaces());
   _this->_internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
+=======
+  if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
+    return ::PROTOBUF_NAMESPACE_ID::internal::ComputeUnknownFieldsSize(
+        _internal_metadata_, total_size, &_cached_size_);
+  }
+  int cached_size = ::PROTOBUF_NAMESPACE_ID::internal::ToCachedSize(total_size);
+  SetCachedSize(cached_size);
+  return total_size;
+}
+
+void KeyspaceMessageContents::MergeFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) {
+// @@protoc_insertion_point(generalized_merge_from_start:KeyspaceMessageContents)
+  GOOGLE_DCHECK_NE(&from, this);
+  const KeyspaceMessageContents* source =
+      ::PROTOBUF_NAMESPACE_ID::DynamicCastToGenerated<KeyspaceMessageContents>(
+          &from);
+  if (source == nullptr) {
+  // @@protoc_insertion_point(generalized_merge_from_cast_fail:KeyspaceMessageContents)
+    ::PROTOBUF_NAMESPACE_ID::internal::ReflectionOps::Merge(from, this);
+  } else {
+  // @@protoc_insertion_point(generalized_merge_from_cast_success:KeyspaceMessageContents)
+    MergeFrom(*source);
+  }
+}
+
+void KeyspaceMessageContents::MergeFrom(const KeyspaceMessageContents& from) {
+// @@protoc_insertion_point(class_specific_merge_from_start:KeyspaceMessageContents)
+  GOOGLE_DCHECK_NE(&from, this);
+  _internal_metadata_.MergeFrom(from._internal_metadata_);
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
+  (void) cached_has_bits;
+
+  keyspaces_.MergeFrom(from.keyspaces_);
+}
+
+void KeyspaceMessageContents::CopyFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) {
+// @@protoc_insertion_point(generalized_copy_from_start:KeyspaceMessageContents)
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+>>>>>>> Stashed changes
 }
 
 void KeyspaceMessageContents::CopyFrom(const KeyspaceMessageContents& from) {
@@ -1586,6 +2615,7 @@ bool KeyspaceMessageContents::IsInitialized() const {
 
 void KeyspaceMessageContents::InternalSwap(KeyspaceMessageContents* other) {
   using std::swap;
+<<<<<<< Updated upstream
   _internal_metadata_.InternalSwap(&other->_internal_metadata_);
   _internal_mutable_keyspaces()->InternalSwap(other->_internal_mutable_keyspaces());
 }
@@ -1595,10 +2625,30 @@ void KeyspaceMessageContents::InternalSwap(KeyspaceMessageContents* other) {
       &descriptor_table_message_2eproto_getter, &descriptor_table_message_2eproto_once,
       file_level_metadata_message_2eproto[4]);
 }
+=======
+  _internal_metadata_.Swap(&other->_internal_metadata_);
+  keyspaces_.InternalSwap(&other->keyspaces_);
+}
+
+::PROTOBUF_NAMESPACE_ID::Metadata KeyspaceMessageContents::GetMetadata() const {
+  return GetMetadataStatic();
+}
+
+
+>>>>>>> Stashed changes
 // ===================================================================
 
+void Message::InitAsDefaultInstance() {
+  ::_Message_default_instance_._instance.get_mutable()->timestamp_ = const_cast< PROTOBUF_NAMESPACE_ID::Timestamp*>(
+      PROTOBUF_NAMESPACE_ID::Timestamp::internal_default_instance());
+  ::_Message_default_instance_.info_ = const_cast< ::InformationalMessageContents*>(
+      ::InformationalMessageContents::internal_default_instance());
+  ::_Message_default_instance_.keyspace_ = const_cast< ::KeyspaceMessageContents*>(
+      ::KeyspaceMessageContents::internal_default_instance());
+}
 class Message::_Internal {
  public:
+<<<<<<< Updated upstream
   using HasBits = decltype(std::declval<Message>()._impl_._has_bits_);
   static constexpr ::int32_t kHasBitsOffset =
     8 * PROTOBUF_FIELD_OFFSET(Message, _impl_._has_bits_);
@@ -1608,11 +2658,14 @@ class Message::_Internal {
   static void set_has_timestamp(HasBits* has_bits) {
     (*has_bits)[0] |= 1u;
   }
+=======
+  static const PROTOBUF_NAMESPACE_ID::Timestamp& timestamp(const Message* msg);
+>>>>>>> Stashed changes
   static const ::InformationalMessageContents& info(const Message* msg);
   static const ::KeyspaceMessageContents& keyspace(const Message* msg);
 };
 
-const ::PROTOBUF_NAMESPACE_ID::Timestamp&
+const PROTOBUF_NAMESPACE_ID::Timestamp&
 Message::_Internal::timestamp(const Message* msg) {
   return *msg->_impl_.timestamp_;
 }
@@ -1625,15 +2678,26 @@ Message::_Internal::keyspace(const Message* msg) {
   return *msg->_impl_.message_.keyspace_;
 }
 void Message::clear_timestamp() {
+<<<<<<< Updated upstream
   if (_impl_.timestamp_ != nullptr) _impl_.timestamp_->Clear();
   _impl_._has_bits_[0] &= ~0x00000001u;
+=======
+  if (GetArenaNoVirtual() == nullptr && timestamp_ != nullptr) {
+    delete timestamp_;
+  }
+  timestamp_ = nullptr;
+>>>>>>> Stashed changes
 }
 void Message::set_allocated_info(::InformationalMessageContents* info) {
-  ::PROTOBUF_NAMESPACE_ID::Arena* message_arena = GetArenaForAllocation();
+  ::PROTOBUF_NAMESPACE_ID::Arena* message_arena = GetArenaNoVirtual();
   clear_message();
   if (info) {
+<<<<<<< Updated upstream
     ::PROTOBUF_NAMESPACE_ID::Arena* submessage_arena =
       ::PROTOBUF_NAMESPACE_ID::Arena::InternalGetOwningArena(info);
+=======
+    ::PROTOBUF_NAMESPACE_ID::Arena* submessage_arena = nullptr;
+>>>>>>> Stashed changes
     if (message_arena != submessage_arena) {
       info = ::PROTOBUF_NAMESPACE_ID::internal::GetOwnedMessage(
           message_arena, info, submessage_arena);
@@ -1644,11 +2708,15 @@ void Message::set_allocated_info(::InformationalMessageContents* info) {
   // @@protoc_insertion_point(field_set_allocated:Message.info)
 }
 void Message::set_allocated_keyspace(::KeyspaceMessageContents* keyspace) {
-  ::PROTOBUF_NAMESPACE_ID::Arena* message_arena = GetArenaForAllocation();
+  ::PROTOBUF_NAMESPACE_ID::Arena* message_arena = GetArenaNoVirtual();
   clear_message();
   if (keyspace) {
+<<<<<<< Updated upstream
     ::PROTOBUF_NAMESPACE_ID::Arena* submessage_arena =
       ::PROTOBUF_NAMESPACE_ID::Arena::InternalGetOwningArena(keyspace);
+=======
+    ::PROTOBUF_NAMESPACE_ID::Arena* submessage_arena = nullptr;
+>>>>>>> Stashed changes
     if (message_arena != submessage_arena) {
       keyspace = ::PROTOBUF_NAMESPACE_ID::internal::GetOwnedMessage(
           message_arena, keyspace, submessage_arena);
@@ -1658,6 +2726,7 @@ void Message::set_allocated_keyspace(::KeyspaceMessageContents* keyspace) {
   }
   // @@protoc_insertion_point(field_set_allocated:Message.keyspace)
 }
+<<<<<<< Updated upstream
 Message::Message(::PROTOBUF_NAMESPACE_ID::Arena* arena)
   : ::PROTOBUF_NAMESPACE_ID::Message(arena) {
   SharedCtor(arena);
@@ -1702,6 +2771,29 @@ Message::Message(const Message& from)
   }
   if ((from._impl_._has_bits_[0] & 0x00000001u) != 0) {
     _this->_impl_.timestamp_ = new ::PROTOBUF_NAMESPACE_ID::Timestamp(*from._impl_.timestamp_);
+=======
+Message::Message()
+  : ::PROTOBUF_NAMESPACE_ID::Message(), _internal_metadata_(nullptr) {
+  SharedCtor();
+  // @@protoc_insertion_point(constructor:Message)
+}
+Message::Message(const Message& from)
+  : ::PROTOBUF_NAMESPACE_ID::Message(),
+      _internal_metadata_(nullptr) {
+  _internal_metadata_.MergeFrom(from._internal_metadata_);
+  sourcenodeid_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
+  if (!from._internal_sourcenodeid().empty()) {
+    sourcenodeid_.AssignWithDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), from.sourcenodeid_);
+  }
+  destnodeid_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
+  if (!from._internal_destnodeid().empty()) {
+    destnodeid_.AssignWithDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), from.destnodeid_);
+  }
+  if (from._internal_has_timestamp()) {
+    timestamp_ = new PROTOBUF_NAMESPACE_ID::Timestamp(*from.timestamp_);
+  } else {
+    timestamp_ = nullptr;
+>>>>>>> Stashed changes
   }
   ::memcpy(&_impl_.lastreceivedmsg_, &from._impl_.lastreceivedmsg_,
     static_cast<::size_t>(reinterpret_cast<char*>(&_impl_.messageid_) -
@@ -1725,6 +2817,7 @@ Message::Message(const Message& from)
   // @@protoc_insertion_point(copy_constructor:Message)
 }
 
+<<<<<<< Updated upstream
 inline void Message::SharedCtor(::_pb::Arena* arena) {
   (void)arena;
   new (&_impl_) Impl_{
@@ -1754,11 +2847,21 @@ inline void Message::SharedCtor(::_pb::Arena* arena) {
   #ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
         _impl_.destnodeid_.Set("", GetArenaForAllocation());
   #endif  // PROTOBUF_FORCE_COPY_DEFAULT_STRING
+=======
+void Message::SharedCtor() {
+  ::PROTOBUF_NAMESPACE_ID::internal::InitSCC(&scc_info_Message_message_2eproto.base);
+  sourcenodeid_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
+  destnodeid_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
+  ::memset(&timestamp_, 0, static_cast<size_t>(
+      reinterpret_cast<char*>(&messageid_) -
+      reinterpret_cast<char*>(&timestamp_)) + sizeof(messageid_));
+>>>>>>> Stashed changes
   clear_has_message();
 }
 
 Message::~Message() {
   // @@protoc_insertion_point(destructor:Message)
+<<<<<<< Updated upstream
   if (auto *arena = _internal_metadata_.DeleteReturnArena<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>()) {
   (void)arena;
     return;
@@ -1771,6 +2874,15 @@ inline void Message::SharedDtor() {
   _impl_.sourcenodeid_.Destroy();
   _impl_.destnodeid_.Destroy();
   if (this != internal_default_instance()) delete _impl_.timestamp_;
+=======
+  SharedDtor();
+}
+
+void Message::SharedDtor() {
+  sourcenodeid_.DestroyNoArena(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
+  destnodeid_.DestroyNoArena(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
+  if (this != internal_default_instance()) delete timestamp_;
+>>>>>>> Stashed changes
   if (has_message()) {
     clear_message();
   }
@@ -1779,11 +2891,17 @@ inline void Message::SharedDtor() {
 void Message::SetCachedSize(int size) const {
   _impl_._cached_size_.Set(size);
 }
+const Message& Message::default_instance() {
+  ::PROTOBUF_NAMESPACE_ID::internal::InitSCC(&::scc_info_Message_message_2eproto.base);
+  return *internal_default_instance();
+}
+
 
 void Message::clear_message() {
 // @@protoc_insertion_point(one_of_clear_start:Message)
   switch (message_case()) {
     case kInfo: {
+<<<<<<< Updated upstream
       if (GetArenaForAllocation() == nullptr) {
         delete _impl_.message_.info_;
       }
@@ -1793,6 +2911,13 @@ void Message::clear_message() {
       if (GetArenaForAllocation() == nullptr) {
         delete _impl_.message_.keyspace_;
       }
+=======
+      delete message_.info_;
+      break;
+    }
+    case kKeyspace: {
+      delete message_.keyspace_;
+>>>>>>> Stashed changes
       break;
     }
     case MESSAGE_NOT_SET: {
@@ -1805,6 +2930,7 @@ void Message::clear_message() {
 
 void Message::Clear() {
 // @@protoc_insertion_point(message_clear_start:Message)
+<<<<<<< Updated upstream
   ::uint32_t cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
@@ -1815,28 +2941,53 @@ void Message::Clear() {
   if (cached_has_bits & 0x00000001u) {
     ABSL_DCHECK(_impl_.timestamp_ != nullptr);
     _impl_.timestamp_->Clear();
+=======
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
+  // Prevent compiler warnings about cached_has_bits being unused
+  (void) cached_has_bits;
+
+  sourcenodeid_.ClearToEmptyNoArena(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
+  destnodeid_.ClearToEmptyNoArena(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
+  if (GetArenaNoVirtual() == nullptr && timestamp_ != nullptr) {
+    delete timestamp_;
+>>>>>>> Stashed changes
   }
   ::memset(&_impl_.lastreceivedmsg_, 0, static_cast<::size_t>(
       reinterpret_cast<char*>(&_impl_.messageid_) -
       reinterpret_cast<char*>(&_impl_.lastreceivedmsg_)) + sizeof(_impl_.messageid_));
   clear_message();
+<<<<<<< Updated upstream
   _impl_._has_bits_.Clear();
   _internal_metadata_.Clear<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
+=======
+  _internal_metadata_.Clear();
+>>>>>>> Stashed changes
 }
 
 const char* Message::_InternalParse(const char* ptr, ::_pbi::ParseContext* ctx) {
 #define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
   _Internal::HasBits has_bits{};
   while (!ctx->Done(&ptr)) {
+<<<<<<< Updated upstream
     ::uint32_t tag;
     ptr = ::_pbi::ReadTag(ptr, &tag);
     switch (tag >> 3) {
       // bytes sourceNodeID = 1;
       case 1:
         if (PROTOBUF_PREDICT_TRUE(static_cast<::uint8_t>(tag) == 10)) {
+=======
+    ::PROTOBUF_NAMESPACE_ID::uint32 tag;
+    ptr = ::PROTOBUF_NAMESPACE_ID::internal::ReadTag(ptr, &tag);
+    CHK_(ptr);
+    switch (tag >> 3) {
+      // bytes sourceNodeID = 1;
+      case 1:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 10)) {
+>>>>>>> Stashed changes
           auto str = _internal_mutable_sourcenodeid();
           ptr = ::_pbi::InlineGreedyStringParser(str, ptr, ctx);
           CHK_(ptr);
+<<<<<<< Updated upstream
         } else {
           goto handle_unusual;
         }
@@ -1844,9 +2995,17 @@ const char* Message::_InternalParse(const char* ptr, ::_pbi::ParseContext* ctx) 
       // bytes destNodeID = 2;
       case 2:
         if (PROTOBUF_PREDICT_TRUE(static_cast<::uint8_t>(tag) == 18)) {
+=======
+        } else goto handle_unusual;
+        continue;
+      // bytes destNodeID = 2;
+      case 2:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 18)) {
+>>>>>>> Stashed changes
           auto str = _internal_mutable_destnodeid();
           ptr = ::_pbi::InlineGreedyStringParser(str, ptr, ctx);
           CHK_(ptr);
+<<<<<<< Updated upstream
         } else {
           goto handle_unusual;
         }
@@ -1915,31 +3074,87 @@ const char* Message::_InternalParse(const char* ptr, ::_pbi::ParseContext* ctx) 
         } else {
           goto handle_unusual;
         }
+=======
+        } else goto handle_unusual;
         continue;
-      default:
-        goto handle_unusual;
+      // uint64 lastReceivedMsg = 3;
+      case 3:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 24)) {
+          lastreceivedmsg_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint(&ptr);
+          CHK_(ptr);
+        } else goto handle_unusual;
+        continue;
+      // .Message.ChannelState channelState = 4;
+      case 4:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 32)) {
+          ::PROTOBUF_NAMESPACE_ID::uint64 val = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint(&ptr);
+          CHK_(ptr);
+          _internal_set_channelstate(static_cast<::Message_ChannelState>(val));
+        } else goto handle_unusual;
+        continue;
+      // .google.protobuf.Timestamp timestamp = 5;
+      case 5:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 42)) {
+          ptr = ctx->ParseMessage(_internal_mutable_timestamp(), ptr);
+          CHK_(ptr);
+        } else goto handle_unusual;
+        continue;
+      // sint64 messageID = 6;
+      case 6:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 48)) {
+          messageid_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarintZigZag64(&ptr);
+          CHK_(ptr);
+        } else goto handle_unusual;
+        continue;
+      // .Message.MessageType messageType = 7;
+      case 7:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 56)) {
+          ::PROTOBUF_NAMESPACE_ID::uint64 val = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint(&ptr);
+          CHK_(ptr);
+          _internal_set_messagetype(static_cast<::Message_MessageType>(val));
+        } else goto handle_unusual;
+        continue;
+      // .InformationalMessageContents info = 8;
+      case 8:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 66)) {
+          ptr = ctx->ParseMessage(_internal_mutable_info(), ptr);
+          CHK_(ptr);
+        } else goto handle_unusual;
+        continue;
+      // .KeyspaceMessageContents keyspace = 9;
+      case 9:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 74)) {
+          ptr = ctx->ParseMessage(_internal_mutable_keyspace(), ptr);
+          CHK_(ptr);
+        } else goto handle_unusual;
+>>>>>>> Stashed changes
+        continue;
+      default: {
+      handle_unusual:
+        if ((tag & 7) == 4 || tag == 0) {
+          ctx->SetLastTag(tag);
+          goto success;
+        }
+        ptr = UnknownFieldParse(tag, &_internal_metadata_, ptr, ctx);
+        CHK_(ptr != nullptr);
+        continue;
+      }
     }  // switch
-  handle_unusual:
-    if ((tag == 0) || ((tag & 7) == 4)) {
-      CHK_(ptr);
-      ctx->SetLastTag(tag);
-      goto message_done;
-    }
-    ptr = UnknownFieldParse(
-        tag,
-        _internal_metadata_.mutable_unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(),
-        ptr, ctx);
-    CHK_(ptr != nullptr);
   }  // while
+<<<<<<< Updated upstream
 message_done:
   _impl_._has_bits_.Or(has_bits);
+=======
+success:
+>>>>>>> Stashed changes
   return ptr;
 failure:
   ptr = nullptr;
-  goto message_done;
+  goto success;
 #undef CHK_
 }
 
+<<<<<<< Updated upstream
 ::uint8_t* Message::_InternalSerialize(
     ::uint8_t* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
   // @@protoc_insertion_point(serialize_to_array_start:Message)
@@ -1956,17 +3171,35 @@ failure:
   if (!this->_internal_destnodeid().empty()) {
     const std::string& _s = this->_internal_destnodeid();
     target = stream->WriteBytesMaybeAliased(2, _s, target);
+=======
+::PROTOBUF_NAMESPACE_ID::uint8* Message::_InternalSerialize(
+    ::PROTOBUF_NAMESPACE_ID::uint8* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
+  // @@protoc_insertion_point(serialize_to_array_start:Message)
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
+  (void) cached_has_bits;
+
+  // bytes sourceNodeID = 1;
+  if (this->sourcenodeid().size() > 0) {
+    target = stream->WriteBytesMaybeAliased(
+        1, this->_internal_sourcenodeid(), target);
+  }
+
+  // bytes destNodeID = 2;
+  if (this->destnodeid().size() > 0) {
+    target = stream->WriteBytesMaybeAliased(
+        2, this->_internal_destnodeid(), target);
+>>>>>>> Stashed changes
   }
 
   // uint64 lastReceivedMsg = 3;
-  if (this->_internal_lastreceivedmsg() != 0) {
+  if (this->lastreceivedmsg() != 0) {
     target = stream->EnsureSpace(target);
     target = ::_pbi::WireFormatLite::WriteUInt64ToArray(
         3, this->_internal_lastreceivedmsg(), target);
   }
 
   // .Message.ChannelState channelState = 4;
-  if (this->_internal_channelstate() != 0) {
+  if (this->channelstate() != 0) {
     target = stream->EnsureSpace(target);
     target = ::_pbi::WireFormatLite::WriteEnumToArray(
         4, this->_internal_channelstate(), target);
@@ -1974,21 +3207,26 @@ failure:
 
   cached_has_bits = _impl_._has_bits_[0];
   // .google.protobuf.Timestamp timestamp = 5;
+<<<<<<< Updated upstream
   if (cached_has_bits & 0x00000001u) {
+=======
+  if (this->has_timestamp()) {
+    target = stream->EnsureSpace(target);
+>>>>>>> Stashed changes
     target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::
       InternalWriteMessage(5, _Internal::timestamp(this),
         _Internal::timestamp(this).GetCachedSize(), target, stream);
   }
 
   // sint64 messageID = 6;
-  if (this->_internal_messageid() != 0) {
+  if (this->messageid() != 0) {
     target = stream->EnsureSpace(target);
     target = ::_pbi::WireFormatLite::WriteSInt64ToArray(
         6, this->_internal_messageid(), target);
   }
 
   // .Message.MessageType messageType = 7;
-  if (this->_internal_messagetype() != 0) {
+  if (this->messagetype() != 0) {
     target = stream->EnsureSpace(target);
     target = ::_pbi::WireFormatLite::WriteEnumToArray(
         7, this->_internal_messagetype(), target);
@@ -2010,8 +3248,13 @@ failure:
     default: ;
   }
   if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
+<<<<<<< Updated upstream
     target = ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
         _internal_metadata_.unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(::PROTOBUF_NAMESPACE_ID::UnknownFieldSet::default_instance), target, stream);
+=======
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormat::InternalSerializeUnknownFieldsToArray(
+        _internal_metadata_.unknown_fields(), target, stream);
+>>>>>>> Stashed changes
   }
   // @@protoc_insertion_point(serialize_to_array_end:Message)
   return target;
@@ -2021,11 +3264,16 @@ failure:
 // @@protoc_insertion_point(message_byte_size_start:Message)
   ::size_t total_size = 0;
 
+<<<<<<< Updated upstream
   ::uint32_t cached_has_bits = 0;
+=======
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
+>>>>>>> Stashed changes
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
   // bytes sourceNodeID = 1;
+<<<<<<< Updated upstream
   if (!this->_internal_sourcenodeid().empty()) {
     total_size += 1 + ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::BytesSize(
                                     this->_internal_sourcenodeid());
@@ -2040,32 +3288,61 @@ failure:
   // .google.protobuf.Timestamp timestamp = 5;
   cached_has_bits = _impl_._has_bits_[0];
   if (cached_has_bits & 0x00000001u) {
+=======
+  if (this->sourcenodeid().size() > 0) {
+    total_size += 1 +
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::BytesSize(
+        this->_internal_sourcenodeid());
+  }
+
+  // bytes destNodeID = 2;
+  if (this->destnodeid().size() > 0) {
+    total_size += 1 +
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::BytesSize(
+        this->_internal_destnodeid());
+  }
+
+  // .google.protobuf.Timestamp timestamp = 5;
+  if (this->has_timestamp()) {
+>>>>>>> Stashed changes
     total_size += 1 +
       ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::MessageSize(
         *_impl_.timestamp_);
   }
 
   // uint64 lastReceivedMsg = 3;
+<<<<<<< Updated upstream
   if (this->_internal_lastreceivedmsg() != 0) {
     total_size += ::_pbi::WireFormatLite::UInt64SizePlusOne(
+=======
+  if (this->lastreceivedmsg() != 0) {
+    total_size += 1 +
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::UInt64Size(
+>>>>>>> Stashed changes
         this->_internal_lastreceivedmsg());
   }
 
   // .Message.ChannelState channelState = 4;
-  if (this->_internal_channelstate() != 0) {
+  if (this->channelstate() != 0) {
     total_size += 1 +
                   ::_pbi::WireFormatLite::EnumSize(this->_internal_channelstate());
   }
 
   // .Message.MessageType messageType = 7;
-  if (this->_internal_messagetype() != 0) {
+  if (this->messagetype() != 0) {
     total_size += 1 +
                   ::_pbi::WireFormatLite::EnumSize(this->_internal_messagetype());
   }
 
   // sint64 messageID = 6;
+<<<<<<< Updated upstream
   if (this->_internal_messageid() != 0) {
     total_size += ::_pbi::WireFormatLite::SInt64SizePlusOne(
+=======
+  if (this->messageid() != 0) {
+    total_size += 1 +
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::SInt64Size(
+>>>>>>> Stashed changes
         this->_internal_messageid());
   }
 
@@ -2088,6 +3365,7 @@ failure:
       break;
     }
   }
+<<<<<<< Updated upstream
   return MaybeComputeUnknownFieldsSize(total_size, &_impl_._cached_size_);
 }
 
@@ -2127,6 +3405,61 @@ void Message::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message& to_msg, const ::PROTOB
   }
   if (from._internal_messageid() != 0) {
     _this->_internal_set_messageid(from._internal_messageid());
+=======
+  if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
+    return ::PROTOBUF_NAMESPACE_ID::internal::ComputeUnknownFieldsSize(
+        _internal_metadata_, total_size, &_cached_size_);
+  }
+  int cached_size = ::PROTOBUF_NAMESPACE_ID::internal::ToCachedSize(total_size);
+  SetCachedSize(cached_size);
+  return total_size;
+}
+
+void Message::MergeFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) {
+// @@protoc_insertion_point(generalized_merge_from_start:Message)
+  GOOGLE_DCHECK_NE(&from, this);
+  const Message* source =
+      ::PROTOBUF_NAMESPACE_ID::DynamicCastToGenerated<Message>(
+          &from);
+  if (source == nullptr) {
+  // @@protoc_insertion_point(generalized_merge_from_cast_fail:Message)
+    ::PROTOBUF_NAMESPACE_ID::internal::ReflectionOps::Merge(from, this);
+  } else {
+  // @@protoc_insertion_point(generalized_merge_from_cast_success:Message)
+    MergeFrom(*source);
+  }
+}
+
+void Message::MergeFrom(const Message& from) {
+// @@protoc_insertion_point(class_specific_merge_from_start:Message)
+  GOOGLE_DCHECK_NE(&from, this);
+  _internal_metadata_.MergeFrom(from._internal_metadata_);
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
+  (void) cached_has_bits;
+
+  if (from.sourcenodeid().size() > 0) {
+
+    sourcenodeid_.AssignWithDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), from.sourcenodeid_);
+  }
+  if (from.destnodeid().size() > 0) {
+
+    destnodeid_.AssignWithDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), from.destnodeid_);
+  }
+  if (from.has_timestamp()) {
+    _internal_mutable_timestamp()->PROTOBUF_NAMESPACE_ID::Timestamp::MergeFrom(from._internal_timestamp());
+  }
+  if (from.lastreceivedmsg() != 0) {
+    _internal_set_lastreceivedmsg(from._internal_lastreceivedmsg());
+  }
+  if (from.channelstate() != 0) {
+    _internal_set_channelstate(from._internal_channelstate());
+  }
+  if (from.messagetype() != 0) {
+    _internal_set_messagetype(from._internal_messagetype());
+  }
+  if (from.messageid() != 0) {
+    _internal_set_messageid(from._internal_messageid());
+>>>>>>> Stashed changes
   }
   switch (from.message_case()) {
     case kInfo: {
@@ -2143,7 +3476,17 @@ void Message::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message& to_msg, const ::PROTOB
       break;
     }
   }
+<<<<<<< Updated upstream
   _this->_internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
+=======
+}
+
+void Message::CopyFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) {
+// @@protoc_insertion_point(generalized_copy_from_start:Message)
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+>>>>>>> Stashed changes
 }
 
 void Message::CopyFrom(const Message& from) {
@@ -2159,6 +3502,7 @@ bool Message::IsInitialized() const {
 
 void Message::InternalSwap(Message* other) {
   using std::swap;
+<<<<<<< Updated upstream
   auto* lhs_arena = GetArenaForAllocation();
   auto* rhs_arena = other->GetArenaForAllocation();
   _internal_metadata_.InternalSwap(&other->_internal_metadata_);
@@ -2207,6 +3551,46 @@ Arena::CreateMaybeMessage< ::KeyspaceMessageContents >(Arena* arena) {
 template<> PROTOBUF_NOINLINE ::Message*
 Arena::CreateMaybeMessage< ::Message >(Arena* arena) {
   return Arena::CreateMessageInternal< ::Message >(arena);
+=======
+  _internal_metadata_.Swap(&other->_internal_metadata_);
+  sourcenodeid_.Swap(&other->sourcenodeid_, &::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(),
+    GetArenaNoVirtual());
+  destnodeid_.Swap(&other->destnodeid_, &::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(),
+    GetArenaNoVirtual());
+  swap(timestamp_, other->timestamp_);
+  swap(lastreceivedmsg_, other->lastreceivedmsg_);
+  swap(channelstate_, other->channelstate_);
+  swap(messagetype_, other->messagetype_);
+  swap(messageid_, other->messageid_);
+  swap(message_, other->message_);
+  swap(_oneof_case_[0], other->_oneof_case_[0]);
+}
+
+::PROTOBUF_NAMESPACE_ID::Metadata Message::GetMetadata() const {
+  return GetMetadataStatic();
+}
+
+
+// @@protoc_insertion_point(namespace_scope)
+PROTOBUF_NAMESPACE_OPEN
+template<> PROTOBUF_NOINLINE ::InformationalMessageContents_CollectionInformationRecord_CreationRateData* Arena::CreateMaybeMessage< ::InformationalMessageContents_CollectionInformationRecord_CreationRateData >(Arena* arena) {
+  return Arena::CreateInternal< ::InformationalMessageContents_CollectionInformationRecord_CreationRateData >(arena);
+}
+template<> PROTOBUF_NOINLINE ::InformationalMessageContents_CollectionInformationRecord* Arena::CreateMaybeMessage< ::InformationalMessageContents_CollectionInformationRecord >(Arena* arena) {
+  return Arena::CreateInternal< ::InformationalMessageContents_CollectionInformationRecord >(arena);
+}
+template<> PROTOBUF_NOINLINE ::InformationalMessageContents* Arena::CreateMaybeMessage< ::InformationalMessageContents >(Arena* arena) {
+  return Arena::CreateInternal< ::InformationalMessageContents >(arena);
+}
+template<> PROTOBUF_NOINLINE ::KeyspaceMessageContents_Keyspace* Arena::CreateMaybeMessage< ::KeyspaceMessageContents_Keyspace >(Arena* arena) {
+  return Arena::CreateInternal< ::KeyspaceMessageContents_Keyspace >(arena);
+}
+template<> PROTOBUF_NOINLINE ::KeyspaceMessageContents* Arena::CreateMaybeMessage< ::KeyspaceMessageContents >(Arena* arena) {
+  return Arena::CreateInternal< ::KeyspaceMessageContents >(arena);
+}
+template<> PROTOBUF_NOINLINE ::Message* Arena::CreateMaybeMessage< ::Message >(Arena* arena) {
+  return Arena::CreateInternal< ::Message >(arena);
+>>>>>>> Stashed changes
 }
 PROTOBUF_NAMESPACE_CLOSE
 // @@protoc_insertion_point(global_scope)
