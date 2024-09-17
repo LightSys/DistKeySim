@@ -55,9 +55,9 @@ sshpass -p "$server_password" ssh -p $server_port -tt $server_username@$server_a
     cp ./logOutput.txt $server_file_loc/temp_simulation_out/logOutput.txt
     rm ./logOutput.txt
     
-    rm $server_file_loc/temp_simulation_out/statslog.csv
-    cp ./statslog.csv $server_file_loc/temp_simulation_out/statslog.csv
-    rm ./statslog.csv
+    rm $server_file_loc/temp_simulation_out/statsLog.csv
+    cp ./statsLog.csv $server_file_loc/temp_simulation_out/statsLog.csv
+    rm ./statsLog.csv
 
     exit
 

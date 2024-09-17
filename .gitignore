@@ -8,7 +8,7 @@ outputs/
 .vscode
 .clang-format
 logOutput.txt
-statslog.csv
+statsLog.csv
 make.out
 *.pyc
 *.zip

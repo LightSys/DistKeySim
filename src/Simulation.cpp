@@ -1,7 +1,12 @@
 
-#include "Simulation.h"
-
 #include "ControlStrategy.h"
+#include "DoNothingStrategy.h"
+#include "EventGen.h"
+#include "Factory.h"
+#include "GeometricDisconnect.h"
+#include "Logger.h"
+#include "Simulation.h"
+#include "UUID.h"
 
 using json = nlohmann::json;
 
@@ -12,7 +17,7 @@ Simulation::Simulation(const struct Config& config)
     : numNodes(config.numNodes),
       network(Network(config.connectionMode, config.visiblePeers, config.lambda1, config.lambda2,
                       config.lambda3, config.networkScale, config.latency, config.customLambda1,
-                      config.customLambda2, config.customLambda3)) {
+                      config.customLambda2, config.customLambda3, config.enableSendMsgLog)) {
     // Seed random number
     srand(config.randomSeed);
 }
@@ -22,10 +27,11 @@ void Simulation::run() {
     // the file twice.
     Config config(ifstream("config.json"));
 
-    ControlStrategy::setAccuracy(config.longTermPrecision);
+    Logger::log(Formatter() << "Making " << config.adakStrategy << " strategy");
+    adakStrategy = Factory::makeAdakStrategy(config);
+    adakStrategy->setAccuracy(config.longTermPrecision);
 
-    string message = "Started Simulation";
-    Logger::log(message);
+    Logger::log("Started Simulation");
 
     // Create root node that will have the max keyspace 0/0
     network.addRootNode(config.randomSeed);
@@ -36,7 +42,7 @@ void Simulation::run() {
     for (int i = 1; i < numNodes; i++) {
         UUID newNodeID = network.addEmptyNode(config.randomSeed);
         if (i % config.heartbeatFrequency == 0) {
-            network.doAllHeartbeat(config.chunkiness);
+            network.doAllHeartbeat(adakStrategy, config.chunkiness);
         }
         network.checkAndSendAllNodesLatency(config.latency);
         network.doAllTicks();
@@ -57,7 +63,9 @@ void Simulation::run() {
     long prevPercentComplete = -1;
     for (long i = 0; i < config.simLength; i++) {
         Logger::log(Formatter() << "***********************************************Tick");
-        Logger::log(Formatter() << "Time Step: " << numNodes + 1 + i << " ... ");
+        int step = numNodes + 1 + i;
+        Logger::log(Formatter() << "Time Step " << step
+            << ", SimTime " << double(i)/double(config.timeStepUnitsPerSecond) << "s ... ");
         long percentComplete = long(i * 100) / long(config.simLength);
         Logger::log(Formatter()
             << "percentComplete ( " << percentComplete << ")"
@@ -80,7 +88,7 @@ void Simulation::run() {
         // start = std::chrono::high_resolution_clock::now();
 
         if (i % config.heartbeatFrequency == 0) {
-            network.doAllHeartbeat(config.chunkiness);
+            network.doAllHeartbeat(adakStrategy, config.chunkiness);
         }
         // end = std::chrono::high_resolution_clock::now();
         // Logger::log(Formatter() << "do all heartbeats took "

@@ -10,8 +10,9 @@
 
 using namespace std;
 
-Network::Network(ConnectionType connectionType, float PERCENT_CONNECTED, double lambda1, double lambda2, double lambda3, double netScale, int latency)
-	: lambda1(lambda1), lambda2(lambda2), lambda3(lambda3), networkScale(netScale), latency(latency) {
+Network::Network(ConnectionType connectionType, float PERCENT_CONNECTED, double lambda1, double lambda2, double lambda3, double netScale, int latency, bool enableSendMsgLog)
+	: lambda1(lambda1), lambda2(lambda2), lambda3(lambda3), networkScale(netScale), latency(latency),
+      enableSendMsgLog(enableSendMsgLog) {
     this->connectionType = connectionType;
     //PERCENT_CONNECTED is a 5 digit int (99.999% = 99999)
     this->PERCENT_CONNECTED = (int)(PERCENT_CONNECTED*1000);
@@ -23,8 +24,9 @@ Network::Network(ConnectionType connectionType, float PERCENT_CONNECTED, double 
 
 Network::Network(ConnectionType connectionType, float PERCENT_CONNECTED, double lambda1, double lambda2, 
 		double lambda3, double netScale,
-	       	int latency, vector<float>lam1s, vector<float>lam2s, vector<float>lam3s)
-	:  lambda1(lambda1), lambda2(lambda2), lambda3(lambda3), networkScale(netScale), latency(latency) {
+	       	int latency, vector<float>lam1s, vector<float>lam2s, vector<float>lam3s, bool enableSendMsgLog)
+	:  lambda1(lambda1), lambda2(lambda2), lambda3(lambda3), networkScale(netScale), latency(latency),
+       enableSendMsgLog(enableSendMsgLog) {
     this->connectionType = connectionType;
     //PERCENT_CONNECTED is a 5 digit int (99.999% = 99999)
     this->PERCENT_CONNECTED = (int)(PERCENT_CONNECTED*1000);
@@ -62,9 +64,13 @@ bool Network::isOffline(UUID nodeID){
 }
 
 bool Network::sendMsg(const Message &message) {
+    //Logger::logBackTrace();
     UUID destID = message.destnodeid(), srcID = message.sourcenodeid();
 
-    if(!isOffline(destID) && !isOffline(srcID)){
+    if (!isOffline(destID) && !isOffline(srcID)) {
+        if (enableSendMsgLog) {
+            Logger::logMsg(Formatter() << srcID << " sendMsg", message);
+        }
         shared_ptr<Node> destNode = getNodeFromUUID(destID);
         return destNode->receiveMessage(message);
     } else {
@@ -72,7 +78,7 @@ bool Network::sendMsg(const Message &message) {
     }
 }
 
-void Network::doAllHeartbeat(int keysToSend) {
+void Network::doAllHeartbeat(AbstractStrategy *adakStrategy, int keysToSend) {
     // NOTE: Baylor will need to change this, right now we are sending heartbeat messages practically all the time
     // they will probably want to add time to Node to send it periodically
     // To make this repeatable, loop through nodes in order they were added
@@ -87,7 +93,8 @@ void Network::doAllHeartbeat(int keysToSend) {
 //      	<< " ns");
 
 //start = std::chrono::high_resolution_clock::now();
-      	ControlStrategy::adak(*(node), keysToSend); //have the node decide what to do 
+        Logger::log(Formatter() << "doAllHeartbeat: uuid=" << uuid);
+        adakStrategy->adak(*(node), keysToSend); //have the node decide what to do 
 //end = std::chrono::high_resolution_clock::now();
 //Logger::log("chekcing control strat took " << std::chrono::duration_cast<std::chrono::nanoseconds>(end - start).count()
 //       	<< " ns");    
@@ -140,14 +147,13 @@ void Network::checkAndSendAllNodesLatency(int latency) {
        latencyStall++; //essetially, do nothing
     }else{
         vector<Message> temp = toSend.front();
-	toSend.pop(); //get rid of timestep
-	for(int i = 0  ; i < temp.size() ; i ++){
-//auto start = std::chrono::high_resolution_clock::now();
-		sendMsg(temp[i]);
-//auto end = std::chrono::high_resolution_clock::now();
-//Logger::log("sending a message took " << std::chrono::duration_cast<std::chrono::nanoseconds>(end - start).count()
-//       	<< " ms"); 
-	}
+	    toSend.pop(); //get rid of timestep
+	    for(int i = 0  ; i < temp.size() ; i ++){
+            //auto start = std::chrono::high_resolution_clock::now();
+		    sendMsg(temp[i]);
+            //auto end = std::chrono::high_resolution_clock::now();
+            //Logger::log("sending a message took " << std::chrono::duration_cast<std::chrono::nanoseconds>(end - start).count() << " ms"); 
+	    }
     }
 }
 
@@ -240,7 +246,7 @@ UUID Network::addNode(const Keyspace &keyspace, unsigned seed) {
 
     // Add the new node to the nodes map
     nodeStatus[newNode->getUUID()] = true;
-    nodes.insert({newNode->getUUID(), move(newNode)});
+    nodes.insert({newNode->getUUID(), std::move(newNode)});
     uuids.push_back(newUUID);
 
     //log node created
@@ -334,11 +340,11 @@ bool Network::customConnect(shared_ptr<Node> node) {
 	   string node2 = connections.substr(comma + 2, end - comma - 2); 
 	   //cut off current pair from connections
 	   connections = connections.substr(end +1); 
-       Logger::log(Formatter() << "connecting Nodes " << node1 << " and " << node2);
+       //Logger::log(Formatter() << "connecting Nodes " << node1 << " and " << node2);
 	   //Assign nodes to connection values if needed
 	   if(strToID.find((node1)) == strToID.end()){
 	    if(nextNode == nodes.end()){
-	        Logger::log(Formatter() << "Cannot have a node to represent connection with node " << node1);
+	        //Logger::log(Formatter() << "Cannot have a node to represent connection with node " << node1);
 		    continue; //cannot finish this iteration, nothing to connect
 	     }else{ 
                 strToID.insert(pair<string, UUID>(node1, nextNode->first));
@@ -348,8 +354,8 @@ bool Network::customConnect(shared_ptr<Node> node) {
 	   //and now the second item
 	   if(strToID.find(node2) == strToID.end()){
 	     if(nextNode == nodes.end()){
-	        Logger::log(Formatter() << "Cannot have a node to represent connection with node " << node2);
-		continue; //cannot finish this loop; nothing to connect
+	        //Logger::log(Formatter() << "Cannot have a node to represent connection with node " << node2);
+		    continue; //cannot finish this loop; nothing to connect
 	     }else{
 	       strToID.insert(pair<string, UUID>(node2, nextNode->first));
 	       nextNode++;

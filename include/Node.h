@@ -25,7 +25,6 @@ private:
     std::deque<Message> sendQueue;
     std::vector<Keyspace> keyspaces;
     std::map<UUID, std::pair<Message*, uint64_t>> peers; //Hold the message and the next ID to send
-    std::vector<NodeData> history;
     //map to store confirmation messages
     std::map<uint64_t, Message*> confirmMsg;  
     
@@ -38,7 +37,7 @@ private:
     float createdDay;
     float createdWeek;
     ADAK_Key_t totalLocalKeyspaceSize=0;
-    double objectConsuptionRatePerSecond = 0;
+    double objectConsumptionRatePerSecond = 0;
     double amountOfOneKeyUsed = 0;
     double lambda3;
     double lambda2;

@@ -42,7 +42,7 @@ int main(int argc, char** argv) {
     try {
         std::cout << "ADAK initializing..." << std::endl;
         Logger::deleteOldLog();//clearing old log files
-        Logger::setCSVHeaders();//setting the headers of the columns of the csv file
+        Logger::setCSVHeadersLogStats();//setting the headers of the columns of the csv file
         std::cout << "ADAK configuring..." << std::endl;
         Logger::log(Formatter() << "ADAK loading config from config.json ...");
         config = Config(ifstream("config.json")); 

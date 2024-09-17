@@ -56,16 +56,16 @@ def setJsonVar(str_results_dict,hardknobs_results_dict):
     
     print("opening results data visualization...")
     
-    #datavis.drawAnalytics("simulations/simulation_"+str(times_run)+"/statslog.csv")
-    #datavis2.runDataAnalytics("sample_statslog.csv")
+    #datavis.drawAnalytics("simulations/simulation_"+str(times_run)+"/statsLog.csv")
+    #datavis2.runDataAnalytics("sample_statsLog.csv")
     print("graph is log: ")
     global graphIsLog
     print(graphIsLog)
     if(graphIsLog):
         #run with logrithmic scale
-        datavis2.runDataAnalyticsLog("simulations/simulation_"+str(times_run)+"/statslog.csv")
+        datavis2.runDataAnalyticsLog("simulations/simulation_"+str(times_run)+"/statsLog.csv")
     else:
-        datavis2.runDataAnalytics("simulations/simulation_"+str(times_run)+"/statslog.csv")
+        datavis2.runDataAnalytics("simulations/simulation_"+str(times_run)+"/statsLog.csv")
     
     print("opened analytics!")
     times_run += 1
