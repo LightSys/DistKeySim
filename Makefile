@@ -43,16 +43,12 @@ $(BUILD_SRC)/adak : CMakeLists.txt src/CMakeLists.txt $(SOURCES)
 src :
 	@echo $(SOURCES)
 
-# This build process was adapted from https://lukasjoswiak.com/
 protobuf : FORCE
 	git clone https://github.com/protocolbuffers/protobuf.git
 	cd protobuf && \
     git submodule update --init --recursive && \
-    ./autogen.sh && \
-    ./autogen.sh && \
-    ./configure && \
-    make && \
-    make check
+	cmake . -DCMAKE_CXX_STANDARD=14 && \
+	cmake --build .
 
 install-protobuf :
 	cd protobuf && make install
