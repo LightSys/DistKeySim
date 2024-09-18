@@ -47,11 +47,12 @@ src :
 protobuf : FORCE
 	git clone https://github.com/protocolbuffers/protobuf.git
 	cd protobuf && \
-	git checkout tags/v23.0 && \
-	git submodule update --init --recursive && \
-	mkdir -p ~/protobuf && \
-	cmake . -DCMAKE_CXX_STANDARD=14 -DCMAKE_INSTALL_PREFIX=~/protobuf && \
-	cmake --build .
+    git submodule update --init --recursive && \
+    ./autogen.sh && \
+    ./autogen.sh && \
+    ./configure && \
+    make && \
+    make check
 
 install-protobuf :
 	cd protobuf && make install
