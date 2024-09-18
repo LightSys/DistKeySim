@@ -43,33 +43,38 @@ $(BUILD_SRC)/adak : CMakeLists.txt src/CMakeLists.txt $(SOURCES)
 src :
 	@echo $(SOURCES)
 
-protobuf : FORCE
+PROTOBUF_INSTALL_DIR = ~/protobuf
+protobuf : clean-protobuf
 	git clone https://github.com/protocolbuffers/protobuf.git
 	cd protobuf && \
-    git submodule update --init --recursive && \
-	cmake . -DCMAKE_CXX_STANDARD=14 && \
-	cmake --build .
+	git checkout tags/v23.0 && \
+	git submodule update --init --recursive
+	cd protobuf && cmake . -DCMAKE_CXX_STANDARD=14 \
+		-DCMAKE_INSTALL_PREFIX=$(PROTOBUF_INSTALL_DIR) \
+		-Dprotobuf_ABSL_PROVIDER=package \
+		-DCMAKE_PREFIX_PATH=$(ABSEIL_INSTALL_DIR)
+	cd protobuf && cmake --build . -j $(USE_CORES)
 
 install-protobuf :
+	mkdir -p $(PROTOBUF_INSTALL_DIR)
 	cd protobuf && make install
 
 clean-protobuf :
-	rm -rf protobuf
+	rm -rf protobuf $(PROTOBUF_INSTALL_DIR)
 
-# ---------------------------------------------------------
-# Abseil is not already installed on some versions of Linux
-# See https://abseil.io/docs/cpp/quickstart-cmake
-# ---------------------------------------------------------
-abseil : FORCE
+# -------------------------------------------------------------------
+# Build abseil rather than depending on whatever is already installed
+# -------------------------------------------------------------------
+ABSEIL_INSTALL_DIR = ~/abseil
+abseil : clean-abseil
 	git clone https://github.com/abseil/abseil-cpp.git
-	cd abseil-cpp && \
-	mkdir build && \
-	cd build && \
-	cmake -DABSL_BUILD_TESTING=ON -DABSL_USE_GOOGLETEST_HEAD=ON -DCMAKE_CXX_STANDARD=14 .. && \
-	cmake --build . --target all
+	cd abseil-cpp && mkdir build
+	cd abseil-cpp/build && cmake -DABSL_BUILD_TESTING=ON -DABSL_USE_GOOGLETEST_HEAD=ON \
+		-DCMAKE_CXX_STANDARD=14 -DCMAKE_INSTALL_PREFIX=$(ABSEIL_INSTALL_DIR) ..
+	cd abseil-cpp/build && cmake --build . --target install -j $(USE_CORES)
 
 clean-abseil : 
-	rm -rf abseil-cpp
+	rm -rf abseil-cpp $(ABSEIL_INSTALL_DIR)
 
 # ----------------------------------------------
 # This is the most comprehensive automated
@@ -94,7 +99,7 @@ build-and-test : all
 	make run-test5-doNothing
 
 test6 :
-	# Test 6 fails as of 8/18
+	# Test 6 fails as of 9/18/2024
 	make run-test6-scenario-2
 
 test7 :
@@ -462,7 +467,6 @@ ssh :
 clean :
 	touch $(SRC)/message.proto
 	rm -rf build
-	cp /dev/null make.out
 
 .PHONY: clean-outputs
 clean-outputs :
@@ -478,7 +482,7 @@ clean-last-output :
 	echo $(LAST_RUN) > 	$(OUTPUTS)/num.txt
 
 .PHONY: clean-all
-clean-all : clean clean-outputs
+clean-all : clean clean-outputs clean-protobuf clean-abseil
 
 # --------------------
 # Show number of cores
