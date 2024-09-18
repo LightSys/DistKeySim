@@ -25,8 +25,8 @@ jobs:
           git clone https://github.com/protocolbuffers/protobuf.git
           cd protobuf
           git submodule update --init --recursive
-	        cmake . -DCMAKE_CXX_STANDARD=14
-	        cmake --build .
+          cmake . -DCMAKE_CXX_STANDARD=14
+          cmake --build .
       - name: Install protobuf library
         if: always()
         run: |
