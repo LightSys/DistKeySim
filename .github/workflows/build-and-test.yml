@@ -37,7 +37,7 @@ jobs:
       - name: Build and test ADAK
         if: always()
         run: make all build-and-test USE_CORES=1
-      - uses: actions/upload-artifact@v2
+      - uses: actions/upload-artifact@v4
         with:
           name: outputs
           path: build/src/outputs/
