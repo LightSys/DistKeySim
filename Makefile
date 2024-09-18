@@ -59,6 +59,21 @@ install-protobuf :
 clean-protobuf :
 	rm -rf protobuf
 
+# ---------------------------------------------------------
+# Abseil is not already installed on some versions of Linux
+# See https://abseil.io/docs/cpp/quickstart-cmake
+# ---------------------------------------------------------
+abseil : FORCE
+	git clone https://github.com/abseil/abseil-cpp.git
+	cd abseil-cpp && \
+	mkdir build && \
+	cd build && \
+	cmake -DABSL_BUILD_TESTING=ON -DABSL_USE_GOOGLETEST_HEAD=ON -DCMAKE_CXX_STANDARD=14 .. && \
+	cmake --build . --target all
+
+clean-abseil : 
+	rm -rf abseil-cpp
+
 # ----------------------------------------------
 # This is the most comprehensive automated
 # test. It is the test we run in GitHub actions.
@@ -436,6 +451,12 @@ all-images : images/Logger.png \
 	images/Node.png \
 	images/main-seq.png \
 	images/Simulation-seq.png
+
+# -------------------
+# SSH to LightSys VMs
+# -------------------
+ssh :
+	ssh devel@cos.lightsys.org -p 18522
 
 # -----
 # Clean
