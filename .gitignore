@@ -16,3 +16,5 @@ clean-outputs
 .*.icloud
 .DS_Store
 .*.swp
+include/message.pb.h
+src/message.pb.cc
