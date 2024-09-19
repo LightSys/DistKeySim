@@ -25,11 +25,11 @@ add_library(adakCore
     GeometricDisconnect.cpp
     SystemClock.cpp)
 
+# Abseil appears to require gmock
+find_package(GTest REQUIRED)
+
 # Newer versions of protobuf require abseil
 find_package(absl REQUIRED)
-
-# And abseil requires gmock
-find_package(GTest REQUIRED)
 
 target_link_libraries(adakCore messages)
 target_include_directories(adakCore PUBLIC ${PROJECT_SOURCE_DIR}/include)
