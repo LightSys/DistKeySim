@@ -47,15 +47,12 @@ PROTOBUF_INSTALL_DIR = ~/protobuf
 protobuf : clean-protobuf
 	git clone https://github.com/protocolbuffers/protobuf.git
 	cd protobuf && \
-	git checkout tags/v23.0 && \
 	git submodule update --init --recursive
 	cd protobuf && cmake . -DCMAKE_CXX_STANDARD=14 \
 		-DCMAKE_INSTALL_PREFIX=$(PROTOBUF_INSTALL_DIR) \
 		-Dprotobuf_ABSL_PROVIDER=package \
 		-DCMAKE_PREFIX_PATH=$(ABSEIL_INSTALL_DIR)
 	cd protobuf && cmake --build . -j $(USE_CORES)
-
-install-protobuf :
 	mkdir -p $(PROTOBUF_INSTALL_DIR)
 	cd protobuf && make install
 
