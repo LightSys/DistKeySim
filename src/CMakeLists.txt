@@ -25,6 +25,9 @@ add_library(adakCore
     GeometricDisconnect.cpp
     SystemClock.cpp)
 
+# Find GTest to get gmock
+find_package(GTest REQUIRED)
+
 # Newer versions of protobuf require abseil
 find_package(absl REQUIRED)
 
