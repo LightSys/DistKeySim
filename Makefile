@@ -43,6 +43,15 @@ $(BUILD_SRC)/adak : CMakeLists.txt src/CMakeLists.txt $(SOURCES)
 src :
 	@echo $(SOURCES)
 
+# --------------------
+# Lint GitHub workflow
+# --------------------
+lint :
+	ruby -ryaml -e "p YAML.load(STDIN.read)" < .github/workflows/build-and-test.yml >/dev/null
+
+# --------------
+# Build protobuf
+# --------------
 PROTOBUF_INSTALL_DIR = ~/protobuf
 protobuf : clean-protobuf
 	git clone https://github.com/protocolbuffers/protobuf.git
@@ -58,6 +67,22 @@ protobuf : clean-protobuf
 
 clean-protobuf :
 	rm -rf protobuf $(PROTOBUF_INSTALL_DIR)
+
+# ------------------------------
+# Build Google Test to get gmock
+# ------------------------------
+GTEST_DIR = googletest/build
+gtest : clean-gtest
+	git clone https://github.com/google/googletest.git
+	mkdir -p $(GTEST_DIR)
+	cd $(GTEST_DIR) && cmake ..
+	cd $(GTEST_DIR) && cmake ..
+
+install-gtest : FORCE
+	cd $(GTEST_DIR) && sudo make install
+
+clean-gtest : FORCE
+	rm -rf googletest
 
 # -------------------------------------------------------------------
 # Build abseil rather than depending on whatever is already installed

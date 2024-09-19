@@ -5,6 +5,9 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
+      - name: Build and install Google Test
+        if: always()
+        run: make gtest install-gtest
       - name: Install abseil library
         run: |
           git clone https://github.com/abseil/abseil-cpp.git
