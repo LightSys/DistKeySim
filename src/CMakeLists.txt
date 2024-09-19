@@ -28,6 +28,9 @@ add_library(adakCore
 # Newer versions of protobuf require abseil
 find_package(absl REQUIRED)
 
+# And abseil requires gmock
+find_package(GTest REQUIRED)
+
 target_link_libraries(adakCore messages)
 target_include_directories(adakCore PUBLIC ${PROJECT_SOURCE_DIR}/include)
 
