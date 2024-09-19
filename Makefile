@@ -88,12 +88,11 @@ clean-gtest : FORCE
 # -------------------------------------------------------------------
 abseil : clean-abseil
 	git clone https://github.com/abseil/abseil-cpp.git
-	cd abseil-cpp && mkdir build
-	cd abseil-cpp/build && cmake -DABSL_BUILD_TESTING=ON -DABSL_USE_GOOGLETEST_HEAD=ON -DCMAKE_CXX_STANDARD=14 ..
-	cd abseil-cpp/build && cmake --build . -j $(USE_CORES)
+	mkdir -p abseil-cpp/build
+	cd abseil-cpp/build && cmake .. -j $(USE_CORES)
 
 install-abseil : FORCE
-	cd abseil-cpp/build && cmake --build . --target install -j $(USE_CORES)
+	cd abseil-cpp/build && sudo cmake --build . --target install -j $(USE_CORES)
 
 clean-abseil : FORCE
 	rm -rf abseil-cpp

@@ -19,3 +19,5 @@ clean-outputs
 include/message.pb.h
 src/message.pb.cc
 googletest/
+abseil-cpp/
+protobuf/
