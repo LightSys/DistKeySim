@@ -5,6 +5,9 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
+      - name: Build and install Abseil
+        if: always()
+        run: make abseil install-abseil
       - name: Cache protobuf library
         id: cache-protobuf
         uses: actions/cache@v1
