@@ -8,34 +8,21 @@ jobs:
       - name: Build and install Google Test
         if: always()
         run: make gtest install-gtest
-      - name: Install abseil library
-        run: |
-          git clone https://github.com/abseil/abseil-cpp.git
-          cd abseil-cpp
-          mkdir build && cd build
-          sudo apt install cmake
-          cmake ..
-          sudo cmake --build . --target install
+      - name: Build and install Abseil
+        if: always()
+        run: make abseil install-abseil
       - name: Cache protobuf library
         id: cache-protobuf
         uses: actions/cache@v1
         with:
           path: protobuf
           key: ${{ runner.os }}-protobuf
-      - name: Build protobuf library
-        if: steps.cache-protobuf.outputs.cache-hit != 'true'
-        run: |
-          git clone https://github.com/protocolbuffers/protobuf.git
-          cd protobuf
-          git submodule update --init --recursive
-          cmake . -DCMAKE_CXX_STANDARD=14
-          cmake --build .
+      - name: Build Protobuf
+        if: always()
+        run: make protobuf
       - name: Install protobuf library
         if: always()
-        run: |
-          cd protobuf
-          sudo make install
-          sudo ldconfig
+        run: make install-protobuf
       - name: Build and test ADAK
         if: always()
         run: make build-and-test USE_CORES=1

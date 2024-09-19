@@ -54,20 +54,17 @@ lint :
 # --------------
 # Build protobuf
 # --------------
-PROTOBUF_INSTALL_DIR = ~/protobuf
 protobuf : clean-protobuf
 	git clone https://github.com/protocolbuffers/protobuf.git
 	cd protobuf && \
 	git submodule update --init --recursive
-	cd protobuf && cmake . -DCMAKE_CXX_STANDARD=14 \
-		-DCMAKE_INSTALL_PREFIX=$(PROTOBUF_INSTALL_DIR) \
-		-Dprotobuf_ABSL_PROVIDER=package \
-		-DCMAKE_PREFIX_PATH=$(ABSEIL_INSTALL_DIR)
+	cd protobuf && cmake . -DCMAKE_CXX_STANDARD=14
 	cd protobuf && cmake --build . -j $(USE_CORES)
-	mkdir -p $(PROTOBUF_INSTALL_DIR)
-	cd protobuf && make install
 
-clean-protobuf :
+install-protobuf : FORCE
+	cd protobuf && sudo make install && sudo ldconfig
+
+clean-protobuf : FORCE
 	rm -rf protobuf $(PROTOBUF_INSTALL_DIR)
 
 # ------------------------------
@@ -89,16 +86,17 @@ clean-gtest : FORCE
 # -------------------------------------------------------------------
 # Build abseil rather than depending on whatever is already installed
 # -------------------------------------------------------------------
-ABSEIL_INSTALL_DIR = ~/abseil
 abseil : clean-abseil
 	git clone https://github.com/abseil/abseil-cpp.git
 	cd abseil-cpp && mkdir build
-	cd abseil-cpp/build && cmake -DABSL_BUILD_TESTING=ON -DABSL_USE_GOOGLETEST_HEAD=ON \
-		-DCMAKE_CXX_STANDARD=14 -DCMAKE_INSTALL_PREFIX=$(ABSEIL_INSTALL_DIR) ..
+	cd abseil-cpp/build && cmake -DABSL_BUILD_TESTING=ON -DABSL_USE_GOOGLETEST_HEAD=ON -DCMAKE_CXX_STANDARD=14 ..
+	cd abseil-cpp/build && cmake --build . -j $(USE_CORES)
+
+install-abseil : FORCE
 	cd abseil-cpp/build && cmake --build . --target install -j $(USE_CORES)
 
-clean-abseil : 
-	rm -rf abseil-cpp $(ABSEIL_INSTALL_DIR)
+clean-abseil : FORCE
+	rm -rf abseil-cpp
 
 # ----------------------------------------------
 # This is the most comprehensive automated
