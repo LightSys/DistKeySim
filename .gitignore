@@ -9,7 +9,7 @@ outputs/
 .clang-format
 logOutput.txt
 statsLog.csv
-make.out
+make*.out
 *.pyc
 *.zip
 clean-outputs
@@ -18,3 +18,4 @@ clean-outputs
 .*.swp
 include/message.pb.h
 src/message.pb.cc
+googletest/

@@ -4,8 +4,8 @@ SRC       = $(ADAK_ROOT)/src
 INCLUDE   = $(ADAK_ROOT)/include
 BIN       = $(ADAK_ROOT)/bin
 BUILD_SRC = $(BUILD)/src
-SOURCES   = $(INCLUDE)/*.h $(INCLUDE)/*.hpp $(SRC)/*.cc $(SRC)/*.cpp
-OUTPUTS   = $(BUILD_SRC)/outputs
+SOURCES   = $(INCLUDE)/*.h $(INCLUDE)/*.hpp $(SRC)/*.cpp \
+            $(SRC)/message.pb.cc $(INCLUDE)/message.pb.h
 USE_CORES = 1
 CMP       = cmp
 
@@ -26,7 +26,9 @@ endif
 .PHONY: all
 all: $(BUILD_SRC)/adak
 
-# Update message protobuf sources when message.proto changes
+# Update message protobuf sources when message.proto changes.
+# Some version of make don't yet support &: rule so we may suffer
+# having to build this twice.
 $(SRC)/message.pb.cc $(INCLUDE)/message.pb.h : $(SRC)/message.proto
 	which protoc
 	protoc --version
