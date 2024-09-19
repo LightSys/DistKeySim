@@ -57,6 +57,7 @@ lint :
 protobuf : clean-protobuf
 	git clone https://github.com/protocolbuffers/protobuf.git
 	cd protobuf && \
+	git checkout tags/v21.12 && \
 	git submodule update --init --recursive
 	cd protobuf && cmake . -DCMAKE_CXX_STANDARD=14
 	cd protobuf && cmake --build . -j $(USE_CORES)
