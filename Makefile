@@ -6,6 +6,7 @@ BIN       = $(ADAK_ROOT)/bin
 BUILD_SRC = $(BUILD)/src
 SOURCES   = $(INCLUDE)/*.h $(INCLUDE)/*.hpp $(SRC)/*.cpp \
             $(SRC)/message.pb.cc $(INCLUDE)/message.pb.h
+OUTPUTS   = $(BUILD_SRC)/outputs
 USE_CORES = 1
 CMP       = cmp
 
