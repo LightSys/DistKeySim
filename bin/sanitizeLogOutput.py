@@ -36,14 +36,21 @@ if __name__ == "__main__":
     foundToFrom = False
     for line in file:
         percentComplete = int(currentSize*100.0/fileSize)
-        # sys.stderr.write("%d%% c=%d f=%d\n" % (percentComplete, currentSize, fileSize))
         if percentComplete > prevPercentComplete:
             sys.stderr.write("%d%%\r" % percentComplete)
             prevPercentComplete = percentComplete
         currentSize += len(line)
 
-        lineParts = line.strip().split(splitOn)
+        lineParts = line.rstrip().split(splitOn)
         log = lineParts[0]
+
+        # skip lines with messages because the timestamps won't match
+        if 'sendMsg: {' in log or \
+           'receiveMessage: {' in log or \
+           'getHeartbeatMessage: {' in log or \
+           'canSendKeyspace: {' in log or \
+           'adak: {' in log:
+            continue
 
         # Find UUIDs
         if "Root UUID:" in log:
@@ -69,9 +76,39 @@ if __name__ == "__main__":
             uuid = uuidParts[0]
             if uuid not in uuids:
                 uuids.append(uuid)
-        if "objectConsuptionRatePerSecond" in log:
+        if "objectConsumptionRatePerSecond" in log:
             uuidParts = log.split(" ")
             uuid = uuidParts[0]
+            if uuid not in uuids:
+                uuids.append(uuid)
+        if ": peer: " in log:
+            uuidParts = log.split(" ")
+            uuid = uuidParts[2]
+            if uuid not in uuids:
+                uuids.append(uuid)
+        if "changed consumption rate" in log:
+            uuidParts = log.split(" ")
+            uuid = uuidParts[0]
+            if uuid not in uuids:
+                uuids.append(uuid)
+        if "(*d3)(*gen)" in log:
+            uuidParts = log.split(" ")
+            uuid = uuidParts[0]
+            if uuid not in uuids:
+                uuids.append(uuid)
+        if "for node" in log:
+            uuidParts = log.split(" ")
+            uuid = uuidParts[3]
+            if uuid not in uuids:
+                uuids.append(uuid)
+        if "calculating shortAlloc" in log:
+            uuidParts = log.split(" ")
+            uuid = uuidParts[1]
+            if uuid not in uuids:
+                uuids.append(uuid)
+        if "calculating longAlloc" in log:
+            uuidParts = log.split(" ")
+            uuid = uuidParts[1]
             if uuid not in uuids:
                 uuids.append(uuid)
         foundChannels = foundChannels or "CHANNELS" in log
@@ -89,6 +126,7 @@ if __name__ == "__main__":
         # replace uuids with index into set array
         for index, value in enumerate(uuids):
             log = log.replace(value, "uuid" + str(index))
+
         print(log)
     
     # Closing files

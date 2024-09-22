@@ -2,6 +2,7 @@
 #include <ctime>
 #include <vector>
 
+#include "areCloseEnough.h"
 #include "Node.h"
 #include "NodeData.h"
 
@@ -20,10 +21,13 @@ int NodeData::getCurrentDay() {
 double NodeData::updateLongTermAllocationRatio(vector<Keyspace> &keyspace) {
     double longTermRatio = 0.0;
     for (const auto &keyspace : keyspace) {
+        Logger::log(Formatter() << "updateLongTermAllocationRatio: keyspace.getPercent=" << keyspace.getPercent());
         longTermRatio +=  keyspace.getPercent();
+        Logger::log(Formatter() << "updateLongTermAllocationRatio: new longTermRatio=" << longTermRatio);
     }
 
     longTermAllocationRatio = longTermRatio;
+    Logger::log(Formatter() << "updateLongTermAllocationRatio: return longTermRatio=" << longTermRatio);
     return longTermRatio;
 }
 
@@ -31,6 +35,7 @@ double NodeData::updateShortTermAllocationRatio(const vector<Keyspace> &keyspace
     double tempKeys = keysUsed > 0 ? keysUsed : 1;
 
     int minIndex = getMinKeyIndex(keyspace);
+    Logger::log(Formatter() << "updateShortTermAllocationRatio: minIndex=" << minIndex);
     if(minIndex == -1) return -1;
     ADAK_Key_t startKey = keyspace.at(minIndex).getStart();
     ADAK_Key_t endKey = keyspace.size() == 0 ? -2 : UINT_MAX; //if you have any keys, must have a full block
@@ -38,17 +43,25 @@ double NodeData::updateShortTermAllocationRatio(const vector<Keyspace> &keyspace
 
     ///-2 means you ran out of keyspace thus set the ratio to one saying we need more keyspace right away.
     ///Baylor you may want to change this if you want a different value saying I need help right away.
+    Logger::log(Formatter() << "updateShortTermAllocationRatio: startKey=" << startKey << " endKey=" << endKey);
     if(endKey == -2) {
-        shortTermAllocationRatio = 1;
+        shortTermAllocationRatio.addValue(1);
+        Logger::log(Formatter() << "updateShortTermAllocationRatio:"
+            << " shortTermAllocationRatio=" << shortTermAllocationRatio.getValue());
     }
-
     ///This is the normal case that works for long term allocation.
     else {
         //In theory you could get a ratio larger than one but you would need trillions of keys created by
         //one node in a day to make this happen therefore we did not deal with it
-        shortTermAllocationRatio =  (double) tempKeys /  (endKey - startKey);
+        shortTermAllocationRatio.addValue((double) tempKeys /  (endKey - startKey));
+        if (ACE::areCloseEnough(shortTermAllocationRatio.getValue(), 0)) {
+            shortTermAllocationRatio.addValue(0);
+        }
+        Logger::log(Formatter() << "updateShortTermAllocationRatio:"
+            << " tempKeys(" << tempKeys << ") / (endKey(" << endKey << ") - startKey(" << startKey << ")) = "
+            << shortTermAllocationRatio.getValue());
     }
-    return shortTermAllocationRatio;
+    return shortTermAllocationRatio.getValue();
 }
 
 double NodeData::updateProvisioningRatio(double creationRate, double shortTermRatio) {
@@ -120,11 +133,11 @@ void NodeData::setAggregateGenRate(double aggregateGenRate) {
 }
 
 double NodeData::getShortTermAllocationRatio() const {
-    return shortTermAllocationRatio;
+    return shortTermAllocationRatio.getValue();
 }
 
 void NodeData::setShortTermAllocationRatio(double shortTermAllocationRatio) {
-    NodeData::shortTermAllocationRatio = shortTermAllocationRatio;
+    NodeData::shortTermAllocationRatio.addValue(shortTermAllocationRatio);
 }
 
 double NodeData::getLongTermAllocationRatio() const {

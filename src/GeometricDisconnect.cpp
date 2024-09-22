@@ -45,7 +45,7 @@ void GeometricDisconnect::sendOffline(UUID nodeUUID, clock_unit_t timeToDisconne
         backOnlineTimer[nodeUUID] = nextTimerID;
         clock->setTimer(nextTimerID, timeToDisconnect + timeOffline);
         nextTimerID++;
-        Logger::log(Formatter() << "just prepped " << nodeUUID << " to go offline"); 
+        if (Logger::logOutputVerbose) Logger::log(Formatter() << "just prepped " << nodeUUID << " to go offline"); 
     }
 }
 
@@ -58,7 +58,7 @@ void GeometricDisconnect::checkOffline(Network* network){
             toClear.push_back(i.first);
             clock->clearTimer(i.second);
             network->disableNode(i.first);
-            Logger::log(Formatter() << "just send  " << i.first << " offline");
+            if (Logger::logOutputVerbose) Logger::log(Formatter() << "just send  " << i.first << " offline");
         }
     }
 
@@ -74,7 +74,7 @@ void GeometricDisconnect::checkOffline(Network* network){
             toClear.push_back(i.first);
             clock->clearTimer(i.second);
             network->enableNode(i.first);
-            Logger::log(Formatter() << "just woke up " << i.first); 
+            if (Logger::logOutputVerbose) Logger::log(Formatter() << "just woke up " << i.first); 
 	}
     }
 
@@ -105,7 +105,7 @@ void GeometricDisconnect::eventTick(Network* network) {
         // CALL FUNCTION TO GIVE PERSCRIBED COMMAND TO node through network
         //This function also guarantees a node cannot go offline more than once at
         //  a time
-        Logger::log(Formatter() << "attempting to send node " << nodeUUID
+        if (Logger::logOutputVerbose) Logger::log(Formatter() << "attempting to send node " << nodeUUID
             << " offline in " << timeToDisconnect << " for " << timeOffline);
         this->sendOffline(nodeUUID, timeToDisconnect, timeOffline);
     }

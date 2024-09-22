@@ -4,7 +4,8 @@ SRC       = $(ADAK_ROOT)/src
 INCLUDE   = $(ADAK_ROOT)/include
 BIN       = $(ADAK_ROOT)/bin
 BUILD_SRC = $(BUILD)/src
-SOURCES   = $(INCLUDE)/*.h $(INCLUDE)/*.hpp $(SRC)/*.cc $(SRC)/*.cpp
+SOURCES   = $(INCLUDE)/*.h $(INCLUDE)/*.hpp $(SRC)/*.cpp \
+            $(SRC)/message.pb.cc $(INCLUDE)/message.pb.h
 OUTPUTS   = $(BUILD_SRC)/outputs
 USE_CORES = 1
 CMP       = cmp
@@ -26,34 +27,166 @@ endif
 .PHONY: all
 all: $(BUILD_SRC)/adak
 
-# Update message protobuf sources when message.proto changes
-$(SRC)/message.pb.cc $(INCLUDE)/message.pb.h : $(SRC)/message.proto 
-	cd $(SRC) && \
-		protoc message.proto --cpp_out=. && \
-		mv  message.pb.h $(INCLUDE)
+# Update message protobuf sources when message.proto changes.
+# Some version of make don't yet support &: rule so we may suffer
+# having to build this twice.
+$(SRC)/message.pb.cc $(INCLUDE)/message.pb.h : $(SRC)/message.proto
+	which protoc
+	protoc --version
+	cd $(SRC) && protoc message.proto --cpp_out=.
+	cd $(SRC) && mv message.pb.h $(INCLUDE)
 
 # Build ADAK
-$(BUILD_SRC)/adak : $(SOURCES)
+$(BUILD_SRC)/adak : CMakeLists.txt src/CMakeLists.txt $(SOURCES)
 	mkdir -p $(BUILD)
-	cd $(BUILD) && \
-		cmake .. -DBUILD_TESTING=0 && \
-		$(MAKE) -j$(USE_CORES)
+	cd $(BUILD) && cmake .. -DBUILD_TESTING=0
+	cd $(BUILD) && make -j$(USE_CORES)
 
 .PHONY: src
 src :
 	@echo $(SOURCES)
 
+# --------------------
+# Lint GitHub workflow
+# --------------------
+lint :
+	ruby -ryaml -e "p YAML.load(STDIN.read)" < .github/workflows/build-and-test.yml >/dev/null
+
+# --------------
+# Build protobuf
+# --------------
+protobuf : clean-protobuf
+	git clone https://github.com/protocolbuffers/protobuf.git
+	cd protobuf && \
+	git checkout tags/v21.12 && \
+	git submodule update --init --recursive
+	cd protobuf && cmake . -DCMAKE_CXX_STANDARD=14
+	cd protobuf && cmake --build . -j $(USE_CORES)
+
+install-protobuf : FORCE
+	cd protobuf && sudo make install && sudo ldconfig
+
+clean-protobuf : FORCE
+	rm -rf protobuf $(PROTOBUF_INSTALL_DIR)
+
+# ------------------------------
+# Build Google Test to get gmock
+# ------------------------------
+GTEST_DIR = googletest/build
+gtest : clean-gtest
+	git clone https://github.com/google/googletest.git
+	mkdir -p $(GTEST_DIR)
+	cd $(GTEST_DIR) && cmake ..
+	cd $(GTEST_DIR) && cmake ..
+
+install-gtest : FORCE
+	cd $(GTEST_DIR) && sudo make install
+
+clean-gtest : FORCE
+	rm -rf googletest
+
+# -------------------------------------------------------------------
+# Build abseil rather than depending on whatever is already installed
+# -------------------------------------------------------------------
+abseil : clean-abseil
+	git clone https://github.com/abseil/abseil-cpp.git
+	cd abseil-cpp && git checkout tags/20230802.0
+	mkdir -p abseil-cpp/build
+	cd abseil-cpp/build && cmake .. -DCMAKE_CXX_STANDARD=14
+	cd abseil-cpp/build && cmake --build . -j $(USE_CORES)
+
+install-abseil : FORCE
+	cd abseil-cpp/build && sudo cmake --build . --target install -j $(USE_CORES)
+
+clean-abseil : FORCE
+	rm -rf abseil-cpp
+
 # ----------------------------------------------
 # This is the most comprehensive automated
 # test. It is the test we run in GitHub actions.
 # ----------------------------------------------
+#
+
+set-verbose-false :
+	sed -i '' 's/Verbose *= .*/Verbose = false;/g' include/Logger.h
+	grep Verbose include/Logger.h
+
+set-verbose-true :
+	sed -i '' 's/Verbose *= .*/Verbose = true;/g' include/Logger.h
+	grep Verbose include/Logger.h
+
 .PHONY: build-and-test
-build-and-test :
-	$(MAKE) all
-	$(MAKE) run-test1-repeatability
-	$(MAKE) run-test2-oscillation
-	$(MAKE) run-test3-non-repeatability
-	$(MAKE) run-test4-scenario-1 SCEN_1_DAYS=$(SCEN_1_DAYS)
+build-and-test : all
+	make run-test1-repeatability
+	make run-test2-oscillation
+	make run-test3-non-repeatability
+	make run-test4-scenario-1
+	make run-test5-doNothing
+
+test6 :
+	# Test 6 fails as of 9/18/2024
+	make run-test6-scenario-2
+
+test7 :
+	# Test 7 fails as of 8/18
+	make run-test7-scenario-3
+
+test8 :
+	# Probably fails too
+	make run-test8-scenario-4
+
+next-short : all
+	-make run-test6-scenario-2 SCEN_2_DAYS=0.01
+	make sanitize jsonify
+
+NEXT_RUN = $(shell if [ -e "$(OUTPUTS)/num.txt" ]; then cat "$(OUTPUTS)/num.txt"; else echo 1; fi)
+LAST_RUN = $(shell echo $(NEXT_RUN) - 1 | bc)
+.PHONY: sanitize
+sanitize :
+	make sanitize-logOutput RUN=$(LAST_RUN)
+	make sanitize-statsLog  RUN=$(LAST_RUN)
+
+.PHONY: sanitize-statsLog
+sanitize-statsLog :
+	$(ADAK_ROOT)/bin/sanitizeStatsLog.py $(OUTPUTS)/statsLog$(RUN).csv > \
+		$(OUTPUTS)/statsLog$(RUN).clean.txt
+
+.PHONY: sanitize-logOutput
+sanitize-logOutput :
+	$(ADAK_ROOT)/bin/sanitizeLogOutput.py $(OUTPUTS)/logOutput$(RUN).txt > \
+		$(OUTPUTS)/logOutput$(RUN).clean.txt
+$(OUTPUTS)/logOutput$(RUN).clean.txt : sanitize-logOutput
+
+.PHONY: compare
+compare :
+	make compare-logOutput
+	make compare-statsLog
+
+PREV_RUN = $(shell echo $(LAST_RUN) - 1 | bc)
+.PHONY: compare-statsLog
+compare-statsLog :
+	$(CMP) $(OUTPUTS)/statsLog$(PREV_RUN).clean.txt \
+		       $(OUTPUTS)/statsLog$(LAST_RUN).clean.txt
+
+.PHONY: compare-logOutput
+compare-logOutput :
+	$(CMP) $(OUTPUTS)/logOutput$(PREV_RUN).clean.txt \
+		       $(OUTPUTS)/logOutput$(LAST_RUN).clean.txt
+
+.PHONY: jsonify
+jsonify : $(OUTPUTS)/logOutput$(LAST_RUN).clean.txt
+	$(ADAK_ROOT)/bin/getJsonMsgs.py < $(OUTPUTS)/logOutput$(LAST_RUN).clean.txt > \
+		$(OUTPUTS)/logOutput$(LAST_RUN).jsonify.txt
+
+.PHONY: jsonify-all
+jsonify-all :
+	for file in `ls $(OUTPUTS)/logOutput*.txt | egrep -v '(clean|jsonify).txt'` ; do \
+		num=`echo $$file | sed -e s/[^0-9]//g` ; \
+		clean="$(OUTPUTS)/logOutput$$num.clean.txt" ; \
+		[ ! -f "$$clean" ] && make sanitize-logOutput RUN=$$num ; \
+		jsonify="$(OUTPUTS)/logOutput$$num.jsonify.txt" ; \
+		[ ! -f "$$jsonify" ] && make jsonify LAST_RUN=$$num ; \
+	done
 
 # ------------------
 # Test repeatability
@@ -65,7 +198,7 @@ build-and-test :
 # Then run the following as many times as you feel necessary to test repeatability:
 #	make run-repeatable sanitize compare
 #
-# Sanitize replaces UUIDs in logOutput.txt and statslog.csv with node index
+# Sanitize replaces UUIDs in logOutput.txt and statsLog.csv with node index
 # thus making the files comparable.
 
 NON =
@@ -73,55 +206,28 @@ NON =
 .PHONY: run-repeatable
 run-repeatable :
 	cp -p config/$(NON)repeatable-config.json $(BUILD_SRC)/config.json
-	cd $(BUILD_SRC) && ./adak
+	cd $(BUILD_SRC) && time ./adak
 	cd $(ADAK_ROOT)
 
-NEXT_RUN = $(shell cat $(OUTPUTS)/num.txt)
-LAST_RUN = $(shell echo $(NEXT_RUN) - 1 | bc)
-.PHONY: sanitize
-sanitize :
-	$(MAKE) sanitize-logOutput RUN=$(LAST_RUN)
-	$(MAKE) sanitize-statslog  RUN=$(LAST_RUN)
-
-.PHONY: sanitize-statslog
-sanitize-statslog :
-	$(ADAK_ROOT)/bin/sanitizeStatsLog.py $(OUTPUTS)/statslog$(RUN).csv > \
-		$(OUTPUTS)/statslog$(RUN).clean.txt
-
-.PHONY: sanitize-logOutput
-sanitize-logOutput :
-	$(ADAK_ROOT)/bin/sanitizeLogOutput.py $(OUTPUTS)/logOutput$(RUN).txt > \
-		$(OUTPUTS)/logOutput$(RUN).clean.txt
-
-.PHONY: compare
-compare :
-	$(MAKE) compare-logOutput
-	$(MAKE) compare-statslog
-
-PREV_RUN = $(shell echo $(LAST_RUN) - 1 | bc)
-.PHONY: compare-statslog
-compare-statslog :
-	$(CMP) $(OUTPUTS)/statslog$(PREV_RUN).clean.txt \
-		       $(OUTPUTS)/statslog$(LAST_RUN).clean.txt
-
-.PHONY: compare-logOutput
-compare-logOutput :
-	$(CMP) $(OUTPUTS)/logOutput$(PREV_RUN).clean.txt \
-		       $(OUTPUTS)/logOutput$(LAST_RUN).clean.txt
-
 .PHONY: run-test1-repeatability
-run-test1-repeatability :
-	$(MAKE) run-repeatable sanitize 
-	$(MAKE) run-repeatable sanitize 
-	$(MAKE) compare
+run-test1-repeatability : all
+	@echo "------"
+	@echo "Test 1"
+	@echo "------"
+	make run-repeatable sanitize
+	make run-repeatable sanitize
+	make compare
 	@echo "Test 1 Passed: Repeatability"
 
 # -----------------------------
 # Assert absence of oscillation
 # -----------------------------
 .PHONY: run-test2-oscillation
-run-test2-oscillation :
-	$(BIN)/testOscillation.py
+run-test2-oscillation : all
+	@echo "------"
+	@echo "Test 2"
+	@echo "------"
+	time $(BIN)/testOscillation.py
 	@echo "Test 2 Passed: Oscillation"
 
 # ----------------------
@@ -140,13 +246,16 @@ run-test2-oscillation :
 
 .PHONY: run-non-repeatable
 run-non-repeatable :
-	$(MAKE) run-repeatable NON=non
+	make run-repeatable NON=non
 
 .PHONY: run-test3-non-repeatability
-run-test3-non-repeatability :
-	$(MAKE) run-non-repeatable sanitize 
-	$(MAKE) run-non-repeatable sanitize 
-	@$(MAKE) compare; \
+run-test3-non-repeatability : all
+	@echo "------"
+	@echo "Test 3"
+	@echo "------"
+	make run-non-repeatable sanitize
+	make run-non-repeatable sanitize
+	@make compare; \
 	if [ $$? -eq 0 ]; then \
         echo "Test 3 Failed: Non Repeatability"; \
         exit 1; \
@@ -162,51 +271,147 @@ run-test3-non-repeatability :
 # the stability of subblock sharing (there should be minimal,
 # if any, subblock sharing in this scenario)
 #
-# Note: We make 40 milliseconds the length of a simulation "tick".
-# Therefore, there are 25 simulation ticks per second.
-#
 # To run a test shorter than 1 day, do something like this
 #
 #     make run-test4-scenario-1 SCEN_1_DAYS=0.1
 
-SIM_UNITS_PER_SECOND = 25
-SECONDS      = 60
-MINUTES      = 60
-HOURS        = 24
-SCEN_1_DAYS  = 1
-ITERATIONS   = $(shell echo "$(SIM_UNITS_PER_SECOND)*$(SECONDS)*$(MINUTES)*$(HOURS)*$(SCEN_1_DAYS)" | bc)
-.PHONY: run-scenario1
-run-scenario1 :
-	jq ".simLength |= $(ITERATIONS)" < config/scenario1-config.json > $(BUILD_SRC)/config.json
-	cd $(BUILD_SRC) && ./adak
-	cd $(ADAK_ROOT)
+SCEN_1_DAYS   = 1
+SCEN_1_CONFIG = "config/scenario1-config.json"
 
 .PHONY: run-test4-scenario-1
-run-test4-scenario-1 :
-	$(BIN)/testScenario1.py --days $(SCEN_1_DAYS)
+run-test4-scenario-1 : all
+	@echo "------"
+	@echo "Test 4"
+	@echo "------"
+	time $(BIN)/testScenario.py --scenarioNum 1 --numNodes 2 --days $(SCEN_1_DAYS) --config $(SCEN_1_CONFIG) \
+		-a 'assert numKeyspaces == 2, "Test Scenario 1 failed: numKeyspaces=%d" % numKeyspaces'
 	@echo "Test 4 Passed: Scenario 1"
 
-# ----------------------------------------------------
-# Display time step at which keys are consumed
-# ----------------------------------------------------
-LOGFILE = build/src/outputs/logOutput17.clean.txt
+# We put this test here because it uses Scenario 1 config
 
-.PHONY: show-consuming-keys
-show-consuming-keys :
-	awk '/Time Step/ {step=$$3} /consuming/ {print step, $$0}' $(LOGFILE)
+.PHONY: run-test5-doNothing
+run-test5-doNothing : all
+	@echo "------"
+	@echo "Test 5"
+	@echo "------"
+	time $(BIN)/testScenario.py --scenarioNum 1 --numNodes 2 --days $(SCEN_1_DAYS) \
+		--config "config/doNothing-config.json" \
+		-a 'assert numKeyspaces == 1, "Test Do Nothing failed: numKeyspaces=%d" % numKeyspaces'
+	@echo "Test 5 Passed: Do Nothing Strategy"
+
+# --------------------------------------------
+# Test Scenario 2 (see "ADAK Scenarios 1.pdf")
+# --------------------------------------------
+#
+# Objective: There initially should be a lot of subblock sharing to fill in “holes”,
+# but eventually block sharing should happen, reducing the volume of subblock sharing.
+# Block sharing should eventually result in the higher-rate node having 7x the keyspace
+# as the lower rate node. (these values were chosen so that the keyspace blocks will
+# end up being divided up into eighths, with one node having 1/8 of the keyspace and
+# the other having 7/8 of the keyspace)
+#
+# To run a test shorter than 7 days, do something like this
+#
+#     make run-test6-scenario-2 SCEN_2_DAYS=0.1
+#
+# Note: Full 7 day run of scenario 2 takes 70GB so let's not do that on GitHub
+# Actions. We know that this test expands to three keyspaces very early and gets
+# no more than that even at the end of 7 day test.
+# QED: 7 days is not needed to verify success
+
+SCEN_2_DAYS   = 1
+SCEN_2_CONFIG = "config/scenario2-config.json"
+
+.PHONY: run-test6-scenario-2
+run-test6-scenario-2 : all
+	@echo "------"
+	@echo "Test 6"
+	@echo "------"
+	time $(BIN)/testScenario.py --scenarioNum 2 --numNodes 2 --days $(SCEN_2_DAYS) --config $(SCEN_2_CONFIG) \
+		-a 'assert numKeyspaces > 2, "Test Scenario 2 failed: numKeyspaces=%d" % numKeyspaces'
+	@echo "Test 6 Passed: Scenario 2"
+
+.PHONY: run-test6-scenario-2a
+run-test6-scenario-2a : all
+	make run-test6-scenario-2 SCEN_2_DAYS=0.1 SCEN_2_CONFIG="config/scenario2a-config.json"
+	#make jsonify-logOutput
+
+.PHONY: run-test6-scenario-2b
+run-test6-scenario-2b : all
+	make run-test6-scenario-2 SCEN_2_DAYS=0.1 SCEN_2_CONFIG="config/scenario2b-config.json"
+
+# --------------------------------------------
+# Test Scenario 3 (see "ADAK Scenarios 1.pdf")
+# --------------------------------------------
+#
+# Objective: Ensure block sharing eventually stabilizes, and determine what resolution
+# the keyspace is broken up into (eighths, 17ths, 32nds) by ADAK in an attempt to distribute
+# the keyspace according to object creation rate.
+#
+# To run a test shorter than 7 days, do something like this
+#
+#     make run-test7-scenario-3 SCEN_3_DAYS=0.1
+
+SCEN_3_DAYS   = 7
+SCEN_3_CONFIG = "config/scenario3-config.json"
+
+.PHONY: run-test7-scenario-3
+run-test7-scenario-3 : all
+	@echo "------"
+	@echo "Test 7"
+	@echo "------"
+	time $(BIN)/testScenario.py --scenarioNum 3 --numNodes 2 --days $(SCEN_3_DAYS) --config $(SCEN_3_CONFIG) \
+		-a 'assert numKeyspaces == 32, "Test Scenario 3 failed: numKeyspaces=%d" % numKeyspaces'
+	@echo "Test 7 Passed: Scenario 3"
+
+# ---------------
+# Test Scenario 4
+# ---------------
+#
+# Objective: Ensure block sharing eventually stabilizes, and determine what resolution
+# the keyspace is broken up into (eighths, 17ths, 32nds) by ADAK in an attempt to distribute
+# the keyspace according to object creation rate.
+#
+# To run a test shorter than 7 days, do something like this
+#
+#     make run-test7-scenario-4 SCEN_4_DAYS=0.1
+
+SCEN_4_DAYS  = 7
+SCEN_4_CONFIG  = "config/scenario4-config.json"
+
+.PHONY: run-test8-scenario-4
+run-test8-scenario-4 : all
+	@echo "------"
+	@echo "Test 7"
+	@echo "------"
+	time $(BIN)/testScenario.py --scenarioNum 4 --numNodes 2 --days $(SCEN_4_DAYS) --config $(SCEN_4_CONFIG) \
+		-a 'assert numKeyspaces == 32, "Test Scenario 4 failed: numKeyspaces=%d" % numKeyspaces'
+	@echo "Test 7 Passed: Scenario 4"
+
+# ----------------------------------------------------
+# Display stuff from log output files
+# ----------------------------------------------------
+LOGFILE = $(shell ls -tr $(OUTPUTS)/logOutput$(LAST_RUN).txt | tail -1)
+CONSUMING = $(OUTPUTS)/logOutput$(LAST_RUN).consuming.txt
 
 .PHONY: count-consuming-keys
 count-consuming-keys :
-	awk '/Time Step/ {step=$$3} /consuming/ {print step, $$0}' $(LOGFILE) | wc -l
+	awk '/consuming/ {counts[$$1] = counts[$$1] + 1} END {for (i in counts) {print i, counts[i]}}' $(LOGFILE)
 
-# ---------------------------------------------------
-# The purpose of default config has been lost in time
-# ---------------------------------------------------
-.PHONY: run-default-config
-run-default-config :
-	cp -p config/default-config.json $(BUILD_SRC)/config.json
-	cd $(BUILD_SRC) && ./adak
-	cd $(ADAK_ROOT)
+compare-consuming-keys :
+	egrep '(CS::adak|  keyspace=|  peer=|will not share|  percent of global|consuming a key)' $(LOGFILE) > $(CONSUMING)
+
+# ----------------------------------------------------
+# Find what config files are actually used
+# ----------------------------------------------------
+.PHONY: find-config-files
+find-config-files :
+	@for file in config/*.json ; do \
+    	basename=`basename $$file` ; \
+    	echo --------------------------- $$basename ---------------------- ; \
+    	grep -RI $$basename --exclude src/build/output . ; \
+    	find . -name $$basename | grep -v config/ ; \
+	done
 
 # -------------------------
 # Test eventGen config file
@@ -219,13 +424,13 @@ run-eventGen :
 	jq ".connectionMode |= \"$(CONNECTION_MODE)\"" < config/eventGen-config.json | \
 		jq ".simLength |= $(SIM_LENGTH)" | \
 		jq ".numNodes |= $(NUM_NODES)" > $(BUILD_SRC)/config.json
-	cd $(BUILD_SRC) && ./adak
+	cd $(BUILD_SRC) && time ./adak
 	cd $(ADAK_ROOT)
 
 # ------------------
 # Show Visualization
 # ------------------
-STATS_LOG    = $(OUTPUTS)/statslog$(RUN).csv
+STATS_LOG    = $(OUTPUTS)/statsLog$(RUN).csv
 GRAPH_IS_LOG = True
 .PHONY: show-vis1
 show-vis1 :
@@ -274,6 +479,12 @@ all-images : images/Logger.png \
 	images/main-seq.png \
 	images/Simulation-seq.png
 
+# -------------------
+# SSH to LightSys VMs
+# -------------------
+ssh :
+	ssh devel@cos.lightsys.org -p 18522
+
 # -----
 # Clean
 # -----
@@ -281,25 +492,22 @@ all-images : images/Logger.png \
 clean :
 	touch $(SRC)/message.proto
 	rm -rf build
-	cp /dev/null make.out
 
 .PHONY: clean-outputs
 clean-outputs :
 	rm -rf $(OUTPUTS)
 	rm -f  $(BUILD_SRC)/*.{csv,txt,json}
 
-.PHONY: clean-alternate-outputs
-clean-alternate-outputs :
-	rm -r $(ALTERNATE_OUTPUTS)/*
-	rm -f $(BUILD_SRC)/*.{csv,txt,json}
-
 .PHONY: clean-last-output
 clean-last-output :
-	rm -f $(OUTPUTS)/statslog$(LAST_RUN).* \
+	rm -f $(OUTPUTS)/statsLog$(LAST_RUN).* \
 		$(OUTPUTS)/logOutput$(LAST_RUN).* > \
 		$(OUTPUTS)/copy_of_config$(LAST_RUN).json \
 		$(OUTPUTS)/full_config$(LAST_RUN).json
 	echo $(LAST_RUN) > 	$(OUTPUTS)/num.txt
+
+.PHONY: clean-all
+clean-all : clean clean-outputs clean-protobuf clean-abseil
 
 # --------------------
 # Show number of cores
@@ -308,3 +516,5 @@ clean-last-output :
 cores :
 	@echo NUM_CORES=$(NUM_CORES)
 	@echo USE_CORES=$(USE_CORES)
+
+FORCE :

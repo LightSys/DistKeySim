@@ -3,23 +3,14 @@
 #include <iostream>
 #include <ctime>
 
-
-#include "EventGen.h"
-#include "UUID.h"
-#include "Network.h"
+#include "AbstractStrategy.h"
 #include "config.hpp"
-#include "Logger.h"
-#include "UUID.h"
-#include "GeometricDisconnect.h"
-#include "SystemClock.h"
-
+#include "Network.h"
 
 using namespace std;
 
 class Simulation {
-private:
-    Network network;
-    u_int numNodes;
+
 public:
     Simulation(const struct Config &config);
     ~Simulation() = default;
@@ -29,4 +20,9 @@ public:
 
     // Getters
     Network *getNetwork() { return &this->network; }
+
+private:
+    Network network;
+    u_int numNodes;
+    AbstractStrategy *adakStrategy;
 };

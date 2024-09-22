@@ -2,6 +2,7 @@
 
 #include "config.hpp"
 #include "ConnectionType.h"
+#include "Logger.h"
 
 using namespace std;
 
@@ -10,6 +11,7 @@ const std::string Config::CHUNKINESS_LABEL = "Chunkiness_(#_of_keys_to_shift)";
 const std::string Config::CONNECTION_MODE_LABEL = "connectionMode";
 const std::string Config::CREATION_RATE_LABEL = "Creation_Rate(%_of_keyspace)";
 const std::string Config::CSV_OUTPUT_PATH_LABEL = "csvOutputPath";
+const std::string Config::ADAK_STRATEGY_LABEL = "AdakStrategy";
 const std::string Config::CUSTOM_CONNECTIONS_LABEL = "Custom_Connections";
 const std::string Config::CUSTOM_LAMBDA_1_LABEL = "customLambda1";
 const std::string Config::CUSTOM_LAMBDA_2_LABEL = "customLambda2";
@@ -24,6 +26,7 @@ const std::string Config::MAX_KEYS_LABEL = "Max_Keys_(2^n,_give_n)";
 const std::string Config::NETWORK_SCALE_LABEL = "networkScale";
 const std::string Config::NUM_NODES_LABEL = "numNodes";
 const std::string Config::RANDOM_SEED_LABEL = "randomSeed";
+const std::string Config::ENABLE_SENDMSG_LOG_LABEL = "enableSendMsgLog";
 const std::string Config::RUN_EVENTS_LABEL = "runEvents";
 const std::string Config::SIM_LENGTH_LABEL = "simLength";
 const std::string Config::SMALLEST_KEY_FOR_PRIORITY_LABEL = "Smallest_Key_for_Priority";
@@ -69,6 +72,16 @@ Config::Config(ifstream jsonFile) {
             csvOutputPath = DEFAULT_CSV_OUTPUT_PATH;
         }
         
+        if (jf.contains(ADAK_STRATEGY_LABEL)) {
+            std::string adakStrategy;
+            jf.at(ADAK_STRATEGY_LABEL).get_to(adakStrategy);
+            Logger::log(Formatter() << "adakStrategy=" << adakStrategy);
+            this->adakStrategy = toAdakStrategy(adakStrategy);
+        } else {
+            this->adakStrategy = toAdakStrategy(DEFAULT_ADAK_STRATEGY);
+        }
+        Logger::log(Formatter() << "adakStrategy=" << Config::toString(this->adakStrategy));
+        
         if (jf.contains(CREATION_RATE_LABEL)) {
             jf.at(CREATION_RATE_LABEL).get_to(this->creationRate);
         } else {
@@ -104,6 +117,12 @@ Config::Config(ifstream jsonFile) {
 	    } else{
             randomSeed = DEFAULT_RANDOM_SEED;
 	    }
+
+        if(jf.contains(ENABLE_SENDMSG_LOG_LABEL)){
+            jf.at(ENABLE_SENDMSG_LOG_LABEL).get_to(this->enableSendMsgLog);
+        } else{
+            enableSendMsgLog = DEFAULT_ENABLE_SENDMSG_LOG;
+        }
 
         if (jf.contains(CUSTOM_CONNECTIONS_LABEL)) {
             jf.at(CUSTOM_CONNECTIONS_LABEL).get_to(this->customConnections);
@@ -238,6 +257,7 @@ Config::Config(ifstream jsonFile) {
         connModeStr = DEFAULT_CONN_MODE_STR;
         connectionMode = DEFAULT_CONNECTION_MODE;
         csvOutputPath = DEFAULT_CSV_OUTPUT_PATH;
+        adakStrategy = toAdakStrategy(DEFAULT_ADAK_STRATEGY);
         creationRate = DEFAULT_CREATION_RATE;
         networkScale = DEFAULT_NETWORK_SCALE;
         randomSeed = DEFAULT_RANDOM_SEED;
@@ -253,6 +273,7 @@ void Config::write(std::string jsonFile) {
     j[CONNECTION_MODE_LABEL] = ConnectionType_toString(this->connectionMode);
     j[CREATION_RATE_LABEL] = this->creationRate;
     j[CSV_OUTPUT_PATH_LABEL] = this->csvOutputPath;
+    j[ADAK_STRATEGY_LABEL] = this->adakStrategy;
     j[CUSTOM_CONNECTIONS_LABEL] = this->customConnections;
     if (this->customLambda1.size() > 0) {j[CUSTOM_LAMBDA_1_LABEL] = this->customLambda1;}
     if (this->customLambda2.size() > 0) {j[CUSTOM_LAMBDA_2_LABEL] = this->customLambda2;}
@@ -273,4 +294,30 @@ void Config::write(std::string jsonFile) {
     
     std::ofstream o(jsonFile);
     o << std::setw(4) << j << std::endl;
+}
+
+std::string Config::toUpper(std::string s) {
+    std::transform(s.begin(), s.end(), s.begin(),
+            [](unsigned char c){ return std::toupper(c); });
+    return s;
+}
+
+Config::ADAKStrategy Config::toAdakStrategy(std::string str) {
+    std::string upperStr = toUpper(str);
+    if (upperStr == "DONOTHING") {
+        return ADAKStrategy::DoNothing;
+    } else if (upperStr == "CONTROL") {
+        return ADAKStrategy::Control;
+    } else {
+        throw "Error: " + str + " is not a valid ADAKStrategy";
+    }
+}
+
+std::string Config::toString(Config::ADAKStrategy strategy) {
+    switch (strategy) {
+        case DoNothing:
+            return "DoNothing";
+        case Control:
+            return "Control";
+    }
 }

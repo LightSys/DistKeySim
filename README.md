@@ -16,7 +16,12 @@ These characteristics make ADAK especially well-suited for Hybrid Cloud Computin
 
 (This entire introduction was lifted from [ADAK Keying Scheme](ADAK%20Keying%20Scheme.pdf).)
 
-## Build Instructions
+## Dear new developer
+
+If you are coming to this project for the first time or a long time has passed since you last worked on it, start by learning about GitHub Actions and how it runs the automated build and test. See `./github/workflows/build-and-test.yml` and then the `Makefile`. 
+
+
+## Manual Build Instructions
 
 ```
 mkdir build
@@ -33,7 +38,7 @@ Notes:
 
 The build will be completed at this point, executable is in `src` directory.
 
-Automating the build:
+## Automated build
 
 1. Use the `Makefile` in the top level directory to build: `make`
 
@@ -51,7 +56,7 @@ The simulation a has several tunables which can be used to affect how it will ru
 
 - *numNodes*: This determines the number of nodes the simulation will contain
 
-- *Hearbeat_Frequency*: This controls how often nodes will perform a heartbeat, which comprises sending heartbeat information messages and determining whether or not to send keyspace.
+- *Heartbeat_Frequency*: This controls how often nodes will perform a heartbeat, which comprises sending heartbeat information messages and determining whether or not to send keyspace.
 
 - *Latency*: The latency, in seconds, is how many ticks between the sending and receiving of a message. The minimum value is 1, which simulates sending a message and having it received the next timestep.
 
@@ -163,6 +168,12 @@ The visualizations created by the project require Python as well as the *pandas*
 ```
 pip install pandas
 pip install plotly
+```
+
+If you wish to save image files instead of seeing them in the browser, you also neeed *kaleido*.
+
+```
+pip install kaleido
 ```
 
 Alternatively, if *pip* does not work well on your machine, here are alternate instructions.
@@ -317,7 +328,7 @@ Then run the following as many times as you feel necessary to test repeatability
 make run-repeatable sanitize compare
 ```
 
-`make sanitize` replaces UUIDs in `logOutput.txt` and `statslog.csv` with node index thus making the files comparable.
+`make sanitize` replaces UUIDs in `logOutput.txt` and `statsLog.csv` with node index thus making the files comparable.
 
 ### Test non-repeatability
 
@@ -418,11 +429,11 @@ Although the simulation could easily be made to have the option to switch betwee
 
 In further development of this project, it may be worthwhile to examine some alternative strategies that can be implemented by extending the `ADAKStrategy` class in a new class. Due to time considerations, we did not implement any alternatives to the algorithm given in the specification (aside from the Control strategy). However, we did propose an optimal alternative algorithm. The general idea is described as follows.
 
-In this algorithm the node will look at all of it's peers. It will calculate the average keyspace size that each node should have if we are to reach "equilibrium" (where equilibrium is defined as all the nodes having very close provisioning rates -- which is object creation rate multiplied by long term allocation rate Al -- which is object creation rate over keyspace in a node, otherwise defined as how fast a node is consuming the keyspace it has been given). If the keyspace of the current node is smaller than or equal to that average, the node does nothing. However, if the node's keyspace is larger, it will share its keyspace surplus with it's peers.
+In this algorithm the node will look at all of its peers. It will calculate the average keyspace size that each node should have if we are to reach "equilibrium" (where equilibrium is defined as all the nodes having very close provisioning rates -- which is object creation rate multiplied by long term allocation rate Al -- which is object creation rate over keyspace in a node, otherwise defined as how fast a node is consuming the keyspace it has been given). If the keyspace of the current node is smaller than or equal to that average, the node does nothing. However, if the node's keyspace is larger, it will share its keyspace surplus with its peers.
 
 The keyspace sharing mentioned above will take place in the following way. First, look through all of the Nodes' peers. For each peer with a keyspace size less than the average, add up the deficit. Second, create an int array of all the peers who were under the average. Third, for each peer under the average, set the respective spot in the array with the quantity (Node surplus * peer deficit/sum of deficit). For each index in that array use a binary expansion to determine how big of blocks to send.
 
-Each node will use this algorithm and it's repeated running will result in the whole network ending in a balanced state. This algorithm will avoid oscillations as well because a node will give away more keyspace than its surplus.
+Each node will use this algorithm and its repeated running will result in the whole network ending in a balanced state. This algorithm will avoid oscillations as well because a node will give away more keyspace than its surplus.
 
 This algorithm is now in the code, although the current implementation fails to dampen oscillations. This will need to be improved.
 
@@ -454,9 +465,9 @@ The objective of Scenario 1 is to "ensure the functionality of sharing keyspace 
 
 The algorithm is spread across several documents, and is divided up into two key segments: the algorithm, which is written in C++, and the GUI, which is primarily in python but also has a bash script.
 
-The C++ simulation uses a config file as an input, and creates the statslog.csv and logOutput.txt files. The statslog.csv stores the data produced by the simulation, namely the UUID of the node who"s data is being displayed (UUID), the timestep it was taken on (timeSlot), the total percentage of the keyspace the node is holding in terms of full blocks (totalKeys), the amount of keyspace shared in terms of the total keyspace (sharing), the rate at which a node is consuming keyspace at a given tick (consumption) and the total number of keys the node still has (remainder). The logOutput file just contains statements that would typically be printed to cout that were worth logging.
+The C++ simulation uses a config file as an input, and creates the statsLog.csv and logOutput.txt files. The statsLog.csv stores the data produced by the simulation, namely the UUID of the node who"s data is being displayed (UUID), the timestep it was taken on (timeSlot), the total percentage of the keyspace the node is holding in terms of full blocks (totalKeys), the amount of keyspace shared in terms of the total keyspace (sharing), the rate at which a node is consuming keyspace at a given tick (consumption) and the total number of keys the node still has (remainder). The logOutput file just contains statements that would typically be printed to cout that were worth logging.
 
-The Python GUI code takes the input from the user, updates the config.json file, and uses ssh to move the config.json file to the server, build the project, run it, and then copies the statslog and logOutput files back to the client computer. The GUI then runs data analytics on the .csv file and produces the graphs.
+The Python GUI code takes the input from the user, updates the config.json file, and uses ssh to move the config.json file to the server, build the project, run it, and then copies the statsLog and logOutput files back to the client computer. The GUI then runs data analytics on the .csv file and produces the graphs.
 
 NOTE: There are numerous print statements which do not match the indentation of the text. These are used for debugging on the server. They were left in because of how frequently those sections of the code need debugging.
 
@@ -518,7 +529,7 @@ ADAK_key_t is defined as ```typedef std::uint64_t ADAK_Key_t```.
 
 #### Logger (.h only)
 
-The logger class provides the functions which log to the statslog.csv and logOutput.txtx files. It keeps its own internal timings and statistics for the .csv, so be careful when changing where/how the functions are used. It also stores copies of the generated statslog.csv and logOutput.txt, as well as the config.json file, in the outputs folder. This prevents the data from being lost when the simulation is run again.
+The logger class provides the functions which log to the statsLog.csv and logOutput.txtx files. It keeps its own internal timings and statistics for the .csv, so be careful when changing where/how the functions are used. It also stores copies of the generated statsLog.csv and logOutput.txt, as well as the config.json file, in the outputs folder. This prevents the data from being lost when the simulation is run again.
 
 ![Logger](./images/Logger.png)
 

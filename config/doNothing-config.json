@@ -1,6 +1,6 @@
 {
     "Algorithm_Strategy": "temperature based",
-    "AdakStrategy": "Control",
+    "AdakStrategy": "DoNothing",
     "connectionMode": "full",
     "csvOutputPath": "outputs/",
     "Latency": 1,
@@ -9,7 +9,5 @@
     "numNodes": 2,
     "randomSeed": 25,
     "simLength": 2160000,
-    "Time_Step_Units_Per_Second": 25,
-    "enableSendMsgLog": true,
-    "Heartbeat_Frequency": 2.0
+    "Time_Step_Units_Per_Second": 25
 }

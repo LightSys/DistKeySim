@@ -1,7 +1,8 @@
-#ifndef ADAK_KEYING_NODEDATA_H
-#define ADAK_KEYING_NODEDATA_H
+#pragma once
 
 #include "Logger.h"
+#include "Damping.h"
+
 static const double NETWORK_SCALE = 0.3;
 static const double ALLOCATION_BEFORE_GIVING_KEYSPACE = 0.7;
 static const double CHUNKINESS = 2; // aka. 50%; 1/CHUNKINESS
@@ -10,18 +11,18 @@ class Node;
 
 class NodeData {
 private:
-    int keyShareRate;
-    double keyGenRate;
-    double aggregateGenRate;
-    double shortTermAllocationRatio;
-    double longTermAllocationRatio;
-    double aggregateAllocationRatio;
-    double provisioningRatio;
+    int keyShareRate = 0;
+    double keyGenRate = 0;
+    double aggregateGenRate = 0;
+    Damping shortTermAllocationRatio;
+    double longTermAllocationRatio = 0;
+    double aggregateAllocationRatio = 0;
+    double provisioningRatio = 0;
 
-    double creationRate;
+    double creationRate = 0;
 
     int keysUsed = 0;
-    int day;
+    int day = 0;
     
     int timeUnitsPast = 0;
     
@@ -75,7 +76,11 @@ public:
        
     //incriments how many ticks this node data has been in use
     void incTimeUnitPast() {timeUnitsPast++;} 
+
+    string toString() {
+        return Formatter() << "dayInMonth=" << day << " keysUsed=" << keysUsed << " timeUnitsPast=" << timeUnitsPast
+            << " shortAlloc=" << shortTermAllocationRatio.getValue()
+            << " longAlloc=" << longTermAllocationRatio;
+
+    }
 };
-
-
-#endif //ADAK_KEYING_NODEDATA_H

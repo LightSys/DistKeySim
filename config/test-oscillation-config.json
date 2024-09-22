@@ -1,8 +1,0 @@
-{
-  "connectionMode": "full",
-  "creationRate": 1,
-  "csvOutputPath": "outputs/",
-  "networkScale": 0.3,
-  "numNodes": 10,
-  "simLength": 50
-}
